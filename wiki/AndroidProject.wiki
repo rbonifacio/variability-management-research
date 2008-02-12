@@ -1,0 +1,14 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+We are planning to develop two project for Android Challenge. The first one is a product line (or software factory) for 2d game development. The second one is proposed to offer several presence mechanisms for bag-packing, such as find out people with specific characteristics in a given location. 
+
+It is important to notice that the software factory for 2d game development might be split into two distinct projects for the first and second "calls" of Android Challenge: in the first call, several APIs 
+ 
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
