@@ -24,7 +24,7 @@ We are persuading two other friends to embrace these projects. The best organiza
 || Research on game engines   || rba           || 11/02 || 28/02 ||
 || Prototype the presence app || rba & klfp    || 18/02 || 28/02 ||  
 
-
+*Milestone:* Go no go decision about which projects will be developed for the first call of Android Challenge.
 
 
  
