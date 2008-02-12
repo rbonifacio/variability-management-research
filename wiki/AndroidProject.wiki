@@ -6,9 +6,25 @@ We are planning to develop two projects for [http://code.google.com/android/adc.
 
 It is important to notice that the software factory for 2d game development might be split into two distinct projects for the first and second "calls" of Android Challenge: in the first call, for example, we can release only the core APIs for 2d game (like sprite-tyles graphics, physics, and basic artifical intelligence); in the second call, instead, we can launch the software factory, with feature modeling support and product generators.    
  
-= Details =
+= Team =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+In the first moment, the development team is composed by:
+
+  * Rodrigo Bonifácio (rba - rbonifacio123@gmail.com)
+  * Kamy Lima Formiga Ponce (klfp - klfp@uol.com.br)
+
+We are persuading two other friends to embrace these projects. The best organization, in our point of view, is just one developer in each project.
+
+= First Iteraction =
+
+|| Activity                   || Assigned for  || Start || End   ||
+|| Configuration (wiki, svn)  || rba & klfp    || 11/02 || 18/02 ||
+|| Study android platform     || rba & klfp    || 11/02 || 28/02 ||
+|| Study XMPP technology      || klfp          || 11/02 || 28/02 ||
+|| Research on game engines   || rba           || 11/02 || 28/02 ||
+|| Prototype the presence app || rba & klfp    || 18/02 || 28/02 ||  
+
+
+
+
+ 
