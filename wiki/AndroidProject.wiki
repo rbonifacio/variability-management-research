@@ -2,9 +2,9 @@
 
 = Introduction =
 
-We are planning to develop two project for Android Challenge. The first one is a product line (or software factory) for 2d game development. The second one is proposed to offer several presence mechanisms for bag-packing, such as find out people with specific characteristics in a given location. 
+We are planning to develop two project for [http://code.google.com/android/adc.html Android Challenge]. The first one is a product line (or software factory) for 2d game development. The second one is proposed to offer several presence mechanisms for bag-packing, such as find out people with a specific perfil in a given location. 
 
-It is important to notice that the software factory for 2d game development might be split into two distinct projects for the first and second "calls" of Android Challenge: in the first call, several APIs 
+It is important to notice that the software factory for 2d game development might be split into two distinct projects for the first and second "calls" of Android Challenge: in the first call, for example, we can release only the core APIs for 2d game (like sprite-tyles graphics, physics, and basic artifical intelligence); in the second call, instead, we can launch the software factory, with feature modeling support and product generators.    
  
 = Details =
 
