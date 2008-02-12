@@ -1,4 +1,4 @@
-#This page briefly introduce some ideas related to the Android Development Challenge.
+This page briefly introduce some ideas related to the Android Development Challenge.
 
 = Introduction =
 
@@ -17,7 +17,7 @@ We are persuading two other friends to embrace these projects. The best organiza
 
 = First Iteraction =
 
-|| Activity                   || Assigned for  || Start || End   ||
+|| *Activity*                 || *Assigned for*||*Start*||*End*  ||
 || Configuration (wiki, svn)  || rba & klfp    || 11/02 || 18/02 ||
 || Study android platform     || rba & klfp    || 11/02 || 28/02 ||
 || Study XMPP technology      || klfp          || 11/02 || 28/02 ||
