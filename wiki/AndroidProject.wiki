@@ -13,7 +13,7 @@ In the first moment, the development team is composed by:
   * Rodrigo Bonifácio (rba - rbonifacio123@gmail.com)
   * Kamy Lima Formiga Ponce (klfp - klfp@uol.com.br)
 
-We are persuading two other friends to embrace these projects. The best organization, in our point of view, is just one developer in each project.
+We are persuading two other friends to embrace these projects. The best organization, in our point of view, is just one more developer in each project.
 
 = First Iteraction =
 
