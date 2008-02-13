@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright P&P Software GmbH (Zurich, Switzerland) -->
+<DisplayModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="DisplayMetamodel.dmm"
+ name="FMP.xdm">
+
+    <NodeDisplayFormat value="FeatureModel">
+        <Shape value="box"/>
+        <FillColor value="#00C000"/>
+        <Line>
+            <Color value="black"/>
+            <Width value="thick"/>
+            <Style value="solid"/>
+        </Line>
+        <NameText>
+            <!-- <DisplayString value="#fm:BasicProperySet/fm:FeatureNameProperty/@fm:value"/> proposal Jan 9 -->
+            <VerticalPosition value="center"/>
+            <HorizontalPosition value="center"/>
+            <Color value="black"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="large"/>
+        </NameText>      
+        <RootNode/>
+    </NodeDisplayFormat>
+    
+    <NodeDisplayFormat value="RootFeature">
+        <Shape value="round"/>
+        <FillColor value="lightcyan"/>
+        <Line>
+            <Color value="black"/>
+            <Width value="thick"/>
+            <Style value="solid"/>
+        </Line>
+        <NameText>
+            <VerticalPosition value="center"/>
+            <HorizontalPosition value="center"/>
+            <Color value="black"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="large"/>
+        </NameText>
+        <ParentConnector>
+            <Color value="black"/>
+            <Width value="normal"/>
+            <Style value="solid"/>
+        </ParentConnector>
+    </NodeDisplayFormat>
+
+    <NodeDisplayFormat value="SolitaryFeature">
+        <Shape value="box"/>
+        <FillColor value="#FEEEAA"/>
+        <Line>
+            <Color value="black"/>
+            <Width value="thick"/>
+            <Style value="solid"/>
+        </Line>
+        <NameText>
+            <VerticalPosition value="center"/>
+            <HorizontalPosition value="center"/>
+            <Color value="black"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="large"/>
+        </NameText>
+        <CardinalityText>
+            <VerticalPosition value="top-outside"/>
+            <HorizontalPosition value="right-outside"/>
+            <Color value="red"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+            <Line>
+                <Color value="black"/>
+                <Width value="normal"/>
+                <Style value="solid"/>
+            </Line>
+            <FillColor value="yellow"/>
+        </CardinalityText>
+        <ParentConnector>
+            <Color value="black"/>
+            <Width value="normal"/>
+            <Style value="solid"/>
+        </ParentConnector>
+    </NodeDisplayFormat>
+
+    <NodeDisplayFormat value="SolitaryReference">
+        <Shape value="box"/>
+        <FillColor value="beige"/>
+        <Line>
+            <Color value="black"/>
+            <Width value="thick"/>
+            <Style value="solid"/>
+        </Line>
+        <NameText>
+            <VerticalPosition value="center"/>
+            <HorizontalPosition value="center"/>
+            <Color value="black"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="large"/>
+        </NameText>
+        <CardinalityText>
+            <VerticalPosition value="top-outside"/>
+            <HorizontalPosition value="right-outside"/>
+            <Color value="red"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+            <Line>
+                <Color value="black"/>
+                <Width value="normal"/>
+                <Style value="solid"/>
+            </Line>
+            <FillColor value="yellow"/>
+        </CardinalityText>
+        <ParentConnector>
+            <Color value="black"/>
+            <Width value="normal"/>
+            <Style value="solid"/>
+        </ParentConnector>
+    </NodeDisplayFormat>
+
+    <NodeDisplayFormat value="GroupedFeature">
+        <Shape value="box"/>
+        <FillColor value="lightyellow"/>
+        <Line>
+            <Color value="black"/>
+            <Width value="normal"/>
+            <Style value="dash"/>
+        </Line>
+        <NameText>
+            <VerticalPosition value="center"/>
+            <HorizontalPosition value="center"/>
+            <Color value="black"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="large"/>
+        </NameText>
+        <ParentConnector>
+            <Color value="black"/>
+            <Width value="normal"/>
+            <Style value="solid"/>
+        </ParentConnector>
+    </NodeDisplayFormat>
+
+    <NodeDisplayFormat value="GroupedReference">
+        <Shape value="box"/>
+        <FillColor value="yellow"/>
+        <Line>
+            <Color value="black"/>
+            <Width value="normal"/>
+            <Style value="dash"/>
+        </Line>
+        <NameText>
+            <VerticalPosition value="center"/>
+            <HorizontalPosition value="center"/>
+            <Color value="black"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="large"/>
+        </NameText>
+        <ParentConnector>
+            <Color value="black"/>
+            <Width value="normal"/>
+            <Style value="solid"/>
+        </ParentConnector>
+    </NodeDisplayFormat>
+    
+    <NodeDisplayFormat value="FeatureGroup">
+       <Shape value="dot"/>
+       <FillColor value="lightgreen"/><!-- O.R. It would be fine to have it changeable according to the group cardinality. Is it worth doing? -->
+       <CardinalityText>
+            <VerticalPosition value="bottom-outside"/>
+            <HorizontalPosition value="right-outside"/>
+            <Color value="green"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+            <Line>
+                <Color value="black"/>
+                <Width value="thick"/>
+                <Style value="solid"/>
+            </Line>
+            <FillColor value="transparent"/>
+        </CardinalityText>
+        <AttachedToParent/>
+    </NodeDisplayFormat>
+      
+    <NodeDisplayFormat value="Attribute">
+        <Shape value="dot"/>
+        <Size value="20"/>
+        <FillColor value="red"/><!-- O.R. It would be fine to have it changeable according to the group cardinality. Is it worth doing? -->
+        <AttachedToParent>
+            <VerticalPosition value="top-outside"/>
+            <HorizontalPosition value="center"/>
+        </AttachedToParent>
+    </NodeDisplayFormat>
+
+    <NodeDisplayFormat value="Integer">
+        <Shape value="dot"/>
+        <Size value="12"/>
+        <FillColor value="blue"/><!-- O.R. It would be fine to have it changeable according to the group cardinality. Is it worth doing? -->
+        <AttachedToParent>
+            <VerticalPosition value="top-inside"/>
+            <HorizontalPosition value="left-inside"/>
+        </AttachedToParent>
+    </NodeDisplayFormat>
+    <NodeDisplayFormat value="String">
+        <Shape value="dot"/>
+        <Size value="12"/>
+        <FillColor value="cadetblue"/><!-- O.R. It would be fine to have it changeable according to the group cardinality. Is it worth doing? -->
+        <AttachedToParent>
+            <VerticalPosition value="top-inside"/>
+            <HorizontalPosition value="left-inside"/>
+        </AttachedToParent>
+    </NodeDisplayFormat>
+    <NodeDisplayFormat value="Float">
+        <Shape value="dot"/>
+        <Size value="12"/>
+        <FillColor value="blueviolet"/><!-- O.R. It would be fine to have it changeable according to the group cardinality. Is it worth doing? -->
+        <AttachedToParent>
+            <VerticalPosition value="top-inside"/>
+            <HorizontalPosition value="left-inside"/>
+        </AttachedToParent>
+    </NodeDisplayFormat>
+
+
+
+
+
+
+
+    
+
+    <PropertySetDisplayFormat value="Annotation">
+        <PropertySetName>
+            <DisplayString value="Documentation"/>
+            <Color value="blue"/>
+            <BackgroundColor value="yellow"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertySetName>
+    </PropertySetDisplayFormat>    
+    <PropertySetDisplayFormat value="IntegerProperties">
+        <PropertySetName>
+            <DisplayString value="IP"/>
+            <Color value="black"/>
+            <BackgroundColor value="yellow"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertySetName>
+    </PropertySetDisplayFormat>
+    <PropertySetDisplayFormat value="StringProperties">
+        <PropertySetName>
+            <DisplayString value="SP"/>
+            <Color value="black"/>
+            <BackgroundColor value="yellow"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertySetName>
+    </PropertySetDisplayFormat>
+    <PropertySetDisplayFormat value="FloatProperties">
+        <PropertySetName>
+            <DisplayString value="FP"/>
+            <Color value="black"/>
+            <BackgroundColor value="yellow"/>
+            <FontStyle value="bold"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertySetName>
+    </PropertySetDisplayFormat>
+
+
+    
+    
+    
+    
+    <PropertyDisplayFormat value="Description">
+        <PropertyName>
+            <DisplayString value="Description"/>
+            <Color value="black"/>
+            <BackgroundColor value="blue"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyName>
+        <PropertyValue>
+            <Color value="black"/>
+            <BackgroundColor value="white"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyValue>
+    </PropertyDisplayFormat>
+    
+    <PropertyDisplayFormat value="IntegerValue">
+        <PropertyName>
+            <DisplayString value="IntegerDS"/>
+            <Color value="black"/>
+            <BackgroundColor value="blue"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyName>
+        <PropertyValue>
+            <Color value="black"/>
+            <BackgroundColor value="white"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyValue>
+    </PropertyDisplayFormat>
+    <PropertyDisplayFormat value="StringValue">
+        <PropertyName>
+            <DisplayString value="StringDS"/>
+            <Color value="black"/>
+            <BackgroundColor value="blue"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyName>
+        <PropertyValue>
+            <Color value="black"/>
+            <BackgroundColor value="white"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyValue>
+    </PropertyDisplayFormat>
+    <PropertyDisplayFormat value="FloatValue">
+        <PropertyName>
+            <DisplayString value="FloatDS"/>
+            <Color value="black"/>
+            <BackgroundColor value="blue"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyName>
+        <PropertyValue>
+            <Color value="black"/>
+            <BackgroundColor value="white"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyValue>
+    </PropertyDisplayFormat>
+
+    
+    <PropertyDisplayFormat value="IntegerDefaultValue">
+        <PropertyName>
+            <DisplayString value="IntegerDS"/>
+            <Color value="black"/>
+            <BackgroundColor value="blue"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyName>
+        <PropertyValue>
+            <Color value="black"/>
+            <BackgroundColor value="white"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyValue>
+    </PropertyDisplayFormat>
+    <PropertyDisplayFormat value="StringDefaultValue">
+        <PropertyName>
+            <DisplayString value="StringDS"/>
+            <Color value="black"/>
+            <BackgroundColor value="blue"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyName>
+        <PropertyValue>
+            <Color value="black"/>
+            <BackgroundColor value="white"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyValue>
+    </PropertyDisplayFormat>
+    <PropertyDisplayFormat value="FloatDefaultValue">
+        <PropertyName>
+            <DisplayString value="FloatDS"/>
+            <Color value="black"/>
+            <BackgroundColor value="blue"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyName>
+        <PropertyValue>
+            <Color value="black"/>
+            <BackgroundColor value="white"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyValue>
+    </PropertyDisplayFormat>
+    <PropertyDisplayFormat value="ReferenceType">
+        <PropertyName>
+            <DisplayString value="RefDS"/>
+            <Color value="black"/>
+            <BackgroundColor value="blue"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyName>
+        <PropertyValue>
+            <Color value="black"/>
+            <BackgroundColor value="white"/>
+            <FontStyle value="normal"/>
+            <Underline value="no"/>
+            <FontName value="default"/>
+            <FontSize value="normal"/>
+        </PropertyValue>
+    </PropertyDisplayFormat>    
+
+
+</DisplayModel>

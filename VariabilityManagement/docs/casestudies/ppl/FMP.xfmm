@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright P&P Software GmbH (Zurich, Switzerland) -->
+<xs:schema targetNamespace="http://www.pnp-software.com/XFeature/fmm"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:dm="http://www.pnp-software.com/XFeature/displayModel"
+  xmlns:fmm="http://www.pnp-software.com/XFeature/fmm" 
+  elementFormDefault="qualified"
+  attributeFormDefault="qualified" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.w3.org/2001/XMLSchema ../general_files/MetaMetaModel.xfmmm">
+  
+  <xs:annotation>
+    <xs:appinfo>
+      <dm:test/>
+      <!-- This is here because of a bug XPath evaluation in oXygen v4.2. It is only useful for debugging and can be removed without any influence on the rest of the code. -->
+    </xs:appinfo>
+  </xs:annotation>
+  
+  <xs:simpleType name="zero2inf">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="([1-9][0-9]*|0|\+|\*)"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="one2inf">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="([1-9][0-9]*|\+|\*)"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="greaterThanZero">
+    <xs:restriction base="xs:token">
+      <xs:pattern value="([1-9][0-9]*)"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Definition of simple elements -->
+  <xs:attribute name="name" type="xs:string"/>
+  <xs:attribute name="type" type="xs:string"/>
+  <xs:attribute name="value" type="xs:string"/>
+  <xs:attribute name="text" type="xs:string"/>
+  
+  
+  
+  <!-- Definition of complex elements -->
+  
+  <xs:element name="FeatureModel">
+    <xs:complexType dm:displayType="root">
+      <xs:sequence>
+        <!-- Has no Annotation (as it has no descrpition) -->
+        <xs:element ref="fmm:RootFeature" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute ref="fmm:value" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="RootFeature">
+    <xs:complexType dm:displayType="node">
+      <xs:sequence>
+        <xs:element ref="fmm:Annotation" minOccurs="0"/>
+        <xs:element ref="fmm:SolitaryFeature" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="fmm:SolitaryReference" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="fmm:FeatureGroup" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute ref="fmm:value" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="SolitaryFeature">
+    <xs:complexType dm:displayType="node">
+      <xs:sequence>
+        <xs:element ref="fmm:Annotation" minOccurs="0"/>
+        <xs:element ref="fmm:Cardinality" minOccurs="0"/>
+        <!-- Derived from Feature: -->
+        <xs:element ref="fmm:Attribute" minOccurs="0"/>
+        <xs:element ref="fmm:SolitaryFeature" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="fmm:SolitaryReference" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="fmm:FeatureGroup" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute ref="fmm:value" use="required"/><!-- the name -->
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="SolitaryReference">
+    <xs:complexType dm:displayType="node">
+      <xs:sequence>
+        <!-- Nas no Annotation (as it has no descrpition) -->
+        <xs:element ref="fmm:Cardinality"/>
+      </xs:sequence>
+      <xs:attribute ref="fmm:value" use="required"/><!-- the referenced feature AKA <Unset Solitary Reference> -->
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="FeatureGroup">
+    <xs:complexType dm:displayType="node">
+      <xs:sequence>
+        <xs:element ref="fmm:Annotation" minOccurs="0"/>
+        <xs:element ref="fmm:Cardinality"/>
+        <xs:element ref="fmm:GroupedFeature" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="fmm:GroupedReference" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute ref="fmm:value" use="required"/>
+    </xs:complexType>
+    <!-- It nas no name -->
+  </xs:element>
+  
+  <xs:element name="GroupedFeature">
+    <xs:complexType dm:displayType="node">
+      <xs:sequence>
+        <xs:element ref="fmm:Annotation" minOccurs="0"/>
+        <!-- Has no cardinality -->
+        <xs:element ref="fmm:Attribute" minOccurs="0"/>
+        <xs:element ref="fmm:SolitaryFeature" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="fmm:SolitaryReference" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="fmm:FeatureGroup" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute ref="fmm:value" use="required"/><!-- the name -->
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="GroupedReference">
+    <xs:complexType dm:displayType="node">
+      <!-- Has no Annotation (as it has no descrpition) -->
+      <!-- Has no cardinality -->
+      <xs:attribute ref="fmm:value" use="required"/><!-- the referenced feature AKA <Unset Solitary Reference> -->
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Attribute">
+    <xs:complexType dm:displayType="node">
+      <xs:choice>
+        <xs:element ref="fmm:Integer"/>
+        <xs:element ref="fmm:String"/>
+        <xs:element ref="fmm:Float"/>
+      </xs:choice>
+      <!--<xs:attribute ref="fmm:value" use="required"/>-->
+      <xs:attribute ref="fmm:value" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Integer">
+    <xs:complexType dm:displayType="node">
+      <xs:sequence>
+        <xs:element ref="fmm:IntegerProperties" minOccurs="0"/><!-- I picked up this name instead of Integer or IntegerPropertySet -->
+      </xs:sequence>
+      <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="String">
+    <xs:complexType dm:displayType="node">
+      <xs:sequence>
+        <xs:element ref="fmm:StringProperties" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Float">
+    <xs:complexType dm:displayType="node">
+      <xs:sequence>
+        <xs:element ref="fmm:FloatProperties" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  
+  
+  
+
+
+
+
+  <!-- Property set elements -->
+
+  <xs:element name="Annotation">
+    <xs:complexType dm:displayType="propertySet">
+      <xs:sequence>
+        <xs:element ref="fmm:Description" minOccurs="0"/>
+      </xs:sequence>
+      <!--<xs:attribute ref="fmm:value" use="required"/>-->
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IntegerProperties">
+    <xs:complexType dm:displayType="propertySet">
+      <xs:sequence>
+        <xs:element ref="fmm:IntegerValue" minOccurs="0"/>
+        <xs:element ref="fmm:IntegerDefaultValue" minOccurs="0"/>
+      </xs:sequence>
+      <!--<xs:attribute ref="fmm:value" use="required"/>-->
+    </xs:complexType>
+  </xs:element>  
+  <xs:element name="StringProperties">
+    <xs:complexType dm:displayType="propertySet">
+      <xs:sequence>
+        <xs:element ref="fmm:StringValue" minOccurs="0"/>
+        <xs:element ref="fmm:StringDefaultValue" minOccurs="0"/>
+      </xs:sequence>
+      <!--<xs:attribute ref="fmm:value" use="required"/>-->
+    </xs:complexType>
+  </xs:element>  
+  <xs:element name="FloatProperties">
+    <xs:complexType dm:displayType="propertySet">
+      <xs:sequence>
+        <xs:element ref="fmm:FloatValue" minOccurs="0"/>
+        <xs:element ref="fmm:FloatDefaultValue" minOccurs="0"/>
+      </xs:sequence>
+      <!--<xs:attribute ref="fmm:value" use="required"/>-->
+    </xs:complexType>
+  </xs:element>  
+  <!--
+  <xs:element name="ReferenceProperties">
+    <xs:complexType dm:displayType="propertySet">
+      <xs:sequence>
+        <xs:element ref="fmm:ReferenceValue" minOccurs="0"/>
+        <xs:element ref="fmm:ReferenceType" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element> 
+  --> 
+  
+  
+  
+  
+  <!-- Property Elements -->
+  
+  <xs:element name="Description">
+    <xs:complexType dm:displayType="property">
+      <xs:attribute ref="fmm:value" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="IntegerValue">
+    <xs:complexType dm:displayType="property">
+      <xs:attribute name="value" type="xs:integer" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="IntegerDefaultValue">
+    <xs:complexType dm:displayType="property">
+      <xs:attribute name="value" type="xs:integer" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StringValue">
+    <xs:complexType dm:displayType="property">
+      <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StringDefaultValue">
+    <xs:complexType dm:displayType="property">
+      <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FloatValue">
+    <xs:complexType dm:displayType="property">
+      <xs:attribute name="value" type="xs:float" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FloatDefaultValue">
+    <xs:complexType dm:displayType="property">
+      <xs:attribute name="value" type="xs:float" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <!--
+  <xs:element name="ReferenceValue">
+    <xs:complexType dm:displayType="property">
+      <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  -->
+  <!--
+  <xs:element name="ReferenceType">
+    <xs:complexType dm:displayType="property">
+      <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  -->
+  
+  <!--
+  <xs:element name="Integer">
+    <xs:complexType dm:displayType="property">
+      <xs:attribute name="value" type="xs:integer" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="String">
+  <xs:complexType dm:displayType="property">
+      <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Float">
+    <xs:complexType dm:displayType="property">
+      <xs:attribute name="value" type="xs:float" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Reference">
+    <xs:complexType dm:displayType="property">
+      <xs:attribute name="value" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  -->
+  
+  
+  
+  
+  
+  <xs:element name="Cardinality">
+    <xs:complexType dm:displayType="cardinality">
+      <xs:attribute name="cardMin" type="fmm:zero2inf" use="required"/>
+      <xs:attribute name="cardMax" type="fmm:one2inf" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="SingletonCardinality">
+    <xs:complexType dm:displayType="cardinality">
+      <xs:attribute name="cardMin" type="fmm:greaterThanZero" fixed="1"/>
+      <xs:attribute name="cardMax" type="fmm:greaterThanZero" fixed="1"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

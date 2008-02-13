@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE CFRepository SYSTEM "cfrepository1_0.dtd">
+<CFRepository name="pplSPG" version="1.0" idCounter="18" guid="ID_AC1B08350000011812AF0CAC00000046">
+ <ModelSpace name="Model" guid="ID_AC1B08350000011812AF0CBC00000047">
+  <MetaLevel name="META" guid="ID_AC1B08350000011812AF0CBC00000048">
+   <MetaFeature guid="ID_AC1B08350000011812AF0CCB00000049">
+   </MetaFeature>
+   <MetaFeatureNode guid="ID_AC1B08350000011812AF0D6800000066"/>
+   <MetaCardinality guid="ID_AC1B08350000011812AF0DB600000074">
+   </MetaCardinality>
+   <MetaGroup guid="ID_AC1B08350000011812AF0E1300000083">
+   </MetaGroup>
+  </MetaLevel>
+  <ModelLevel name="MODEL" guid="ID_AC1B08350000011812AF0E6200000092">
+   <Feature name="arcade-games" description="" premature="false" guid="ID_AC1B08350000011812AFA5CF00000094" constraintId="1">
+   </Feature>
+   <Feature name="rules" description="" premature="false" guid="ID_AC1B08350000011812B0714D00000096" constraintId="3">
+   </Feature>
+   <Feature name="scene" description="" premature="false" guid="ID_AC1B08350000011812B17BF700000099" constraintId="6">
+   </Feature>
+   <Feature name="sprite" description="" premature="false" guid="ID_AC1B08350000011812B28C9B0000009C" constraintId="9">
+   </Feature>
+   <Feature name="main-character" description="" premature="false" guid="ID_AC1B08350000011812B2E1C00000009E" constraintId="11">
+   </Feature>
+   <Feature name="background" description="" premature="false" guid="ID_AC1B08350000011812B3840B000000A1" constraintId="14">
+   </Feature>
+   <Diagram name="PPL" guid="ID_AC1B08350000011812AF6EB200000093" xpos="0" ypos="0" width="811" height="666">
+    <FeatureNode guid="ID_AC1B08350000011812AFA5DF00000095" refFeatureName="arcade-games" refGuidFeatureTree="ID_AC1B08350000011812AFA5CF00000094" xpos="276" ypos="32" constraintId="2">
+     <Cardinality guid="ID_AC1B08350000011812B0871700000098" constraintId="5">
+      <Limit min="1" max="1"/>
+      <FeatureNode guid="ID_AC1B08350000011812B0715D00000097" refFeatureName="rules" refGuidFeatureTree="ID_AC1B08350000011812B0714D00000096" xpos="93" ypos="91" constraintId="4">
+      </FeatureNode>
+     </Cardinality>
+     <Cardinality guid="ID_AC1B08350000011812B192DA0000009B" constraintId="8">
+      <Limit min="1" max="2147483647"/>
+      <FeatureNode guid="ID_AC1B08350000011812B17BF70000009A" refFeatureName="scene" refGuidFeatureTree="ID_AC1B08350000011812B17BF700000099" xpos="300" ypos="89" constraintId="7">
+       <Cardinality guid="ID_AC1B08350000011812B3F62E000000A3" constraintId="16">
+        <Limit min="0" max="2147483647"/>
+        <FeatureNode guid="ID_AC1B08350000011812B28CAB0000009D" refFeatureName="sprite" refGuidFeatureTree="ID_AC1B08350000011812B28C9B0000009C" xpos="301" ypos="143" constraintId="10">
+        </FeatureNode>
+       </Cardinality>
+       <Cardinality guid="ID_AC1B08350000011812B575D9000000A4" constraintId="17">
+        <Limit min="1" max="1"/>
+        <FeatureNode guid="ID_AC1B08350000011812B3841B000000A2" refFeatureName="background" refGuidFeatureTree="ID_AC1B08350000011812B3840B000000A1" xpos="201" ypos="143" constraintId="15">
+        </FeatureNode>
+       </Cardinality>
+      </FeatureNode>
+     </Cardinality>
+     <Cardinality guid="ID_AC1B08350000011812B3264B000000A0" constraintId="13">
+      <Limit min="1" max="1"/>
+      <FeatureNode guid="ID_AC1B08350000011812B2E1C00000009F" refFeatureName="main-character" refGuidFeatureTree="ID_AC1B08350000011812B2E1C00000009E" xpos="169" ypos="91" constraintId="12">
+      </FeatureNode>
+     </Cardinality>
+    </FeatureNode>
+   </Diagram>
+  </ModelLevel>
+ </ModelSpace>
+</CFRepository>
