@@ -8,7 +8,7 @@ In this twiki, we present several tips about developing in Android platform. In 
   
   * *Activity classes*, which define starting points of Android applications, inherity from context. In this way, they also provide services like resolving resources, obtaining access to databases and *preferences*, and so on.
 
-  * *res directory:* should contain all the non-code artifacts (pictures, audio, video, XML user interface layout, ...)that Android applications require.
+  * *res directory:* should contain all the non-code artifacts (pictures, audio, video, XML user interface layout, ...) that Android applications require. A final class R implement several static methods that can be used to access these resource artifacts. It is important to notice that, every time a new resouce is correctly added to the resource directory, the R class is automatically updated. Developers should not (or mustn't) update this class manually. 
  
 == Basic GUI tips =
 
