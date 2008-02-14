@@ -1,0 +1,13 @@
+#This page presents some useful (sometimes, not so useful) information about Android
+
+= Some information about Android =
+
+In this twiki, we present several tips about developing in Android platform. In many cases, such informations are very basic tips, and might be interesting only for people that are just starting the studies in such platform. 
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
