@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GlobalConstraints><RequiresConstraint><Name value="UnnamedRequiresConstraint"/><Feature value="/fm:FeatureModel[1]/fm:RootFeature[4]/fm:SolitaryFeature[1]" xfeatureUniqueId="22"/></RequiresConstraint></GlobalConstraints>
+<GlobalConstraints><RequiresConstraint><Name value="UnnamedRequiresConstraint"/><Feature value="/fm:FeatureModel[1]/fm:RootFeature[4]/fm:SolitaryFeature[1]" xfeatureUniqueId="16"/></RequiresConstraint></GlobalConstraints>

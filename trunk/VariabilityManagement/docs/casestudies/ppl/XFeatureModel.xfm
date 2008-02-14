@@ -58,4 +58,22 @@
   
     <fm:SolitaryFeature fm:value="Display"/>
   </fm:RootFeature>
+
+  <fm:RootFeature fm:value="Services">
+    <fm:SolitaryFeature fm:value="PlayGame"/>
+  
+    <fm:SolitaryFeature fm:value="SaveScore">
+      <fm:FeatureGroup fm:value="FeatureGroup">
+        <fm:Cardinality fm:cardMax="2" fm:cardMin="0"/>
+      
+        <fm:GroupedFeature fm:value="LocalFileSystem"/>
+      
+        <fm:GroupedFeature fm:value="RemoteFileSystem"/>
+      </fm:FeatureGroup>
+    </fm:SolitaryFeature>
+  
+    <fm:SolitaryFeature fm:value="CheckPreviousScore"/>
+  
+    <fm:SolitaryFeature fm:value="LoadSaveGame"/>
+  </fm:RootFeature>
 </fm:FeatureModel>
