@@ -7,6 +7,8 @@ In this twiki, we present several tips about developing in Android platform. In 
 == Basic platform tips ==
   
   * *Activity classes*, which define starting points of Android applications, inherity from context. In this way, they also provide services like resolving resources, obtaining access to databases and *preferences*, and so on.
+
+  * *res directory:* should contain all the non-code artifacts (pictures, audio, video, XML user interface layout, ...)that Android applications require.
  
 == Basic GUI tips =
 
