@@ -30,10 +30,7 @@ public class SpriteView extends ImageView {
 			case KeyEvent.KEYCODE_DPAD_DOWN : sprite.moveDown();
 		}
 		setImageBitmap(this.sprite.getBitmap());
-		int w = sprite.getWidth();
-		int h = sprite.getHeight();
-		setPadding(sprite.getLeft(), sprite.getTop(), 10+w, 10+h);
-		//setPadding(sprite.getLeft(), sprite.getTop(), 10+this.sprite.getWidth(), 10+this.sprite.getHeight());
+		setPadding(sprite.getLeft(), sprite.getTop(), 10+this.sprite.getWidth(), 10+this.sprite.getHeight());
 		return true;
 	}
 	

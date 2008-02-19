@@ -2,12 +2,9 @@ package com.google.android.game2d.api.gui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.WindowManager;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 
 public abstract class TiledView extends ImageView {
