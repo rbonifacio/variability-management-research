@@ -11,7 +11,7 @@ import android.view.KeyEvent;
 import android.widget.ImageView;
 
 import com.google.android.game2d.api.AbstractSprite;
-import com.google.android.game2d.wolf.sprites.wolverine.WolverineSprite;
+import com.google.android.game2d.api.engine.EngineFactory;
 
 /**
  * Basic background for game scenes. It class does not 
@@ -21,8 +21,8 @@ import com.google.android.game2d.wolf.sprites.wolverine.WolverineSprite;
  *   
  * @author rbonifacio
  */
-public final class BackgroundView extends ImageView {
-	
+public class BackgroundView extends ImageView {
+	private EngineFactory factory;
 	private Bitmap background; 
 	private List<AbstractSprite> sprites;
 	
@@ -31,8 +31,9 @@ public final class BackgroundView extends ImageView {
 	 * @param context the application context
 	 * @param background the background image used to render a game scene
 	 */
-	public BackgroundView(Context context, Bitmap background) {
+	public BackgroundView(Context context, EngineFactory factory, Bitmap background) {
 		super(context);
+		this.factory = factory;
 		this.background = background;	
 		defineBackground();
 	}
@@ -52,18 +53,19 @@ public final class BackgroundView extends ImageView {
 				canvas.drawBitmap(sprite.getBitmap(), sprite.getLeft(), sprite.getTop(), new Paint());
 			}
 		}
-		AbstractSprite mc = WolverineSprite.instance();
+		AbstractSprite mc = factory.getEngine().getMainCharacter();
 		canvas.drawBitmap(mc.getBitmap(), mc.getLeft(), mc.getTop(), new Paint());
 		super.onDraw(canvas);
 	}
-
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		AbstractSprite mc = factory.getEngine().getMainCharacter();
 		switch(keyCode) {
-			case KeyEvent.KEYCODE_DPAD_LEFT : WolverineSprite.instance().moveLeft(); break;
-			case KeyEvent.KEYCODE_DPAD_RIGHT : WolverineSprite.instance().moveRight(); break;
-			case KeyEvent.KEYCODE_DPAD_UP : WolverineSprite.instance().moveUp(); break;
-			case KeyEvent.KEYCODE_DPAD_DOWN : WolverineSprite.instance().moveDown(); break;
+			case KeyEvent.KEYCODE_DPAD_LEFT : mc.moveLeft(); break;
+			case KeyEvent.KEYCODE_DPAD_RIGHT : mc.moveRight(); break;
+			case KeyEvent.KEYCODE_DPAD_UP : mc.moveUp(); break;
+			case KeyEvent.KEYCODE_DPAD_DOWN : mc.moveDown(); break;
 		}
 		postInvalidate();
 		return true;

@@ -1,24 +1,32 @@
 package com.google.android.game2d.wolf;
 
+import android.app.Activity;
 import android.view.ViewGroup.LayoutParams;
 
+import com.google.android.game2d.api.AbstractSprite;
+import com.google.android.game2d.api.engine.GameEngine;
 import com.google.android.game2d.api.gui.BackgroundView;
+import com.google.android.game2d.wolf.sprites.wolverine.WolverineSprite;
 
-public class WolfEngine {
-	/* Android main activity of the game */
-	private WolfActivator activator;
+public class WolfEngine extends GameEngine {
+	
 	/* the first scene of the game */
 	private BackgroundView firstScene;
 	
-	public WolfEngine(WolfActivator activator) {
-		this.activator = activator;
+	public WolfEngine(Activity activity) {
+		super(activity);
 	}
 	
+	@Override
 	public void initialize() {
-		ImageEngine.initialize(activator.getResources());
-		firstScene = new BackgroundView(activator, ImageEngine.instance().getFirstSceneBitmap());
+		firstScene = new BackgroundView(activity, WolfFactory.instance(), ImageEngine.instance().getFirstSceneBitmap());
 		firstScene.setFocusable(true);
-		activator.addContentView(firstScene, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		activity.addContentView(firstScene, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+	}
+
+	@Override
+	public AbstractSprite getMainCharacter() {
+		return WolverineSprite.instance();
 	}
 	
 }

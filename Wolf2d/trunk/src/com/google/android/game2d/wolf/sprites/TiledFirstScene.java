@@ -5,9 +5,9 @@ import android.graphics.Bitmap;
 
 import com.google.android.game2d.api.gui.TiledView;
 
-public class FirstScene extends TiledView {
+public class TiledFirstScene extends TiledView {
 	
-	public FirstScene(Context context, Bitmap bitmap) {
+	public TiledFirstScene(Context context, Bitmap bitmap) {
 		super(context, bitmap);
 	}
 

@@ -8,7 +8,8 @@ public class WolfActivator extends Activity {
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		WolfEngine engine = new WolfEngine(this);
-		engine.initialize();
+		WolfFactory.initialize(this);
+		ImageEngine.initialize(getResources());
+		WolfFactory.instance().getEngine().initialize();
 	}
 }

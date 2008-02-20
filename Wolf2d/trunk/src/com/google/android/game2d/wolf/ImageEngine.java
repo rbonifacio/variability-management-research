@@ -37,7 +37,7 @@ public class ImageEngine {
 			firstSceneBitmap = BitmapFactory.decodeResource(resources, R.drawable.bkg01);
 		}
 		return firstSceneBitmap;
-	}
-	
+	}	
 
 }
+
