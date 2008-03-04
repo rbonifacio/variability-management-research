@@ -3,9 +3,9 @@ package com.google.android.game2d.wolf;
 import android.app.Activity;
 import android.view.ViewGroup.LayoutParams;
 
-import com.google.android.game2d.api.AbstractSprite;
 import com.google.android.game2d.api.engine.GameEngine;
 import com.google.android.game2d.api.gui.BackgroundView;
+import com.google.android.game2d.api.sprite.LivelySprite;
 import com.google.android.game2d.wolf.sprites.wolverine.WolverineSprite;
 
 public class WolfEngine extends GameEngine {
@@ -22,11 +22,23 @@ public class WolfEngine extends GameEngine {
 		firstScene = new BackgroundView(activity, WolfFactory.instance(), ImageEngine.instance().getFirstSceneBitmap());
 		firstScene.setFocusable(true);
 		activity.addContentView(firstScene, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		isRunning = true;
+	}
+	
+	@Override
+	public LivelySprite getMainCharacter() {
+		return WolverineSprite.instance();
 	}
 
 	@Override
-	public AbstractSprite getMainCharacter() {
-		return WolverineSprite.instance();
+	public void initLoop() {
+		
+	}
+
+	@Override
+	public void update(long elapsedTime) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

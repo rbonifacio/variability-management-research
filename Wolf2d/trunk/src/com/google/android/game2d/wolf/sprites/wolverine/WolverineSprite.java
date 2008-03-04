@@ -2,20 +2,20 @@ package com.google.android.game2d.wolf.sprites.wolverine;
 
 import android.graphics.Bitmap;
 
-import com.google.android.game2d.api.LivelySprite;
+import com.google.android.game2d.api.sprite.LivelySprite;
 import com.google.android.game2d.wolf.ImageEngine;
 
 public class WolverineSprite extends LivelySprite {
 	private static final int COLUMNS = 9;
 	private static final int ROWS = 4;
-	
+		
 	private AbstractWolverineState state;
 	private static WolverineSprite instance;
 	
 	public static WolverineSprite instance() {
 		if (instance == null) {
 			Bitmap bm = ImageEngine.instance().getWolverineBitmap();
-			instance = new WolverineSprite(bm, 0, 0, 20, 20);
+			instance = new WolverineSprite(bm, 0, 0, 30, 75);
 		}
 		return instance;
 	}

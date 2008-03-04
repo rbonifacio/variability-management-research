@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 
-import com.google.android.game2d.api.AbstractSprite;
+import com.google.android.game2d.api.sprite.AbstractSprite;
 
 public class SpriteView extends ImageView {
 

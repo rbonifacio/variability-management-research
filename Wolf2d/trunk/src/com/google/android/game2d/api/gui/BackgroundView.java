@@ -10,8 +10,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 
-import com.google.android.game2d.api.AbstractSprite;
 import com.google.android.game2d.api.engine.EngineFactory;
+import com.google.android.game2d.api.sprite.AbstractSprite;
+import com.google.android.game2d.api.sprite.LivelySprite;
 
 /**
  * Basic background for game scenes. It class does not 
@@ -60,7 +61,7 @@ public class BackgroundView extends ImageView {
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		AbstractSprite mc = factory.getEngine().getMainCharacter();
+		LivelySprite mc = factory.getEngine().getMainCharacter();
 		switch(keyCode) {
 			case KeyEvent.KEYCODE_DPAD_LEFT : mc.moveLeft(); break;
 			case KeyEvent.KEYCODE_DPAD_RIGHT : mc.moveRight(); break;
@@ -70,6 +71,15 @@ public class BackgroundView extends ImageView {
 		postInvalidate();
 		return true;
 	}
-
+	
+	public void update(long elapsedTime) {
+		if(sprites != null) {
+			for(AbstractSprite sprite : sprites) {
+				//sprite.update(elapsedTime);
+			}
+		}
+		postInvalidate();
+	}
+	
 	
 }
