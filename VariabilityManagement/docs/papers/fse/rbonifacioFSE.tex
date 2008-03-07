@@ -92,7 +92,7 @@ specific scenarios for a SPL member. Therefore, the main contributions of this w
 
 \begin{itemize}
 
-\item The characterization of variability management as a crosscutting concern and, in this way, enforce that it  
+\item A formal characterization of variability management as a crosscutting concern and, in this way, enforce that it  
 must be represented as an independent view of the SPL. Although this work focus on requirement artifacts, 
 more specifically use case scenarios, we argue that such separation is also valid for other SPL views. Actually,
 it has already been claimed for source code~\cite{alves-gpce-06,mmedeiros-lawasp-2007}.
@@ -500,18 +500,14 @@ running example based on the eShop Product Line (briefly introduced in Section~\
 input language are described. Then, we present the role of each input language in respect of the weaving process.
 
 
-\subsubsection{SPL use case model} 
+\subsubsection{SPL use case model}
 
 This artifact defines a set of scenarios that might be used to describe possible variants of the product line. Although not being directly concerned 
 with variability management, some scenarios might be optional, might have parameters, or might change the behavior of other 
 scenarios. Based on the notation proposed in~\cite{gcabral-sbmf-2006},  a use case scenario corresponds to a sequence of
-steps (a tuple of \emph{User Action} x \emph{System State} x \emph{System Response}). Depending on the user action or system state, 
-the behavior of a scenario can be changed. A use case defines a set of scenarios; and a use case model, instead, defines a set of use cases.
-In this running example, we are considering the following scenarios:
+steps (a tuple of \emph{User Action} x \emph{System State} x \emph{System Response}).  A use case defines a set of scenarios; and a use case model, instead, defines a set of use cases. In this running example, we are considering the following scenarios:
 
-\begin{enumerate}
-
-\item {\bf Buy Products Basic Version:} this scenario (Figure~\ref{fig:buy-product-basic-flow}) specifies the basic behavior of \emph{Buy Products},
+{\bf Buy Products Basic Version:} this scenario (Figure~\ref{fig:buy-product-basic-flow}) specifies the basic behavior of \emph{Buy Products},
 assembled in products that are not configured with the \emph{Shopping Cart} and \emph{Bonus} features. It starts from the IDLE special state 
 (do not extend the behavior of an existing scenario) and finishes at the END of execution (in this case, there is no other behavior to be performed).
 The clauses \emph{From step} and \emph{To step} are used for describing the possible starting and ending points of execution.
@@ -532,7 +528,8 @@ The clauses \emph{From step} and \emph{To step} are used for describing the poss
        2M & Select the confirm option. &  Request payment information. \\  \hline
        3M & Fill in the requested information and select the proceed option.  & Request the shipping method and address.\\  \hline
        4M & Select the <ShipMethod>, fill in the destination address and proceed. & Calculate the shipping costs. \\  \hline
-       5M & Confirm the purchase. & Execute the order and send a request to the Delivery System to dispatch the products. [RegisterPreference] \\  \hline
+       5M & Confirm the purchase. & Execute the order and send a request to the Delivery System to dispatch the products. 
+       \mbox{[RegisterPreference]} \\  \hline
   \end{tabular}
   \end{center}
   } 
@@ -541,11 +538,10 @@ The clauses \emph{From step} and \emph{To step} are used for describing the poss
 \label{fig:buy-product-basic-flow}
 \end{figure}
 
- Notice that a parameter \emph{ShipMethod} is referenced in step 4M of Figure~\ref{fig:buy-product-basic-flow}. The use of this parameter (notation also supported in PLUSS and PLUC) allows the reuse of this specification 
+Notice that a parameter \emph{ShipMethod} is referenced in Step 4M of Figure~\ref{fig:buy-product-basic-flow}. The use of this parameter (notation also supported in PLUSS and PLUC) allows the reuse of this specification 
 for different kinds of \emph{ship method} configurations.
 
-
-\item {\bf Buy Products with Shopping Cart and Bonus:} this scenario (Figure~\ref{fig:buy-product-changing-flow}) changes the behavior of the \emph{Buy Products Basic Version} by replacing its first two steps and by introducing the specific behavior required by the \emph{Shopping Cart} and 
+{\bf Buy Products with Shopping Cart and Bonus:} this scenario (Figure~\ref{fig:buy-product-changing-flow}) changes the behavior of the \emph{Buy Products Basic Version} by replacing its first two steps and by introducing the specific behavior required by the \emph{Shopping Cart} and 
 \emph{Bonus} features. This scenario starts from the IDLE state (\emph{from step} clause) and returns to the third step of the \emph{Buy Products Basic Version} (\emph{to step} clause). This behavior is required for products that are configured with \emph{Shopping Cart} and \emph{Bonus} features.
 
 \begin{figure}[h]
@@ -570,7 +566,7 @@ for different kinds of \emph{ship method} configurations.
 \label{fig:buy-product-changing-flow}
 \end{figure}
 
-\item {\bf Search for Products:} this scenario allows the user to search for products. In order to save space, we are only presenting the Step (3S), which performs a search based on the input criteria (Figure~\ref{fig:search-products-flow}). This step is annotated with the mark \mbox{{\bf [RegisterPreference]}}, exposing it as a possible point that the behavior of \emph{Register User Preferences} might starts. The same annotation was used in the \emph{step 5M} of \emph{Buy Products Basic Version}. Such annotations can be referenced in the \emph{from step} and \emph{to step} clauses, reducing the problem of \emph{fragile pointcuts}~\cite{rashid-aosd-2007}.
+{\bf Search for Products:} this scenario allows the user to search for products. In order to save space, we are only presenting the Step 3S, which performs a search based on the input criteria (Figure~\ref{fig:search-products-flow}). This step is annotated with the mark \mbox{{\bf [RegisterPreference]}}, exposing it as a possible point that the behavior of \emph{Register User Preferences} might starts. The same annotation was used in the Step 5M of \emph{Buy Products Basic Version}. Such annotations can be referenced in the \emph{from step} and \emph{to step} clauses, reducing the problem of \emph{fragile pointcuts}~\cite{rashid-aosd-2007}.
 
 \begin{figure}[t]
 \begin{scriptsize}
@@ -594,7 +590,7 @@ for different kinds of \emph{ship method} configurations.
 \label{fig:search-products-flow}
 \end{figure}
 
-\item {\bf Register User Preferences:} this scenario updates the user preferences based on the buy and search products use cases. Its behavior can be 
+{\bf Register User Preferences:} this scenario updates the user preferences based on the buy and search products use cases. Its behavior can be 
 started at each step that is marked with the {\bf [RegisterPreference]} (see the \emph{from step} clause) annotation and is available in products 
 that are configured with the \emph{Register User Preferences} feature.
 
@@ -616,21 +612,18 @@ that are configured with the \emph{Register User Preferences} feature.
   } 
 \end{scriptsize}
 \caption{Register user preferences.}
-\label{fig:search-products-flow}
+\label{fig:register-preferences-flow}
 \end{figure}
-
-\end{enumerate}
-
 
 \subsubsection{Feature model}
 
 We have introduced part of this artifact for the eShop product line in Section~\ref{sec:example}. However, here we are going to 
-present only the features that are fundamental for the running example (Figure~\ref{fig:eshop-fm-re}). 
+present only the features required  (Figure~\ref{fig:eshop-fm-re}) for understanding the running example. 
 
  \begin{figure}[h]
  \begin{center}
   \includegraphics[scale=0.40]{img/eShop-fm-re.eps}
-   \caption{eShop feature model for the running example.}
+   \caption{Subset of eShop feature model.}
   \label{fig:eshop-fm-re}
   \end{center}
 \end{figure}
@@ -640,9 +633,9 @@ Cart}, \emph{Bonus} and \emph{Update User Preferences} features are not required
 
 \subsubsection{Product configuration}
 
-This artifact is used for identifying which features were selected in order to compose a specific member of a product line. Each product configuration should conform to a feature model (the selected features should obeyed the feature model relationships and constraints). Two possible configurations are presented in Figure~\ref{fig:product-config-01-02}. 
+This artifact is used for identifying which features were selected in order to compose a specific member of a product line. Each product configuration should be conform to a feature model (the selected features should obeyed the feature model relationships and constraints). Two possible configurations are presented in Figure~\ref{fig:product-config-01-02}.  
 
-\begin{figure}[h]
+\begin{figure}[t]
   \centerline{
     \mbox{\includegraphics[scale=0.4]{img/pc-01.eps}}
     \mbox{\includegraphics[scale=0.4]{img/pc-02.eps}}
@@ -651,13 +644,11 @@ This artifact is used for identifying which features were selected in order to c
   \label{fig:product-config-01-02}
   \end{figure}
   
-The first configuration (on the left side of the figure) defines a
-product that has no support for shopping cart, bonus and updating preferences. Additionally, it supports only the economical and fast 
-ship methods. The second configuration selects all possible features.  
+The first configuration (on the left side of the Fgure~\ref{fig:product-config-01-02}) defines a product that has no support for shopping cart, bonus and preferences update. Additionally, it supports only the economical and fast ship methods. The second configuration selects all possible features. 
 
-\subsubsection{Configuration knowledge} 
+\subsubsection{Configuration knowledge}
 
-Relates feature expressions with artifacts that must be assembled in a given product. Such artifact allows, during the product engineering phase, the automatically selection of assets that are required for a specific product configuration. Table~\ref{tab:eshop-running-example} presents a configuration knowledge 
+This artifact is used for relating feature expressions to artifacts that must be assembled in a given product. Such artifact allows, during the product engineering phase, the automatically selection of assets that are required for a specific product configuration. Table~\ref{tab:eshop-running-example} presents a configuration knowledge 
 for the running example, enforcing that: if \emph{Shopping Cart} and \emph{Bonus} features are {\bf not} selected, the 
 basic version of \emph{Buy Product} scenario will be assembled; otherwise, the extended version of the same 
 scenario will be assembled; and the \emph{Register User Preferences} scenario will be assembled only if the \emph{Update 
@@ -665,7 +656,7 @@ User Preferences} feature is selected.
 
 \begin{table}[h]
 \begin{center}
-\caption{eShop configuration knowledge for the running example} \label{tab:eshop-running-example}
+\caption{eShop configuration knowledge} \label{tab:eshop-running-example}
 \begin{tabular}{ll}
    \hline\noalign{\smallskip}
   {\bf Expression} & {\bf Required Artifacts} \\
@@ -673,30 +664,31 @@ User Preferences} feature is selected.
    \hline
    \noalign{\smallskip}
     \ldots & \ldots \\
-    {\bf not} (Shopping Cart {\bf and} Bonus)\hspace{2pt} & Basic version of Buy Products scenario \\
-    Shopping Cart {\bf and} Bonus & Extended version of Buy Products scenario \\
-    Update User Preferences & Register user preferences scenario	 \\       
+    {\bf not} (Cart {\bf and} Bonus)\hspace{2pt} & Basic version of Buy Products \\
+    Cart {\bf and} Bonus & Extended version of Buy Products \\
+    Update Preferences & Register user preferences	 \\       
   \hline
 \end{tabular}
 \end{center}
 \end{table}
 
-\begin{description}
-\item[Weaving process:] After presenting input artifacts for the running example, we are ready to describe the waving process that combine 
-the input languages in order to derive product specific scenarios. In the next section we present, more precisely, the semantics of its components using a low level design. The weave process is composed by four activities, although the last one is optional: 
 
-\begin{enumerate}
-\item {\bf Validation:} This activity is responsible for checking if a product configuration is a valid instance of the feature model. If the product configuration is 
-valid (it is conform to the relationship cardinalities and constraints of the feature model), the process might proceed. Otherwise, an error should be reported. In the running example, both configurations presented in Figure~\ref{fig:product-config-01-02} are valid. 
+\subsubsection{Weaving process}
 
-\item {\bf Product derivation:} This activity takes as input a (valid) product configuration and a configuration knowledge. Then, each feature expression of the 
-configuration knowledge is checked against the product configuration. If the expression is satisfied, the related scenarios are assembled as the result of 
-this activity. For the running example, Table~\ref{tab:assembled-scenarios} shows the assembled scenarios for the configurations in  
-Figure~\ref{fig:product-config-01-02}.
+After presenting input artifacts for the running example, we are ready to describe the weaving process that combine 
+the input languages in order to manage scenario variabilities. In the next section we present, more precisely, the semantics of its components using a low level design. The weaving process is composed by four activities, although the last one is optional:
+
+{\bf Validation activity:} This activity is responsible for checking if a product configuration is a valid instance of the feature model. If the product configuration is 
+valid (it is conform to the relationship cardinalities and constraints of the feature model), the process might proceed. Otherwise, an error should be reported. 
+
+{\bf Product derivation activity:} This activity takes as input a (valid) product configuration and a configuration knowledge. 
+Then, each feature expression of the configuration knowledge is checked against the product configuration. If the expression 
+is satisfied, the related scenarios are assembled as the result of this activity. For the running example, 
+Table~\ref{tab:assembled-scenarios} shows the assembled scenarios for the configurations depicted in Figure~\ref{fig:product-config-01-02}.
 
 \begin{table}[h]
 \begin{center}
-\caption{Assembled scenarios for each configurations of the running example} \label{tab:assembled-scenarios}
+\caption{Assembled scenarios} \label{tab:assembled-scenarios}
 \begin{tabular}{ll}
    \hline\noalign{\smallskip}
   {\bf Configuration} & {\bf Assembled scenarios} \\
@@ -715,11 +707,11 @@ Figure~\ref{fig:product-config-01-02}.
 \end{center}
 \end{table}
  
- \item {\bf Scenario composition:} This activity is responsible for composing the scenarios assembled for a specific product configuration. 
+ {\bf Scenario composition activity:} This activity is responsible for composing the scenarios assembled for a specific product configuration. 
  The resulting scenarios of the previous activity, which crosscut each other based on the \emph{from step} and \emph{to step clauses}, are woven. The 
  result is either a use case model with complete paths (all \emph{from step} and \emph{to step} clauses are resolved) or a trace model (a set of all valid sequences of events extracted from the complete paths). 
  
-The complete path is a high level representation, which uses the same constructions of the use case model (scenarios), and can be represented using a graph notation, where each node is labeled with a step id. For example, Figure~\ref{fig:complete-paths} depicts the complete paths for the first and second configurations of our running example. In the left side of the figure,  the basic versions of search for product (branch labeled as 1S, 2S, 3S) and buy product (brach labeled as 1M, 2M, ..., 5M) scenarios are presented. Instead, on the right side of the figure, the extended versions of these scenarios are presented. In this case, steps 1M and 2M have been replaced by steps V1 and V2 (because \emph{Shopping Cart} and \emph{Bonus} features are selected) and the step  1R is introduced after steps 5M and 3S (because \emph{Update User Preferences} is selected in this configuration).
+The complete path is a high level representation, which uses the same constructions of the use case model (scenarios), and can be better understood using a graph notation, where each node is labeled with a step id. For example, Figure~\ref{fig:complete-paths} depicts the complete paths for the first and second configurations of our running example. In the left side of the figure,  the basic versions of search for product (branch labeled as 1S, 2S, 3S) and buy product (branch labeled as 1M, 2M, ..., 5M) scenarios are presented. Instead, on the right side of the figure, the extended versions of these scenarios are presented. In this case, steps 1M and 2M have been replaced by steps V1 and V2 (because \emph{Shopping Cart} and \emph{Bonus} features are selected) and the step  1R is introduced after steps 5M and 3S (because \emph{Update User Preferences} is selected in this configuration).
  
 Instead, the trace model can be seen as a low level representation of the use case model. Such notation has a well defined semantic and might 
 be used for model checking and test case generation. Such applications of the trace model are beyond the scope of this paper. More information 
@@ -733,171 +725,114 @@ represents all possible sequences of events in a specific product configuration.
 \begin{tiny}
 \begin{xy}
 \xymatrix@R=10pt{
-& *++[o][F-]{iddle} \ar[r]\ar[d] & *++[o][F-]{1M} \ar[d]	& & & & *++[o][F-]{iddle} \ar[r]\ar[d] & *++[o][F-]{V1} \ar[d] 	\\
-& *++[o][F-]{1S} \ar[d]  & *++[o][F-]{2M} \ar[d]           & & & & *++[o][F-]{1S} \ar[d]  & *++[o][F-]{V2} \ar[d] 			\\
-& *++[o][F-]{2S} \ar[d]  & *++[o][F-]{3M} \ar[d]           & & & & *++[o][F-]{2S} \ar[d]  & *++[o][F-]{3M} \ar[d]			\\
-& *++[o][F-]{3S} \ar[d]  & *++[o][F-]{4M} \ar[d]           & & & & *++[o][F-]{3S} \ar[d]  & *++[o][F-]{4M} \ar[d] 			\\
-& *++[o][F-]{end} & *++[o][F-]{5M} \ar[l]                     & & & & *++[o][F-]{1R} \ar[d] & *++[o][F-]{5M} \ar[l]   			\\
-&                         &                                                    & & & &   *++[o][F-]{end}       &
+& *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{1M} \ar[d]	& *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{V1} \ar[d] 	\\
+& *++[o][F-]{1S} \ar[d]  & *++[o][F-]{2M} \ar[d]           & *++[o][F-]{1S} \ar[d]  & *++[o][F-]{V2} \ar[d] 			\\
+& *++[o][F-]{2S} \ar[d]  & *++[o][F-]{3M} \ar[d]           & *++[o][F-]{2S} \ar[d]  & *++[o][F-]{3M} \ar[d]			\\
+& *++[o][F-]{3S} \ar[d]  & *++[o][F-]{4M} \ar[d]           & *++[o][F-]{3S} \ar[d]  & *++[o][F-]{4M} \ar[d] 			\\
+& *++[o][F-]{end} & *++[o][F-]{5M} \ar[l]                     & *++[o][F-]{1R} \ar[d] & *++[o][F-]{5M} \ar[l]   			\\
+&                         &                                                    &   *++[o][F-]{end}       &
 }
 \end{xy}
 \end{tiny}
-\caption{Complete paths for the first (left) and second (right) configurations.}
+\caption{Complete paths represented  as a graph}
 \label{fig:complete-paths}
 \end{center}
 \end{figure}
 
-For example, the trace model for the first configuration is the set of sequences:
+For instance, the trace model for the first configuration is the set of sequences:
 
 \begin{small}
-\begin{eqnarray*}
-Trace_{C1} = & \{<>, <iddle>, <iddle, 1S>, <iddle, 1S,2S>, \\ 
-                    & <iddle,1S,2S,3S>,  <iddle,1S,2S,3S,END>, \\ 
-                    & <iddle, 1M>, <iddle, 1M,2M>, \ldots, \\ 
-                    & <iddle, 1M, 2M,3M,4M,5M> \}
-\end{eqnarray*}
+\begin{tabular}{rlc}
+$Trace_{C1}$ = & \{<>, <idle>, <idle, 1S>, <idle, 1S, 2S>, \\ 
+                    & <idle, 1S, 2S, 3S>,  <idle, 1S, 2S, 3S, end>, \\ 
+                    & <idle, 1M>, <idle, 1M, 2M>, \ldots, \\ 
+                    & <idle, 1M, 2M, 3M, 4M.ShipMethod, 5M, end> \}
+\end{tabular}
 \end{small}
  
- \item {\bf Binding of parameters:}  This optional activity takes as input the assembled scenarios and the product configuration and generates 
+{\bf Binding parameters activity:}  This optional activity takes as input the assembled scenarios and the product configuration and generates 
  a trace model resolving all parameters referenced by the steps. For example, step 4M in Figure~\ref{fig:buy-product-basic-flow} has a reference 
- to the parameter \emph{ShipMethod}. The parameter values are defined in the product configuration. For instance, in the 
- first configuration (Figure~\ref{fig:product-config-01-02}), the parameter \emph{ShipMethod} might assume the values \emph{Economical} or 
- \emph{Fast}. In order to reduce the coupling between scenario specifications and feature model, a mapping (or environment) is used for relating 
- parameter to features. For each trace that contains a parameterized event (or step), this activity creates a new trace for all of the possible parameter 
- values. Consequently, the traces $<iddle,1M,2M,3M,4M>$ and $<iddle, 1M, 2M, 3M, 4M, 5M>$, will generate the following sequences:
+ to the parameter \emph{ShipMethod}. The parameter values are defined in the product configuration.
  
+For instance, in the first configuration depicted in Figure~\ref{fig:product-config-01-02}, the parameter \emph{ShipMethod} might assume the values \emph{Economical} or \emph{Fast}. In order to reduce the coupling between scenario specifications and feature model, a mapping (or environment) is used for relating scenario parameters to features. For each trace that contains a parameterized event (or step), this activity creates a new trace for all of the possible parameter values. Consequently, resolving parameters for the trace $<idle,1M,2M,3M,4M.ShipMethod>$ results in the following sequences:
+ 
+\begin{center} 
 \begin{small}
-\begin{eqnarray*}
-<iddle,1M,2M,3M,4M.Economical>, \\ <iddle,1M,2M,3M,4M.Fast>, \\
-<iddle,1M,2M,3M,4M.Economical,5M>, \\ <iddle,1M,2M,3M,4M.Fast, 5M>
-\end{eqnarray*}
+\begin{tabular}{c}
+<idle,1M,2M,3M,4M.Economical>, \\ <idle,1M,2M,3M,4M.Fast>, \\
+\end{tabular}
 \end{small}
- 
-\end{enumerate}
+\end{center}
 
 Next, we introduce the modeling framework used to formally describe the composition processes introduced in this running example. 
-\end{description}
+
 
 \subsection{Modeling Framework}
 
 As presented before, we are proposing, based on the Masuhara and Kiczales work~\cite{kiczales-ecoop-2003}, a crosscutting 
-variability management approach. Our weaving process is composed by three components, formally described in sections~\ref{sub:pd-weaver}, \ref{sub:sc-weaver}, \ref{sub:bind-weaver}. Actually, each of this components is also a weaver. The modeling framework used to describe these weavers is an 8-tuple (Eq.~\ref{eq:tuple} and 
-Table~\ref{tab:tup-01}), which highlights the role of each language in the composition process. 
+variability management approach. Their requirement for characterizing a mechanism as crosscutting is fulfilled by our approach, since different specifications contribute to the definition of a specific SPL member. Additionally, due to its crosscutting nature, the modeling framework proposed in~\cite{kiczales-ecoop-2003}  is suitable for formalizing variability management compositions. 
+Our weaving process is modularized in three major components, formally described in sections~\ref{sub:pd-weaver}, \ref{sub:sc-weaver}, \ref{sub:bind-weaver}. Actually, each of this components is also a weaver. As a customization of MK work, our modeling framework, used to describe these weavers, is an 7-tuple (Eq.~\ref{eq:tuple} and Table~\ref{tab:tup-01}) that highlights the importance of the composition process languages. 
 
 \begin{equation}
-T = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}, p, meta\}, where:
+T = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}, meta\}, where:
 \label{eq:tuple}
 \end{equation}
 
 \begin{table}[h]
 \begin{center}
-\begin{small}
 \caption{Modeling framework elements.} \label{tab:tup-01}
-\begin{tabular}{ll}
-  \hline\noalign{\smallskip}
-  {\bf Element} & {\bf Description} \\ 
-  \noalign{\smallskip}
+\begin{tabular}{|p{0.6in}|p{2.4in}|}
   \hline
-  \noalign{\smallskip}
-  $o$              & Output language used for describing the results of the weave process \\ 
-  $o_{jp}$       & Constructions used for representing the output language join points \\ 
-  $L$              & Set of languages used for describing the input specifications \\ 
-  $L_{ID}$      & Constructions in each input language used for identifying join points \\ 
-  $L_{EFF}$   & Effect of $l'$ constructions in the weaving process, where $l \in L$ \\ 
-  $L_{MOD}$  & Modular unities of each input language \\ 
-  $p$               & Weave process representation \\ 
+  {\bf Element} & {\bf Description} \\ 
+   \hline
+  $o$              & Output language used for describing the results of the weave process \\ \hline
+  $o_{jp}$       & Set of join points in the output language \\ \hline
+  $L$              & Set of languages used for describing the input specifications \\ \hline
+  $L_{ID}$      & Constructions in each input language used for identifying the output join points \\ \hline 
+  $L_{EFF}$   & Effect of $l'$ constructions in the weaving process, where $l \in L$ \\ \hline
+  $L_{MOD}$  & Modular unities of each input language \\ \hline
   $meta$         & An optional argument used for customizing the weave process \\ 
   \hline
 \end{tabular}
-\end{small}
 \end{center}
 \end{table}
 
-For each weaver, we describe the input languages (L) that crosscut each other in order to generate 
-a representation in the output language (o). Differently from the MK work, we have included a 
-low level description of the weave process (the $p$ element of the tuple) in our variability 
-mechanism framework. 
+Each component is responsible for realizing one variability mechanism. We represent them by 
+filling in the seven parameters of our modeling framework and by stating 
+how elements of the weaver implementation correspond to elements of the model.
 
 % ---
 % Product derivation weaver
 % ---
-\subsection{Product derivation weaver}\label{sub:pd-weaver}
+\subsubsection{Product derivation weaver}\label{sub:pd-weaver}
 
-This weaver is responsible for the first two activities of our 
-variability management approach: validate a product configuration 
-against  a feature model and, based on a configuration knowledge, select 
-a subset of the use case model. So, this weaver takes as input a
-\emph{feature model}, a \emph{product configuration}, and a \emph{configuration knowledge}.
-The result is a set of scenarios that are valid for the product configuration.
+This weaver is responsible for selecting artifacts based on specific product configurations. 
+As a consequence, it is worried about the first two activities of our variability management approach: 
+validating a product configuration against  a feature model and selecting a subset of the SPL assets. 
+In this paper, we focus only in the selection of scenarios that should be assembled in specific instances 
+of the SPL. However, this weaver often is required for managing variabilities in other kinds of artifacts.  
+For instance, applying this weaver for combining the eShop use case model, feature model , and configuration knowledge with the configuration depicted in right side of Figure~\ref{fig:product-config-01-02} will result, beside others, in the selection of the extended version of \emph{Buy Products} scenario (Figure~\ref{fig:buy-product-changing-flow}).  
+ 
+This weaver, implemented by the function \emph{pdWeaver} (Listing~\ref{lst:configure}), takes as input 
+a \emph{SPL use case model} (UCM), a \emph{feature model} (FM), a \emph{product configuration} (PC), and a \emph{configuration knowledge} (CK). Initially, this function verifies if the product configuration is a well formed instance of the feature model (\emph{validInstance} function) - if it is not the case,  an \emph{InvalidProduct} error is thrown. Then, the IDs of required scenarios are computed by the \emph{configure} function. This is done by evaluating which feature expressions (list \emph{x:xs}), in the configuration knowledge, are valid for the specific instance (\emph{eval} function). Finally, given the resulting list of scenario IDs, 
+the function \emph{retrieveArtifacts} returns the product specific scenarios.
 
-A product configuration has a similar structure to the feature model:
-one feature representing the root element of the configuration. Each
-feature, instead, can have multiple children. In feature modeling,
-its is also necessary to represent the feature id, name,
-classification (optional, mandatory, alternative), and properties.
-Listing~\ref{lst:pc} presents the abstract descriptions of feature models 
-and product configurations\footnote{In the Haskell programming language, the
-\emph{type} reserved word is used for defining a type synonymous. On
-the other hand, the \emph{data }reserved word is used for defining a
-new data type.}.
-
-\begin{lstlisting}[belowskip=20pt,frame=tb,caption={Product Configuration},label=lst:pc]
--- Other types are not presented here
-type Root = Feature
-type Children = [Feature] -- a list of features
-data Feature = Feature Id Name Type Children Properties
-data FeatureModel = FeatureModel Root
-data ProductConfiguration = ProductConfiguration Root
-\end{lstlisting}
-
-A \emph{configuration knowledge} corresponds 
-to a set of the pairs (\emph{feature expression},\emph{related artifacts}). 
-Each pair is named here as a \emph{configuration}. Given a
-\emph{product configuration} (PC) and a valid \emph{configuration
-knowledge} (CK), we need to evaluate each feature expression in
-order to identify if the product satisfies it. If a feature
-expression is satisfied, the related artifacts will be present in the
-final product. A feature expression can be either a reference to a
-feature ({\bf feature id}) or a composite expression ({\bf and expression}, 
-{\bf or expression}, or {\bf not expression}). Listing~\ref{lst:ck}
-presents the \emph{configuration knowledge} abstract representation in Haskell.
-
-\begin{lstlisting}[belowskip=20pt,frame=tb,caption={Configuration Knowledge},label=lst:ck]
-type Exp = FeatureExpression
-type Configuration = (Exp, ArtifactList)
-type ConfigurationList = [Configuration]
-data FeatureExpression =
- FeatureRef Id |
- NotExpression Exp |
- AndExpression Exp Exp |
- OrExpression Exp Exp
-data ConfigurationKnowledge = ConfigurationKnowledge ConfigurationList
-\end{lstlisting}
-
-The \emph{pdWeaver} function (lines 4-7 in
-Listing~\ref{lst:configure}) implements this weaver. It
-takes as input a \emph{feature model} (FM), a \emph{product configuration} (PC),
-and a \emph{configuration knowledge} (CK); and produces the set of
-selected artifacts (in this case, a set of scenarios) if the product is a valid instance 
-of the feature model - otherwise the \emph{InvalidProduct} error is thrown. For each
-configuration (x) in the configuration knowledge, an evaluation (line 7) of its
-expression is performed. If the expression is evaluated as
-\emph{True} (the \emph{product} satisfies the feature expression), the
-related scenarios will be included in the resulting list of artifacts. Finally, the 
-\emph{expression} (line~12) and \emph{artifacts} (line~13) auxiliary functions returns, respectively, the expression 
-and artifacts of the configuration that is in the head of the list \emph{x:xs} (see the definition of a single
-configuration in Listing~\ref{lst:ck}).
+The model of \emph{Product Derivation Weaver}, 
+in terms of the framework, is showed in Table~\ref{tab:pd-weaver}. The \emph{pdWeaver} function is used to argue that the model is realizable and appropriate~\cite{kiczales-ecoop-2003}. We achieve this by matching the model elements 
+to corresponding parameters and auxiliary functions in the implementation code. Therefore, the input languages UCM, FM, CK, and PC are represented as different parameters 
+of the \emph{pdWeaver} function. An instance of the UCM corresponds to the specification of all 
+SPL scenarios. A FM instance is only responsible for declaring the SPL features and the relationships between 
+them; as a consequence, there is no coupling between FMs and UCMs. Instead, relationships between features and artifacts are documented in the configuration knowledge. Finally, the PC specifies which features were selected 
+for a specific product. 
 
 \begin{lstlisting}[belowskip=20pt,frame=tb,caption={The \emph{configure weaver} function},label=lst:configure]
-type PC = ProductConfiguration
-type CK = ConfigurationKnowledge
+pdWeaver :: UCM -> FM -> PC -> CK -> ScenarioList
+pdWeaver ucm fm pc ck = 
+ if not (validInstance fm pc) 
+ then error InvalidProduct
+ else retrieveScenarios ucm (configure pc ck)
 
-pdWeaver :: FM -> PC -> CK -> ArtifactList
-pdWeaver fm pc ck = 
- if not (validInstance fm pc) then error InvalidProduct
- else configure pc ck
-
-configure :: PC -> CK -> ArtifactList
+configure :: PC -> CK -> ArtifactIdList
 configure pc (CK []) = []
 configure pc (CK (x:xs)) =
  if (eval pc (expression x))
@@ -905,182 +840,211 @@ configure pc (CK (x:xs)) =
   else configure pc (CK xs)
 \end{lstlisting}
 
-Now, we can summarize this weaver using our customized framework. The
-result of this composition is the set of all valid scenarios for a
-given product configuration. Thus, our output language ($o$) is the
-use case model, since it can describe a set of scenarios.
-Additionally, each scenario definition is a \emph{joinpoint}
-($o_{jp}$) in the use case model, allowing its selection. Feature models (FM),
-product configurations (PC) and the configuration knowledge (CK) are used
-as input of the weaving process (L=\{FM, PC, CK\}). 
-The selected features correspond to the pointcut constructions in the 
-product configuration ($PC_{ID}$); and
-its effect is to define a member of the software product
-line ($PC_{EFF}$). Each feature expression is used as a pointcut in
-the configuration knowledge ($CK_{ID}$), and its effect ($CK_{EFF}$) is to relate
-a feature configuration with a set of artifacts (in our case, only
-scenarios). The weaver ($p$) is the \emph{pdWeaver}
-function defined in the Listing~\ref{lst:configure}. Finally, each
-selected feature is a modular unit in the product configuration
-($PC_{MOD}$), since it can be reusable in other product
-configurations. On the other hand, the configuration knowledge
-modular unities ($CK_{MOD}$) are the feature expressions and
-configurations.
+
+The UCM has a greater importance over the other input languages ($UCM_{EFF}$), since it declares the product specific scenarios (the 
+output of this weaver process generated by the \emph{pdWeaver} function). These scenarios ($UCM_{ID}$) are used in the \emph{retriveScenarios} function in order to identify which artifacts will be assembled in the final product.     
+
+In order to identify which artifacts are required for a specific product, the \emph{configure} function ($CK_{EFF}$) checks the feature expression ($CK_{ID}$) against the product specific features ($PC_{ID}$). The effect of FM in this weaver ($FM_{EFF}$) is to check if the PC is well formed. Such evaluation is implemented by the \emph{validInstance} function and considers the PC feature selection ($PC_{EFF}$). 
+
+The product derivation weaver is not parameterized. So, the \emph{meta} element of the modeling framework is not considered in this case.   
+
+\begin{table}[bh]
+\begin{center}
+\caption{Model of Product Derivation} \label{tab:pd-weaver}
+\begin{tabular}{p{0.6in}p{2.4in}}
+   \hline\noalign{\smallskip}
+  {\bf Element} & {\bf Description} \\
+   \noalign{\smallskip}
+   \hline
+   \noalign{\smallskip}
+   $o$               & Product specific scenarios (list of scenarios) \\ 
+   $o_{jp}$        & Scenario declarations \\ 
+   $L$               & \{UCM, FM, CK, PC\} \\ 
+   $UCM_{ID}$ & SPL scenarios \\ 
+   $FM_{ID}$    & SPL features \\ 
+   $CK_{ID}$    & Feature expressions \\  
+   $PC_{ID}$    & Product specific feature selection \\ 
+   $UCM_{EFF}$ & Provides declaration of scenarios \\  
+   $FM_{EFF}$    & Checks if a SPL instance is well formed \\ 
+   $CK_{EFF}$    & Defines the required artifacts  \\ 
+   $PC_{EFF}$    & Specifies the configuration of a product \\
+   $UCM_{MOD}$ & Scenario \\  
+   $FM_{MOD}$   & Feature \\ 
+   $CK_{MOD}$    & Each pair $(feature\ expression, artifact\ list)$  \\ 
+   $PC_{MOD}$    & Feature \\
+   $meta$         & - \\ 
+  \hline
+  \end{tabular}
+\end{center}
+\end{table}
+
+
 
 % ---
 % Scenario composition weaver
 % ---
 
-\subsection{Scenario composition weaver}\label{sub:sc-weaver}
+\subsubsection{Scenario composition weaver}\label{sub:sc-weaver}
 
 This weaver is responsible for the third activity of our variability management 
-approach. It aims to compose variant scenarios of a use case~\cite{gcabral-sbmf-2006} and 
+approach. It aims at composing variant scenarios of a use case~\cite{gcabral-sbmf-2006} and 
 is applied whenever a use case scenario supports different paths of execution, based on the product configuration.
+This mechanism takes as input the product specific use case model (a list of scenarios). Each flow of events 
+(usually a partial specification) must be composed in order to generate a concrete scenario.
 
-This mechanism takes as
-input the selected use case model (a set of scenarios) of a specific SPL member.
-Each variant flow (usually a partial specification) must be composed 
-in order to generate a concrete scenario. A variant scenario 
+A variant scenario 
 might refer to steps either in basic or other alternative scenarios. In order
 to compute the complete paths defined by a scenario, we need to compose,
 recursively, the events that precede all of the steps referenced by its \emph{from step
-clause} (until the IDDLE state), plus its own steps, plus all the
+clause} (until the IDLE state), plus its own steps, plus all the
 events that follow all of the steps referenced by its \emph{to step clause} (until the END
-state)\footnote{IDDLE and END states are predefined steps that
+state)\footnote{IDLE and END states are predefined steps that
 represent the \emph{beginning} and the \emph{end points} of a
 specification.}. 
 
-Listing~\ref{lst:ucm} presents the abstract representation of the
-use case model, use case, and scenario artifacts. Briefly, a use
-case model has a name and a set of use cases. A use case has an id,
-a name, a description, and a list of scenarios (that defines its
+For instance, consider a product configured with the features \emph{Shopping Cart} and \emph{Bonus}, which requires the extended version of \emph{Buy Product} scenario, and with the feature \emph{Update User Preferecens}. Referring to Figure~\ref{fig:buy-product-changing-flow}, the extended version of 
+\emph{Buy Product} scenario starts from the IDLE state (\emph{from step} clause) and then, after its own flow of events, goes back to Step 3M of \emph{Buy Product} basic version (\emph{to step} clause). In a similar way, Figure~\ref{fig:register-preferences-flow} depicts that \emph{Register User Preferences} scenario starts from any step that is marked with the \emph{RegisterPreferences} annotation (for example, Step 5M of the basic version of \emph{Buy Product}). In this context, the result of applying the composition scenario weaver is a concrete path of execution for this configuration, that can be represented as the sequence of step ids: 
+
+\begin{center}
+\mbox{<IDLE, V1, V2, 3M, 4M.ShipMethod, 5M, 1R, END>}.
+\end{center}
+
+Note that this sequence still has  the \emph{ShipMethod} parameter, 
+referred in Step 4M of \emph{Buy Product} basic flow. Listing~\ref{lst:ucm} presents the 
+abstract representation of the use case model, use case, and scenario artifacts. 
+Some elements of the abstract syntax, which are not required for understanding this weaver, 
+are not presented in Listing~\ref{lst:ucm}. Briefly, a use case model has a name and a list of use cases. 
+A use case has an id, a name, a description, and a list of scenarios (that defines its
 basic, alternative, and exception flows). A scenario has an id, a
 description, a \emph{from step clause} (a list of references for
 existing steps), a list of steps, and a \emph{to step clause} (also
 a list of references for existing steps). A step has an id, a
-reference to the parent scenario, a specification in the form of a tuple
+a specification in the form of a tuple
 (user-action x system-state x sytem-response), and a list of annotations
 that can be used to semantically identify the step (avoiding
-the problem of fragile pointcuts - see Section~\ref{sub:running}).
-Finally, a reference to a step can be either a \emph{reference to a
-step id} or \emph{a reference to a step annotation}.
+the problem of fragile pointcuts). Finally, a reference to a step can be either a reference to a \emph{step id} or to a \emph{step annotation}.
 
-\begin{lstlisting}[belowskip=10pt,frame=tb,caption={Use Case and Scenario representation},label=lst:ucm]
-type Detail = (Action, State, Response)
-type FromStep = [StepRef]
-type ToStep = [StepRef]
-data TraceModel = [EventList]
-data UseCaseModel = UseCaseModel Name [UseCase]
-data UseCase = UseCase Id Name Description [Scenario]
-data Scenario = Scenario Id Description FromStep [Step] ToStep
-data Step = Step Id Scenario Detail [Annotation]
-data StepRef = IdRef Id | AnnotationRef String
+\begin{lstlisting}[belowskip=10pt,frame=tb,caption={Use Case abstract syntax},label=lst:ucm]
+data UseCaseModel = UseCaseModel Name UseCaseList
+data UseCase = UseCase Id Name ScenarioList
+data Scenario = Scenario Id FromStep StepList ToStep
+data Step = Step Id Action State Response Annotations
 \end{lstlisting}
 
-This weaver can be configured (the \emph{META} element of
-our modeling framework) to return: a) a product specific use case
-model, contemplating all complete paths of each scenario; b) a trace
-model (see Section~\ref{sub:running}) without parameters, computed
-for each complete path of the resulting scenarios; or c) a trace model,
-with resolved parameters, for each complete path of the resulting
-scenarios. The \emph{binding parameter} weaver is described
-in the next section.
-
-The \emph{completePaths} function (lines 1-4 in Listing~\ref{lst:trace}) 
+The \emph{Scenario Composition Weaver} is implemented by the \emph{scWeaver} function (Listing~\ref{lst:trace}), which takes 
+as input the SPL use case model and a product specific list of scenarios (that may be computed by the previous weaver). The SPL 
+use case model is required in this composition because a product specific scenario is able to refer to a step that is defined in the 
+SPL scenarios but was not selected in a specific configuration. 
+ 
+This implementation computes the complete paths of each product specific 
+scenario by calling, recursively, the \emph{completePaths} function. This 
+function (lines 5-7 in Listing~\ref{lst:trace}) 
 takes as input the whole use case model (\emph{ucm}) and a scenario (\emph{scn});
 and returns all complete paths (a list of \emph{step lists}) of
-\emph{scn}. The function fromList (called in line 3) is used to
+\emph{scn}. The function \emph{fromList} (called at line 7) is used to
 compose all complete paths extracted from the \emph{from step
-clause}. In a similar way, the function \emph{toList} (called in
-line 4) is used to compose all complete paths extracted from the
-\emph{to step clause}. The \emph{match} function (also called in
-lines 3 and 4), retrieves all the steps in \emph{ucm} that satisfy all 
+clause}. In a similar way, the function \emph{toList} (called at
+line 7) is used to compose all complete paths extracted from the
+\emph{to step clause}. The \emph{match} function (also called at
+line 7), retrieves all the steps in \emph{ucm} that satisfy all 
 \emph{step references} in \emph{from step} or \emph{to step}
 clauses. Currently, this matching is based on the \emph{step id} (a
 syntactically reference) or on the list of \emph{step annotations}
 (a semantic reference). The ``+++'' operator denotes a distributed
 list concatenation.
 
-%\begin{center}
-%$[[1A,2A],[1B,2B,3B]] +++ [[1C,2C]] +++ [[1D,2D]] = $
-%$[[1A,2A,1C,2C,1D,2D][1B,2B,3B,1C,2C,1D,2D]]$
-%\end{center}
-
-The \emph{traceModel} function (lines 7 and 8 of
-Listing~\ref{lst:trace}) computes a set of all valid sequences of 
-events from a list of steps. Such function take as argument a function
-\emph{f} and the list of steps (\emph{x:xs}) (it is possible to call
-this function passing  all \emph{completePaths} from a given step).
-Currently, the valid functions \emph{f}, which can be passed as the
-first argument, are the \emph{stepId} function (returns the id
-of a given step); and the \emph{bind e x} function (computes the
+After computing the complete paths, it is possible to derive a reasonable representation 
+for the product specific scenarios. We named this representation as \emph{trace model}, since 
+it describe all possible sequences of events produced by the complete paths. This representation is 
+useful for checking, for example, if a non-expected sequence of events is present in a final product, which 
+means that a problem in the composition process has occurred. The \emph{traceModel} 
+function (lines 9 and 10 of Listing~\ref{lst:trace}) is responsible for computing this representation. 
+Such function takes as argument another function \emph{f} and a list of steps (\emph{x:xs}).
+Currently, the valid functions that can be applied as the first argument are the \emph{stepId} function (returns the id
+of a given step) and the \emph{bind e} function (that also computes the
 parameter values of a given \emph{step} in a specific \emph{feature
-environment}) In the next section we present, in more details, the \emph{bind} and \emph{feature
-environment} constructions.
+environment}). Therefore, if we are interested in the trace model representation, the \emph{Scenario 
+Composition Weaver} can be configured (the \emph{META} element of
+our modeling framework) to return:  a) a trace model without parameters, computed
+for each complete path of the resulting scenarios; or b) a trace model,
+with resolved parameters, for each complete path of the resulting scenarios.  Next section we explain 
+the \emph{bind} and \emph{feature environment} constructions. 
+
+The model of this weaver is depicted in Table~\ref{tab:sc-weaver}. 
+
+\begin{table}[bh]
+\begin{center}
+\caption{Model of Scenario Composition Weaver} \label{tab:sc-weaver}
+\begin{tabular}{p{0.6in}p{2.4in}}
+   \hline\noalign{\smallskip}
+  {\bf Element} & {\bf Description} \\
+   \noalign{\smallskip}
+   \hline
+   \noalign{\smallskip}
+   $o$               & List of concrete scenarios or trace models  \\ 
+   $o_{jp}$        & Scenarios and steps of scenarios \\ 
+   $L$               & \{use cases and scenarios\} \\ 
+   $L_{ID}$       & From step and to step clauses \\ 
+   $L_{EFF}$    & Compose concrete scenarios  \\ 
+   $L_{MOD}$ & Use cases and scenarios \\  
+   $meta$          & Function used to parameterize the trace model generation \\ 
+  \hline
+  \end{tabular}
+\end{center}
+\end{table}
+
 
 \begin{figure*}
 \begin{lstlisting}[belowskip=10pt,frame=tb,caption={The \emph{completePaths} and \emph{traceModel weaver} 
 functions},label=lst:trace]
+scWeaver :: UseCaseModel -> ScenarioList -> [StepList]
+scWeaver ucm [] = []
+scWeaver ucm (x:xs) = (completePaths ucm x) ++ (scWeaver ucm xs)
+ 
 completePaths :: UseCaseModel -> Scenario -> [StepList]
 completePaths ucm scn =
- (fromList ucm (match ucm (fromStepsOf scn)) +++ [stepsOf scn]) +++ 
- (toList ucm (match ucm (toStepsOf scn)))
+ (fromList ucm (match ucm (fromStepsOf scn)) +++ [stepsOf scn]) +++  (toList ucm (match ucm (toStepsOf scn)))
 
--- called as traceModel stepId (x:xs) or traceModel (bind e) (x:xs)
 traceModel f [] = [[]]
 traceModel f (x:xs) = [] : (f x) ^ (traceModel f (xs))
 \end{lstlisting}
 \end{figure*}
 
-Here we instantiate our modeling framework in order to describe 
-this weaver. First of all, the output languages can be either a set of \emph{weaved} scenarios (or
-a use case model) or a computed trace model (in this case, $o =
-(UseCaseModel \mid TraceModel)$). The use case model \emph{joinpoints} ($o_{jp}$)
-are composed by the scenario and step definitions. On the other hand, the
-\emph{joinpoints} for the trace model are composed by each valid
-sequence of events (an element of a trace model).
+The output ($o$ element of our modeling framework) can be either the concrete product specific scenarios, 
+computed directly from \emph{scWeaver} function; or a trace model, computed by calling the \emph{traceModel} function for each 
+concrete scenario. The input languages (L) are both the SPL use case model and the product specific scenarios. These (similar) input languages 
+correspond to the parameters of \emph{scWeaver} function. 
 
-The input language is a set of scenarios (or a use case model) that refer to
-each other. The pointcut ($L_{ID}$) are specified by
-the \emph{from steps} and \emph{to steps} clauses of each scenario. The effect 
-of a scenario definition ($L_{EFF}$) corresponds
-to the requirement specification of valid sequence of events, essencial
-for product development and testing.  Additionally, the scenarios
-are also the modular unities.
-
-The \emph{completePaths} and \emph{traceModel}
-(Listing~\ref{lst:trace}) functions are the weaving processes ($P =
-(completePaths \mid traceModel)$) of this variability mechanism.
-Finally, as we have explained before, such mechanism is
+The join points are modeled as the final scenarios and steps in the output language. They result from the composition of partial scenarios by means of 
+\emph{from steps} and \emph{to steps} clauses ($L_{ID}$).  The effect of the input languages ($L_{EFF}$) in the composition process is to combine 
+product specific scenarios that, before this activity, should not define a concrete flow of events. As a consequence, the \emph{match} function 
+plays a fundamental role in this process, retrieving the steps in the use case model that satisfies the \emph{from step} and \emph{to step} clauses.  
+ Finally, as we have explained before, such mechanism is
 parameterized (the $META$ element of our customized framework) in
-order to select which kind of representation will be generated
-(composed use case model or trace model); and, once the trace model
-representation was selected, identify if the parameters will be
-resolved or not.
+order to select, once the trace model was selected as the output language,  if the parameters will be resolved 
+or not.
 
 
 % ---
 % Bind parameters weaver
 % ---
 
-\subsection{Bind parameters weaver}\label{sub:bind-weaver}
+\subsubsection{Bind parameters weaver}\label{sub:bind-weaver}
 
-Parameters are used in scenario documents in order to create reusable
-requirement specifications. This kind of variability can be applied
+This weaver is responsible for the third activity of our variabilitymanagement approach. Parameters are used in scenario specifications 
+in order to create reusable requirements. This kind of variability can be applied
 whenever two or more scenarios share the same behavior (the sequence
 of actions) and differ in relation only to values of a same concept.
 For instance, Figure~\ref{fig:buy-product-basic-flow} depicts the \emph{Buy Products} 
 scenario that can be reused for different \emph{ship methods}. Without this
-parameterized specification, and aiming at automatically generate a test case suite (for example) with a good coverage, 
-it would be necessary to create a specification for each kind of method.
+parameterized specification, and aiming at automatically generating, for example, a test case suite 
+with a good coverage, it would be necessary to create a specification for each kind of ship method.
 
-This weaver takes as input a parameterized \emph{scenario specification} and a
-\emph{product configuration}, which defines the domain values of a
-parameter. Thus, in order to reduce the coupling between a scenario parameter 
-and a feature, we are proposing an environment that
-relates them. Features related to parameters 
-must be either an {\bf alternative feature} or an {\bf or
-feature}~\cite{gheyi-alloy-06,czarnecki-wsfactory-2005,czarnecki-book}.
+This weaver takes in consideration \emph{scenario specifications} and 
+\emph{product configurations}, which defines the domain values of a
+parameter. Thus, in order to reduce the coupling between scenarios and features, 
+we are proposing an environment that relates them. Features related to parameters must be 
+either an {\bf alternative feature} or an {\bf or feature}~\cite{gheyi-alloy-06,czarnecki-wsfactory-2005,czarnecki-book}.
 
 The implementation of this weaver consists in a call to 
 the \emph{traceModel} function (Listing~\ref{lst:trace}) with
@@ -1088,283 +1052,64 @@ the \emph{bind e} partial function as first parameter. The
 \emph{bind} function (lines 1-5 of Listing~\ref{lst:bind}) takes as
 input an environment (\emph{e}), that maps a parameter into a
 feature, and a step (\emph{s}). Then, it extracts all parameters
-from \emph{s}, and returns a \emph{String} representation with the
+from \emph{s}, and returns a suitable event representation with the
 corresponding parameter values. Each text between the symbols ``$<$'' and ``$>$''
 (defined in the user action, system state, or system response of a
 step) is treated as a parameter and must be defined in the
 environment (otherwise, an type exception is thrown).
 
+For example, if a product is configured with either \emph{Fast} and 
+\emph{Economical} ship methods, the result of applying this weaver for 
+the Step 4M of the Buy Product basic version will result in the following 
+representation: 4M(Fast, Economical)  
+
+The \emph{extractParameterValues} function (called at line 5 of
+Listing~\ref{lst:bind}) is responsible for extracting the related
+parameter values from a feature. Also, each parameter must be
+related to an {\bf alternative feature} or to an {\bf or feature}
+present in a product configuration. 
+
 \begin{lstlisting}[belowskip=10pt,frame=tb,caption={The \emph{bind weaver} function},label=lst:bind]
-bind :: Environment Feature -> Step -> String
+bind :: Environment Feature -> Step -> Event
 bind e x =
  if (length (extractParameters (details x)) == 0)
   then stepId x
   else stepId x ++ (extractParameterValues e x)
 \end{lstlisting}
 
-The \emph{extractParameterValues} function (called at line 5 of
-Listing~\ref{lst:bind}) is responsible for extracting the related
-parameter values from a feature. Also, each parameter must be
-related with an {\bf alternative feature} or an {\bf or feature}
-present in a product configuration.
-
-Instantiating the \emph{bind parameter weaver} to our
-modeling framework, we identify that the trace model is the
-resulting language (o) and its set of joinpoints ($o_{jp}$) is
-composed by each \emph{communicated data} present in the trace of
-events. Also, the mechanism takes as input a set of scenarios and a
-\emph{product configuration}.
-Steps defined in the set of scenarios can refer to parameters
-declared in a \emph{feature environment}, that relates each
-parameter id with a feature in the product configuration. Thus, the
-pointcut constructions are, respectively, the
-parameters defined in the scenario specifications and the {\bf
-alternative} and {\bf or features} selected in the product
-configuration. The weaving process ($p$) is the composition $f \circ
-g$, where $f$ is the \emph{traceModel} function
-(Listing~\ref{lst:trace}) and $g$ is the \emph{bind} function
-(Listing~\ref{lst:bind}).
-
-\section{Comparative Analysis}\label{sec:analysis}
-
-In this section, we compare our approach with three related approaches,
-briefly introduced in the next subsection. After, we describe our
-analysis criteria and present the comparative results.
-
-\subsection{Overview of related approaches used in this comparison}
-
-We have selected three works as basis for our comparative analysis,
-including: \emph{Featuring Reuse-Driven Software Engineering
-Business}(FeatuRSEB)~\cite{griss-icsr-1998}, \emph{Product Line Use
-case modeling for System and Software engineering}
-(PLUSS)~\cite{eriksson-splc-2005}, and \emph{Product Line Use Cases}
-(PLUC)~\cite{bertolino-esec-2003}. 
-
-These works share the same characteristic of combining variability management with use case models in order to
-describe scenario variabilities. Additionally, they are representative in the sense of supporting 
-mechanisms for representing variabilities. 
-Next, we present a brief description of each technique. More details about the PLUSS and PLUC notations are presented 
-in Section~\ref{sec:example}.
-
-\begin{itemize}
-\item{\bf FeatuRSEB:} Approach that joins
-ideas from a domain driven process (Feature Oriented Domain
-Analysis~\cite{kang-foda-report}) with a reuse driven process
-(Reuse-Driven Software Engineering~\cite{jacobson-reuse-book}). One
-of the main goals of FeatuRSEB work is to integrate feature models
-with use cases.
-
-\item{\bf PLUC:} An extension for use case modeling that allows variability
-representation using tags in scenario specifications. A central
-characteristic of this work is that variation points are
-implicitly enclosed into use case specifications. A formal description of the PLUC composition
-process is presented in~\cite{fantechi-splc-2004}.
-
-\item{\bf PLUSS:} Based on FeatuRSEB, this approach extend the support for different
-kinds of requirement variabilities, enabling the relationship between
-features and use cases, scenarios, and steps. This approach also describes 
-an integrated metamodel for use cases an scenarios.  
-\end{itemize}
-
-
-\subsection{Results}
-
-Based on three selected criteria to perform the analysis, we have
-evaluated our work and each of the approaches briefly described in
-the previous section. The chosen criteria allow us to verify the
-benefits of our work considering: the kinds of variability
-supported; the separation between the role of each language in
-scenario specification and variability management; and the design
-expressiveness of each mechanism.
-
-\subsubsection{Variability Support Criterion:}
-This criterion is related to the support of a given technique for
-describing the classes of variability (optional use cases and
-scenarios, changed scenarios, crosscutting requirements, and
-parameterized scenario) presented in~\cite{{eriksson-splc-2005}}.
-
-The FeatuRSEB approach allows the relationship between features
-and use cases, thus there is support for optional use case
-variability. However, in order to represent an optional scenario, it
-must be defined as an use case extension. If the number of optional
-scenarios is great, the resulting use case decomposition could be
-not suitable for development activities. Changed scenarios and
-crosscutting variability are well supported by alternative and
-extension flow specifications. However, only support for syntactic
-composition is present. Parameterized variability is also supported
-by FeatuRSEB.
-
-In PLUC, use cases are classified as \emph{product line} or
-\emph{product specific} use cases. A \emph{product line use case} is
-present in all members of the family. A \emph{product specific use
-case}, instead, is presented only in the required members. Thus, this approach 
-has support for optional use case variability, although 
-there is no explicit support for describing optional scenarios. Additionally, each scenario 
-variability must be enclosed in the same
-use case, implying that a scenario can not change different use
-cases (no support for crosscutting variability). Changed scenarios
-are described as alternative scenarios. Parameterized variability is
-supported in PLUC by tags that can be used in the entire use case
-specification. The domain values of each tag is also described in
-use case document.
-
-The PLUSS approach allows the relationship between a feature,
-presented in a feature model, and use cases, scenarios, and steps.
-Thus, this approach support both optional use cases and scenario
-variabilities. In PLUSS, each scenario specification is responsible
-for representing all of its variants, in such way that the changing
-scenario variability is described relating optional steps with
-features. Parameterized scenario variability is also supported,
-however there is no explicit mechanism to represent that a scenario
-can change the behavior of different scenarios (so, the
-crosscutting variability is not supported).
-
-Our approach supports optional use case and scenario
-variabilities by relating them with feature models (the \emph{product derivation 
-weaver} is responsible for this kind of variability). Such
-relationship is preserved in a third artifact, named as product
-configuration. In our work, the support for changing scenario
-variability uses variant scenario specifications, which can
-start and finish at different steps of a use case model (the \emph{scenario 
-composition weaver} is responsible for this kind of variability). The
-references to these steps can be either syntactic (using the step id
-as reference) or semantic (using one annotation as reference).
-Parameters are allowed only in step details (user-action,
-system-state, system-response), and their domain
-values are defined in the product configuration (the \emph{parameterized weaver} is 
-responsible for this kind of variability).
-
-Table~\ref{tab:crt-01} summarizes the comparative analysis based on
-this criterion. A ``+'' mark represents a good support for
-variability; a ``-'' mark is used to represent a low variability
-support; and a mark absence represents that an approach has no
-support for a kind of variability.
-
+The description of the Bind Parameters model is showed in Table~\ref{tab:bp-weaver}. This weaver just resolve parameters in 
+the trace model representation. Therefore, its output language is also the set 
+of all valid sequences of events (a trace model) with binding parameters (join points). 
+The use case model (UCM) defines the list of scenarios that might be parameterized ($UCM_{EFF}$). Each scenario 
+parameter ($UCM_{ID}$), indeed, contributes to the definition of one join point in this weaver. The 
+other contributions come from the configuration knowledge (CK), in the sense that the domain values 
+of a parameter is defined ($CK_{EFF}$) in the product specific features. The environment ($e$ parameter of the \emph{bind} function) is 
+used for relating parameters to features. 
 
 \begin{table}[h]
 \begin{center}
-\caption{Variability support resulting analysis} \label{tab:crt-01}
-\begin{tabular}{lcccc}
+\caption{Model of Bind Parameters Weaver} \label{tab:bp-weaver}
+\begin{tabular}{p{0.6in}p{2.4in}}
    \hline\noalign{\smallskip}
-  {\bf Kind of Variability} & {\bf FeatuRSEB} & {\bf PLUC} & {\bf PLUSS} & {\bf Our approach} \\
+  {\bf Element} & {\bf Description} \\
    \noalign{\smallskip}
    \hline
    \noalign{\smallskip}
-    Optional use cases    & +     & +     & +     & + \\ 
-    Optional scenarios    & -     &       & +     & + \\ 
-    Changing scenarios    & +     & -     & -     & + \\ 
-    Crosscutting          & +     &       &       & + \\ 
-    Parameterization      & +     & +     & +     & + \\ \hline
-\end{tabular}
+   $o$               & Trace model with resolved parameters  \\ 
+   $o_{jp}$        & Each resolved parameter \\ 
+   $L$               & \{UCM, CK\} \\ 
+   $UCM_{ID}$ & Parameter in the use case model \\
+   $CK_{ID}$    & Optional and alternative features \\ 
+   $UCM_{EFF}$ & Declares parameterized scenarios \\
+   $CK_{EFF}$    & Defines the domain value of parameters \\ 
+   $UCM_{MOD}$ & Parameter in the use case model \\
+   $CK_{MOD}$    & Selected features \\ 
+   $meta$ &  \\ 
+  \hline
+  \end{tabular}
 \end{center}
 \end{table}
 
-
-%\begin{table}[h]
-%\begin{tabular}{|l|c|c|c|c|}
-%  \hline
-%  {\bf Variability}           & {\bf A1}    & {\bf A2}    & {\bf A3}    & {\bf A4} \\ \hline \hline
-%  Optional use cases    & +     & +     & +     & + \\ \hline
-%  Optional scenarios    & -     &       & x     & + \\ \hline
-%  Changing scenarios    & +     & -     & -     & + \\ \hline
-%  Crosscutting          & +     &       &       & + \\ \hline
-%  Parameterization      & +     & +     & +     & + \\ \hline
-%\end{tabular}
-%\caption{Variability support resulting analysis} \label{tab:crt-01}
-%\end{table}
-
-
-\subsubsection{Separation of Concerns (SoC) Criterion}
-This criterion identifies if a given technique presents a clear
-separation between variability management and scenario 
-specification.
-
-Applying the use case extension mechanism for representing scenario
-variability is the major SoC problem in the FeatuRSEB approach. Such
-mechanism was proposed for describing an optional and reusable behavior in
-the context of a single product development. Adapting this mechanism to represent
-optional scenarios in a software product line context can result in the undesired
-explosion of use cases.
-
-PLUC defines tags in the scenario specification in order to describe
-variabilities. The domain values of each tag can represent: a member
-of the product line or an parameter value/optional behavior that
-must be selected based on a specific product. All tags are enclosed
-into the use cases. In this way, a use case specification is
-responsible for describing a set of scenarios, the relevant product
-instances that affect its behavior, and the domain values of each
-tag. Some of the tags are conceptually related with optional
-features, that might affect several artifacts. Thus, a change in the
-feature model can affect tag definitions in several use cases. The
-same problem might occur with the inclusion of a new member in the
-product family.
-
-In the PLUSS approach, the changing scenario variability is modeled
-by relating each step variation with a feature of any type in the
-feature model. A single scenario specification is responsible for
-representing all of its variants. As result, the behavior of a same
-feature can be spread in different points of a use case model. Also,
-there is no clear separation between the scenario specification and
-the implemented variability mechanism, being difficult to reason
-about a feature in a isolated way. Finally, changes are not
-localized: if the feature needs to be changed, multiple points in
-the same scenario (or in different scenarios) could be reviewed.
-
-One of the goals of our approach is to define a clear separation of
-the role of each language. Thus, a scenario specification
-is used only to describe a sequence of events. Similarly, a feature
-model is responsible only for defining the common and
-variant features of a SPL. Another artifact, the product
-configuration, is responsible for relating features with software
-artifacts. Such kind of SoC offers greater levels of modularity,
-enabling: a) changes to be performed in an isolated way; and b)
-better comprehensibility of each artifact.
-
-\subsubsection{Design Expressiveness Criterion}
-
-This criterion aims to identify how clear is the design of each compared
-work. It is important to verify such expressiveness because recent approaches
-for SPL development follow a model driven thought, in which the semantics of
-each model and the transformation rules among them are necessary.
-
-In the FeatuRSEB work, the \emph{optional use case} variability is
-supported by the relationship between a use case model and a feature
-model. However, the approach does not describe {\bf how} the use
-case model and the feature model are related. Additionally, the
-mechanism used to weave scenario specifications (changing scenarios)
-is only implicitly described in RSEB~\cite{jacobson-reuse-book}.
-After FeatuRSEB was proposed, Jacobson et al. presented a better
-description of the flow semantics of use case extension~\cite{jacobson-aosd-book}.
-
-The PLUSS approach presents a meta-model responsible for describing
-the relationship between use cases (or a scenarios) and features.
-According  to the meta-model cardinalities, we can not describe a
-relationship that defines two or more features as being necessary to
-configure a SPL member with a specific artifact (use case or
-scenario). This is a common example in SPL configuration. Another
-question related with the semantics of the PLUSS approach is the use
-of parameters to represent crosscutting variabilities, instead of
-quantified relationships among scenarios. We argue that parameters
-and crosscutting scenarios are two orthogonal kinds of variability. 
-
-In the previous works, there is a lack of design definition, which
-is necessary for a better understanding of the variability
-management mechanisms. The result is a gapping for introducing the
-previous works in a \emph{generative} driven SPL. Nowadays,
-generative techniques are applied to derive and select software
-components~\cite{czarnecki-book,greenfield-softwarefactories,butler-icse-2001,krueger-cacm-200712}. 
-However, with no precise semantics for scenario variability management, few efforts were
-applied to automatically generate member specific requirements of a
-SPL. The composition process of PLUC is described in~\cite{fantechi-splc-2004}. 
-However, this approach do not separate variability management and scenario 
-specification. Our work, differently, presents a low level design of each
-kind of variability as a crosscutting composition between use case models, feature models, product 
-configurations, and configuration knowledge. In order to increase our confidence, we chose
-to represent the weaving processes using a programming
-language\footnote{As we said before, the source code is available at
-the topic Software and Processes of the SPG site~\cite{spg-url}.}.
-In this way, we have contributed to reduce the gap for applying an
-automatically derivation of SPL requirement product specification.
 
 \section{Related Work}
 \label{sec:related}
