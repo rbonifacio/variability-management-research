@@ -138,7 +138,7 @@ Section~\ref{concluding-remarks}. Next, we introduce our approach for scenario v
 Variability management, as discussed in the previous section, is well known as a crosscutting concern. Therefore, in order to increase modularity, it is necessary to provide a clear separation between 
 variability management and typical software development assets (such as requirements, design, source code, and test cases). The result is that both representations can then evolve independently. However, such kind of separation of concerns (SoC) also requires mechanisms to weave these representations during the product engineering phase~\cite{northrop-spl-book}.
 
-We proposed a modeling framework for use case scenario variability that takes into account the crosscutting nature of variability management. A complete description of our technique is beyound the scope of this paper, but can be found elsewhere~\cite{}. It is important to notice that our meaning of crosscutting is based on Masuhara and Kiczales work~\cite{masuhara-ecoop-2003}. Therefore, applying the modeling framework, we described a \emph{weaver} that takes four specifications as input: \emph{product line use case model}, \emph{feature model}, \emph{product configuration}, and \emph{configuration knowledge}. Such specifications crosscut each other with respect to the resulting product specific use case model (Figure~\ref{fig:wp}). The weaver presents a clear separation between variability management and scenario specification, and also represents the processes required to compose those input specifications. Section~\ref{sec:mms-pl}, which describes a running example, presents instances of the aforementioned models.
+We proposed a modeling framework for use case scenario variability that takes into account the crosscutting nature of variability management. A complete description of our technique is beyound the scope of this paper, but can be found elsewhere\cite{spg-url}. It is important to notice that our meaning of crosscutting is based on Masuhara and Kiczales work~\cite{masuhara-ecoop-2003}. Therefore, applying the modeling framework, we described a \emph{weaver} that takes four specifications as input: \emph{product line use case model}, \emph{feature model}, \emph{product configuration}, and \emph{configuration knowledge}. Such specifications crosscut each other with respect to the resulting product specific use case model (Figure~\ref{fig:wp}). The weaver presents a clear separation between variability management and scenario specification, and also represents the processes required to compose those input specifications. Section~\ref{sec:mms-pl}, which describes a running example, presents instances of the aforementioned models.
 
 \begin{figure}[h]
 \centering
@@ -148,7 +148,7 @@ We proposed a modeling framework for use case scenario variability that takes in
 \end{figure}
 
 It is interesting to enforce that such composition allows the representation of different kinds of variability, such as \emph{optional use cases and scenarios}, \emph{quantified changed scenarios}, and 
-\emph{parameterized scenarios}. Additionally, the weaver was decomposed in subprocesses\footnote{In fact, each subprocess is also a weaver represented in our modeling framework.}, one for each kind of variability. The semantics of those weavers (and the meta-model of the input and output languages) were described using the Haskell programming language~\cite{haskell-report}. This decision was made in order to formally represent our weavers and to keep a similar level of abstraction that was used in~\cite{masuhara-ecoop-2003}.
+\emph{parameterized scenarios}. Additionally, the weaver was decomposed in subprocesses\footnote{In fact, each subprocess is also a weaver represented in our modeling framework.}, one for each kind of variability. The semantics of those weavers (and the meta-model of the input and output languages) were described using the Haskell programming language. This decision was made in order to formally represent our weavers and to keep a similar level of abstraction that was used in~\cite{masuhara-ecoop-2003}.
 
 The first weaver is responsible for checking if a product configuration is a valid instance of the feature model and for selecting, based on the product configuration, the set of use cases and scenarios that should be assembled into the final product. The second weaver, instead, is responsible for composing the resulting scenarios of first weaver, since they might crosscut each other based on \emph{from steps} and \emph{to steps} clauses (Figure~\ref{fig:cc-01}). These clauses are used to modularize specifications, in such way that one scenario can crosscut scenarios of different use cases. 
 
@@ -211,7 +211,7 @@ The first weaver is responsible for checking if a product configuration is a val
 \label{fig:cc-01}
 \end{figure}
 
-For instance, Figure~\ref{fig:cc-01} depicts that the behavior of \emph{Insert a DRM restricted content in warning mode} crosscuts the behavior of \emph{Include a multimedia content} after step \emph{A1.1} (\emph{from step} clause) and then returns to step \emph{4M} (\emph{to step clause}) of \emph{Create and send a multimedia message}.  As a consequence, after weaving the scenarios showed in Figure~\ref{fig:cc-01}, the following sequence of events is valid:
+For instance, Figure~\ref{fig:cc-01} depicts that the behavior of \emph{Insert a DRM restricted content in warning mode} crosscuts the behavior of \emph{Include a multimedia content} after Step \emph{A1.1} (\emph{from step} clause) and then returns to Step \emph{4M} (\emph{to step clause}) of \emph{Create and send a multimedia message}.  As a consequence, after weaving the scenarios showed in Figure~\ref{fig:cc-01}, the following sequence of events is valid:
 
 \begin{center}
 \small{
@@ -222,7 +222,6 @@ For instance, Figure~\ref{fig:cc-01} depicts that the behavior of \emph{Insert a
 The third weaver is responsible for binding parameters embedded in scenario specifications. For example, the \emph{Include a multimedia content} scenario in Figure~\ref{fig:cc-01} is parameterized according to the content types supported by a specific product. The domain values of parameters are defined in the product configuration (the selected features of a SPL member). 
 
 Therefore, if a product is configured with supporting for image and audio content types, only these options will be available.  In order to reduce coupling, a separated mapping is used for relating parameters embedded in scenarios to features selected in specific configurations. This decision preserves the independence between these artifacts.
-
 Although in this section we have already presented examples of our approach, the SPL used in our comparative analysis is described only in the next section. 
 
 %As well, other techniques for representing scenario variability.
@@ -233,8 +232,7 @@ Although in this section we have already presented examples of our approach, the
 \section{MMS Product Line}
 \label{sec:mms-pl}
 
-In order to compare the benefits of a clear separation between variability management and scenario specification, as supported by the approach just introduced, we specify using three different approaches, several use cases of a real product line. The selected SPL allows the assembling of specific products for creating, sending, and receiving multimedia messages (MMS). Due to proprietary restrictions, the specified behavior presents a few differences from the original SPL. However, such differences do not invalidate our results.
-
+In order to compare the benefits of a clear separation between variability management and scenario specification, as supported by the approach just introduced, we specify using three different approaches, several use cases of a real multimedia message (MMS) product line.
 The core use cases of the MMS product line allow a subscriber to create, send and receive multimedia messages. Such messages might include both text and multimedia content (images, audio, video, rich text). Depending on specific feature configurations (Figure~\ref{mms-feature-model}), the behavior of core use cases might change, additional use cases (like Folder Management, Configure Composition Model) might be included, and parameterized values might be instantiated. Next, we present a brief description of the MMS product line functional requirements.
 
 %\begin{description}
@@ -297,8 +295,8 @@ P3  & Content Type (Image, Audio, Video) {\bf and} \\
 \end{table}
 
 The first configuration corresponds to a simple product, with support for image content only, maximum number of messages equals to one thousand, and no support for structured data operations and DRM composition mode. The second one has support for all kinds of contents, the same maximum number of messages (one thousand), and full support for structured data operations. The later one also has support for all kinds of contents, extended storage size (maximum number of messages equals to one thousand and five hundreds), full support for structured data operations, support for DRM composition mode and Multiple Folders. 
-
-Aiming at generating the products showed in Table~\ref{tab:initial-products}, it is necessary to relate features to software artifacts. The configuration knowledge~\cite{czarnecki-book, phol-spl-book}, one of the input models of our weaver, is responsible for keeping this kind of relation. For instance, considering the configurations described in Table~\ref{tab:ck-sample}, if the feature \emph{Warning Mode Composition} was selected for a specific product, the scenarios \emph{Include a Multimedia Content} (SC02) and \emph{Insert a DRM Restricted Content in Warning Mode} (SC14) would be assembled. In a similar way, if the features \emph{Move Message} and \emph{Multiple Folder} were selected, the scenario \emph{Move an Existing Message} (SC09) would be assembled. 
+Aiming at generating the products showed in Table~\ref{tab:initial-products}, it is necessary to relate features to software artifacts. The configuration knowledge~\cite{czarnecki-book, phol-spl-book}, one of the input models of our weaver, is responsible for keeping this kind of relation. For instance, considering the configurations described in Table~\ref{tab:ck-sample}, if the feature \emph{Warning Mode Composition} was selected for a specific product, the scenarios \emph{Include a Multimedia Content} (SC02) and \emph{Insert a DRM Restricted Content in Warning Mode} (SC14) would be assembled. 
+In a similar way, if the features \emph{Move Message} and \emph{Multiple Folder} were selected, the scenario \emph{Move an Existing Message} (SC09) would be assembled. 
 
 \begin{table}[htb]
 \centering
@@ -407,8 +405,8 @@ PLUSS (Product Line Use case modeling for Systems and Software engineering) is t
 between variability management and scenario specification, since product definition is not tangled within use cases, 
 and the domain values of parameters (similar to PLUC tags) are related to alternative features and are 
 not embedded in specifications~\cite{eriksson-splc-2005}. 
-
-However, according to PLUSS meta-model~\cite{eriksson-splc-2005}, there is no specific artifact (such as configuration knowledge~\cite{czarnecki-book, phol-spl-book}) used for relating  features to optional use cases, scenarios and steps. Another characteristic of PLUSS is that all variant steps of a scenario specification are defined in the same flow of events. 
+However, according to PLUSS meta-model~\cite{eriksson-splc-2005}, there is no specific artifact (such as configuration knowledge~\cite{czarnecki-book, phol-spl-book}) used for relating  features to optional use cases, scenarios and steps. 
+Another characteristic of PLUSS is that all variant steps of a scenario specification are defined in the same flow of events. 
 For example, the third flow presented in Figure~\ref{fig:pluss-01} describes the behavior related to the attachment of 
 a DRM restricted content when a product is configured in both \emph{restricted} or \emph{warning} mode. Steps 2(a) and 2(b) are 
 never performed together. They are alternative steps: Step 2(a) will be performed only if the feature \emph{Restricted composition 
@@ -491,9 +489,9 @@ clear separation between variability management concern and scenario specificati
 are embedded in use case specifications; and, although variants in PLUSS are not tangled within use cases, such technique 
 requires a direct relation from features to use cases. As a result of this kind of dependency, its is difficult to evolve both 
 representations independently. 
-
 In this section, 
 we present a comparative analysis based on Design Structure Matrices (DSMs)~\cite{clark-design-rules-book}. 
+
 DSMs is an interesting and simple tool for visualizing dependences between design decisions. Such decisions are distributed in both rows and columns of a matrix. We can identify which input data is required (a dependency) by a design task by observing which columns are marked in its corresponding row. However, DSMs do not offer support for 
 quantifying relevant properties of scenario variability management. Therefore, we also present an evaluation based on modularity and 
 complexity metrics. Finally, in order to increase the confidence of our previously evaluations, we analyze how the compared approaches support 
@@ -506,14 +504,12 @@ In this work, we apply DSMs to visualize
 design dependences in two levels: the first one presents a high level view of dependences between variability
 management (feature model, SPL instances and configuration model) and use cases; the second
 one presents how features are spread among use cases. 
-
 Observing the high level view of dependences in PLUC (Figure~\ref{dsm:hl-pluc}),  
 we can realize that such technique results in cyclical dependences between use cases and variability
 management. First, use cases refer to tags that are computed based on features and on specific 
 SPL instances (dependences illustrated in line 4 with columns 1, 2, and 3). On the other hand, the relationship between 
 features and artifacts and the definition of SPL instances are embedded in the use cases (dependences illustrated in lines 1, 2, 
 and 3 with column 4). 
-
 This is an example of a non-modular design, because, in PLUC,
 the \emph{Create and Send a Message} use case (Figure~\ref{fig:pluc-01})
 specifies the space variability for the \emph{Message Folder Size} and the \emph{Supported Content
@@ -525,64 +521,23 @@ management and use case decisions in parallel; and b) evolving both representati
 \begin{figure}[hb]
 \centering
 \begin{small}
+(a)\newline
 \begin{tabular}{llllll} \hline
 & & 1 & 2 & 3 & 4 \\ \hline
 1 & Feature model 		& 	& 	& 	& x \\ 
 2 & SPL instances 		& x 	& 	& 	& x \\
 3 & Configuration model 	& x 	& x 	& 	& x \\
-4 & Use case model 	& x 	& x 	& x 	& \\ \hline
+4 & Use case model 	& x 	& x 	& x 	& \\ \hline \\
 \end{tabular}
-\end{small}
-\caption{High level view of dependences in PLUC}
-\label{dsm:hl-pluc}
-\end{figure}
-
-PLUSS partially solves (see Figure~\ref{dsm:hl-pluss}) the cyclical dependences just presented, since SPL instances and feature variants are 
-not embedded in use cases. However,  there is a cyclical dependency between the feature model and the configuration knowledge, since there is no independent artifact used to relate features to use cases, Additionally, it is not possible to 
-independently evolve parameters in use case specification and their domain values defined in feature models 
-(resulting in the cyclical dependency between use cases and features).
-
-\begin{figure}[h]
-\centering
-\begin{small}
+(b)\newline
 \begin{tabular}{llllll} \hline
 & & 1 & 2 & 3 & 4 \\ \hline
 1 & Feature model 		& 	& 	& x   & x \\ 
 2 & SPL instances 		& x 	& 	& 	&   \\
 3 & Configuration model 	& x 	&  	& 	& x \\
-4 & Use case model 	& x 	&  	&  	& \\ \hline
+4 & Use case model 	& x 	&  	&  	& \\ \hline 
 \end{tabular}
-\end{small}
-\caption{High level view of dependences in PLUSS}
-\label{dsm:hl-pluss}
-\end{figure}
-
-Applying our approach results in a better separation (Figure~\ref{dsm:hl-cc}) between
-variability management and use cases, since the relationships between them are specified in the
-configuration knowledge (they are not established in the feature model, as in PLUSS). 
-Additionally, in our approach, the domain values of use
-case parameters are related to feature models using a map (or environment).
-
-As explained before, in PLUSS, it is necessary to introduce some annotations in the feature model in 
-order to define the domain values of a scenario parameter. On the other hand, in our approach, we introduced 
-a third artifact (map or environment) responsible for this kind of relationship. Such map is composed by pairs 
-\emph{Parameter name} x \emph{Feature id}. For the parameters presented in the running example, we need 
-a mapping with the entries: 
-
-\begin{center}
-\small{
-$\{<Size, StorageSize>, <ContentType, ContentType>\}$
-}
-\end{center}
-
-In this way the name of features can 
-change without breaking the use cases (only the environment should be
-updated). Because use cases do not have explicit references to SPL instances and
-configurations, introducing new features or SPL instances do not change the use case model.
-
-\begin{figure}[h]
-\centering
-\begin{small}
+(c)\newline
 \begin{tabular}{lllllll} \hline
 & & 1 & 2 & 3 & 4 & 5 \\ \hline
 1 & Feature model 		& 	& 	&      &  	&  	\\ 
@@ -592,27 +547,56 @@ configurations, introducing new features or SPL instances do not change the use 
 5 & Use case model 	&  	&  	&  	&  x	& 	\\ \hline
 \end{tabular}
 \end{small}
-\caption{High level view of dependences in crosscutting approach}
-\label{dsm:hl-cc}
-\end{figure}   
+\caption{High level view of dependences}
+\label{dsm:hl}
+\end{figure}
+
+PLUSS partially solves (see Figure~\ref{dsm:hl-pluss}) the cyclical dependences just presented, since SPL instances and feature variants are 
+not embedded in use cases. However,  we can visualize a cyclical dependency between the feature model and the configuration knowledge, since there is no independent artifact used to relate features to use cases, Additionally, it is not possible to 
+independently evolve parameters in use case specification and their domain values defined in feature models 
+(resulting in the cyclical dependency between use cases and features).
+Applying our approach results in a better separation (Figure~\ref{dsm:hl-cc}) between
+variability management and use cases, since the relationships between them are specified in the
+configuration knowledge (they are not established in the feature model, as in PLUSS).
+
+
+Additionally, in our approach, the domain values of use
+case parameters are related to feature models using a map (or environment).
+As explained before, in PLUSS, it is necessary to introduce some annotations in the feature model in 
+order to define the domain values of a scenario parameter. On the other hand, in our approach, we introduced 
+a third artifact (map or environment) responsible for this kind of relationship. Such map is composed by pairs 
+\emph{Parameter name} x \emph{Feature id}. As a consequence of introducing such mapping, the name of features can 
+change without breaking the use cases (only the environment should be
+updated). Because use cases do not have explicit references to SPL instances and
+configurations, introducing new features or SPL instances do not change the use case model.
+
+
+%For the parameters presented in the running example, we need 
+%a mapping with the entries: 
+
+%\begin{center}
+%\small{
+%$\{<Size, StorageSize>, <ContentType, ContentType>\}$
+%}
+%\end{center}
 
 In the context of this work, DSMs were also applied for representing 
 the spread of features into use cases. Such representation 
 was very useful for computing the metric \emph{Feature Diffusion Over 
 Use Cases}~\cite{garcia-taosd-2005} (explained in Section~\ref{quantitative-analysis}).  
 Due to space constraints,  we do not present the PLUSS DSM in this level of details. 
-
-We can observe in the DSM of Figure~\ref{dsm:ll-pluc} that, in PLUC, features are often spread among several 
+We can observe in the DSM of Figure~\ref{dsm:ll}(a) that, in PLUC, features are often spread among several 
 use cases. For example, feature \emph{Composition Mode} is relevant in the context of four use cases
-(labeled as the design parameters 5 to 8). Other interesting characteristic, which we can
-observe in the Figure~\ref{dsm:ll-pluc}, is that there is no dependences between use cases, since each use
+(labeled as the design parameters 5 to 8). 
+Other interesting characteristic, which we can
+observe in the Figure~\ref{dsm:ll}(a), is that there is no dependences between use cases, since each use
 case describes all of its extension points. However, it is not possible to specify two use
-cases independently, since there is cyclical dependences between use cases and features
-and these features can be spread into several use cases.
+cases independently, since there is cyclical dependences between use cases and features and these features can be spread into several use cases.
 
 \begin{figure}[t]
 \centering
 \begin{scriptsize}
+(a)
 \begin{tabular}{llllllllll} \hline
 								& 1 	& 2 	& 3 & 4 	& 5 	& 6 	& 7 	& 8 	& 9 	\\ \hline
 1 Composition mode 				& 	& 	& 	& 	& x	& x	& x	& x	& 	\\
@@ -623,30 +607,9 @@ and these features can be spread into several use cases.
 6 Receive a message 				& x	& x	& x	& x	& 	&	& 	& 	& 	\\
 7 Select and display a message 		& x	& x	& 	& 	& 	& 	& 	& 	& 	\\
 8 Configure composition mode 		& x	& 	& 	& 	& 	& 	& 	& 	& 	\\
-9 Manage user defined folders 		& 	& 	& x	& 	& 	& 	& 	& 	& 	\\ \hline
+9 Manage user defined folders 		& 	& 	& x	& 	& 	& 	& 	& 	& 	\\ \hline \\
 \end{tabular}
-\end{scriptsize}
-\caption{Dependences between features and use cases in PLUC}
-\label{dsm:ll-pluc}
-\end{figure}   
-
-In our approach, since one scenario can refer to steps specified in
-another use cases (either using \emph{step ids} or \emph{annotations}), there are several 
-dependences between use
-cases. For example, in Figure~\ref{dsm:ll-cc}, \emph{Structured Data Operation} 
-use case depends on \emph{Select and Display a Message} and on \emph{Receive a Message} use cases. 
-However, features do not depend on use cases anymore (the variability space is not represented in use
-cases), there is no cyclical dependences, and use cases are more concise (although the number
-of use cases is greater than in PLUC). Use case conciseness can be observed by the number of
-features that are not related to the primary goal of the use case but that are tangled within its
-specification. Two new use cases were created: \emph{Forward a Message}, that allows the reuse related 
-to forward an existing message; and \emph{Structured Data
-Operations}, responsible for modularizing all specification related to the structured data operation
-concern.
-
-\begin{figure}[h]
-\centering
-\begin{scriptsize}
+(b)
 \begin{tabular}{llllllllll} \hline
 								& 1 	& 2 	& 3 & 4 	& 5 	& 6 	& 7 	& 8 	& 9 	 \\ \hline
 1 Composition mode 				& 	& 	& 	& 	& 	& 	& 	& 	& 		\\
@@ -662,9 +625,23 @@ concern.
 11 Structured data operation	 		& 	& x	& 	& 	& 	& x	& x	& 	& 	\\ \hline 
 \end{tabular}
 \end{scriptsize}
-\caption{Dependences between features and use cases in the crosscutting approach}
-\label{dsm:ll-cc}
+\caption{Features and use case dependences}
+\label{dsm:ll}
 \end{figure}   
+
+In our approach, since one scenario can refer to steps specified in
+another use cases (either using \emph{step ids} or \emph{annotations}), there are several 
+dependences between use
+cases. For example, in Figure~\ref{dsm:ll}(b), \emph{Structured Data Operation} 
+use case depends on \emph{Select and Display a Message} and on \emph{Receive a Message} use cases. 
+However, features do not depend on use cases anymore (the variability space is not represented in use
+cases), there is no cyclical dependences, and use cases are more concise (although the number
+of use cases is greater than in PLUC). Two new use cases were created: \emph{Forward a Message}, that allows the reuse related 
+to forward an existing message; and \emph{Structured Data
+Operations}, responsible for modularizing all specification related to the structured data operation
+concern.
+
+
 
 \subsection{Quantitative analysis}
 \label{quantitative-analysis}
@@ -672,7 +649,6 @@ concern.
 Based on the scenario specifications 
 and on the DSM analysis (Section~\ref{dsm-analysis}), we derived several metrics for quantifying 
 feature modularity and use case model complexity (related to the size of specifications). 
-
 Adapted from~\cite{greenwood-ecoop-2007}, the proposed modularity metrics quantify two types of 
 relations involving features and use cases. First, \emph{Feature Diffusion over Use Cases} (FDU)
 is used for quantifying how many use cases are affected by a specific feature. For instance, in PLUC we 
@@ -693,7 +669,6 @@ quantifies the number of use cases ($VS_{U}$) and scenarios ($VS_{S}$) required 
 approaches. The second one, \emph{Steps of Specification} (SS), is related to the size of each 
 scenario and identifies how many pairs \emph{User action} x \emph{System response} compose a specific scenario. 
 Additionally, we also relate modularity to complexity by applying \emph{Features and Steps of Specification} (FSS), which counts the number of steps of specification whose main purpose is to describe the behavior of a feature. 
-
 Table~\ref{tab:metrics} summarizes the evaluation of these metrics based on the case study.
 
 \begin{table}[hb]
@@ -725,9 +700,9 @@ Another point is that \emph{vocabulary size metrics} (such as VSU and VSS) are b
 Also related to vocabulary size, the crosscutting approach presents more use cases than PLUC and PLUSS. However, 
 the number and complexity of scenarios are lower. We discuss a bit more about these conclusions in Section~\ref{threats}. Next, 
 we present the last evaluation we performed in this work.
-
-Both dimensions (modularity and complexity) are related to reusability, evolvability, and effort. For instance, if a feature is not well modularized, one related scenario could be required in different use cases. In fact, this is 
-the case for the feature \emph{Structured Data Operations}, which is not well modularized in PLUC and PLUSS approaches (features are more diffused over specifications in these techniques). Consequently,  both use cases \emph{Receive a Message} and \emph{Select and Display a Message} describe the behavior related to strucured data operation capabilities. This results in duplicated scenarios specifications and difficulties for evolving the SPL. 
+%
+%Both dimensions (modularity and complexity) are related to reusability, evolvability, and effort. For instance, if a feature is not well modularized, one related scenario could be required in different use cases. In fact, this is 
+%the case for the feature \emph{Structured Data Operations}, which is not well modularized in PLUC and PLUSS approaches (features are more diffused over specifications in these techniques). Consequently,  both use cases \emph{Receive a Message} and \emph{Select and Display a Message} describe the behavior related to strucured data operation capabilities. This results in duplicated scenarios specifications and difficulties for evolving the SPL. 
 
 
 \subsection{SPL evolution analysis}
@@ -756,7 +731,6 @@ Product & Feature Configuration \\ \hline
 
 Table~\ref{tab:incremental-results} summarizes the changes required by each SPL increment. We evaluate, for each technique, 
 the impact of a given increment on  the following SPL artifacts: feature model (FM), configuration knowledge (CK), product configurations (PC), and use case model (UC). Specifically for the use case model, we present how many artifacts were impacted. For the other ones, we present only if the artifact was modified or not. 
-
 The main conclusion is that defining domain values for parameters tangled within use cases requires a lot of effort to make simple 
 changes, such as the inclusion of a new content type. In PLUC, this increment requires changes in all models. Additionally, each use 
 case that refers to the content type must be updated.  Both PLUSS and crosscutting approaches, which use feature models to define 
@@ -789,14 +763,8 @@ analysis might be observed after evaluating other product lines. For instance, b
 to understandability, combining different variants in a single scenario might reduce significantly the  
 specification's vocabulary size. This characteristic is only supported by the PLUSS approach. However, in 
 the running example, only one feature was suitable for being specified using this technique.  
-
-%Additionally, there are few examples available of PLUC and PLUSS use cases. Based on 
-%such examples, we assumed that, in both techniques, one scenario can not crosscut scenarios in 
-%other use cases. Using the \emph{from step} and \emph{to step} clauses (Section~\ref{scenario-variability}),
-% such kind of crosscutting is possible in our approach. 
-
-Additionally, we have specified the PLUC and PLUSS scenarios based on a few available examples. All specifications created in this work are available at~\cite{}. However, the evaluation discussed in Section~\ref{evaluation} is
-still valid; once it can be used as a guide to perform other analysis and to report the benefits of the SoC between variability management and SPL assets. Actually, we have just started the specifications of two other SPL: one for the Pedagogical Product Line~\cite{}, which we have the corresponding PLUSS specifications; and one for a smart home product line.
+Additionally, we have specified the PLUC and PLUSS scenarios based on a few available examples. All scenario specifications are available at~\cite{spg-url}. However, the evaluation discussed in Section~\ref{evaluation} is
+still valid; once it can be used as a guide to perform other analysis and to report the benefits of the SoC between variability management and SPL assets. 
 
 \section{Related Work}
 \label{related-work}
@@ -808,11 +776,9 @@ PLUSS techniques. We choose these techniques because they encompass a broad rang
 variability management and scenario specification. PLUC presents the lowest level of 
 modularity, since almost all information related to variability is described tangled within use cases. On the other hand, PLUSS 
 partially reduces such coupling, by considering the importance of feature modeling.
- 
-However, still in PLUSS there are some dependences from feature to use cases that are avoided in our crosscutting approach. We 
-achieve this level of modularity by introducing other artifacts that encapsulate relationships between features and use cases. 
+ However, still in PLUSS there are some dependences from feature to use cases that are avoided in our crosscutting approach.  
 
-Our weaver for scenario compositions relies on references to \emph{step ids} or \emph{step annotations}. The use of annotations is an attempt to reduce the problem of fragile pointcuts. A more reliable approach is presented in~\cite{rashid-aosd-2007}, which presents a composition mechanisms based on natural language processing. However, it is possible to introduce this technique by implementing a new matching function that is used to retrieve steps refered by \emph{from steps} and \emph{to steps} clauses.
+Our weaver for scenario compositions relies on references to \emph{step ids} or \emph{step annotations}. The use of annotations is an attempt to reduce the problem of fragile pointcuts. A more reliable approach is presented in~\cite{rashid-aosd-2007}, which describes a composition mechanisms based on natural language processing. However, it is possible to introduce this technique by implementing a new matching function that is used to retrieve steps refered by \emph{from steps} and \emph{to steps} clauses.
 
 Design Structure Matrices (DSMs) and crosscutting metrics have being applied for assessing modularity in \emph{aspect-oriented} 
 systems~\cite{vlopes-aosd-2005, sullivan-fse-2005,garcia-taosd-2005, greenwood-ecoop-2007}. In this work, we also applied DSMs in the context of scenario variability management. Moreover, we customized a suite of metrics for quantifying feature diffusion and tangling over use cases. To our knowledge, our work is unique in applying both DSMs and crosscutting metrics for evaluating SoC in scenario variability.
@@ -833,7 +799,7 @@ Variability management is a common challenge in software product line adoption. 
 works have been proposed for managing variabilities at scenario specification, existing works focus on 
 representing variation points at use case documentation. In this paper we reported that we also need to 
 introduce a modular perspective in this domain. On the reason that, if variability management is tangled within scenario 
-specifications, it will be difficult to evolve both representations . Our analysis were based on customizations of recent techniques for software modularity assessments, such as \emph{Design Structure Matrices} and crosscutting concerns metrics. We showed that, in order to introduce common SPL increments, a clear separation between variability management and use case specifications is extremely valuable. As future work, we aim to evaluate other product lines and improve the presented metric suite. 
+specifications, it will be difficult to evolve both representations . Our analysis were based on customizations of recent techniques for software modularity assessments, such as \emph{Design Structure Matrices} and crosscutting concerns metrics. We showed that, in order to introduce common SPL increments, a clear separation between variability management and use case specifications is extremely valuable. As future work, we aim at evaluating other product lines and improve the presented metric suite. 
 
 %
 % The following two commands are all you need in the
