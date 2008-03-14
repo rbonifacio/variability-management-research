@@ -1122,7 +1122,7 @@ Next section we present an evaluation of our approach based on the specification
 
 We have applied our approach to three SPLs: the eShop Product Line, introduced in Section~\ref{sec:example}; the  
 {\bf Pedagogical Product Line (PPL)}, which was proposed for learning about and experimenting with software product line and that is applied for the arcade game domain; and the 
-{\bf Multimedia Message Product Line (MMS-PL):}, which allows the assembling of specific products for creating, sending, and receiving multimedia messages (MMS) in mobile devices.
+{\bf Multimedia Message Product Line (MMS-PL)}, which allows the assembling of specific products for creating, sending, and receiving multimedia messages (MMS) in mobile devices.
 
 Based on the last application of our approach, we reported about the benefits of a clear separation between variability management and scenario specification~\cite{rbonifacio-ea-2008}. In this referred work, we compared our approach with PLUC and PLUSS techniques. This comparison was done based on Design Structure Matrices (DSMs), on a suite of metrics for quantifying modularity and complexity of specifications, and on observations of the effort required to introduce SPL increments (such as new variants or products). 
 
@@ -1144,7 +1144,7 @@ For now, let us reproduce the DSMs to understanding the benefits of SoC in varia
 \end{figure}
 
 Our approach reduces the dependences between variability management and scenario specifications 
-(Figure~\ref{dsm:cc}). For instance, changes in feature model or new definitions of products do not require changes in the use case model. This clear separation is also necessary in source code, as claimed in~\cite{}, and might be required in other artifacts too. Notice that the environment, used to relate use cases parameters and features (Section~\ref{sub:bind-weaver}), can be considered as a design rule, since it primarily aims at decoupling use cases and features.  
+(Figure~\ref{dsm:cc}). For instance, changes in feature model or new definitions of products do not require changes in the use case model. This clear separation is also necessary in source code, as claimed in~\cite{alves-gpce-06,mmedeiros-lawasp-2007}, and might be required in other artifacts too. Notice that the environment, used to relate use cases parameters and features (Section~\ref{sub:bind-weaver}), can be considered as a design rule, since it primarily aims at decoupling use cases and features.  
 
 \begin{figure}[h]
 \centering
@@ -1163,14 +1163,141 @@ Our approach reduces the dependences between variability management and scenario
 \end{figure}   
 
  
-In the remaining of this section we present the results of applying the metric suite for the \emph{eShop} and \emph{pedagogical} product lines. We compare our specification of eShop to the specification available at~\cite{eshop-url} .  In a similar way, we compare our specification of pedagogical product line to a specification that was sent to us by the authors of PLUSS approach. 
+In the remaining of this section we present the results of applying the metric suite for 
+the \emph{MMS} and \emph{Pedagogical} product lines. We compared our specification of MMS product line to the specifications written by us in both PLUC and PLUSS techniques. All specifications are available at~\cite{spg-url}.  
 
-The metric suite, used in what follows, was adapted from~\cite{garcia-taosd-2005} and quantifies feature modularity and use case complexity. 
+In a similar way, we compared our specification of pedagogical product line to a specification 
+that was sent to us by the authors of PLUSS approach. 
 
-\subsection{Analysis of eShop Product Line}
-
-\subsection{Analysis of Pedagogical Product Line}
+The metric suite, used in what follows, was adapted from~\cite{garcia-taosd-2005} and quantifies 
+feature modularity and use case complexity. The proposed modularity 
+metrics quantify three types of relations involving features and use cases.
+First, \emph{Feature Diffusion over Use Cases} (FDU) is used for
+quantifying how many use cases are affected by a specific
+feature. Instead, \emph{Number of Features per Use Case} (NFU) is used for quantifying
+how many features are tangled within a specific use
+case. We assume that each use case should be interested in
+its primary goal, although several features might be related
+to the primary goal of a use case. Finally, we applied
+the metric \emph{Feature Diffusion over Scenarios} (FDS) in order
+to quantify how many internal use case members (scenarios)
+are necessary for the materialization of a specific feature.
  
+Moreover, three metrics related to complexity were applied in this work.
+The first one, \emph{Vocabulary Size}, quantifies the number of use
+cases (VSU) and scenarios (VSS) required by each of the evaluated
+approaches. The second one, \emph{Steps of Specification}
+(SS), is related to the size of each scenario and identifies
+how many pairs \emph{User action} x \emph{System response} compose a
+specific scenario. Additionally, we also relate modularity to
+complexity by applying \emph{Features and Steps of Specification}
+(FSS), which counts the number of steps of specification
+whose main purpose is to describe the behavior of a feature. 
+A complete description of these metrics can be found elsewhere~\cite{rbonifacio-ea-2008}. Next we 
+present the quantitative analysis of MMS and Pedagogical product lines, which consider the metric suite
+just introduced.  
+
+\subsection{MMS Product Line}
+
+As explained earlier, the MMS product line, which is a real case study, enables the customization of 
+multimedia message applications. The primary goal of each one of these applications is to create and 
+send messages with embedded multimedia content (image, audio, video)~\cite{rbonifacio-ea-2008}. 
+We have specified the MMS product line using three techniques: our notation, PLUC, and PLUSS approaches. After, we evaluated these specifications observing the metric suite just presented. The results of this evaluation are summarized in Table~\ref{tab:metrics}. 
+
+\begin{table}[htb]
+\centering
+\caption{MMS quantitative evaluation}
+\label{tab:metrics}
+\begin{small}
+\begin{tabular}{lccc} \hline
+					& PLUC 	& PLUSS 	& Crosscutting	\\ \hline
+Mean value of FDU 		& 3.5	& 3.5	& 2		\\
+Mean value of FDS 		& 6.25	& 5		& 4.25	\\
+Mean value of NFU 		& 2		& 2		& 1		\\
+Mean value of FSS 		&12		& 11		& 10.25	\\ 
+VSU 					& 5		& 5		& 7		\\
+VSS 					& 27		& 24		& 23		\\
+SS 					& 75		& 64		& 56		\\	\hline
+\end{tabular}
+\end{small}
+\end{table}
+
+Since PLUC and PLUSS do not allow a
+scenario to crosscut other scenarios in different use cases, it
+is difficult to modularize features into use cases. The
+result is that, when comparing to the crosscutting approach,
+features, on the average,  are more 
+diffused (FDU, FDS, and FSS metrics) and use cases are
+less concise (NFU) in these approaches (Table~\ref{tab:metrics}). The crosscutting
+approach, in contrast, allows the composition of scenarios
+through \emph{from steps} and \emph{to steps} clauses. 
+
+The lack of crosscutting mechanisms for composing scenarios of different use cases also results in greater complexity, when observing the \emph{Steps of Specification} metric. Although our approach resulted in a greater number of use cases, we improve the specification reuse, since scenarios that crosscut different use cases can be specified without duplication. For instance, consider the \emph{Structure Data Operation} feature which presents this crosscutting nature. As we can realize observing Figure~\ref{fig:fds-mms}, by applying our approach we can reduce the diffusion over scenario of such features.
+
+ \begin{figure}[h]
+ \begin{center}
+  \includegraphics[scale=0.35]{img/fds-mms.eps}
+  \caption{Relative FDS for evaluated techniques}
+  \label{fig:fds-mms}
+  \end{center}
+\end{figure}
+  
+\subsection{Pedagogical Product Line}
+
+We compared our approach against two specifications of the Pedagogical Product Line(PPL): the original one, proposed by the Software Engineering Institute, and a specification that was sent to us by the authors of the PLUSS technique. 
+
+The original specification of PPL is already well modularized, since its features, in general, are not crosscutting among several use cases (see modularity metrics in Table~\ref{tab:ppl-metrics}). Moreover, another characteristic of PPL is that some features are related to qualities that do not cause effect into use cases. 
+
+\begin{table}[hb]
+\centering
+\caption{PPL quantitative evaluation}
+\label{tab:ppl-metrics}
+\begin{small}
+\begin{tabular}{lccc} \hline
+					& SEI 	& PLUSS 	& Crosscutting	\\ \hline
+Mean value of FDU 		& x		& 1.3	& 1.2	\\
+Mean value of FDS 		& x		& 3		& 2.5	\\
+Mean value of NFU 		& x		& 2		& 1.4	\\
+Mean value of FSS 		& x		& 3.5	& 3		\\ 
+VSU 					& 12		& 7		& 6		\\
+VSS 					& 25		& 19		& 16		\\
+SS 					& 44		& 38		& 32		\\	\hline
+\end{tabular}
+\end{small}
+\end{table}
+
+Still in this context, our approach also achieve some improvements in the resulting specifications. The main factor for these improvements in the \emph{Pedagogical} product line was the error handle modularization. Both in SEI and PLUSS specifications, the \emph{error handler} concern was spread in several use cases.    
+
+However, by applying our approach, all behavior related to the \emph{error handler} concern was specified in a single use case. The composition of \emph{error handler} with the basic scenarios was done by means of annotations attributed to the corresponding steps. For instance, Figure~\ref{fig:error-handle} depicts just one scenario for error handling: raising  an error when there is no space available. 
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+     Description: There is no available space in file system.\\
+     From step: [CatchFileException] \\
+     To step: END
+   \end{tabular}  
+  \begin{center} 
+   \begin{tabular}{|p{0.1in}|p{0.6in}|p{1.0in}|p{1.0in}|}
+   \hline
+       Id & User Action & System State & System Response \\ \hline \hline
+       E1 & & There is not enough space to save the file. &  Raise the Disk is Full exception. The arcade game application is finished. \\  \hline
+  \end{tabular}
+  \end{center}
+  } 
+\end{scriptsize}
+\caption{Scenario of error handle use case.}
+\label{fig:error-handle}
+\end{figure}
+    
+Notice that this scenario can be started from any step that has been marked with the \emph{CatchFileException} annotation (see the \emph{from step} clause). Several features of the PPL needs to save information in the file system. Therefore, both in the SEI and PLUSS specifications of \emph{Pedagogical} product line, several use cases were specified with scenarios for handling this kind of exception.
+
+
+As a consequence, we achieve a significant reduction (almost 20\%) in the number of specification steps (SS in Table~\ref{tab:ppl-metrics}) when comparing to the PLUSS approach. It is important to notice that this reduction of size does not compromise the requirement coverage; but actually it means an improvement in the specification reuse.
+
+
+
 \section{Related Work}
 \label{sec:related}
 
