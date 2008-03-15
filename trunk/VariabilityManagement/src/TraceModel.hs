@@ -18,6 +18,7 @@ import List
 import FeatureModel
 import UseCaseModel 
 import Environment
+import BasicTypes
 
 -- **********************************************************
 -- Trace model function definition
@@ -32,10 +33,20 @@ import Environment
 -- Usage: [traceModel x | x <- (completePaths scenario1)]
 -- **********************************************************
 
-traceModel :: Environment Feature -> [Step] -> [[String]]
-traceModel _ [] = [[]]
-traceModel e (x:xs) = [] : (bind e x) ^ (traceModel e (xs))
+type Trace = [String]
+type TraceModel = [Trace]
 
+computeTraceModel :: Environment Feature -> [Step] -> TraceModel
+computeTraceModel _ [] = [[]]
+computeTraceModel e (x:xs) = [] : (bind e x) ^ (computeTraceModel e (xs))
+
+traceRefinement :: TraceModel -> TraceModel -> Bool
+traceRefinement t [] = False
+traceRefinement [] referenceModel = True
+traceRefinement (x:xs) referenceModel = 
+ if (exists x referenceModel) 
+  then traceRefinement xs referenceModel
+  else False
 
 bind :: Environment Feature -> Step -> String
 bind e x =  
@@ -75,7 +86,7 @@ computeAllTracesFromScenarioList ucm env sl = nub (computeAllTracesFromCompleteP
 
 computeAllTracesFromCompletePaths :: UseCaseModel -> Environment Feature -> [StepList] -> [[String]]
 computeAllTracesFromCompletePaths ucm env [] = []
-computeAllTracesFromCompletePaths ucm env (x:xs) = (traceModel env x) ++ (computeAllTracesFromCompletePaths ucm env xs) 
+computeAllTracesFromCompletePaths ucm env (x:xs) = (computeTraceModel env x) ++ (computeAllTracesFromCompletePaths ucm env xs) 
 
 
 
