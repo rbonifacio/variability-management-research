@@ -1,5 +1,4 @@
-
-module eShopMain where
+module EShopMain where
 
 import TraceModel
 import UseCaseModel
@@ -10,5 +9,5 @@ import FeatureSampleEShop
 import UseCaseSampleEShop
 import ConfigurationKnowledgeSampleEShop
 
-env1 = Environment[EnvItem ("MessageType", fcAllMessageType), EnvItem ("MaxMsg", fcSize1)]
-env2 = Environment[EnvItem ("MessageType", fcNotAllMessageType), EnvItem ("MaxMsg", fcSize2)] 
+env1 = Environment[EnvItem ("ShipMethod", shipMethod01), EnvItem ("MaxMsg", fcSize1)]
+env2 = Environment[EnvItem ("MessageType", shipMethod02), EnvItem ("MaxMsg", fcSize2)] 

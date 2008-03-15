@@ -70,14 +70,12 @@ extractParameters str =
 --
 -- Usage: computeAllTracesFromScenarioList ucm env1 [scenario1,scenario2,scenario3,scenario4]
 --
-computeAllTracesFromScenarioList :: UseCaseModel -> Environment Feature -> [Scenario] -> [[String]]
+computeAllTracesFromScenarioList :: UseCaseModel -> Environment Feature -> ScenarioList -> [[String]]
 computeAllTracesFromScenarioList ucm env sl = nub (computeAllTracesFromCompletePaths ucm env (allPathsFromScenarioList ucm sl)) 
 
 computeAllTracesFromCompletePaths :: UseCaseModel -> Environment Feature -> [StepList] -> [[String]]
 computeAllTracesFromCompletePaths ucm env [] = []
 computeAllTracesFromCompletePaths ucm env (x:xs) = (traceModel env x) ++ (computeAllTracesFromCompletePaths ucm env xs) 
 
-allPathsFromScenarioList :: UseCaseModel -> [Scenario] -> [StepList] 
-allPathsFromScenarioList ucm [] = []
-allPathsFromScenarioList ucm (x:xs) = (completePaths ucm x) ++ (allPathsFromScenarioList ucm xs)
+
 

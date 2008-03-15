@@ -1,10 +1,10 @@
-module FeatureSampleEShp where
+module FeatureSampleEShop where
 
 import FeatureModel
-
+ 
 fm = FeatureModel eshop
 
-eshop = Feature "FEA-01" "eShop Product Line" mandatory basicFeature [register, searchOptions, bonusOptions] []
+eshop = Feature "FEA-01" "eShop Product Line" mandatory basicFeature [register, searchOptions, bonusOptions, paymentType, shipMethod, shoppingCart, userPreferences] []
 
 -- Register type feature
 register = Feature "FEA-02" "Register type" mandatory alternativeFeature [completely, simple] []
@@ -26,10 +26,10 @@ invoice = Feature "FEA-12" "Invoice payment type" optional basicFeature [][]
 credit = Feature "FEA-13" "Credit-card payment type" optional basicFeature [] [] 
 
 shoppingCart = Feature "FEA-14" "Shopping cart capability" optional basicFeature [][] 
+
 userPreferences = Feature "FEA-15" "Register user prefernces" optional basicFeature [] [] 
 
-
-
-
-
+shipMethod = Feature "FEA-16" "Shipping method" mandatory orFeature [economical, fast] []
+economical = Feature "FEA-17" "Economical shipping method" optional basicFeature [][] 
+fast = Feature "FEA-18" "Fast shipping method" optional basicFeature [][] 
 

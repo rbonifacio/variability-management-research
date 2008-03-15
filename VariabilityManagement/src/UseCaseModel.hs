@@ -113,7 +113,7 @@ match :: Step -> StepRef -> Bool
 match step (IdRef id) = if (stepId step) == id then True else False
 match step (AnnotationRef ann) = exists ann (annotations step)  
  
- --match Annotation 
+ 
 
 -- **********************************************************
 -- Compute the complete steps of a given scenario.
@@ -145,7 +145,8 @@ toList ucm (x:xs) =
 -- Given a StepList and a Step, return all steps previews to Step 
 firstElements :: StepList -> Step -> StepList
 firstElements [] _ = []
-firstElements (x:xs) y = if x == y then [] else (x : (firstElements xs y))
+firstElements (x:xs) y = if x == y then [x] else (x : (firstElements xs y))
+-- TODO: firstElements (x:xs) y = if x == y then [] else (x : (firstElements xs y))
 
 -- Given a StepList and a Step, return all steps defined after Step
 lastElements :: StepList -> Step -> StepList
@@ -180,10 +181,14 @@ extractStepsFromScenarios [] = []
 extractStepsFromScenarios (x:xs) = (steps x) ++ (extractStepsFromScenarios xs)
 
 
+allPathsFromScenarioList :: UseCaseModel -> [Scenario] -> [StepList] 
+allPathsFromScenarioList ucm [] = []
+allPathsFromScenarioList ucm (x:xs) = (completePaths ucm x) ++ (allPathsFromScenarioList ucm xs)
+
 -- **********************************************************
 -- Iddle scenario definition
 -- **********************************************************
-ucIddle = UseCase "0" "IDDLE Use Case" "The iddle use case" [iddle] 
-iddle = Scenario "0" "IDDLE" [] [start, end] []
-start = Step "start" iddle "START" "" "" []
-end   = Step "end" iddle "END" "" "" []
+ucIddle = UseCase "0" "IDDLE Use Case" "The iddle use case" [idle] 
+idle = Scenario "0" "IDDLE" [] [start, end] []
+start = Step "start" idle "START" "" "" []
+end   = Step "end" idle "END" "" "" []
