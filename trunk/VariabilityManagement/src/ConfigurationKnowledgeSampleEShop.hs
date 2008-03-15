@@ -6,55 +6,39 @@ import UseCaseModel
 import FeatureSampleEShop
 import UseCaseSampleEShop
 
-exp1 = FeatureRef "FEA-03" -- message feature
-exp2 = FeatureRef "FEA-03" -- mms feature
-exp3 = FeatureRef "FEA-11" -- save to draft feature
-exp4 = FeatureRef "FEA-10" -- multiple folders
-exp5 = FeatureRef "FEA-12" -- compressed messages
+exp0 = FeatureRef "FEA-01" -- eShop feature
+exp1 = FeatureRef "FEA-14" -- shopping cart
+exp2 = FeatureRef "FEA-15" -- register user preferences
+
 
 -- message feature and not save expression
-exp6 = AndExpression exp1 (NotExpression exp3) 
--- (message feature and save to draft) and (not multiple folders)
-exp7 = AndExpression (AndExpression exp1 exp3) (NotExpression exp4)
--- (message feature and save to draft and multiple folders)
-exp8 = AndExpression (AndExpression exp1 exp3) exp4
--- message feature and save message compressed message
-exp9 = AndExpression exp1 exp5
+exp3 = NotExpression exp1 
+exp4 = NotExpression exp2
 
 -- Configurations that relate a feature expression with 
 -- a set of artifacts (scenarios, in this case)
-conf1 = (exp2, [scenario4])
-conf2 = (exp6, [scenario1])
-conf3 = (exp7, [scenario1, scenario2, scenario3])
-conf4 = (exp8, [scenario1, scenario5, scenario6, scenario7, scenario8])
-conf5 = (exp9, [scenario9])
+conf1 = (exp3, [scBuyProductBasic])
+conf2 = (exp1, [scBuyProductExtended])
+conf3 = (exp2, [scUpdatePreferences])
 
-configuration = CK [conf1, conf2, conf3, conf4,conf5]
+ck01 = CK [conf1, conf2, conf3]
 
 
-fcMessage1 = Feature "FEA-01" "Message Application" mandatory basicFeature [fcAllMessageType, fcMultipleFolders] []
-fcMessage2 = Feature "FEA-01" "Message Application" mandatory basicFeature [fcNotAllMessageType, fcFolderManagement, fcSaveToDraft] []
+eShop1 = Feature "FEA-01" "eShop Instance" mandatory basicFeature [register01, searchOptions01, paymentType01, shipMethod01] []
+eShop2 = Feature "FEA-01" "eShop Instance" mandatory basicFeature [register02, searchOptions02, paymentType02, shipMethod02, shoppingCart, userPreferences] []
+-- register configurations
+register01 = Feature "FEA-02" "Register type" mandatory alternativeFeature [simple] []
+register02 = Feature "FEA-02" "Register type" mandatory alternativeFeature [completely] []
 
+-- search options
+searchOptions01 = Feature "FEA-05" "Search options" mandatory orFeature [hints] []
+searchOptions02 = Feature "FEA-05" "Search options" mandatory orFeature [hints, similarResults] []
 
-fcAllMessageType = Feature "FEA-02" "Message Type" mandatory orFeature [fcMms, fcSms, fcEmail] []
-fcNotAllMessageType = Feature "FEA-02" "Message Type" mandatory orFeature [fcSms, fcEmail] []
+paymentType01 = Feature "FEA-11" "Payment type" mandatory orFeature[invoice] []
+paymentType02 = Feature "FEA-11" "Payment type" mandatory orFeature[invoice, credit] []
 
-fcMms = Feature "FEA-03" "MMS" optional basicFeature [] []
-fcSms = Feature "FEA-04" "SMS" optional basicFeature [] []
-fcEmail = Feature "FEA-05" "Email" optional basicFeature [] []
+shipMethod01 = Feature "FEA-16" "Shipping method" mandatory orFeature [economical] []
+shipMethod02 = Feature "FEA-16" "Shipping method" mandatory orFeature [economical, fast] []
 
-fcFolderManagement = Feature "FEA-06" "Folder Management" mandatory basicFeature [fcMultipleFolders] []
-
-fcSize1 = Feature "FEA-07" "Folder size" mandatory alternativeFeature [fcExtendedSize] []
-fcSize2 = Feature "FEA-07" "Folder size" mandatory alternativeFeature [fcDefaultSize] []
-
-fcExtendedSize = Feature "FEA-08" "Extended folder size" optional basicFeature [] [("size","1000")]
-fcDefaultSize = Feature "FEA-09" "Default folder size" optional basicFeature [] [("size", "500")]
-
-fcMultipleFolders = Feature "FEA-10" "Support for multiple folders" optional basicFeature [] []
-
-fcSaveToDraft = Feature "FEA-11" "Save to Draft" optional basicFeature [fcCompressMessageOnSave] []
-fcCompressMessageOnSave = Feature "FEA-12" "Compress message on save" optional basicFeature [] []
-
-fc1 = FeatureConfiguration fcMessage1
-fc2 = FeatureConfiguration fcMessage2
+fc01 = FeatureConfiguration eShop1
+fc02 = FeatureConfiguration eShop2
