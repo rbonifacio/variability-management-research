@@ -54,8 +54,10 @@ orFeature = 2
 
 -- type Restrictions = [Restriction]
 
-data FeatureModel = FeatureModel Root  -- Restrictions
+data FeatureModel = FeatureModel Root  -- Restrictions 
+ deriving (Show)
 data FeatureConfiguration = FeatureConfiguration Root
+ deriving (Show)
 data Feature = 
  Feature Id Name FeatureType GroupType Children Properties | 
  FeatureError  
@@ -272,6 +274,7 @@ checkBasicFeature (Feature i1 n1 t1 g1 (x:xs) p1) (Feature i2 n2 t2 g2 c2 p2) =
 --
 
 checkAlternativeFeature :: Feature -> Feature -> ErrorList
+checkAlternativeFeature (Feature i1 _ _ _ [] _) (Feature _ _ _ _ _ _) = [("Expecting one child selected for feature " ++ i1)]
 checkAlternativeFeature (Feature i1 _ _ _ (x:xs) _) (Feature _ _ _ _ [] _) = [("Expecting one child selected for feature " ++ i1)]
 checkAlternativeFeature (Feature i1 _ _ _ (x:xs) _) (Feature _ _ _ _ (y:ys) _) = 
  if length (y:ys) == 1 
