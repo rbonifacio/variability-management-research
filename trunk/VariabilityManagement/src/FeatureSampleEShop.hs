@@ -2,7 +2,7 @@ module FeatureSampleEShop where
 
 import FeatureModel
  
-fm = FeatureModel eshop
+fm01 = FeatureModel eshop
 
 eshop = Feature "FEA-01" "eShop Product Line" mandatory basicFeature [register, searchOptions, bonusOptions, paymentType, shipMethod, shoppingCart, userPreferences] []
 
