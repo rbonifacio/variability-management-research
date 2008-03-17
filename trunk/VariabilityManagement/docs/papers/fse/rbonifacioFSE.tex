@@ -1112,7 +1112,69 @@ used for relating parameters to features.
 \end{center}
 \end{table}
 
-Next section we present an evaluation of our approach based on the specification of SPLs in different domains. 
+In what follows, we discuss about some verifiactions applied to the weaving processes just presented. 
+Such verifications were conduced by applying both \emph{random} and \emph{guided} test cases, and 
+justify even more the choice for a low level design in functional programming language. 
+
+\subsection{Model Verification}
+
+The low level specifications presented in the 
+previous section allow us to verify if the composition 
+processes are adherent to desired properties or behavior. 
+Aiming at doing that, we applied two techniques for testing 
+Haskell programs: unit tests for verifying specific scenarios; and 
+formal specifications for checking properties of the models. 
+
+Unit tests were developed using the HUnit library~\cite{hunit-tutorial}. 
+Similar to other \emph{xUnit} tools, it requires that input data and 
+expected results should be well defined. After that, it is possible to check if 
+a call to a function under test, sending the previous defined input data as 
+argument, results a value equals to the expected results. 
+For instance, we applied unit tests for checking if the composition process 
+for the product configurations depicted in Figure~\ref{fig:product-config-01-02} 
+results in expected traces. Therefore, the trace model notation discussed in 
+the previous section plays an important role in our verification process. 
+In order to perform such kind of checking, we first implemented 
+a \emph{refine} function (Listing~\ref{lst:traceRefinement}), 
+which checks if all sequences of traces in the \emph{model under test} (mut) are 
+present in the reference model. 
+
+\begin{lstlisting}[belowskip=10pt,frame=tb,caption={The \emph{traceRefinement} function},label=lst:traceRefinement]
+refine :: TraceModel -> TraceModel -> Bool
+refine mut referenceModel = 
+ and [exists (x referenceModel) | x <- mut]
+\end{lstlisting}
+
+Then, we defined expected traces (\emph{data01} and 
+\emph{data02} in Listing~\ref{lst:unitTest}) for both configurations 
+of Figure~\ref{fig:product-config-01-02}, considering the complete paths 
+showed in Figure~\ref{fig:complete-paths}. Additionally, two trace models
+(\emph{tm01} and \emph{tm02}), computed by the composition process, were defined 
+as input data. Notice that the input trace models were computed varying just the 
+products configurations (\emph{pc01} and \emph{pc02}). 
+Finally, test cases (such as tc01 and tc04) were developed 
+for verifying expected and non-expected traces in the resulting composed models. 
+
+\begin{lstlisting}[belowskip=10pt,frame=tb,caption={Unit test for composition process},label=lst:unitTest]
+data01 = [[], [idle], [idle, 1M], ...
+ [idle,1M, 2M, 3M, 4M, 5M, end]]
+
+data02 = [[],[idle], [idle, V1], ...
+ [idle, V1, V2, 3M, 4M, 5M, end]]
+
+tm01 = compose (fm01 pc01 ck01 ucm01)
+tm02 = compose (fm01 pc02 ck01 ucm01)
+-- expected traces for configuration 01
+tc01 = 
+ TestCase (assertBool (refine data01 tm01))
+
+-- non-expected traces for configuration 02
+tc04 = 
+ TestCase (assertBool (not (refine data01 tm02)))
+\end{lstlisting}
+
+Next section we present an evaluation of our approach based on the 
+specification of SPLs in different domains. 
 
 %=============================
 % Evaluation
