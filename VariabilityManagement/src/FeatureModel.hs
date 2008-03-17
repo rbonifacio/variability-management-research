@@ -194,10 +194,13 @@ featurePropertyValue (x:xs) name =
 --
 featureExists :: FeatureList -> Id -> Bool
 featureExists [] _ = False
-featureExists (x:xs) id = 
- if (fId x) == id then True
- else (featureExists (children x) id) || (featureExists xs id)
+featureExists (x:xs) id1 = 
+ if (fId x) == id1 then True
+ else (featureExists (children x) id1) || (featureExists xs id1)
 
+allFeatureExists :: FeatureList -> FeatureList -> Bool
+allFeatureExists base [] = False
+allFeatureExists base (x:xs) = and [featureExists base (fId(y)) | y <- (x:xs)] 
 
 --
 -- Check if a feature configuration is a valid 
@@ -302,6 +305,11 @@ checkOrFeature (Feature i1 n1 t1 g1 (x:xs) p1) (Feature i2 n2 t2 g2 (y:ys) p2) =
    else checkFeatures x (findChild (y:ys) (fId x)) 
  ) ++ (checkOrFeature (Feature i1 n1 t1 g1 xs p1 ) (Feature i2 n2 t2 g2 (y:ys) p2))	
 
+
+existError :: ErrorList -> Bool
+existError [] = False
+existError (x:xs) = True
+
 -- 
 -- Eq instance definition is (or are)
 -- placede in this point.
@@ -317,6 +325,7 @@ instance Eq Feature where
 -- placed in this point.
 --
 instance Show Feature where 
- show (Feature _ name _ _ _ _) = name
+ show (Feature i1 n1 t1 g1 [] _) = i1   
+ show (Feature i1 n1 t1 g1 (x:xs) _) = i1 ++ show [y | y<-(x:xs)]   
  show (FeatureError) = "Feature error"   
 
