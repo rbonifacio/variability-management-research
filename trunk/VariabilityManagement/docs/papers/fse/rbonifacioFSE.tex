@@ -1,5 +1,5 @@
 \documentclass{acm_proc_article-sp}
-
+\usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{epsfig}
@@ -902,7 +902,7 @@ state)\footnote{IDLE and END states are predefined steps that
 represent the \emph{beginning} and the \emph{end points} of a
 specification.}. 
 
-For instance, consider a product configured with the features \emph{Shopping Cart} and \emph{Bonus}, which requires the extended version of \emph{Buy Product} scenario, and with the feature \emph{Update User Preferecens}. Referring to Figure~\ref{fig:buy-product-changing-flow}, the extended version of 
+For instance, consider a product configured with the features \emph{Shopping Cart} and \emph{Bonus}, which requires the extended version of \emph{Buy Product} scenario, and with the feature \emph{Update User Preferences}. Referring to Figure~\ref{fig:buy-product-changing-flow}, the extended version of 
 \emph{Buy Product} scenario starts from the IDLE state (\emph{from step} clause) and then, after its own flow of events, goes back to Step 3M of \emph{Buy Product} basic version (\emph{to step} clause). In a similar way, Figure~\ref{fig:register-preferences-flow} depicts that \emph{Register User Preferences} scenario starts from any step that is marked with the \emph{RegisterPreferences} annotation (for example, Step 5M of the basic version of \emph{Buy Product}). In this context, the result of applying the composition scenario weaver is a concrete path of execution for this configuration, that can be represented as the sequence of step ids: 
 
 \begin{center}
@@ -1112,8 +1112,8 @@ used for relating parameters to features.
 \end{center}
 \end{table}
 
-In what follows, we discuss about some verifiactions applied to the weaving processes just presented. 
-Such verifications were conduced by applying both \emph{random} and \emph{guided} test cases, and 
+In what follows, we discuss about some verifications applied to the weaving processes just presented. 
+Such verifications were conduced by applying both \emph{randomly} and \emph{guided} test cases, and 
 justify even more the choice for a low level design in functional programming language. 
 
 \subsection{Model Verification}
@@ -1172,6 +1172,27 @@ tc01 =
 tc04 = 
  TestCase (assertBool (not (refine data01 tm02)))
 \end{lstlisting}
+
+Based on the examples just presented, unit tests are useful for 
+verifying the absence of errors under well defined scenarios 
+(described by the input data and expected results). A complementary 
+approach consists in checking properties based on formal 
+specifications. In order to perform this kind of verification, we use 
+the \emph{QuickCheck} library~\cite{claessen00-icfp-2000}, which provides: 
+an \emph{embedded specific language} that is used to specify 
+properties of Haskell programs; and several functions for checking 
+formal properties and for generating randomly input data. In the remaining 
+of this section we will named this verification approach as \emph{Model Checking}.
+
+The model checking approach is also suitable in our context since 
+several properties related to each input model (or to the compositions between them) 
+should be obeyed. Applying just unit tests for checking these properties may 
+require a great effort for designing and implementing input data and expected results 
+for each interesting scenario for testing. On the other hand, the model checking 
+technique requires the definition of formal properties that a \emph{function under test} 
+should hold. Then, these properties are checked against randomly input data. It is important 
+to notice that functions for generating input data can be overloaded in the \emph{QuickCheck} 
+library, which means that we can define the generation of data based on occurrence probabilities.
 
 Next section we present an evaluation of our approach based on the 
 specification of SPLs in different domains. 
