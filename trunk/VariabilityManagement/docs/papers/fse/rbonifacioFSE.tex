@@ -242,216 +242,7 @@ variation points. Moreover, since the variation points and the product definitio
 In summary, both techniques rely on simple composition techniques: filtering variant steps in scenarios or syntactic changes of tag values based on product definition. In this sense, they are similar to conditional compilation techniques, which have been applied to implement variability at source code. Such techniques are not suitable for modularizing the crosscutting nature of certain features, has poor legibility, and leads to lower maintainability~\cite{alves-gpce-06}. 
 Consequently, we argue that the variability management concern should be separated from the other artifacts and used as a language for generating specific products. The automatic generation of specific product artifacts has being recommended by the SPL community~\cite{krueger-cacm-200712,greenfield-softwarefactories,czarnecki-book}, in such way that the combination of generative techniques, aspect oriented programming, and software product line should be further investigated. In this case, in order to support the automatically derivation of product specific artifacts, it is necessary not only a more precise definition of each language used to describe product line artifacts and the variability management concern, but also the weave processes used to combine them. PLUSS and PLUC approaches fail in this direction, since Eriksson et al., although present the metamodel of PLUSS notation~\cite{eriksson-splc-2005}, do not describe which languages and processes are used for relating use case scenarios to feature models. Likewise, besides Fantechi et al. describe the formal semantics of PLUC~\cite{fantechi-splc-2004}, this approach does not separate variability management from use case scenarios.
 
-The next section describes our approach that considers scenario variability as a composition of different artifacts. Although in this paper we are focus on use case scenarios, the idea of separating product line artifacts from variability management is also applied to other SPL views. Moreover, we believe that our modeling framework, which describes the weaving processes for handle variability management, might be customized for design, implementation, and test artifacts. 
-
-
-
-
-%-------------------------------------------------------------------------
-% Section: Scenario Variabilities
-%------------------------------------------------------------------------
-%\section{Scenario variabilities}
-%\label{sec:req-var}
-
-%Eriksson et al.~\cite{eriksson-splc-2005} presented
-%four kinds of variabilities in use case models for product
-%families: (i) use cases might be included
-%in a given product ({\bf optional use cases}), (ii) certain
-%scenarios of an included use case might be excluded from a
-%particular product ({\bf optional scenarios}), (iii) the flow of
-%events within an included scenario might vary ({\bf changing
-%scenarios}), and (iv) crosscutting requirements might affect several
-%use cases on several levels ({\bf crosscutting variability}).
-
-%In order to illustrate examples of such variabilities, consider a Message Application Product Line (MAPL) used to create, receive, and 
-%manage different kinds of message (such as e-mail, short messages, and multimedia messages) for mobile 
-%devices. Depending on the target device, a specific member of the product line is composed by specific use case/scenario 
-%configurations. Figure~\ref{fig:fm-01} depicts part of the Message Application feature model~\cite{czarnecki-book, czarnecki-
-%wsfactory-2005, 
-%kang-foda-report}, used for representing possible configurations 
-%of the product line. For a better understanding of the example, we briefly introduce some features of the MAPL. 
-
-%\begin{description}
-%\item[Message Application (FEA01):] The MAPL root feature. This feature requires that some use cases must be present in all 
-%members of the product line, such as \emph{Create and Send a Message} and \emph{Receive and Save a new Message} use cases.
-
-%\item[Message Type (FEA02):] Feature used to represent the different kinds of messages (\emph{email}, \emph{sms}, \emph{mms}) 
-%that might be supported by a product line member. At least one kind of message must be selected. 
-
-%\item[Folder Management (FEA03):] Feature used to configure the folder management capabilities. Two kinds of folder management 
-%are supported: single and multiple folders. If a product is configured with multiple folder support, the subscriber will be able to select 
-%the place
-%where a received message should be saved. Otherwise, the message must be saved on a specific folder (\emph{inbox folder}). 
-%Multiple folder management also requires a specific use case (\emph{Manage Multiple Folders} use case) to \emph{create}, \emph
-%{rename} and \emph{remove} folders and \emph{move messages} between folders. Additionally, Folder Management feature can be 
-%configured as \emph{basic} or \emph{extended} size  (support for storing 1000 or 1500 messages).
-
-%\end{description}
-%  
-%Suppose that if the feature \emph{Multiple Folders} is selected, 
-%an extended version of \emph{Receive and Save a new Message} scenario
-%and the \emph{Manage Multiple Folders} use case will be present in
-%the target product (the basic version of \emph{Save a Message}
-%scenario will not be present). In the SPL terminology, a
-%\emph{configuration knowledge} should be used for describing 
-%relationships between features and software artifacts
-%(Table~\ref{tab:ck-01} is a simplified representation of a
-%configuration knowledge). The variability related to the
-%\emph{Manage Multiple Folders} use case is an example of optional
-%use case variability. On the other hand, the \emph{basic} and
-%\emph{extended} versions of \emph{Receive and Save a new Message} scenario compose an example of changing scenario 
-%variability.
-
-%\begin{figure}[h]
-% \includegraphics[scale=0.60]{img/fm03.eps}
-%  \caption{Message Application feature model.}
-%  \label{fig:fm-01}
-%\end{figure}
-
-%\begin{table}[h]
-%\begin{tabular}{|l|l|}
-%  \hline
-%  {\bf Selected Feature} & {\bf Artifacts} \\ \hline \hline
-%  Single Folder & Save Message (basic version) \\ \hline
-%  Multiple Folders & Save Message (extended version) \\
-%                   & Manage multiple folders use case \\
-%  \hline
-%\end{tabular}
-%\caption{Folder management configuration.} \label{tab:ck-01}
-%\end{table}
-
-%Eriksson proposed the use of parameters in 
-%order to describe crosscutting variabilities that change the behavior of different scenarios. 
-%However, we believe that such kind of variability 
-%should be described using quantification mechanisms, instead of parameters. In a previous work~\cite{gcabral-sbmf-2006}, the 
-%quantification was achieved by enumerating all 
-%the \emph{previous} and \emph{next steps} that delimits the starting and ending points of a given
-%scenario (below we present our definition for scenario specification, 
-%adapted from~\cite{gcabral-sbmf-2006}).
-
-%\begin{description}
-%\item[Scenario:] A use case scenario corresponds to a sequence of
-%steps (a pair of \emph{User Action} x \emph{System Response}).
-%Depending on the user action or system state, the behavior of a
-%scenario can be changed. A use case defines a set of scenarios; and a use case model, 
-%instead, defines a set of use cases.
-%\end{description}
-
-%In order to enable a better modularity (see figures~\ref{fig:pm-01} and~\ref{fig:alt-01}), a
-%scenario could be \emph{started} from steps of different scenarios
-%(using the \emph{from step} clause) and \emph{finished} by steps of
-%other scenarios (using the \emph{to step} clause). Following the same 
-%example of message application, two alternative flows are presented in Figure~\ref{fig:alt-01}. The first scenario,
-%that allows a subscriber to save an edited message, changes the
-%behavior of \emph{Create and Send a Message Scenario} (Figure~\ref{fig:pm-01})
-%from \emph{Step 5M} to the \emph{end} of execution (see the
-%\emph{from} and \emph{to step} clauses). The second one, instead, is
-%an exception flow that describes the phone behavior when the
-%subscriber tries to send or save a message and the message box is
-%full. Such scenario changes the behavior of \emph{Create and Send a Message
-%Scenario} (from \emph{Step 7M}) and \emph{Save a Message to Draft Folder Scenario}
-%(from \emph{Step A1.1}). Such exception flow is an example of crosscutting
-%variability, since it changes the behavior of multiple scenarios.
-
-%Previously, only explicit references to the step ids (eg.: 5M, 7M,
-%A1.1) are allowed in the \emph{from step} and \emph{to step}
-%clauses~\cite{gcabral-sbmf-2006}. Therefore, the weaving rules of
-%two or more scenarios are basically
-%syntactic~\cite{rashid-aosd-2007}, resulting in \emph{fragile
-%pointcuts} (a scenario composition could break, if we change a step
-%id). In order to solve this problem, the use of semantic scenario
-%compositions, based on the meaning of natural language
-%specifications, was proposed by Rashid et
-%al.~\cite{rashid-aosd-2007}. 
-
-%In this paper, we propose a more simplistic semantic composition based on the use of annotations. We enrich scenario specifications 
-%allowing a step to be marked with zero or more annotations; and the \emph{from steps} and \emph{to
-%steps} clauses referring to steps in other scenarios by \emph{step ids}
-%or by \emph{annotations}.
-
-%
-%\begin{figure}[h]
-%%  \includegraphics[scale=0.45]{img/alternative01.eps}
-%  \begin{scriptsize} 
-%  \texttt{
-%  \begin{tabular}{l}
-%  {\bf Basic Flow}\\
-%  Description: Create and send a message.\\
-%  From step: START\\
-%  To Step: END\\
-%  \end{tabular}  
-%  \begin{tabular}{|p{0.2in}|p{0.8in}|p{0.8in}|p{1in}|}
-%   \hline
-%	Id & User Action & System State &  System Response \\ \hline \hline    
-%	... & ... & ... & ... \\ \hline
-%	3M  & Select a \mbox{<MessageType>} from the create message men.u & & The Create a New <MessageType> form is 
-%displayed. \\ \hline
-%	4M  & Fill the message body. & & The message body is filled. \\ \hline
-%	5M  & Select the send message option. & The message body is not empty & The Recipient form is displayed. \\ \hline
-%	6M  & Fill the recipient field. &  & The Recipient field is filled. \\ \hline
-%	7M  & Select the confirm option. & The message box has not reached <Size> messages.  & The message is sent to the recipient 
-%and saved in Sent Items folder. The Sent Message transient is displayed. \\ \hline 
-%	... & ... & ... & ... \\ \hline
-%  \end{tabular} 
-%  }
-%  \end{scriptsize}
-%  \caption{Create and Send a Message scenario.}
-%  \label{fig:pm-01}
-%\end{figure}
-
-%\begin{figure}[t]
-%  \begin{scriptsize} 
-%  \texttt{
-%  \begin{tabular}{l}
-%  Description: Save a message to draft folder\\
-%  From step: 5M\\
-%  To Step: END\\
-%  \end{tabular}  
-%  \begin{tabular}{|p{0.2in}|p{0.8in}|p{0.8in}|p{1in}|}
-%   \hline
-%	Id & User Action & System State &  System Response \\ \hline \hline    
-%	A1.1 & Select the save message option. & There is enough space to save the message. &  The message is saved in draft folder. 
-%The saved message transient is displayed. \\ \hline
-%	A1.2 & Wait for the transient. & & Return to the Message Center Application.
-%   \\ \hline
-%  \end{tabular} 
-%  }
-%  \end{scriptsize}
-%  \center{(a)}
-%  
-%  \begin{scriptsize} 
-%  \texttt{
-%  \begin{tabular}{l}
-%  Description: The maximum number of messages has been achieved\\
-%  From step: 7M, A1.1\\
-%  To Step: END\\
-%  \end{tabular}  
-%  \begin{tabular}{|p{0.2in}|p{0.8in}|p{0.8in}|p{1in}|}
-%   \hline
-%	Id & User Action & System State &  System Response \\ \hline \hline    
-%	E2.1 & Select the confirm or save message option. & Message box has achieved the <SIZE> messages. &  The Message Box is 
-%Full transient is displayed. \\ \hline
-%	E.2.2 & Wait for the transient. & & Return to the Message Center Application.
-%   \\ \hline
-%  \end{tabular} 
-%  }
-%  \end{scriptsize}
-%  \center{(b)}
-%  \caption{Send a Message alternative flows.}
-%  \label{fig:alt-01}
-%\end{figure}
-
-%A final remark related to the scenario variability taxonomy is that we are proposing a new kind of variability: one that represents 
-%parametric scenario specifications. Such kind of variability occurs whenever two similar behaviors vary only in accordance with 
-%parameterized values. For example, Figure~\ref{fig:pm-01} depicts a scenario specification for \emph{sending a message} using 
-%parameters  for reuse it with different \emph{kinds of message} (\emph{MessageType} parameter on step 3M) and \emph{message 
-%folder sizes} (\emph{Size} parameter on step 7M). Parametric scenarios increase the requirement coverage and avoid duplicated 
-%scenario specifications. Notice that the domain values for those parameters are defined in the feature model (features \emph
-%{MessageType} and
-%\emph{Size} in Figure~\ref{fig:fm-01}). In this way, the \emph{MessageType}
-%parameter of step 3M abstracts over the different kinds of messages (\emph{email}, \emph{sms}, and \emph{mms}); and the  \emph
-%{Size} parameter of step 7M abstracts over the values \emph{extended folder size} and \emph{default folder size} (Figure~\ref
-%{fig:fm-01}).
+Next section describes our approach that considers scenario variability as a composition of different artifacts. Although in this paper we are focus on use case scenarios, the idea of separating product line artifacts from variability management is also applied to other SPL views. Moreover, we believe that our modeling framework, which describes the weaving processes for handle variability management, might be customized for design, implementation, and test artifacts. 
 
 
 %-------------------------------------------------------------------------
@@ -460,24 +251,23 @@ The next section describes our approach that considers scenario variability as a
 \section{Variability as Crosscutting}
 \label{sec:models}
 
-Aiming to represent a clear separation between variability management and scenario specification, and also 
-to describe the weave processes required to compose those views, we are proposing a modeling framework that is a 
-customization of the Masuhara and Kiczales (MK) work~\cite{kiczales-ecoop-2003}. The goal of MK framework is to
+Aiming at representing a clear separation between variability management and scenario specification, and also 
+to describe the weaving processes required to compose these views, we propose a modeling framework, that slightly generalizes Masuhara and Kiczales (MK) framework~\cite{kiczales-ecoop-2003}, and instantiate it for the use case and product line context. The goal of MK framework is to
 explain how different \emph{aspect-oriented} technologies support crosscutting modularity. Each technology is modeled 
-as a three-part description: the related weave processes take two programs as input, which crosscut each other with respect 
+as a three-part description: the related weaving processes take two programs as input, which crosscut each other with respect 
 to the resulting program or computation~\cite{kiczales-ecoop-2003}. 
 
-Similarly to the MK framework, we represent the semantics of \textbf{scenario variability management} as a weaver that takes four specifications
-as input (\emph{product line use case model}, \emph{feature model}, \emph{product configuration}, and \emph{configuration knowledge}) that 
+Similarly to the MK framework, we represent the semantics of \textbf{scenario variability management} as a weaver that takes as input four specifications
+(\emph{product line use case model}, \emph{feature model}, \emph{product configuration}, and \emph{configuration knowledge}) that 
 crosscut each other with respect to the resulting product specific use case model (Figure~\ref{fig:weave-process}). Combining these input languages, 
 it is possible to represent the kinds of variability that we are interested in: \emph{optional use cases and scenarios}, \emph{quantified changed scenarios}, 
 and \emph{parameterized} scenarios. 
 
-A running example of our approach is presented in Section~\ref{sub:running}. After, we describe the semantics of our weaving process. For 
-simplicity, it was decomposed in three subcomponents - one weaver process for each kind of variability.  The semantics of those 
+A running example of our approach is presented in Section~\ref{sub:running}. After that, we describe the semantics of our weaving process. For 
+simplicity, it was decomposed in three parts --- one weaver process for each kind of variability.  The semantics of those 
 weavers (and the meta-model of the input and output languages) are described using the Haskell programming language~\cite{haskell-report}. 
-Such decision allows the execution and testing of concise weaving processes descriptions (all related source code is available at SPG web site~\cite{spg-url}) and keep our model close to MK work, which specifies their weaving processes using the Scheme programming language.
-
+This leads to concise weaving processes descriptions (the related source code is available at a web site~\cite{spg-url}) and keeps our model close to MK work, where weaving processes are specified in the Scheme programming language. The choice for Haskell was motivated by several factors, such as the existence of mature verification tools (QuickCheck and HUnit), readability, and our previous background in the language. 
+ 
 %\begin{figure}[h]
 % \epsfig{file=img/weave-process2.eps,scale=0.3}
 % \caption{Overview of the modeling framework.}
@@ -487,7 +277,7 @@ Such decision allows the execution and testing of concise weaving processes desc
 \begin{figure}[h]
  \begin{center}
   \includegraphics[scale=0.30]{img/weave-process2.eps}
-  \caption{Overview of the modeling framework.}
+  \caption{Overview of our weaving process.}
   \label{fig:weave-process}
   \end{center}
 \end{figure}
@@ -496,79 +286,100 @@ Such decision allows the execution and testing of concise weaving processes desc
 \label{sub:running}
 
 In order to explain how the input languages crosscut each other and produce a product specific use case model, here we present a 
-running example based on the eShop Product Line (briefly introduced in Section~\ref{sec:example}). For this, several artifacts of each 
+running example of our approach based on the eShop Product Line (briefly introduced in Section~\ref{sec:example}). For this, several artifacts of each 
 input language are described. Then, we present the role of each input language in respect of the weaving process.
 
 
 \subsubsection{SPL use case model}
 
-This artifact defines a set of scenarios that might be used to describe possible variants of the product line. Although not being directly concerned 
-with variability management, some scenarios might be optional, might have parameters, or might change the behavior of other 
-scenarios. Based on the notation proposed in~\cite{gcabral-sbmf-2006},  a use case scenario corresponds to a sequence of
-steps (a tuple of \emph{User Action} x \emph{System State} x \emph{System Response}).  A use case defines a set of scenarios; and a use case model, instead, defines a set of use cases. In this running example, we are considering the following scenarios:
+This artifact defines a set of scenarios that might be used to describe possible products of the SPL. Although not being directly concerned 
+with variability management, some scenarios might be optional, 
+might have parameters, or might change the behavior of other 
+scenarios. Moreover, a use case scenario corresponds to a sequence of
+of pairs \emph{User Action} x \emph{System Response}).  A use case defines a set of scenarios; and a use case model defines a set of use cases. In this running example, we consider the following scenarios:
 
-{\bf Buy Products Basic Version:} this scenario (Figure~\ref{fig:buy-product-basic-flow}) specifies the basic behavior of \emph{Buy Products},
-assembled in products that are not configured with the \emph{Shopping Cart} and \emph{Bonus} features. It starts from the IDLE special state 
-(do not extend the behavior of an existing scenario) and finishes at the END of execution (in this case, there is no other behavior to be performed).
-The clauses \emph{From step} and \emph{To step} are used for describing the possible starting and ending points of execution.
- 
+{\bf Buy a Product:} this optional scenario (Figure~\ref{fig:buy-product-scenario}) enables a customer to buy specific goods from an online shopping. It is only available at instances of the product line that are not configured with the \emph{Shopping Cart} and \emph{Bonus} features. This scenarios starts from the IDLE special state  (does not extend the behavior of an existing scenario) and finishes at the Step 1M of the \emph{Proceed to Purchase} scenario (which is described a bit later). The clauses \emph{From step} and \emph{To step} are used for describing the possible starting and ending points of execution. 
+
 \begin{figure}[h]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
-     Description: Basic version of Buy Products\\
+     Description: Buy a specific product\\
      From step: IDLE \\
+     To step: P1
+   \end{tabular}  
+  \begin{center} 
+  \begin{tabular}{|p{0.1in}|p{1.4in}|p{1.4in}|}
+   \hline
+       Id    & User Action  & System Response \\ \hline \hline
+       B1 & Select the buy product option.  & Present the selected product. The user can change the quantity of items he wants to buy. Calculate and show the amount to be paid. \\  \hline
+       B2 & Select the confirm option. &  Request payment information. \\  \hline
+    \end{tabular}
+  \end{center}
+  } 
+\end{scriptsize}
+\caption{Buy product scenario.}
+\label{fig:buy-product-scenario}
+\end{figure}
+
+
+{\bf Buy Products with Shopping Cart and Bonus:} this optional scenario (Figure~\ref{fig:buy-product-changing-flow}) allows the purchasing of products that have been previously added to a customer shopping cart. It changes the behavior of the \emph{Buy a Product} scenario by replacing its first two steps and by introducing the specific behavior required by the \emph{Shopping Cart} and 
+\emph{Bonus} features. This scenario also starts from the IDLE state (\emph{From step} clause) and finishes at Step 1M of \emph{Proceed to Purchase} (\emph{To step} clause). This behavior is required for products that are configured with \emph{Shopping Cart} and \emph{Bonus} features.
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+     Description: Buy products using a shopping-cart\\
+     From step: IDLE \\
+     To step: P1
+   \end{tabular}  
+  \begin{center} 
+   \begin{tabular}{|p{0.1in}|p{1.4in}|p{1.4in}|}
+   \hline
+       Id & User Action & System Response \\ \hline \hline
+       V1 & Select the checkout option.  & Present the items in the shopping cart and the amount to be paid. The user can remove items from the shopping cart. \\  \hline
+       V2 & Select the confirm option. & Request bonus and payment information. \\  \hline
+  \end{tabular}
+  \end{center}
+  } 
+\end{scriptsize}
+\caption{Buy products with shopping cart scenario.}
+\label{fig:buy-product-changing-flow}
+\end{figure}
+
+{\bf Proceed to Purchase:} this mandatory scenario (Figure~\ref{fig:proceed-to-checkout}) specifies the common behavior that is required for confirming a purchase. Instances of the product line must be configured with this scenario. Although It can be started  either after Step B2 (from \emph{Buy a Product} scenario) or after Step V2 (from \emph{Buy Products Using Shopping Cart} scenario), just one of the paths can be available at a specific product. 
+It is important to notice that the \emph{From step} and \emph{To step} clauses are used for composing, in a quantified way, different scenario configurations without specifying all possible variants in a single artifact (as suggested in the PLUSS notation). Moreover, notice that a parameter \emph{ShipMethod} is referenced in Step 4M of Figure~\ref{fig:proceed-to-checkout}. The use of this parameter (notation also supported in PLUSS and PLUC) allows the reuse of this specification 
+for different kinds of \emph{ship method} configurations. If a product is configured with the \emph{Economical} and \emph{Fast} ship methods, the final composition of this scenario will present a sentence: \emph{\ldots available ship methods (Economical, Fast)}.
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+     Description: Proceed to purchase\\
+     From step: B2, V2 \\
      To step: END
    \end{tabular}  
   \begin{center} 
   \begin{tabular}{|p{0.1in}|p{1.4in}|p{1.4in}|}
    \hline
        Id    & User Action  & System Response \\ \hline \hline
-       1M & Select the buy product option.  & Present the selected product. The user can change the quantity of item that he wants to buy. Calculate and show the amount to be paid. \\  \hline
-       2M & Select the confirm option. &  Request payment information. \\  \hline
-       3M & Fill in the requested information and select the proceed option.  & Request the shipping method and address.\\  \hline
-       4M & Select the <ShipMethod>, fill in the destination address and proceed. & Calculate the shipping costs. \\  \hline
-       5M & Confirm the purchase. & Execute the order and send a request to the Delivery System to dispatch the products. 
+       P1 & Fill in the requested information and select the proceed option.  & Request the shipping method and address.\\  \hline
+       P2 & Select one of the available ship methods (\mbox{<ShipMethod>}), fill in the destination address and proceed. & Calculate the shipping costs. \\  \hline
+       P3 & Confirm the purchase. & Execute the order and send a request to the Delivery System to dispatch the products. 
        \mbox{[RegisterPreference]} \\  \hline
   \end{tabular}
   \end{center}
   } 
 \end{scriptsize}
-\caption{Basic version of Buy Products.}
-\label{fig:buy-product-basic-flow}
+\caption{Proceed to purchase scenario.}
+\label{fig:proceed-to-checkout}
 \end{figure}
 
-Notice that a parameter \emph{ShipMethod} is referenced in Step 4M of Figure~\ref{fig:buy-product-basic-flow}. The use of this parameter (notation also supported in PLUSS and PLUC) allows the reuse of this specification 
-for different kinds of \emph{ship method} configurations.
+ 
+{\bf Search for Products:} this mandatory scenario allows the user to search for products. In order to save space, we are only presenting Step S3, which performs a search based on the input criteria (Figure~\ref{fig:search-products-flow}). This step is annotated with the mark \mbox{{\bf [RegisterPreference]}}, exposing it as a possible extension point for the behavior of \emph{Register User Preferences}. The same annotation was used in the Step P3 of \emph{Proceed to Purchase} (Figure~\ref{fig:proceed-to-checkout}). Such annotations can be referenced in the \emph{from step} and \emph{to step} clauses, reducing problems that might occur by changing step ids.
 
-{\bf Buy Products with Shopping Cart and Bonus:} this scenario (Figure~\ref{fig:buy-product-changing-flow}) changes the behavior of the \emph{Buy Products Basic Version} by replacing its first two steps and by introducing the specific behavior required by the \emph{Shopping Cart} and 
-\emph{Bonus} features. This scenario starts from the IDLE state (\emph{from step} clause) and returns to the third step of the \emph{Buy Products Basic Version} (\emph{to step} clause). This behavior is required for products that are configured with \emph{Shopping Cart} and \emph{Bonus} features.
-
-\begin{figure}[h]
-\begin{scriptsize}
-  \texttt{
-   \begin{tabular}{l}
-     Description: Extended version of Buy Products\\
-     From step: IDLE \\
-     To step: 3M
-   \end{tabular}  
-  \begin{center} 
-   \begin{tabular}{|p{0.1in}|p{1.4in}|p{1.4in}|}
-   \hline
-       Id & User Action & System Response \\ \hline \hline
-       V1 & Select the checkout option.  & Present the items in the shopping cart and the amount to be paid. The user can remove items from shopping cart. \\  \hline
-       V2 & Select the confirm option. & Request bonus and payment information. \\  \hline
-  \end{tabular}
-  \end{center}
-  } 
-\end{scriptsize}
-\caption{Extended version of Buy Products.}
-\label{fig:buy-product-changing-flow}
-\end{figure}
-
-{\bf Search for Products:} this scenario allows the user to search for products. In order to save space, we are only presenting the Step 3S, which performs a search based on the input criteria (Figure~\ref{fig:search-products-flow}). This step is annotated with the mark \mbox{{\bf [RegisterPreference]}}, exposing it as a possible point that the behavior of \emph{Register User Preferences} might starts. The same annotation was used in the Step 5M of \emph{Buy Products Basic Version}. Such annotations can be referenced in the \emph{from step} and \emph{to step} clauses, reducing the problem of \emph{fragile pointcuts}~\cite{rashid-aosd-2007}.
-
-\begin{figure}[t]
+\begin{figure}[ht]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -581,18 +392,18 @@ for different kinds of \emph{ship method} configurations.
    \hline
        Id & User Action &  System Response \\ \hline \hline
        \ldots & \ldots  & \ldots \\  \hline
-       3S & Inform the search criteria. &  Retrieve the products that satisfy the search criteria. Show a list with the resulting products. [RegisterPreference] \\  \hline
+       S3 & Inform the search criteria. &  Retrieve the products that satisfy the search criteria. Show a list with the resulting products. [RegisterPreference] \\  \hline
   \end{tabular}
   \end{center}
   } 
 \end{scriptsize}
-\caption{Search for Products scenario.}
+\caption{Search for products scenario.}
 \label{fig:search-products-flow}
 \end{figure}
 
-{\bf Register User Preferences:} this scenario updates the user preferences based on the buy and search products use cases. Its behavior can be 
+{\bf Register User Preferences:} this optional scenario updates the user preferences based on the buy and search products use cases. Its behavior can be 
 started at each step that is marked with the {\bf [RegisterPreference]} (see the \emph{from step} clause) annotation and is available in products 
-that are configured with the \emph{Register User Preferences} feature.
+that are configured with the \emph{Update User Preferences} feature. 
 
 \begin{figure}[h]
 \begin{scriptsize}
@@ -606,7 +417,7 @@ that are configured with the \emph{Register User Preferences} feature.
    \begin{tabular}{|p{0.1in}|p{1.4in}|p{1.4in}|}
    \hline
        Id & User Action &  System Response \\ \hline \hline
-       1R & - &  Update the preferences based on the search results or purchased items. \\  \hline
+       R1 & - &  Update the preferences based on the search results or purchased items. \\  \hline
   \end{tabular}
   \end{center}
   } 
@@ -615,9 +426,11 @@ that are configured with the \emph{Register User Preferences} feature.
 \label{fig:register-preferences-flow}
 \end{figure}
 
+In this running example, we described several scenarios as being optional or mandatory. It is important to observe that, in our approach, this kind of information is not specified in scenario documents. Actually, it is necessary to consider the relationships between scenarios and features in order to realize which configurations require a specific scenario. As we said at the beginning of this section, each artifact (feature model, product configuration, configuration knowledge, and use case model) provides a specific contribution to the definition of a SPL member. 
+
 \subsubsection{Feature model}
 
-We have introduced part of this artifact for the eShop product line in Section~\ref{sec:example}. However, here we are going to 
+We have introduced part of this artifact for the eShop product line in Section~\ref{sec:example}. However, here we 
 present only the features required  (Figure~\ref{fig:eshop-fm-re}) for understanding the running example. 
 
  \begin{figure}[h]
@@ -629,13 +442,13 @@ present only the features required  (Figure~\ref{fig:eshop-fm-re}) for understan
 \end{figure}
 
 Based on the feature model of Figure~\ref{fig:eshop-fm-re}, the \emph{Shopping 
-Cart}, \emph{Bonus} and \emph{Update User Preferences} features are not required; on the other hand, the feature \emph{Ship Method} is mandatory and all specific products might be configured with at least one of its child.  
+Cart}, \emph{Bonus} and \emph{Update User Preferences} features are not required; on the other hand, the \emph{Ship Method} feature is mandatory and all products have to be configured with at least one of its child.  
 
 \subsubsection{Product configuration}
 
-This artifact is used for identifying which features were selected in order to compose a specific member of a product line. Each product configuration should be conform to a feature model (the selected features should obeyed the feature model relationships and constraints). Two possible configurations are presented in Figure~\ref{fig:product-config-01-02}.  
+This artifact is used for identifying which features were selected in order to compose a specific member of a product line. Each product configuration should conform to a feature model (the selected features should obey the feature model relationships and constraints). Two possible configurations are presented in Figure~\ref{fig:product-config-01-02}.  
 
-\begin{figure}[t]
+\begin{figure}[htb]
   \centerline{
     \mbox{\includegraphics[scale=0.4]{img/pc-01.eps}}
     \mbox{\includegraphics[scale=0.4]{img/pc-02.eps}}
@@ -644,45 +457,56 @@ This artifact is used for identifying which features were selected in order to c
   \label{fig:product-config-01-02}
   \end{figure}
   
-The first configuration (on the left side of the Fgure~\ref{fig:product-config-01-02}) defines a product that has no support for shopping cart, bonus and preferences update. Additionally, it supports only the economical and fast ship methods. The second configuration selects all possible features. 
+The first configuration (on the left side of the Figure~\ref{fig:product-config-01-02}) defines a product that has no support for shopping cart, bonus and preferences update. Additionally, it supports only the economical and fast ship methods. The second configuration selects all possible features. 
+In order to select the required assets (scenarios, classes and aspects, test cases) for a specific product configuration, it is necessary to relate features to them. This is the role of the configuration knowledge as an input artifact of our weaving process.  
 
 \subsubsection{Configuration knowledge}
 
-This artifact is used for relating feature expressions to artifacts that must be assembled in a given product. Such artifact allows, during the product engineering phase, the automatic selection of assets that are required for a specific product configuration. Table~\ref{tab:eshop-running-example} presents a configuration knowledge 
-for the running example, enforcing that: if \emph{Shopping Cart} and \emph{Bonus} features are {\bf not} selected, the 
-basic version of \emph{Buy Product} scenario will be assembled; otherwise, the extended version of the same 
-scenario will be assembled; and the \emph{Register User Preferences} scenario will be assembled only if the \emph{Update 
-User Preferences} feature is selected.
+This artifact is used for relating feature expressions to assets that must be assembled in a given product. Such artifacts allow, during product engineering, the automatic selection of assets that are required for a specific product configuration. 
 
-\begin{table}[h]
+Table~\ref{tab:ck-running-example} presents a configuration knowledge 
+for the running example, enforcing that
+
+\begin{itemize}
+\item \emph{Proceed to Purchase} and 
+\emph{Search for Products} are mandatory scenarios, since they are related 
+to the root feature of eShop product line;  
+\item the \emph{Buy a Product} scenario is used in the composition of products that do not have been configured with both \emph{Shopping Cart} and \emph{Bonus} features. Otherwise, if both features were selected for a product, it will be configured with the \emph{Buy Product with Cart} scenario; and
+\item finally, Table~\ref{tab:ck-running-example} states that \emph{Register User Preference} scenario is not used in composition unless the \emph{Update Preference feature} is selected.
+\end{itemize}    
+
+\begin{table}[th]
 \begin{center}
-\caption{eShop configuration knowledge} \label{tab:eshop-running-example}
+\caption{eShop configuration knowledge} \label{tab:ck-running-example}
 \begin{tabular}{ll}
    \hline\noalign{\smallskip}
   {\bf Expression} & {\bf Required Artifacts} \\
    \noalign{\smallskip}
    \hline
    \noalign{\smallskip}
-    \ldots & \ldots \\
-    {\bf not} (Cart {\bf and} Bonus)\hspace{2pt} & Basic version of Buy Products \\
-    Cart {\bf and} Bonus & Extended version of Buy Products \\
-    Update Preferences & Register user preferences	 \\       
+    eShop & Proceed to Purchase \\
+               & Search for Products \\
+               & \ldots \\ 
+    {\bf not} (Cart {\bf and} Bonus)\hspace{2pt} & Buy a Product \\ 
+    Cart {\bf and} Bonus & Buy Products with Cart \\ 
+    Update Preferences & Register user Preferences	 \\  
+    \ldots & \ldots \\ 
   \hline
 \end{tabular}
 \end{center}
 \end{table}
 
+In what follows, we describe a high level view of the weaving process that combines the input languages in order to manage scenario variability.  Then, in Section~\ref{sub:modeling-framework} we formally present its semantics in terms of our modeling framework. 
 
 \subsubsection{Weaving process}
 
-After presenting input artifacts for the running example, we are ready to describe the weaving process that combine 
-the input languages in order to manage scenario variabilities. In the next section we present, more precisely, the semantics of its components using a low level design. The weaving process is composed by four activities, although the last one is optional:
+The weaving process represented in Figure~\ref{fig:weave-process} is responsible for performing the following activities: 
 
 {\bf Validation activity:} This activity is responsible for checking if a product configuration is a valid instance of the feature model. If the product configuration is 
-valid (it is conform to the relationship cardinalities and constraints of the feature model), the process might proceed. Otherwise, an error should be reported. 
+valid (it conforms to the relationship cardinalities and constraints of the feature model), the process might proceed. 
 
 {\bf Product derivation activity:} This activity takes as input a (valid) product configuration and a configuration knowledge. 
-Then, each feature expression of the configuration knowledge is checked against the product configuration. If the expression 
+Each feature expression of the configuration knowledge is checked against the product configuration. If the expression 
 is satisfied, the related scenarios are assembled as the result of this activity. For the running example, 
 Table~\ref{tab:assembled-scenarios} shows the assembled scenarios for the configurations depicted in Figure~\ref{fig:product-config-01-02}.
 
@@ -695,12 +519,14 @@ Table~\ref{tab:assembled-scenarios} shows the assembled scenarios for the config
    \noalign{\smallskip}
    \hline
    \noalign{\smallskip}
-    Configuration 1\hspace{15pt} & Basic version of Buy Products \\
-                             & Search for products \\
-                             & \ldots \\
-   Configuration 2 & Extended version of Buy Products \\
-                             & Search for Products	 \\
-                             & Register user Preferences \\
+    Configuration 1\hspace{15pt} & Proceed to Purchase \\
+                                                   & Search for Products \\
+                                                   & Buy a product \\
+                             			  & \ldots \\
+   Configuration 2                        & Proceed to Purchase \\
+                             			  & Search for Products	 \\
+			                           & Buy a Product with Cart \\
+                                                   & Register user Preferences \\
                              & \ldots       \\
   \hline
 \end{tabular}
@@ -708,28 +534,45 @@ Table~\ref{tab:assembled-scenarios} shows the assembled scenarios for the config
 \end{table}
  
  {\bf Scenario composition activity:} This activity is responsible for composing the scenarios assembled for a specific product configuration. 
- The resulting scenarios of the previous activity, which crosscut each other based on the \emph{from step} and \emph{to step clauses}, are woven. The 
- result is either a use case model with complete paths (all \emph{from step} and \emph{to step} clauses are resolved) or a trace model (a set of all valid sequences of events extracted from the complete paths). 
+Therefore, the resulting scenarios of the previous activity, which crosscut each other based on the \emph{From step} and \emph{To step clauses}, are woven. The 
+ result is a use case model with complete paths (all \emph{From step} and \emph{To step} clauses are resolved).
  
-The complete path is a high level representation, which uses the same constructions of the use case model (scenarios), and can be better understood using a graph notation, where each node is labeled with a step id. For example, Figure~\ref{fig:complete-paths} depicts the complete paths for the first and second configurations of our running example. In the left side of the figure,  the basic versions of search for product (branch labeled as 1S, 2S, 3S) and buy product (branch labeled as 1M, 2M, ..., 5M) scenarios are presented. Instead, on the right side of the figure, the extended versions of these scenarios are presented. In this case, steps 1M and 2M have been replaced by steps V1 and V2 (because \emph{Shopping Cart} and \emph{Bonus} features are selected) and the step  1R is introduced after steps 5M and 3S (because \emph{Update User Preferences} is selected in this configuration).
+%  or a trace model (a set of all valid sequences of events extracted from the complete paths). 
  
-Instead, the trace model can be seen as a low level representation of the use case model. Such notation has a well defined semantic and might 
-be used for model checking and test case generation. Such applications of the trace model are beyond the scope of this paper. More information 
-can be found elsewhere\cite{csp-hoare,csp-roscoe,cfeitosa-sbmf-2006}. Here, the trace model is useful for implementing the last activity of our weave process, binding parameters, and 
-represents all possible sequences of events in a specific product configuration. 
+The complete path is a high level representation, which uses the same constructions of the use case model (scenarios), and is illustrated here as a graph, where each node is labeled with a step id. For example, Figure~\ref{fig:complete-paths} depicts the complete paths for the first and second configurations of our running example. In the left side of the figure,  the composition of \emph{Buy a Product} with \emph{Proceed to Purchase} (branch labeled as B1, B2, P1, P2, P3) and \emph{Search for Product} (branch labeled as S1, S2, S3) scenarios are presented. Contrasting, on the right side of the figure, the results of this activity is presented for the second configuration. In this case, steps B1 and B2 have been replaced by steps V1 and V2 (because \emph{Shopping Cart} and \emph{Bonus} features are selected) and the step  R1 is introduced after steps P3 and S3 (because \emph{Update User Preferences} is selected in this configuration).
+ 
+%=====================
+% Trace model discussion
+%===================== 
+ 
+%Instead, the trace model can be seen as a low level representation of the use case model. Such notation has a well defined semantic and might 
+%be used for model checking and test case generation. Such applications of the trace model are beyond the scope of this paper. More information 
+%can be found elsewhere\cite{csp-hoare,csp-roscoe,cfeitosa-sbmf-2006}. Here, the trace model is useful for implementing the last activity of our weave process, binding parameters, and 
+%represents all possible sequences of events in a specific product configuration. 
 
+%For instance, the trace model for the first configuration is the set of sequences:
 
+%\begin{small}
+%\begin{tabular}{rlc}
+%$Trace_{C1}$ = & \{<>, <idle>, <idle, 1S>, <idle, 1S, 2S>, \\ 
+%                    & <idle, 1S, 2S, 3S>,  <idle, 1S, 2S, 3S, end>, \\ 
+%                    & <idle, 1M>, <idle, 1M, 2M>, \ldots, \\ 
+%                    & <idle, 1M, 2M, 3M, 4M.ShipMethod, 5M, end> \}
+%\end{tabular}
+%\end{small}
+
+%========================
  
-\begin{figure}[t]
+\begin{figure}[bth]
 \begin{center}
 \begin{tiny}
 \begin{xy}
 \xymatrix@R=10pt{
-& *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{1M} \ar[d]	& *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{V1} \ar[d] 	\\
-& *++[o][F-]{1S} \ar[d]  & *++[o][F-]{2M} \ar[d]           & *++[o][F-]{1S} \ar[d]  & *++[o][F-]{V2} \ar[d] 			\\
-& *++[o][F-]{2S} \ar[d]  & *++[o][F-]{3M} \ar[d]           & *++[o][F-]{2S} \ar[d]  & *++[o][F-]{3M} \ar[d]			\\
-& *++[o][F-]{3S} \ar[d]  & *++[o][F-]{4M} \ar[d]           & *++[o][F-]{3S} \ar[d]  & *++[o][F-]{4M} \ar[d] 			\\
-& *++[o][F-]{end} & *++[o][F-]{5M} \ar[l]                     & *++[o][F-]{1R} \ar[d] & *++[o][F-]{5M} \ar[l]   			\\
+& *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{B1} \ar[d]	& *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{V1} \ar[d] 		\\
+& *++[o][F-]{S1} \ar[d]  & *++[o][F-]{B2} \ar[d]           & *++[o][F-]{S1} \ar[d]  & *++[o][F-]{V2} \ar[d] 			\\
+& *++[o][F-]{S2} \ar[d]  & *++[o][F-]{P1} \ar[d]           & *++[o][F-]{S2} \ar[d]  & *++[o][F-]{P1} \ar[d]			\\
+& *++[o][F-]{S3} \ar[d]  & *++[o][F-]{P2} \ar[d]           & *++[o][F-]{S3} \ar[d]  & *++[o][F-]{P2} \ar[d] 			\\
+& *++[o][F-]{end} & *++[o][F-]{P3} \ar[l]                     & *++[o][F-]{R1} \ar[d] & *++[o][F-]{P3} \ar[l]   			\\
 &                         &                                                    &   *++[o][F-]{end}       &
 }
 \end{xy}
@@ -739,37 +582,31 @@ represents all possible sequences of events in a specific product configuration.
 \end{center}
 \end{figure}
 
-For instance, the trace model for the first configuration is the set of sequences:
+{\bf Binding parameters activity:}  This activity weaves scenarios and product configurations in order to resolve all scenario parameters. 
+For example, step P2 in Figure~\ref{fig:proceed-to-checkout} has a reference 
+ to the \emph{ShipMethod} parameter, whose domain values are defined in the product configuration. For instance, in the first configuration depicted in Figure~\ref{fig:product-config-01-02}, the parameter \emph{ShipMethod} might assume the values \emph{Economical} or \emph{Fast}. 
+In order to reduce the coupling between scenario specifications and feature model, a mapping is used for relating scenario parameters to features. In fact, this mapping is another input artifact of our modeling framework; but it was not represented in Figure because it was just introduced for avoiding explicit dependences between feature and use case models.  
 
-\begin{small}
-\begin{tabular}{rlc}
-$Trace_{C1}$ = & \{<>, <idle>, <idle, 1S>, <idle, 1S, 2S>, \\ 
-                    & <idle, 1S, 2S, 3S>,  <idle, 1S, 2S, 3S, end>, \\ 
-                    & <idle, 1M>, <idle, 1M, 2M>, \ldots, \\ 
-                    & <idle, 1M, 2M, 3M, 4M.ShipMethod, 5M, end> \}
-\end{tabular}
-\end{small}
- 
-{\bf Binding parameters activity:}  This optional activity takes as input the assembled scenarios and the product configuration and generates 
- a trace model resolving all parameters referenced by the steps. For example, step 4M in Figure~\ref{fig:buy-product-basic-flow} has a reference 
- to the parameter \emph{ShipMethod}. The parameter values are defined in the product configuration.
- 
-For instance, in the first configuration depicted in Figure~\ref{fig:product-config-01-02}, the parameter \emph{ShipMethod} might assume the values \emph{Economical} or \emph{Fast}. In order to reduce the coupling between scenario specifications and feature model, a mapping (or environment) is used for relating scenario parameters to features. For each trace that contains a parameterized event (or step), this activity creates a new trace for all of the possible parameter values. Consequently, resolving parameters for the trace $<idle,1M,2M,3M,4M.ShipMethod>$ results in the following sequences:
- 
-\begin{center} 
-\begin{small}
-\begin{tabular}{c}
-<idle,1M,2M,3M,4M.Economical>, \\ <idle,1M,2M,3M,4M.Fast>, \\
-\end{tabular}
-\end{small}
-\end{center}
+%===================
+% Trace model discussion
+%===================
 
-Next, we introduce the modeling framework used to formally describe the composition processes introduced in this running example. 
+%For each trace that contains a parameterized event (or step), this activity creates a new trace for all of the possible parameter values. Consequently, resolving parameters for the trace $<idle,1M,2M,3M,4M.ShipMethod>$ results in the following sequences:
+% 
+%\begin{center} 
+%\begin{small}
+%\begin{tabular}{c}
+%<idle,1M,2M,3M,4M.Economical>, \\ <idle,1M,2M,3M,4M.Fast>, \\
+%\end{tabular}
+%\end{small}
+%\end{center}
+
+Next, we introduce the modeling framework used to formally describe the weaving processes just presented. 
 
 
-\subsection{Modeling Framework}
+\subsection{Modeling Framework}\label{sub:modeling-framework}
 
-As presented before, we are proposing, based on the Masuhara and Kiczales work~\cite{kiczales-ecoop-2003}, a crosscutting 
+As mentioned before, we are proposing, based on the Masuhara and Kiczales work~\cite{kiczales-ecoop-2003}, a crosscutting 
 variability management approach. Their requirement for characterizing a mechanism as crosscutting is fulfilled by our approach, since different specifications contribute to the definition of a specific SPL member. Additionally, due to its crosscutting nature, the modeling framework proposed in~\cite{kiczales-ecoop-2003}  is suitable for formalizing variability management compositions. 
 Our weaving process is modularized in three major components, formally described in sections~\ref{sub:pd-weaver}, \ref{sub:sc-weaver}, \ref{sub:bind-weaver}. Actually, each of this components is also a weaver. As a customization of MK work, our modeling framework, used to describe these weavers, is an 7-tuple (Eq.~\ref{eq:tuple} and Table~\ref{tab:tup-01}) that highlights the importance of the composition process languages. 
 
