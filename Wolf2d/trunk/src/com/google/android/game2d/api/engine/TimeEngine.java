@@ -102,5 +102,11 @@ public class TimeEngine {
 	public int getFramesPerSecond() {
 		return framesPerSecond;
 	}
+
+	public void reset() {
+		this.lastTime = System.currentTimeMillis();
+		timeAccumulator = 0;
+		frameCount = 0;
+	}
 	
 }
