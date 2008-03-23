@@ -22,7 +22,7 @@ public class WolfEngine extends GameEngine {
 		firstScene = new BackgroundView(activity, WolfFactory.instance(), ImageEngine.instance().getFirstSceneBitmap());
 		firstScene.setFocusable(true);
 		activity.addContentView(firstScene, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-		isRunning = true;
+		paused = true;
 	}
 	
 	@Override
@@ -31,7 +31,7 @@ public class WolfEngine extends GameEngine {
 	}
 
 	@Override
-	public void initLoop() {
+	public void loop() {
 		
 	}
 

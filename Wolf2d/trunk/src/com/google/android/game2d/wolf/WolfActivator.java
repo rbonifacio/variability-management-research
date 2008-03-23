@@ -11,6 +11,6 @@ public class WolfActivator extends Activity {
 		ImageEngine.initialize(getResources());
 		WolfFactory.initialize(this);
 		WolfFactory.instance().getEngine().initialize();
-		WolfFactory.instance().getEngine().initLoop();
+		WolfFactory.instance().getEngine().loop();
 	}
 }
