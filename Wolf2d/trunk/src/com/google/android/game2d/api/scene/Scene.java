@@ -1,7 +1,6 @@
 package com.google.android.game2d.api.scene;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import android.graphics.Bitmap;
@@ -62,6 +61,17 @@ public abstract class Scene {
 	 */
 	public abstract void execute();
 	
+	
+	public abstract void initialize();
+	
+	/**
+	 * Call the update method of all live 
+	 * elements of the scene. 
+	 */
+	public void update() {
+		
+	}
+	
 	public void draw() {
 		for (Layer layer : layers) {
 			if(layer.isVisible()) {
@@ -98,6 +108,8 @@ public abstract class Scene {
 		AbstractSprite[] array = new AbstractSprite[sprites.size()];
 		return sprites.toArray(array);
 	}
+
+	 
 	
 	
 }

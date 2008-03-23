@@ -49,6 +49,8 @@ public abstract class GameEngine {
 	 * must be updated.
 	 */
 	public void gameLoop() {
+		InputManager.instance().reset();
+		
 		TimeManager.instance().update();
 		
 		currentScene.draw();
@@ -56,6 +58,7 @@ public abstract class GameEngine {
 			currentScene.update();
 			currentScene.execute();
 		}
+	
 	}
 	
 	/**
