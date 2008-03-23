@@ -67,7 +67,7 @@ public abstract class GameEngine {
 	}
 	
 	public void resume() {
-		TimeEngine.reset();
+		TimeEngine.instance().reset();
 		paused = false;
 	}
 	
