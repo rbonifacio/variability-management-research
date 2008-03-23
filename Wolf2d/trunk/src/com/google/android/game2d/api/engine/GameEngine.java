@@ -14,7 +14,7 @@ public abstract class GameEngine {
 	protected Activity activity;
 	protected boolean paused;
 	protected Scene currentScene;
-	protected SceneEngine sceneEngine;
+	protected SceneManager sceneEngine;
 	
 	
 	public GameEngine(Activity activity) {
@@ -27,7 +27,7 @@ public abstract class GameEngine {
 	 */
 	public  void initialize() {
 		paused = false;
-		TimeEngine.instance().initialize();
+		TimeManager.instance().initialize();
 		currentScene = sceneEngine.getSceneAt(0);
 	}
 	
@@ -39,7 +39,7 @@ public abstract class GameEngine {
 	public void setCurrentScene(int idx) {
 		currentScene = sceneEngine.getSceneAt(idx);
 		currentScene.initialize();
-		TimeEngine.instance().reset();
+		TimeManager.instance().reset();
 	}
 	
 	/**
@@ -49,7 +49,7 @@ public abstract class GameEngine {
 	 * must be updated.
 	 */
 	public void gameLoop() {
-		TimeEngine.instance().update();
+		TimeManager.instance().update();
 		
 		currentScene.draw();
 		if(!paused) {
@@ -67,7 +67,7 @@ public abstract class GameEngine {
 	}
 	
 	public void resume() {
-		TimeEngine.instance().reset();
+		TimeManager.instance().reset();
 		paused = false;
 	}
 	

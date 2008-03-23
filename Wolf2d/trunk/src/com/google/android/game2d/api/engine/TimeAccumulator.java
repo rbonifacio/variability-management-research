@@ -20,7 +20,7 @@ public class TimeAccumulator {
 	}
 	
 	public void update() {
-		timeAccumulated += TimeEngine.instance().getFrameTime();
+		timeAccumulated += TimeManager.instance().getFrameTime();
 	}
 	
 	public boolean ended() {

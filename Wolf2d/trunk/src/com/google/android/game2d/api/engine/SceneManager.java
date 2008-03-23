@@ -11,7 +11,7 @@ import com.google.android.game2d.api.scene.Scene;
  * 
  * @author rbonifacio - rba2@cin.ufpe.br
  */
-public interface  SceneEngine {
+public interface  SceneManager {
 
 	public Scene getSceneAt(int idx);
 

@@ -11,7 +11,7 @@ package com.google.android.game2d.api.engine;
  * 
  * @author rbonifacio - rba2@cin.ufpe.br
  */
-public class TimeEngine {
+public class TimeManager {
 	
 	/** 
 	 * Used to guarantee that a game will be running at a 
@@ -26,7 +26,7 @@ public class TimeEngine {
 	 */
 	public static final long MAX_FRAME_INTERVAL = 50;
 	
-	private static TimeEngine instance;
+	private static TimeManager instance;
 	private long lastTime;
 	private long frameTime;
 	private long timeAccumulator;
@@ -38,14 +38,14 @@ public class TimeEngine {
 	/** 
 	 * @return unique instance of TimeEngine
 	 */
-	public static TimeEngine instance() {
+	public static TimeManager instance() {
 		if (instance == null) {
-			instance = new TimeEngine();
+			instance = new TimeManager();
 		}
 		return instance;
 	}
 
-	private TimeEngine() { 
+	private TimeManager() { 
 		priventLowDown = true;
 		timeAccumulator = 0;
 		frameCount = 0;
