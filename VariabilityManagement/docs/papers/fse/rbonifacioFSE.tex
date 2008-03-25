@@ -1,5 +1,5 @@
 \documentclass{acm_proc_article-sp}
-\usepackage{hyperref}
+%\usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{epsfig}
@@ -35,16 +35,16 @@ Paulo Borba\\
 Variability management is a common challenge for Software Product
 Line (SPL) adoption, since developers need suitable
 mechanisms for describing or implementing different kinds of variability
-that might occurs at different SPL views (requirements, design,
-implementation, and test). In this paper, we present a framework for
-modeling use case scenario variability mechanisms, enabling a better
+that might occur at different SPL views (requirements, design,
+implementation, and test). In this paper, we present an approach for
+use case scenario variability management, enabling a better
 separation of concerns between languages used to manage
 variabilities and languages used to specify use case scenarios. The
 result is that both representations can be understood and evolved in
 a separated way. We achieve such goal by modeling variability management
-as a crosscutting phenomenon, for the reason that features often affect
-different points of each SPL view. Additionally, we believe that our proposed framework might be customized to 
-describe variability mechanisms in other SPL artifacts, being a contribution for automatic product generation and traceability.
+as a crosscutting phenomenon, for the reason that artifacts such as feature models, 
+product configurations, and configuration knowledge crosscut each 
+other with respect to a SPL specific member. 
 \end{abstract}
 
 \category{D.2.1}{Software Engineering}{Requirements}[Languages,
@@ -68,56 +68,56 @@ Such crosscutting characteristic is materialized whenever a feature
 requires variation points to be spread in different SPL artifacts. Actually, 
 the representation of a variant feature is often spread not only 
 in several artifacts, but also at the different product line views (requirements, 
-design, implementation, and test). In this case, variability management, in 
+design, implementation, and test). So, variability management, in 
 the same way as the feature model and the architecture, represents a central concern in the SPL 
 development and should not be tangled with existing artifacts~\cite{phol-spl-book}.   
  
-Several authors have proposed the use of \emph{aspect-oriented} mechanisms in order to better modularize variability management at source code~\cite{alves-gpce-06,mmedeiros-lawasp-2007}. However, to our knowledge, no attempt has been done to verify which are the crosscutting mechanisms that could be applied for managing variabilities at requirements, design, and test artifacts. Actually, current techniques for scenario variability management~\cite{favaro-icsr-98,bertolino-esec-2003,eriksson-splc-2005} do 
-not present a clear separation between variability management and scenario specification. For instance, supposing that  product variants are tangled with  use case scenarios, if one variant is removed from the product line, it would be necessary to change all related scenarios. In summary, it is difficult to evolve both representations. 
+Several authors have proposed the use of \emph{aspect-oriented} mechanisms in order to better modularize the composition of common and variant assets of a product line~\cite{sousa:aosd-ea04, moreira-re07, eriksson-splc-2005, pohl-caise-2005, alves-gpce-06, apel-icse2006}. 
+However, here we go beyond this composition issue. We mainly consider a more encompassing notion of variability management, including artifacts such as feature 
+models~\cite{gheyi-alloy-06,czarnecki-book} and configuration knowledge~ \cite{czarnecki-book, phol-spl-book}, and explain it  as a crosscutting phenomenon.
 
-Another problem is the lack of a formal representation for the weaving processes used 
-to derive product specific scenarios. This is not suitable for current SPL generative 
+In this paper, we apply this view of \emph{variability management as crosscutting} for modularizing SPL use case scenarios. Current techniques for scenario variability management~\cite{favaro-icsr-98,bertolino-esec-2003,eriksson-splc-2005} do 
+not present a clear separation between variability management and scenario specification. For instance, supposing that details about product variants are tangled with  use case scenarios, if one variant is removed from the product line, it is necessary to change all related scenarios. In summary, it is difficult to evolve both representations. 
+Another problem is the lack of a formal representation for the derivation of product specific scenarios. This is not suitable for current SPL generative 
 practices~\cite{krueger-cacm-200712}; following the aforementioned works, it is difficult to automatically derive 
 the requirements of a specific SPL member and to check if the specified compositions 
-between basic and variant flows are correct.  Although  the semantic composition of PLUC (Product 
+between common and variant flows are correct.  Although  the semantic composition of PLUC (Product 
 Line Use Case)~\cite{bertolino-esec-2003} is defined in~\cite{fantechi-splc-2004}, such approach 
-does not separate scenario specification from variability management. In order to explain in more details 
-the problems addressed by this work, a motivating example is presented  in Section~\ref{sec:example}.  
+does not separate scenario specification from variability management, as presented in Section~\ref{sec:example}.  
 
-In this paper, we describe a framework for modeling the composition 
-process of scenario variabilities (Section~\ref{sec:models}). 
+In order to formalize our approach, we describe 
+a framework for modeling the composition process of scenario variabilities with feature models, product configuration, and configuration knowledge (Section~\ref{sec:models}). 
 Such framework aims to: (1) represent a clear separation between variability management 
 and scenario specification; and (2) specify how to weave these representations in order to generate
 specific scenarios for a SPL member. Therefore, the main contributions of this work are
 
 \begin{itemize}
 
-\item A formal characterization of variability management as a crosscutting concern and, in this way, enforce that it  
-must be represented as an independent view of the SPL. Although this work focus on requirement artifacts, 
+\item Characterize the broader notation of variability management as a crosscutting concern and, in this way, propose an approach where it is  represented as an independent view of the SPL. Although this work focus on requirement artifacts, 
 more specifically use case scenarios, we argue that such separation is also valid for other SPL views. Actually,
-it has already been claimed for source code~\cite{alves-gpce-06,mmedeiros-lawasp-2007}.
+it has already been claimed for source code~\cite{alves-gpce-06, apel-icse2006}, without considering the importance of variability artifacts.  
   
 \item A framework for modeling the composition process of scenario variability mechanisms. 
-This framework gives a basis for describing variability mechanisms, 
+This framework gives a basis for describing variability mechanisms (such as parameterization), 
 allowing a better understanding of each mechanism. In this work, such framework is used for modeling 
-the semantics of scenario variation mechanisms, but it might be customized for other SPL views.
+the semantics of scenario variability mechanisms, but it might be customized for other SPL views.
 
-\item Describe three scenario variation mechanisms using the
-modeling framework. Such descriptions present
+\item Describe three scenario variability mechanisms (selection of optional scenarios, scenario composition, scenario parameterization) 
+using the modeling framework. Such descriptions present
 a more formal representation when compared to existing works; this is an
 important property for supporting the automatic derivation of product
 specific artifacts.
 
 \end{itemize}
 
-Since our modeling framework is based on Masuhara and Kiczales work~\cite{kiczales-ecoop-2003}, another 
-contribution of this paper is that we have applied their definition about \emph{what} characterize a mechanism as crosscutting in the domain of variability management. Based on their view of crosscutting, we can reason about variability management as a crosscutting concern that weaves different input specifications in order to derive a product specific member. 
+Since our concept of crosscutting mechanism is based on Masuhara and Kiczales work~\cite{kiczales-ecoop-2003}, another 
+contribution of this paper is that we apply their ideas to the languages of variability management,  reinforcing the generality of their model, which was originally instantiated only for mechanisms of aspect-oriented programming languages. Based on their view of crosscutting, we can reason about variability management as a crosscutting concern that involves different input specifications that contribute to derive a specific member of a 
+given SPL. 
 
 Finally, we evaluate our approach (Section~\ref{sec:evaluation}) by comparing it 
-to existing works and observing a set of three criteria: support for the 
-different kinds of variability, separation of concerns, and design expressiveness.  We 
-also relate our work with other research topics (Section~\ref{sec:related}) and present our concluding 
-remarks in Section~\ref{sec:conclusions}.
+to existing works on different product lines.  We 
+also relate our work with other research topics (Section~\ref{sec:related}) and present 
+our concluding remarks in Section~\ref{sec:conclusions}.
 
 %-----------------------------------------------------------------------
 % Subsection: Motivating example
@@ -125,7 +125,7 @@ remarks in Section~\ref{sec:conclusions}.
 \section{Motivating Example}
 \label{sec:example}
 
-In order to customize specific products, by selecting a valid feature configuration, variant points must be represented in the 
+In order to customize specific products, by selecting a valid feature configuration, variantion points must be represented in the 
 product line artifacts. Several variant notations have been proposed for use case scenarios, like  Product Line Use Cases (PLUC)~\cite{bertolino-esec-2003} and Product Line Use Case Modeling for Systems and
 Software Engineering (PLUSS)~\cite{eriksson-splc-2005}. However, besides
 the benefits of variability support, existing works do not present a clear separation between variability 
@@ -136,11 +136,10 @@ The main use cases of the \emph{eShop Product Line} (EPL)
 allow the user to \emph{Register as a Customer}, \emph{Search for Products}, 
 and \emph{Buy Products}.  Five variant features are described in the original specification,
 allowing a total  of 72 applications to be derived from the product line~\cite{eshop-url}. Here, 
-we consider extra features, such as \emph{Update User Preferences} that, based on the user historical data of searches 
-and purchases, updates user preferences. Figure~\ref{fig:eshop-fm} presents part of the \emph{eShop} feature model~\cite{gheyi-alloy-06,czarnecki-book,kang-foda-report}. 
-As a brief introduction about the feature model notation, the relationships between a parent and its child are 
+we consider extra features, such as \emph{Update User Preferences}, which, based on the user historical data of searches 
+and purchases, updates user preferences. Figure~\ref{fig:eshop-fm} presents part of the \emph{eShop} feature model~\cite{gheyi-alloy-06,czarnecki-book}; the relationships between a parent and its child are 
 categorized as: \emph{Optional} (features that might not be selected in a specific product), \emph{Mandatory} (feature that must be selected, if the parent is also 
-selected), \emph{Or} (one or more subfeatures might be selected), and \emph{Alternative} (exactly one subfeature must be selected).     
+selected), \emph{Or} (one or more subfeatures might be selected), and \emph{Alternative} (exactly one subfeature must be selected for each product).     
 
  \begin{figure}[h]
  \begin{center}
@@ -157,7 +156,7 @@ selected), \emph{Or} (one or more subfeatures might be selected), and \emph{Alte
 %number of use cases that is not suitable for managing activities.
 
 In the PLUSS approach, all variant steps of a scenario specification are defined in the same artifact. For example, steps 1(a) and 1(b) in Figure ~\ref{fig:pluss-01} are 
-never performed together. They are alternative steps: Step 1(a) will be present only if the \emph{Shopping Cart} feature is selected (otherwise Step 1(b) will be present). In a similar way, we have to choose between options (a) and (b) for Step 2 (depending on the \emph{Bonus Feature} has been selected or not). Finally, Step 6 is optional and will be present only if the feature \emph{Update User Preference} is selected. 
+never performed together. They are alternative steps: Step 1(a) will be present only if the \emph{Shopping Cart} feature is selected (otherwise Step 1(b) will be present). In a similar way, we have to choose between options (a) and (b) for Step 2 (depending on the \emph{Bonus Feature} has been selected or not). Finally, Step 6 is optional and will be present only if the feature \emph{Update User Preference} is selected. In this technique, such restrictions are documented in feature models.
 
 
 \begin{figure}[h]
@@ -183,12 +182,12 @@ never performed together. They are alternative steps: Step 1(a) will be present 
 \end{center}
 \end{figure}
 
-Following this approach, it is hard to understand a specific configuration because all possible variants are described in the same artifact. Also, such tangling between variant representation and scenario specification results in maintainability issues: introducing a new product variant might require changes in several points of existing artifacts.  For example, including a \emph{B2B Integration} feature, which allows the integration between partners in order to share their warehouses, might change the specification of \emph{Buy Product} scenario, enabling the search for product availability in remote warehouses (a new variant for Step 1) and updating a remote warehouse when the user confirms the purchase (a new variant for step 5). Moreover, the inclusion of this new optional feature also changes the specification of \emph{Search for Products} scenario (the search might also be remote). In summary, since the behavior of certain features can be spread among several specifications and each specification might describe several variants, the efforts needed to understand and evolve the product line might increase.    
+Following this approach, it is hard to understand the behavior of a specific product because all possible variants are described in the same artifact. Also, such tangling between variant representation and scenario specification results in maintainability issues: introducing a new product variant might require changes in several points of existing artifacts.  For example, including a \emph{B2B Integration} feature, which allows the integration between partners in order to share their warehouses, might change the specification of the \emph{Buy Product} scenario, enabling the search for product availability in remote warehouses (a new variant for Step 1) and updating a remote warehouse when the user confirms the purchase (a new variant for Step 5). Moreover, the inclusion of this new optional feature also changes the specification of the \emph{Search for Products} scenario (the search might also be remote). In summary, since the behavior of certain features may be spread among several specifications and each specification might describe several variants, the effort needed to understand and evolve the product line might increase.    
 
 Instead of relating each variant step to a feature, PLUC introduces special tags for representing 
 variabilities in use case scenarios. For example, the VP1 tag in Figure~\ref{fig:pluc-01}, which also 
-describes the \emph{Buy Products} scenario, denotes a variation point that might assumes the 
-values ``\emph{checkout}'' or ``\emph{buy item}'', depending on which product was configured. For 
+describes the \emph{Buy Products} scenario, denotes a variation point that might assume the 
+values ``\emph{checkout}'' or ``\emph{buy item}'', depending on which product is configured. For 
 each \emph{alternative} or \emph{optional} step, one tag must be defined. The actual value
 of each tag is specified in the \emph{Variation Points} section of the scenario specification. 
 
@@ -232,17 +231,17 @@ A different kind of tangling occurs in this case, since segments of the specific
 points. Additionally, SPL members are also described using the same tag notation (see the \emph{Product Definition} section 
 in Figure~\ref{fig:pluc-01}). There is no explicit relationship between product configurations and feature models. In the example, 
 two products (P1 and P2) are defined. The first product is implicitly configured by selecting the \emph{Shopping Cart}, 
-\emph{Bonus}, and \emph{Update User Preferences} features. The second model, instead, is not configured 
-with such features. 
+\emph{Bonus}, and \emph{Update User Preferences} features. The second model, however, is not configured with such features. 
 
+\newpage
 Since the values of alternative and optional variation points are computed based on the defined products, instead 
-of specific feature, the inclusion of a new member in the product line might require a deeply review of 
-variation points. Moreover, since the variation points and the product definitions are spread among several scenario specifications, it is hard and time consuming to keep the SPL consistent. Finally, the same definitions (product configuration and variation points) often are useful to manage variabilities in other artifacts, such as design and source code. As a consequence, this approach requires the replication of such definitions in different SPL views - if the SPL evolved, changes would be propagated throughout many artifacts.
+of specific features, the inclusion of a new member in the product line might require a deep review of 
+variation points. Moreover, since the variation points and the product definitions are spread among several scenario specifications, it is hard and time consuming to keep the SPL consistent. Finally, the same definitions (product configuration and variation points) often are useful to manage variabilities in other artifacts, such as design and source code. As a consequence, this approach requires the replication of such definitions in different SPL views --- when the SPL evolves, changes are propagated throughout many artifacts.
 
-In summary, both techniques rely on simple composition techniques: filtering variant steps in scenarios or syntactic changes of tag values based on product definition. In this sense, they are similar to conditional compilation techniques, which have been applied to implement variability at source code. Such techniques are not suitable for modularizing the crosscutting nature of certain features, has poor legibility, and leads to lower maintainability~\cite{alves-gpce-06}. 
-Consequently, we argue that the variability management concern should be separated from the other artifacts and used as a language for generating specific products. The automatic generation of specific product artifacts has being recommended by the SPL community~\cite{krueger-cacm-200712,greenfield-softwarefactories,czarnecki-book}, in such way that the combination of generative techniques, aspect oriented programming, and software product line should be further investigated. In this case, in order to support the automatically derivation of product specific artifacts, it is necessary not only a more precise definition of each language used to describe product line artifacts and the variability management concern, but also the weave processes used to combine them. PLUSS and PLUC approaches fail in this direction, since Eriksson et al., although present the metamodel of PLUSS notation~\cite{eriksson-splc-2005}, do not describe which languages and processes are used for relating use case scenarios to feature models. Likewise, besides Fantechi et al. describe the formal semantics of PLUC~\cite{fantechi-splc-2004}, this approach does not separate variability management from use case scenarios.
+In summary, both approaches rely on simple composition techniques: filtering variant steps in scenarios or syntactic changes of tag values based on product definition. In this sense, they are similar to conditional compilation techniques, which have been widely applied to implement variability at source code. Such techniques are not suitable for modularizing the crosscutting nature of certain features, have poor legibility, and lead to lower maintainability~\cite{alves-gpce-06}. 
+Consequently, we argue that the variability management concern should be separated from the other artifacts and used as a language for generating specific products. The automatic generation of specific product artifacts has been recommended by the SPL community~\cite{krueger-cacm-200712,greenfield-softwarefactories,czarnecki-book}, in such way that the combination of generative techniques, aspect oriented programming, and software product line should be further investigated. In this case, in order to support the automatic derivation of product specific artifacts, it is necessary not only to have a more precise definition of each language used to describe product line artifacts and the variability management concern, but also to formalize the weaving processes used to combine them. The PLUSS and PLUC approaches fail in this direction, since Eriksson et al. defines the metamodel of PLUSS notation~\cite{eriksson-splc-2005}, but do not describe which languages and processes are used for relating use case scenarios to feature models. Likewise, although Fantechi et al. describe the formal semantics of PLUC~\cite{fantechi-splc-2004}, this approach does not separate variability management from use case scenarios.
 
-Next section describes our approach that considers scenario variability as a composition of different artifacts. Although in this paper we are focus on use case scenarios, the idea of separating product line artifacts from variability management is also applied to other SPL views. Moreover, we believe that our modeling framework, which describes the weaving processes for handle variability management, might be customized for design, implementation, and test artifacts. 
+Next section describes our approach that considers scenario variability as a composition of different artifacts. Although in this paper we are focus on use case scenarios, the idea of separating product line artifacts from variability management (using feature models, product configurations, and configuration knowledge) is also applied to other SPL views.
 
 
 %-------------------------------------------------------------------------
@@ -350,7 +349,7 @@ of pairs \emph{User Action} x \emph{System Response}).  A use case defines a set
 
 {\bf Proceed to Purchase:} this mandatory scenario (Figure~\ref{fig:proceed-to-checkout}) specifies the common behavior that is required for confirming a purchase. Instances of the product line must be configured with this scenario. Although It can be started  either after Step B2 (from \emph{Buy a Product} scenario) or after Step V2 (from \emph{Buy Products Using Shopping Cart} scenario), just one of the paths can be available at a specific product. 
 It is important to notice that the \emph{From step} and \emph{To step} clauses are used for composing, in a quantified way, different scenario configurations without specifying all possible variants in a single artifact (as suggested in the PLUSS notation). Moreover, notice that a parameter \emph{ShipMethod} is referenced in Step 4M of Figure~\ref{fig:proceed-to-checkout}. The use of this parameter (notation also supported in PLUSS and PLUC) allows the reuse of this specification 
-for different kinds of \emph{ship method} configurations. If a product is configured with the \emph{Economical} and \emph{Fast} ship methods, the final composition of this scenario will present a sentence: \emph{\ldots available ship methods (Economical, Fast)}.
+for different kinds of \emph{ship method} configurations. 
 
 \begin{figure}[h]
 \begin{scriptsize}
@@ -465,15 +464,11 @@ In order to select the required assets (scenarios, classes and aspects, test cas
 This artifact is used for relating feature expressions to assets that must be assembled in a given product. Such artifacts allow, during product engineering, the automatic selection of assets that are required for a specific product configuration. 
 
 Table~\ref{tab:ck-running-example} presents a configuration knowledge 
-for the running example, enforcing that
-
-\begin{itemize}
-\item \emph{Proceed to Purchase} and 
+for the running example, enforcing that the \emph{Proceed to Purchase} and 
 \emph{Search for Products} are mandatory scenarios, since they are related 
 to the root feature of eShop product line;  
-\item the \emph{Buy a Product} scenario is used in the composition of products that do not have been configured with both \emph{Shopping Cart} and \emph{Bonus} features. Otherwise, if both features were selected for a product, it will be configured with the \emph{Buy Product with Cart} scenario; and
-\item finally, Table~\ref{tab:ck-running-example} states that \emph{Register User Preference} scenario is not used in composition unless the \emph{Update Preference feature} is selected.
-\end{itemize}    
+the \emph{Buy a Product} scenario is used in the composition of products that do not have been configured with both \emph{Shopping Cart} and \emph{Bonus} features --- if both features were selected for a product, it will be configured with the \emph{Buy Product with Cart} scenario; and finally, Table~\ref{tab:ck-running-example} states that \emph{Register User Preference} scenario is not used in composition unless the \emph{Update Preference feature} is selected.
+
 
 \begin{table}[th]
 \begin{center}
@@ -586,7 +581,7 @@ The complete path is a high level representation, which uses the same constructi
 For example, step P2 in Figure~\ref{fig:proceed-to-checkout} has a reference 
  to the \emph{ShipMethod} parameter, whose domain values are defined in the product configuration. For instance, in the first configuration depicted in Figure~\ref{fig:product-config-01-02}, the parameter \emph{ShipMethod} might assume the values \emph{Economical} or \emph{Fast}. 
 In order to reduce the coupling between scenario specifications and feature model, a mapping is used for relating scenario parameters to features. In fact, this mapping is another input artifact of our modeling framework; but it was not represented in Figure because it was just introduced for avoiding explicit dependences between feature and use case models.  
-
+Next, we introduce the modeling framework used to formally describe the weaving processes just presented. 
 %===================
 % Trace model discussion
 %===================
@@ -601,12 +596,14 @@ In order to reduce the coupling between scenario specifications and feature mode
 %\end{small}
 %\end{center}
 
-Next, we introduce the modeling framework used to formally describe the weaving processes just presented. 
+
 
 
 \subsection{Modeling Framework}\label{sub:modeling-framework}
 
-As mentioned before, the semantic of crosscutting, used for representing our variability management weaving process, is based on the Masuhara and Kiczales work~\cite{kiczales-ecoop-2003}. First of all, their requirement for characterizing a mechanism as crosscutting is fulfilled by our approach, since different specifications contribute to the definition of a specific SPL member. As a consequence, due to its crosscutting nature, the modeling framework proposed in~\cite{kiczales-ecoop-2003}  is suitable for formalizing variability management compositions. 
+As mentioned before, the semantic of crosscutting, used for representing our variability management weaving process, is based on the Masuhara and Kiczales work~\cite{kiczales-ecoop-2003}. 
+
+First of all, their requirement for characterizing a mechanism as crosscutting is fulfilled by our approach, since different specifications contribute to the definition of a specific SPL member. As a consequence, due to its crosscutting nature, the modeling framework proposed in~\cite{kiczales-ecoop-2003}  is suitable for formalizing variability management compositions. 
 
 For simplicity, our weaving process is formally described as being composed by three major weavers: \emph{product derivation weaver}, \emph{scenario composition weaver}, and \emph{bind parameters weaver}. As a customization of MK work, our modeling framework represents each weaver as an 6-tuple (Eq.~\ref{eq:tuple} and Table~\ref{tab:tup-01}), highlighting the contribution of each input language in the composition processes. 
 
@@ -649,9 +646,10 @@ Although in this paper we are focusing only in the selection of scenarios that s
 of the SPL, this weaver can be easily extended for managing variabilities in other kinds of assets (aiming at selecting design elements, source components, and test cases). 
 
 For instance, applying this weaver for combining the eShop use case model, feature model , and configuration knowledge with the configuration depicted in right side of Figure~\ref{fig:product-config-01-02} will result in the selection of  \emph{Buy Products with Cart}, \emph{Proceed to Purchase}, \emph{Search for Products}, ann \emph{Register User Preferences} scenarios.  
- 
-This weaver is implemented by the function \emph{pdWeaver} (Listing~\ref{lst:configure}) and takes as input 
-a \emph{SPL use case model} (UCM), a \emph{feature model} (FM), a \emph{product configuration} (PC), and a \emph{configuration knowledge} (CK). Initially, this function verifies if the product configuration is a well formed instance of the feature model (\emph{validInstance} function) --- if it is not the case,  an \emph{InvalidProduct} error is thrown. Then, the IDs of selected scenarios are computed by the \emph{configure} function. This is done by evaluating which feature expressions, defined in the list elements (x:xs) of configuration knowledge, are valid for the specific product instance (\emph{eval} function). Finally, given the resulting list of scenario IDs, the function \emph{retrieveArtifacts} returns the product specific scenarios. 
+ This weaver is implemented by the function \emph{pdWeaver} (Listing~\ref{lst:configure}) and takes as input 
+a \emph{SPL use case model} (UCM), a \emph{feature model} (FM), a \emph{product configuration} (PC), and a \emph{configuration knowledge} (CK). 
+
+Initially, this function verifies if the product configuration is a well formed instance of the feature model (\emph{validInstance} function) --- if it is not the case,  an \emph{InvalidProduct} error is thrown. Then, the IDs of selected scenarios are computed by the \emph{configure} function. This is done by evaluating which feature expressions, defined in the list elements (x:xs) of configuration knowledge, are valid for the specific product instance (\emph{eval} function). Finally, given the resulting list of scenario IDs, the function \emph{retrieveArtifacts} returns the product specific scenarios. 
 As a consequence, we can realize two levels of crosscutting in this weaver. First, the feature model, the product configuration, and the configuration knowledge crosscut each other in order to contribute to the list of valid scenario IDs composition. Then, the resulting list of scenario IDs crosscuts with the use case model for selecting the product specific scenarios.    
 
 \begin{lstlisting}[belowskip=20pt,frame=tb,caption={Product derivation weaver function},label=lst:configure]
@@ -677,14 +675,7 @@ SPL scenarios. A FM instance is only responsible for declaring the SPL features 
 them; as a consequence, there is no coupling between FMs and UCMs. Instead, relationships between features and artifacts are documented in the configuration knowledge. Finally, the PC specifies which features were selected 
 for a specific product. 
 
-
-The UCM has a greater importance over the other input languages ($UCM_{EFF}$), since it declares the parts that compose the product specific scenarios (the 
-output of this weaver process generated by the \emph{pdWeaver} function). These scenarios ($UCM_{ID}$) are used in the \emph{retriveScenarios} function in order to identify which artifacts will be assembled in the final product.     
-
-In order to identify which artifacts are required for a specific product, the \emph{configure} function ($CK_{EFF}$) checks the feature expression ($CK_{ID}$) against the product specific features ($PC_{ID}$). The effect of FM in this weaver ($FM_{EFF}$) is to check if the PC is well formed. Such evaluation is implemented by the \emph{validInstance} function and considers the PC feature selection ($PC_{EFF}$). 
-  
-
-\begin{table}[bh]
+\begin{table}[htb]
 \begin{center}
 \caption{Model of Product Derivation} \label{tab:pd-weaver}
 \begin{tabular}{p{0.6in}p{2.4in}}
@@ -713,6 +704,11 @@ In order to identify which artifacts are required for a specific product, the \e
 \end{center}
 \end{table}
 
+The UCM has a greater importance over the other input languages ($UCM_{EFF}$), since it declares the parts that compose the product specific scenarios (the 
+output of this weaver process generated by the \emph{pdWeaver} function). These scenarios ($UCM_{ID}$) are used in the \emph{retriveScenarios} function in order to identify which artifacts will be assembled in the final product.     
+
+In order to identify which artifacts are required for a specific product, the \emph{configure} function ($CK_{EFF}$) checks the feature expression ($CK_{ID}$) against the product specific features ($PC_{ID}$). The effect of FM in this weaver ($FM_{EFF}$) is to check if the PC is well formed. Such evaluation is implemented by the \emph{validInstance} function and considers the PC feature selection ($PC_{EFF}$). 
+  
 
 % ---
 % Scenario composition weaver
@@ -724,39 +720,33 @@ This weaver is responsible for the third activity of our variability management
 approach. It aims at composing variant scenarios of a use case and is applied whenever a use case scenario supports different execution paths.
 This mechanism takes as input the product specific use case model (a list of scenarios). Each scenario, often partially specified, is then composed in order to generate concrete specifications.
 
-As shown in Section{~\ref{sub:running}), a variant scenario 
+As shown in Section{~\ref{sub:running}, a variant scenario 
 might refer to steps either in basic or other variant scenarios. In order
 to compute the complete paths defined by a scenario, we need to compose the events that precede all steps referenced by its \emph{From step
 clause} (up to the IDLE step), followed by its own steps, and then by all
-events that follow all of the steps referenced by its \emph{To step clause} (down to the END step)\footnote{IDLE and END are predefined steps that
-represent the \emph{beginning} and the \emph{end points} of a
-specification.}. 
+events that follow all of the steps referenced by its \emph{To step clause} (down to the END step). 
 
-For instance, consider a product configured with the features \emph{Shopping Cart} and \emph{Bonus}, which requires the \emph{Buy Products with Cart} scenario, and with the feature \emph{Update User Preferences}. Referring to Figure~\ref{fig:buy-product-changing-flow}, the  \emph{Buy Product with Cart} scenario starts from the IDLE state (\emph{From step} clause) and then, after its own flow of events, goes to Step P1 of \emph{Proceed to Purchase} (see the \emph{To step} clause). In a similar way, Figure~\ref{fig:register-preferences-flow} depicts that \emph{Register User Preferences} scenario starts from any step that is marked with the \emph{RegisterPreferences} annotation (for example, Step P3 of of \emph{Proceed to Purchase}). In this context, the result of applying the composition scenario weaver is a concrete path of execution for this configuration, that can be represented as this sequence of step ids: 
-
-\begin{center}
-\mbox{<IDLE, V1, V2, P1, P2.ShipMethod, P3, R1, END>}.
-\end{center}
+For instance, consider a product configured with the features \emph{Shopping Cart} and \emph{Bonus}, which requires the \emph{Buy Products with Cart} scenario, and with the feature \emph{Update User Preferences}. Referring to Figure~\ref{fig:buy-product-changing-flow}, the  \emph{Buy Product with Cart} scenario starts from the IDLE state (\emph{From step} clause) and then, after its own flow of events, goes to Step P1 of \emph{Proceed to Purchase} (see the \emph{To step} clause). In a similar way, Figure~\ref{fig:register-preferences-flow} depicts that \emph{Register User Preferences} scenario starts from any step that is marked with the \emph{RegisterPreferences} annotation (for example, Step P3 of of \emph{Proceed to Purchase}). In this context, the result of applying the composition scenario weaver is a concrete path of execution for this configuration, that can be represented as this sequence of step ids: \mbox{<IDLE, V1, V2, P1, P2.ShipMethod, P3, R1, END>}.
 
 Note that this sequence still has  the \emph{ShipMethod} parameter, 
 referred in Step P2 of \emph{Proceed to Purchase} scenario. The \emph{Binding parameter weaver}, discussed in next section, is responsible for resolving parameters in the final 
 product specification.  
 
-Before formalizing the \emph{Scenario composition weaver}  in terms of our modeling framework, we 
-first discuss about the abstract representation of scenarios (Listing~\ref{lst:ucm}). We omit elements of the use case model abstract syntax that are not required for understanding this weaver. A scenario has an id, a
-description, a \emph{From step clause} (a list of references for
-existing steps), a list of steps, and a \emph{To step clause} (also
-a list of references for existing steps). A step has an id, a
-specification in the form of a tuple
-(user-action x sytem-response), and a list of annotations
-that can be used to semantically identify the step (avoiding
-fragile pointcuts). Finally, a reference to a step can be either a reference to a \emph{step id} or to a \emph{step annotation}.
+%Before formalizing the \emph{Scenario composition weaver}  in terms of our modeling framework, we 
+%first discuss about the abstract representation of scenarios (Listing~\ref{lst:ucm}). We omit elements of the use case model abstract syntax that are not required for understanding this weaver. A scenario has an id, a
+%description, a \emph{From step clause} (a list of references for
+%existing steps), a list of steps, and a \emph{To step clause} (also
+%a list of references for existing steps). A step has an id, a
+%specification in the form of a tuple
+%(user-action x sytem-response), and a list of annotations
+%that can be used to semantically identify the step (avoiding
+%fragile pointcuts). Finally, a reference to a step can be either a reference to a \emph{step id} or to a \emph{step annotation}.
 
-\begin{lstlisting}[belowskip=10pt,frame=tb,caption={Abstract syntax of scenario artifact},label=lst:ucm]
-data Scenario = Scenario id FromStep StepList ToStep
-data Step = Step Id Action Response Annotations
-\end{lstlisting}
-
+%\begin{lstlisting}[belowskip=10pt,frame=tb,caption={Abstract syntax of scenario artifact},label=lst:ucm]
+%data Scenario = Scenario id FromStep StepList ToStep
+%data Step = Step Id Action Response Annotations
+%\end{lstlisting}
+\newpage
 The \emph{Scenario Composition Weaver} is implemented by the \emph{scWeaver} function (Listing~\ref{lst:trace}), which takes 
 as input the product specific use case model (a list of scenarios computed by the previous weaver).  
 The \emph{scWeaver} function computes the complete paths of each  
@@ -772,17 +762,12 @@ line 7) is used to compose all complete paths extracted from the
 \emph{To step clause}. The \emph{match} function (also called at
 line 7), retrieves all the steps in \emph{ucm} that satisfy all 
 \emph{step references} in \emph{From step} or \emph{To step}
-clauses. Currently, this matching is based on the \emph{step id} (a
-syntactically reference) or on the list of \emph{step annotations}
-(a semantic reference). The ``+++'' operator denotes distributed
-list concatenation.
+clauses. 
 
-The model of this weaver is in Table~\ref{tab:sc-weaver}. The output ($o$ element of our modeling framework) is the complete paths of the product specific scenarios, computed directly from \emph{scWeaver} function. Therefore, the input language (L) corresponds to the product specific scenarios, related to the \emph{scWeaver} 
- parameters. 
-The join points are modeled as the final scenarios and steps in the output language. They result from the composition of partial scenarios by means of 
-\emph{from steps} and \emph{to steps} clauses ($L_{ID}$).  
-
-
+%Currently, this matching is based on the \emph{step id} (a
+%syntactically reference) or on the list of \emph{step annotations}
+%(a semantic reference). The ``+++'' operator denotes distributed
+%list concatenation.
 
 \begin{figure*}
 \begin{lstlisting}[belowskip=10pt,frame=tb,caption={Scenario composition weaver function},label=lst:trace]
@@ -798,6 +783,10 @@ traceModel (x:xs) = [] : (x) ^ (traceModel (xs))
 \end{lstlisting}
 \end{figure*}
 
+The model of this weaver is in Table~\ref{tab:sc-weaver}. The output ($o$ element of our modeling framework) is the complete paths of the product specific scenarios, computed directly from \emph{scWeaver} function. Therefore, the input language (L) corresponds to the product specific scenarios, related to the \emph{scWeaver} 
+ parameters. 
+The join points are modeled as the final scenarios and steps in the output language. They result from the composition of partial scenarios by means of 
+\emph{from steps} and \emph{to steps} clauses ($L_{ID}$).  
 The effect of the input languages ($L_{EFF}$) in the composition process is to combine 
 product specific scenarios that, before this activity, did not define a concrete flow of events. As a consequence, the \emph{match} function 
 plays a fundamental role in this process, retrieving the steps in the use case model that satisfies the \emph{From step} and \emph{To step} clauses.  
@@ -821,7 +810,6 @@ plays a fundamental role in this process, retrieving the steps in the use case m
   \end{tabular}
 \end{center}
 \end{table}
-
 
 
 After computing the complete paths (using the \emph{scWeaver} function), it is possible to derive another representation for product specific scenarios. This is essentially a \emph{trace model}, since it describe all possible sequences of events specified by the complete paths. This representation is useful for checking, for example, if a non-expected sequence of events is present in a final product, which means that a problem in the composition has occurred. Actually, we used this representation in the verification process of our model (Section~\ref{sub:model-verification}. The \emph{traceModel} function (lines 8 and 9 of Listing~\ref{lst:trace}) is responsible for computing this representation. For instance, the trace model for the the first configuration of our running example is the set of sequences:
@@ -875,6 +863,7 @@ For example, if a product is configured with either \emph{Economical} and
 the Step P2 of the \emph{Proceed to Purchase} scenario will result in the 
 representation (\emph{Economical or Fast}) in each place that the parameter \emph{ShipMethod} is referred.
 
+Table~\ref{tab:bp-weaver} describes the Bind Parameters model. This weaver just resolves parameters in scenario specifications. Therefore, its output language is also a list of scenarios; but with resolved parameters (the join points). 
 
 \begin{lstlisting}[belowskip=10pt,frame=tb,caption={Bind parameter weaver function},label=lst:bind]
 bpWeaver :: Mapping -> PC -> Step -> Step
@@ -884,12 +873,8 @@ bpWeaver m pc s =
   else replaceParameterValues m pc s
 \end{lstlisting}
 
-Table~\ref{tab:bp-weaver} describes the Bind Parameters model. This weaver just resolves parameters in scenario specifications. Therefore, its output language is also a list of scenarios; but with resolved parameters (the join points). 
-The use case model (UCM) defines the list of scenarios that might be parameterized ($UCM_{EFF}$). Each step of a scenario ($UCM_{ID}$), indeed, contributes to the definition of one join point in this weaver. The 
-other contributions come from the configuration knowledge (CK), in the sense that the domain values 
-of a parameter is defined ($CK_{EFF}$) in the product specific features; and from the mapping ($m$ parameter of the \emph{bind} function) that is used for relating parameters to features. 
 
-\begin{table}[h]
+\begin{table}[th]
 \begin{center}
 \caption{Model of Bind Parameters Weaver} \label{tab:bp-weaver}
 \begin{tabular}{p{0.7in}p{2.3in}}
@@ -915,34 +900,38 @@ of a parameter is defined ($CK_{EFF}$) in the product specific features; and fro
 \end{center}
 \end{table}
 
-In what follows, we discuss about some verifications applied to the weaving processes just presented. Such verifications were conduced by applying both \emph{random} and \emph{guided} test cases, and justify even more the choice for a low level design in Haskell programming language. 
+The use case model (UCM) defines the list of scenarios that might be parameterized ($UCM_{EFF}$). Each step of a scenario ($UCM_{ID}$), indeed, contributes to the definition of one join point in this weaver. The 
+other contributions come from the configuration knowledge (CK), in the sense that the domain values 
+of a parameter is defined ($CK_{EFF}$) in the product specific features; and from the mapping ($m$ parameter of the \emph{bind} function) that is used for relating parameters to features. 
+In what follows, we discuss about some verifications applied to the weaving processes just presented. Such verifications were conduced by applying both \emph{random} and \emph{guided} test cases.
 
 \subsection{Model Verification}\label{sub:model-verification}
 
-The low level specifications presented in the 
+The specifications presented in the 
 previous section allow us to verify if the composition 
-processes are adherent to desired properties or behavior. 
+processes have desired properties or behavior. 
 Aiming at doing that, we applied two techniques for testing 
-Haskell programs: unit tests for verifying specific scenarios; and 
-formal specifications for checking properties of the models. 
+Haskell programs: unit tests; and 
+formal specifications for checking properties of our modeling 
+framework. 
 
 Unit tests were developed using the HUnit library~\cite{hunit-tutorial}. 
-Similar to other \emph{xUnit} tools, it requires that input data and 
-expected results should be well defined. After that, it is possible to check if 
+Similar to other \emph{xUnit} tools, it requires well defined input data and 
+expected results. After that, it is possible to check if 
 a call to a \emph{function under test}, sending the previous defined input data as 
-argument, results a value equals to the expected results. 
+argument, yields a value equal to the expected results. 
 For instance, we applied unit tests for checking if the composition process 
 for the product configurations depicted in Figure~\ref{fig:product-config-01-02} 
-results in expected traces. Therefore, the trace model notation discussed in 
+yields expected traces. Therefore, the trace model notation discussed in 
 a previous section plays an important role in our verification process. 
 In order to perform such kind of checking, we first implemented 
 a \emph{refine} function (Listing~\ref{lst:traceRefinement}), 
 which checks if all sequences of traces in the \emph{model under test} (mut) are 
-present in the reference model. 
+present in the expected results --- named here as reference model. 
 
 \begin{lstlisting}[belowskip=10pt,frame=tb,caption={The \emph{traceRefinement} function},label=lst:traceRefinement]
 refine :: TraceModel -> TraceModel -> Bool
-refine mut referenceModel = 
+refine referenceModel mut = 
  and [exists (x referenceModel) | x <- mut]
 \end{lstlisting}
 
@@ -967,7 +956,7 @@ tm01 = computeTraces (fm01 pc01 ck01 ucm01)
 tm02 = computeTraces (fm01 pc02 ck01 ucm01)
 -- expected traces for configuration 01
 tc01 = 
- TestCase (assertBool (refine data01 tm01))
+ TestCase (assertBool (refine tm01 data01 tm01))
 
 -- non-expected traces for configuration 02
 tc04 = 
@@ -975,30 +964,31 @@ tc04 =
 \end{lstlisting}
 
 Based on the examples just presented, unit tests are useful for 
-verifying the absence of errors under well defined scenarios 
+verifying the presence of errors under well defined test cases 
 (described by the input data and expected results). A complementary 
-approach consists in checking properties based on formal 
+approach consists in checking function properties based on formal 
 specifications. In order to perform this kind of verification, we use 
-the \emph{QuickCheck} library~\cite{claessen00-icfp-2000}, which provides: 
+the \emph{QuickCheck} library~\cite{claessen00-icfp-2000}, which provides 
 an \emph{embedded specific language} that is used to specify 
 properties of Haskell programs; and several functions for checking 
-formal properties and for generating randomly input data. 
-
+formal properties and for randomly generating input data. 
 This second verification approach is also suitable in our context since 
 several properties related to each input model (or to the compositions between them) 
 should be obeyed. Applying just unit tests for checking these properties may 
-require a great effort for designing and implementing input data and expected results 
-for each interesting scenario for testing. On the other hand, this formal technique 
+require a huge effort for designing and implementing input data and expected results 
+for each interesting test scenario. On the other hand, this formal technique 
 requires the specification of properties that a \emph{function under test} 
-should hold. Then, these properties are checked against randomly input data. It is important 
-to notice that functions for generating input data can be overloaded in the \emph{QuickCheck} 
-library, which means that we can define the generation of data based on occurrence probabilities.
+should hold. These properties are then checked against randomly input data. 
+
+%It is important 
+%to notice that functions for generating input data can be overloaded in the \emph{QuickCheck} 
+%library, which means that we can define the generation of data based on occurrence probabilities.
 
 We applied this verification technique for checking several properties of feature modeling (briefly introduced in Section~\ref{sec:example}). For example, an alternative feature requires exactly one sub feature to be selected in a product configuration. Using the \emph{QuickCheck} library, this property can be expressed as the function \emph{prop\_ExactlyOneSelected} in Listing~\ref{lst:quick-check}. 
-It takes two feature as parameters and returns a property to be checked. The first parameter (fm) should be an alternative feature (from feature model). The second one (fc), instead, is a corresponding feature from the product configuration. If the number of children of \emph{fc} is different then one (the expression before the implies symbol), it is expected that a call for \emph{existError} function will return \emph{True}. After specifying this kind of properties, it is possible verify if they hold for several configurations of random input data. Most of our tests were performed using specific generators.      
+It takes two feature as parameters and returns a property to be checked. The first parameter (fm) should be an alternative feature (from a feature model). The second one (fc), instead, is a corresponding feature from the product configuration. If the number of children of \emph{fc} is different than one (the expression before the implies symbol), it is expected that a call to the \emph{existError} function will return \emph{True}. After specifying this kind of property, it is possible to verify if they hold for different input data.  
 
-\begin{figure*} 
-\begin{lstlisting}[belowskip=10pt,frame=tb,caption={Example of QuickCheck property},label=lst:quick-check]
+\begin{figure*}
+ \begin{lstlisting}[belowskip=10pt,frame=tb,caption={Example of QuickCheck property},label=lst:quick-check]
 prop_ExactlyOneSelected :: Feature -> Feature -> QuickCheck.Property 
 prop_ExactlyOneSelected fm fc = (not (length (children fc) == 1)) => 
  existError (checkAlternativeFeature fm fc) 
@@ -1007,10 +997,9 @@ prop_ExactlyOneSelected fm fc = (not (length (children fc) == 1)) =>
 
 We also performed this kind of verification for checking properties related to the weaving process. For instance, we defined properties for checking if all scenario parameters are related exclusively to \emph{alternativeFeatures} or \emph{orFeatures}. Such constraint was discussed in the previous section.  
 
-Both verification approaches were important to improve the confidence of our models. Actually, several unit tests and formal specifications reveal to us possible improvements --- some  of them are still open. For example, an unexpected behavior was identified when two scenarios refer to each other using the \emph{From step} and \emph{To step} clauses. 
-To our knowledge, none of existing works for representing variability management in scenarios apply these level of verifications.
+Both verification approaches were important to improve the confidence of our models. Actually, several unit tests and properties revealed to us interesting case; we were not initially concerned with some of them. To our knowledge, no existing work for representing variability management in scenarios apply these level of verifications.
 
-Next section we present an evaluation of our approach based on the 
+In the next section we present an evaluation of our approach based on the 
 specification of SPLs in different domains. 
 
 %=============================
@@ -1028,7 +1017,7 @@ Based on the last application of our approach, we noticed the benefits of a clea
 \subsection{DSM Analysis}
 For now, let us reproduce the DSMs to understand the benefits of SoC in variability management. DSMs is an interesting and simple tool for visualizing dependences between design decisions~\cite{clark-design-rules-book}. Such decisions appear in the rows and columns of a matrix. We can identify a dependency by observing the columns in a given row~\cite{clark-design-rules-book}. For example, the first row in Figure~\ref{dsm:pluc} indicates that the task of creating the feature model depends on the task of creating the use case model. The first can not be independently performed after the second. As presented in Section~\ref{sec:example}, the PLUC approach describes product instances and variability space at specific sections of use cases. Therefore, it is not possible to evolve variability management (introducing new features, products, or relations between features and artifacts) without reviewing the use case model.  This is expressed in the non modular DSM of Figure~\ref{dsm:pluc}, which depicts cyclical dependences between use cases and variability management artifacts. 
 
-\begin{figure}[hb]
+\begin{figure}[htb]
 \centering
 \begin{small}
 \begin{tabular}{llllll} \hline
@@ -1044,7 +1033,7 @@ For now, let us reproduce the DSMs to understand the benefits of SoC in variabil
 \end{figure}
 
 Our approach reduces the dependences between variability management and scenario specifications 
-(Figure~\ref{dsm:cc}). For instance, changes in feature model or new definitions of products do not require changes in the use case model. This clear separation is also necessary in source code, as claimed in~\cite{alves-gpce-06,mmedeiros-lawasp-2007}, and might be required in other artifacts too. Notice that the proposed mapping artifact, used to relate use cases parameters and features (Section~\ref{sub:bind-weaver}), can be considered as a design rule, since it primarily aims at decoupling use cases and features.  
+(Figure~\ref{dsm:cc}). For instance, changes in feature model or new definitions of products do not require changes in the use case model. This clear separation is also necessary in source code, as claimed in~\cite{alves-gpce-06, apel-icse2006}, and might be required in other artifacts too. Notice that the proposed mapping artifact, used to relate use cases parameters and features (Section~\ref{sub:bind-weaver}), can be considered as a design rule, since it primarily aims at decoupling use cases and features.  
 
 \begin{figure}[h]
 \centering
@@ -1066,6 +1055,7 @@ Our approach reduces the dependences between variability management and scenario
 
 For confirming the observations derived from the DSM analysis, we applied the metric suite for 
 the \emph{MMS} and \emph{Pedagogical} product lines. We compared our specification of \emph{MMS} product line to the specifications we wrote for both PLUC and PLUSS techniques~\cite{spg-url}.  
+
 In a similar way, we compared our specification of the \emph{Pedagogical} product line 
 to a specification that was sent to us by the authors of the PLUSS approach. 
 
@@ -1124,7 +1114,7 @@ SS 					& 75		& 64		& 56		\\	\hline
 
 Since PLUC and PLUSS do not allow a
 scenario to crosscut other scenarios in different use cases, it
-is difficult to modularize features into use cases. The
+is difficult to modularize features. The
 result is that, when comparing to the crosscutting approach,
 features, on the average,  are more 
 diffused (FDU, FDS, and FSS metrics) and use cases are
@@ -1141,7 +1131,7 @@ The lack of crosscutting mechanisms for composing scenarios of different use cas
   \label{fig:fds-mms}
   \end{center}
 \end{figure}
-  
+
 \subsubsection{Pedagogical Product Line}
 
 We compared our approach against two specifications of the Pedagogical Product Line (PPL): the original one~\cite{ppl-url}, proposed by the Software Engineering Institute, and a specification that was sent to us by the authors of the PLUSS technique. 
@@ -1166,9 +1156,7 @@ SS 					& 44		& 38		& 32		\\	\hline
 \end{small}
 \end{table}
 
-Still in this context, our approach also achieves some improvements in the resulting specifications. The main factor for these improvements in the \emph{Pedagogical} product line was the error handling modularization. In both SEI and PLUSS specifications, the \emph{error handling} concern was spread into several use cases.    
-
-However, by applying our approach, all behavior related to the \emph{error handling} concern is specified in a single use case. The composition of \emph{error handling} with the basic scenarios was done by means of annotations attributed to the corresponding steps. For instance, Figure~\ref{fig:error-handle} depicts just one scenario for error handling: raising  an error when there is no space available. 
+Still in this context, our approach also achieves some improvements in the resulting specifications. The main factor for these improvements in the \emph{Pedagogical} product line was the error handling modularization. By applying our approach, all behavior related to the \emph{error handling} concern is specified in a single use case. The composition of \emph{error handling} with the basic scenarios was done by means of annotations attributed to the corresponding steps. For instance, Figure~\ref{fig:error-handle} depicts just one scenario for error handling: raising  an error when there is no space available. 
 
 \begin{figure}[h]
 \begin{scriptsize}
@@ -1205,8 +1193,6 @@ variability management, crosscutting modeling, and use case scenario
 composition. This section details some of these approaches, relating
 them to the proposed solution.
 
-\subsection{Variability Management}
-
 Pohl et al. argue that variability management should not be
 integrated into existing models~\cite{phol-spl-book}. Their proposed
 Orthogonal Variability Model (OVM) describes traceability links
@@ -1214,18 +1200,6 @@ between variation points and the conceptual models of a SPL. Our
 approach can be applied in conjunction with OVM, since it also
 decouple variability representation and offers a crosscutting
 mechanism for specific product requirement derivation.
-
-Hunt and McGregor proposed a pattern language for implementing
-variation points~\cite{hunt-splc-2006}. The goal is to create a
-catalogue that relates patterns of variabilities with good
-alternatives for implementing them. It is not the goal of our work
-to explicitly relate pattern variabilities with one of the proposed
-mechanisms. However, our framework is also a language for
-representing requirement variability mechanisms. Additionally, we
-believe that it can be customized to describe mechanisms in other
-SPL models.
-
-\subsection{Crosscutting Modeling}
 
 As result of the convergence between model driven development (MDD)
 and aspect oriented software development (AOSD), several works were
@@ -1238,52 +1212,47 @@ textual language is the preferred representation for scenario
 specification. Second, the use of a functional notation resulted in
 a more concise model of the weaving mechanisms.
 
-The AMPLE project aims to combine ideas from MDD and AOSD, in order
-to bind the variation points at the different SPL
-models~\cite{ample-url}. Our work is closed related with the AMPLE
-objectives, since we describe the representation (meta-model) and
-relationships between the languages involved in requirement
-variability and how they crosscut each other to derive a SPL member
-specification.
-
-\subsection{Use Case Scenario Composition}
-
 In order to avoid the problem of \emph{fragile point-cuts}, Rashid
 et al. proposed a semantic approach for scenario
 composition~\cite{rashid-aosd-2007}. Such approach is based on
 natural language processing. Using our scenario composition weaver
 (Section~\ref{sub:sc-weaver}), a scenario composition can be
 represented using references to \emph{step ids} or \emph{step annotations}, 
-which also reduce the problem of \emph{fragile point-cut}. However,
-introducing the Rashid's approach in our environment could be
-implemented without break our quantified changing mechanism. It
-would be only necessary to extend the \emph{match} function
-definition, called at line 3 of Listing~\ref{lst:trace}.
+which also reduce the problem of \emph{fragile point-cut}.
 
-\section{Conclusions and Future Work}\label{sec:conclusions}
+\section{Conclusions}\label{sec:conclusions}
 
-In this paper we argued about the crosscutting nature of 
-variability management. Since a variant feature might require
-variant points to be spread in many artifacts, it does not make sense 
-to tangle variability management with the other product line artifacts. 
+In this paper we formally described variability management as a 
+crosscutting mechanism, considering the contribution 
+of different input languages that crosscut each other for deriving 
+specific members of a product line. 
 
-In order to separate variability management and scenario specification, 
-we presented a crosscutting modeling framework for representing
-scenario variabilities. Our approach covers two important criteria previously
-defined: supporting for different kinds of variabilities and separation
-of concern (SoC) between variability representation and scenario
-specification. Although our modeling framework was proposed for handle 
-scenario variabilities, we believe that it could be customized to be applied in 
+We applied this notion of variability management in the context of use 
+case scenarios, achieving several benefits. First, applying our approach resulted in 
+a clear separation of concerns between variability and scenario specifications, 
+allowing both representations to evolve independently. Second, we achieved a reduction 
+in the size of specifications by composing scenarios in a quantified way. Finally, the 
+formal specification allowed us to perform several automatic verification in the composition 
+process. This is an interesting characteristic of our approach, since it can be used 
+for finding inconsistencies in the final products.
+
+Although our modeling framework was instantiated for representing 
+scenario variabilities, we believe that it could be applied in 
 other SPL artifacts. Particularly, optional and parameterized artifacts 
-are also relevant for non-functional requirements in a product line.
+are also relevant for non-functional requirements and test cases. 
+Additionally, our notion of crosscutting was based on a work that states \emph{what} 
+defines a source code technology as supporting crosscutting modularity. Therefore, 
+we argue that representing variabilities in source code, using our modeling framework, 
+is straightforward.   
 
-As future work, we want to identify the relationship between
-variabilities at different SPL artifacts (in a first moment, test
-artifacts). Such kind of relationships can help in the product
-generation and traceability activities of a SPL. The modeling
-framework proposed in this work takes a step in this direction, since the 
-composition process used to derive product specific scenarios have been already 
-implemented.
+%As future work, we would like to apply our notion of variability management in order 
+%to identify relationships between
+%variabilities at different SPL artifacts (in a first moment, relationships between 
+%requirements and test artifacts). Such kind of relationships can help in the product
+%generation and traceability activities of a SPL. 
+%The modeling
+%framework proposed in this work takes a step in this direction, since the 
+%composition process used to derive product specific scenarios have been formally represented.
 
 %
 % ---- Bibliography ----
