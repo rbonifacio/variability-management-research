@@ -1,0 +1,13 @@
+#TeXlipse project settings
+#Thu Apr 24 12:02:21 BRT 2008
+builderNum=0
+outputDir=
+makeIndSty=
+bibrefDir=
+outputFormat=dvi
+tempDir=tmp
+mainTexFile=design-rules.tex
+outputFile=design-rules.dvi
+langSpell=en
+markDer=true
+srcDir=
