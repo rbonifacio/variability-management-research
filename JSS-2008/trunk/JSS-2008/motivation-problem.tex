@@ -1,7 +1,142 @@
 \section{Motivation Problem}
 
-Aspect-oriented programming~\citet{kiczales-ecoop-1997} has been proposed as a technique for modularizing crosscutting concerns. 
+The concept of modularity applied to software development was first
+introduced by Parnas~\cite{parnas-on_the_criteria-cacm1972}. Such
+concept is still used as a guide for architects and is being applied
+in another areas. Modularity is closely related to design decisions
+that decompose and organize the system into a set of modules. The
+following qualities attributes are expected in a modular design:
+
+\begin{description}
+
+\item[Comprehensibility] A modular design allows developers to
+understand a module looking only at: (1) the implementation of the
+module itself; and (2) the interfaces of the other modules
+referenced by it\footnote{This comprehensibility degree is also
+known as \emph{modular reasoning}.}.
+
+\item[Changeability] A modular design enables local
+changes. If changes are necessary in the internal implementation of
+a module \emph{A}, the other modules that depend exclusively on
+\emph{A's interface} will not need to change, since there is no
+modification in the module interface.
+
+\item[Parallel development] After the specification of the module
+interfaces, a modular design enables the parallel development of
+modules. Different teams might only focus in their own modules
+development, reducing the time-to-market and the need of
+communication.
+
+\end{description}
+
+Parnas proposed the \emph{information hiding} principle as the
+criteria to be used in decomposition of systems into modules.
+According to Parnas, the parts of a system that are more likely to
+changes must be hidden into modules with stable interfaces.
+
+Aspect-Oriented Programming was proposed to modularize crosscutting
+concerns. However, constructions supported by
+AspectJ~\cite{kiczales-CACM2001} like languages can produce high
+coupling between the base code and the aspects, which may compromise
+the aforementioned modular criteria. In this section, we illustrate
+this problem through some examples.
+
+\subsection{Example 1}
+
+Suppose the requirement of synchronizing (concurrency management)
+all methods of a class. Such requirement consists of encompassing
+with synchronized blocks the bodies of all methods.
+Listing~\ref{lst:ao-synchronizing} illustrates an implementation of
+this in AspectJ.
+
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Concurrency concern tangled and scattered in EmployeeRepository.},label=lst:ao-synchronizing, numbers=left, language=Java]
+public aspect LocalSynchronization {
+
+    Object around(Object o): this(o) && execution(* EmployeeRepository.*(..)) {
+        synchronized(o) {
+            return proceed(o);
+        }
+    }
+}
+\end{lstlisting}
+\normalsize
+
+Now, suppose a new feature that requires counting the number of
+Employees registered in a given profile. Such feature might be
+implemented as a new method in the \emph{EmployeeRepository} class
+(Listing~\ref{lst:new-method}). This method does not need to be
+synchronized, since it does not manipulate a specific instance of
+\emph{Employee}.
+
+\scriptsize
+\begin{lstlisting}[frame=single, caption={A new method for counting the number of Employees.},label=lst:new-method, numbers=left, language=Java]
+public class EmployeeRepository {
+
+    public int getNumberOfEmployees(Profile profile) {
+        // Business logic to count the number of Employees
+    }
+
+}
+\end{lstlisting}
+\normalsize
+
+If a class developer oblivious about the \emph{LocalSynchronization}
+aspect decides to implement the \emph{getNumberOfEmployees} method,
+at least three problems can occur:
+
+%However, the application will not behave as presumed, since the
+%method will be synchronized by the aspect.
+
+\begin{enumerate}
+
+    \item the methods created by the class developer might not need concurrency management,
+    but they will be synchronized by the aspect;
+
+    \item if the class developer, oblivious about the aspect,
+    implements concurrency management on methods class, these methods
+    would be synchronized twice; and
+
+    \item depending on how the synchronization approaches are implemented
+    by the aspect and class developers, together they might lead the system
+    to a dealock or a livelock situation~\cite{lea-java-coop-1999}.
+
+\end{enumerate}
+
+In such cases, the expected behavior of the system could be
+compromised, since some additional synchronization would be created
+or, even worst, the system might reach a dealock or a livelock.
+
+The situation above exposes that problems of modularity have
+occurred: (1) the comprehensibility is compromised, since two
+modules should be studied in order to understand the concern; and
+(2) the parallel development is problematic, because one developer
+can implement unintended behavior into a module which, although it
+is not under his responsibility, might break the system.
+
+%Suppose a new feature that requires counting the number of Employees
+%registered in a given profile. Such feature might be implemented as
+%a new method in the \emph{EmployeeRepository} class
+%(Listing~\ref{lst:ds}). This method does not need to be
+%synchronized, since it does not manipulate a specific instance of
+%\emph{Employee}. However, the application will not behave as
+%presumed, since the method will be synchronized by the aspect.
+%
+%\scriptsize
+%\begin{lstlisting}[frame=single, caption={A new method for counting the number of Employees.},label=lst:ds, numbers=left, language=Java]
+%public class EmployeeRepository {
+%
+%    public int getNumberOfEmployees(Profile profile) {
+%        // Business logic to count the number of Employees
+%    }
+%
+%}
+%\end{lstlisting}
+%\normalsize
+
+\subsection{Example 2}
+
 % Some text based on SBES work
-% Present the need for DR (parallel development and fragile pointcuts)
+% Present the need for DR (CRITERIA: parallel development and fragile pointcuts)
 % Here we can present some DSMs, in order to illustrate the problem
 % Some information about HW or other system should be provided
