@@ -18,8 +18,8 @@ module UseCaseModel where
 import Prelude hiding ( (^) )
 import List 
 import BasicTypes
-import FeatureModel
-import Environment 
+-- import FeatureModel
+-- import Environment 
 
 type Action = String
 type State = String
@@ -35,10 +35,20 @@ type Annotation = String
 -- the scenario, and the related user action, system state and system response. 
 -- A use case is a group of close related scenarios
 data UseCaseModel = UCM Name [UseCase]
+	 deriving (Show)
+	 
 data UseCase = UseCase Id Name Description [Scenario]
+	 deriving (Show)
+	 
 data Scenario = Scenario Id Description FromStep StepList ToStep
+	 deriving (Show) 
+	 
 data Step = Step Id Scenario Action State Response [Annotation]
+	 deriving (Show)
+	 
 data StepRef = IdRef Id | AnnotationRef String
+	 deriving (Show)
+	 
 -- *********************************************************
 -- Use case model access functions
 -- *********************************************************
