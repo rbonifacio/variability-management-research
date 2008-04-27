@@ -136,6 +136,18 @@ is not under his responsibility, might break the system.
 
 \subsection{Example 2}
 
+Another example of modularity issue might arise when a team is assigned to develop a crosscutting concern and another team is assigned to develop the base concerns of a system. In order to reduce the time to market, it may be desirable to develop both concerns in parallel. However, without the use of a clear interface between those concerns, a lot of communication might be required, which, in fact, compromises the parallel development. 
+
+When reasoning about modularity in software engineering, very often the benefit of parallel development is miss-considered. Even after Parnas has claimed that modularity is more than program structure, but also process a process structure \cite{}.
+
+% include the parnas review of modularity
+% read a bit more about the steimann discussion on AOP modularity
+% we need a clear interface for both aspect and base code....
+
+For instance, supposing that a team is responsible for developing the use cases related to the complaint management; and another team is responsible for an auditing concern that must be triggered whenever changes in a complain occur. In order to enable a parallel development, at least an agreement about the exposed join-points must be established.     
+
+% present a concrete example here!
+
 % Some text based on SBES work
 % Present the need for DR (CRITERIA: parallel development and fragile pointcuts)
 % Here we can present some DSMs, in order to illustrate the problem
