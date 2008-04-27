@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<useCaseModel name="user-view.target.v20071129">
+  <useCase>
+    <id>UC_01</id>
+    <name>Opening TaRGeT</name>
+    <description>This use case describes how the TaRGeT should behave when it is started up.</description>
+  </useCase>
+  <useCase>
+    <id>UC_05</id>
+    <name>Creating a Project from Blank Work Area</name>
+    <description>This use case describes the creation of a TaRGeT project when no project is opened.</description>
+  </useCase>
+  <useCase>
+    <id>UC_10</id>
+    <name>Creating a Project from an Already Opened Project</name>
+    <description>This use case describes the creation of a TaRGeT project when a project is opened.</description>
+  </useCase>
+  <useCase>
+    <id>UC_15</id>
+    <name>Closing a Project</name>
+    <description>This use case describes how the TaRGeT behaves while closing a project.</description>
+  </useCase>
+  <useCase>
+    <id>UC_20</id>
+    <name>Opening an Existing Project from Blank Work Area</name>
+    <description>This use case describes how the TaRGeT behaves while an existing project is opened by the user. This use case describes the project opening when no project is opened.</description>
+  </useCase>
+  <useCase>
+    <id>UC_25</id>
+    <name>Opening an Existing Project from an Already Opened Project</name>
+    <description>This use case describes how the TaRGeT behaves while an existing project is opened by the user. It describes the project opening when a project is already opened.</description>
+  </useCase>
+  <useCase>
+    <id>UC_30</id>
+    <name>Importing Valid Use Case Documents</name>
+    <description>This use case describes how the TaRGeT shall behave when valid use case documents are imported to a project.</description>
+  </useCase>
+  <useCase>
+    <id>UC_31</id>
+    <name>Importing a Use Case Document Containing Interruptions</name>
+    <description>This use case describes how the TaRGeT shall behave when a use case document that contains an interruption specification is imported to a project.</description>
+  </useCase>
+  <useCase>
+    <id>UC_35</id>
+    <name>Importing a Use Case Document With Duplicated Feature ID</name>
+    <description>This use case describes how the TaRGeT shall behave when a use case document with duplicated feature ID is imported to a project.</description>
+  </useCase>
+  <useCase>
+    <id>UC_36</id>
+    <name>Importing a Use Case Document With Duplicated Interruption ID</name>
+    <description>This use case describes how the TaRGeT shall behave when a use case document with duplicated interruption ID is imported to a project.</description>
+  </useCase>
+  <useCase>
+    <id>UC_40</id>
+    <name>Importing a Use Case Document With Duplicated Use Case ID</name>
+    <description>This use case describes how the TaRGeT shall behave when a use case document with duplicated use case ID is imported to a project.</description>
+  </useCase>
+  <useCase>
+    <id>UC_45</id>
+    <name>Importing a Use Case Document With Invalid Structure</name>
+    <description>This use case describes how the TaRGeT shall behave when a use case document with invalid structure is imported to a project.</description>
+  </useCase>
+  <useCase>
+    <id>UC_50</id>
+    <name>Importing a Use Case Document with an Empty Mandatory Field</name>
+    <description>This use case describes how the TaRGeT shall behave when a use case document with an empty mandatory is imported to a project.</description>
+  </useCase>
+  <useCase>
+    <id>UC_55</id>
+    <name>Importing a Use Case Document With Invalid Step ID References</name>
+    <description>This use case describes how the TaRGeT shall behave when a use case document with invalid id references is imported to a project.</description>
+  </useCase>
+  <useCase>
+    <id>UC_56</id>
+    <name>Importing a Use Case Document With Invalid Step ID References in Interruptions</name>
+    <description>This use case describes how the TaRGeT shall behave when a use case document with invalid id references is imported to a project.</description>
+  </useCase>
+  <useCase>
+    <id>UC_60</id>
+    <name>Importing a Use Case Document With Duplicated Step IDs</name>
+    <description>This use case describes how the TaRGeT shall behave when a use case document with duplicated step IDs is imported to a project.</description>
+  </useCase>
+  <useCase>
+    <id>UC_61</id>
+    <name>Importing a Use Case Document With Duplicated Step IDs in Interruptions</name>
+    <description>This use case describes how the TaRGeT shall behave when a use case document with duplicated step IDs in interruptions is imported to a project.</description>
+  </useCase>
+  <useCase>
+    <id>UC_63</id>
+    <name>Importing a Use Case Document with a Feature Already Imported.</name>
+    <description>This use case describes how the TaRGeT shall behave when a use case document is imported to a project and another use case document is already imported and the documents have at least one feature with same name and ID.</description>
+  </useCase>
+  <useCase>
+    <id>UC_65</id>
+    <name>Viewing Use Case Documents with Microsoft Word</name>
+    <description>This use case describes how use case documents can be viewed in TaRGeT with the Microsoft Word.</description>
+  </useCase>
+  <useCase>
+    <id>UC_70</id>
+    <name>Viewing Valid Use Case in HTML Format</name>
+    <description>This use case describes how the TaRGeT use cases can be viewed in HTML format.</description>
+  </useCase>
+  <useCase>
+    <id>UC_71</id>
+    <name>Viewing Invalid Use Case in HTML Format</name>
+    <description>This use case describes how the TaRGeT use cases can be viewed in HTML format when they have some error.</description>
+  </useCase>
+  <useCase>
+    <id>UC_72</id>
+    <name>Viewing Valid Interruption in HTML Format</name>
+    <description>This use case describes how the interruptions can be viewed in HTML format.</description>
+  </useCase>
+  <useCase>
+    <id>UC_75</id>
+    <name>Viewing a Generated Test Suite with Microsoft Excel</name>
+    <description>This use case describes how the generated test suite documents can be viewed in TaRGeT with the Microsoft Excel.</description>
+  </useCase>
+  <useCase>
+    <id>UC_80</id>
+    <name>Renaming a Document</name>
+    <description>This use case describes how test suite and use case documents are renamed in TaRGeT.</description>
+  </useCase>
+  <useCase>
+    <id>UC_85</id>
+    <name>Deleting a Document</name>
+    <description>This use case describes how test suite and use case documents are deleted in TaRGeT.</description>
+  </useCase>
+  <useCase>
+    <id>UC_90</id>
+    <name>Updating the Use Case Documents outside the TaRGeT UI</name>
+    <description>This use case describes how use case documents are updated outside TarGeT UI.</description>
+  </useCase>
+  <useCase>
+    <id>UC_95</id>
+    <name>Rejecting a Damaged Use Case Documents</name>
+    <description>This use case describes how use case documents are rejected after their structure is damaged.</description>
+  </useCase>
+  <useCase>
+    <id>UC_100</id>
+    <name>Rejecting a Use Case Document With Duplicated Feature ID</name>
+    <description>This use case describes how use case documents are rejected after assigning to a feature an ID that is being used by a feature of another document.</description>
+  </useCase>
+  <useCase>
+    <id>UC_105</id>
+    <name>Rejecting a Use Case Document With Duplicated Use Case ID</name>
+    <description>This use case describes how use case documents are rejected after assigning to a use case an ID that is being used by another use case of the same feature.</description>
+  </useCase>
+  <useCase>
+    <id>UC_106</id>
+    <name>Searching for Use Cases</name>
+    <description>This use case describes how to search for use cases within TaRGeT.</description>
+  </useCase>
+  <useCase>
+    <id>UC_107</id>
+    <name>Viewing Search Results</name>
+    <description>This use case describes how the search result can be viewed within TaRGeT.</description>
+  </useCase>
+  <useCase>
+    <id>UC_110</id>
+    <name>Generating Test Suites</name>
+    <description>This use case describes how the test suites are generated within TaRGeT.</description>
+  </useCase>
+  <useCase>
+    <id>UC_115</id>
+    <name>Generating Test Suites with Test Purposes</name>
+    <description>This use case describes how the test suites are generated using test purposes within TaRGeT.</description>
+  </useCase>
+  <useCase>
+    <id>UC_120</id>
+    <name>Generating Test Suites by Use Cases</name>
+    <description>This use case describes how the test suites are generated in order to cover some selected use cases.</description>
+  </useCase>
+  <useCase>
+    <id>UC_125</id>
+    <name>Generating Test Suites With Interruptions</name>
+    <description>This use case describes how the test suites are generated from use cases that are embedded by interruptions.</description>
+  </useCase>
+  <useCase>
+    <id>UC_130</id>
+    <name>Generating Test Suites Changing Test Case Field Parameters</name>
+    <description>This use case describes how the user can parameterize the test case fields.</description>
+  </useCase>
+  <useCase>
+    <id>UC_135</id>
+    <name>Viewing the About Window</name>
+    <description>This use case describes how the about window is displayed.</description>
+  </useCase>
+  <useCase>
+    <id>UC_140</id>
+    <name>Viewing the Help Window</name>
+    <description>This use case describes how the about window is displayed.</description>
+  </useCase>
+</useCaseModel>
+
