@@ -5,8 +5,7 @@
 			<name>Opening TaRGeT</name>
 			<description>This use case describes how the TaRGeT should behave when it is started up.</description>
 			<flow>
-			 	<id>1</id>
-				<description>Start up the TaRGeT.</description>
+			 	<description>Start up the TaRGeT.</description>
 				<fromSteps>START</fromSteps>
 				<toSteps>END</toSteps>
 				<step>
