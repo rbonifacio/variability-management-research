@@ -31,6 +31,8 @@ tcData02 = [[],
 			["start", "V1", "V2", "3M", "4M"],
 			["start", "V1", "V2", "3M", "4M", "5M"],
 			["start", "V1", "V2", "3M", "4M", "5M","end"]]
+			
+			
 
 -- trace model for the first configuration
 tm01 = traceModelWeaver fm01 fc01 ck01 ucm01 env01
