@@ -1,23 +1,6 @@
-{-
-   
-   RequirementVariabilityManament.hs
-
-
-   This source code define the main concepts (types like 
-   use case, scenario, steps, and so on) related with 
-   the requirement variability context. Also, this code 
-   implement some functions that represent the weaving 
-   process of main flow and alternativ flow variability 
-   mechanisms.
-
-   Author: Rodrigo Bonifacio 
--}
-
 module XmlUseCaseModel where
 
-import Prelude hiding ( (^) )
 import List 
-import Text.XML.HXT.Arrow 
 
 import UseCaseModel
 import BasicTypes
@@ -47,7 +30,8 @@ data XmlStep = XmlStep Id XmlAction XmlState XmlResponse
 	 deriving (Show)
 	 
 xmlUseCaseModel2UseCaseModel :: XmlUseCaseModel -> UseCaseModel
-xmlUseCaseModel2UseCaseModel (XmlUCM name xmlUseCases) = UCM name [xmlUseCase2UseCase xmlUseCase | xmlUseCase <- xmlUseCases]
+xmlUseCaseModel2UseCaseModel (XmlUCM name xmlUseCases) = 
+	UCM name [xmlUseCase2UseCase xmlUseCase | xmlUseCase <- xmlUseCases]
 
 xmlUseCase2UseCase :: XmlUseCase -> UseCase
 xmlUseCase2UseCase (XmlUseCase i n d xmlScenarios) = 
@@ -59,9 +43,12 @@ xmlUseCase2UseCase (XmlUseCase i n d xmlScenarios) =
 -- 
 xmlScenario2Scenario :: String -> XmlScenario -> Scenario
 xmlScenario2Scenario s (XmlScenario description fromSteps toSteps steps) = 
- Scenario s description (xmlStepRefs2StepRefs fromSteps) [] (xmlStepRefs2StepRefs toSteps)
+  result where result = Scenario s description (xmlStepRefs2StepRefs fromSteps) [xmlStep2Step result x | x <- steps] (xmlStepRefs2StepRefs toSteps)
+--  Scenario s description (xmlStepRefs2StepRefs fromSteps) [] (xmlStepRefs2StepRefs toSteps)
  
-
+xmlStep2Step :: Scenario -> XmlStep -> Step
+xmlStep2Step scenario (XmlStep i a s r) = 
+ Step i scenario a s r []
   
 -- This function is used to retreve a list of step refs 
 -- from a string. It was implemented since the use case xml 

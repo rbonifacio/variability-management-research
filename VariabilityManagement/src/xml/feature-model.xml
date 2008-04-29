@@ -1,0 +1,32 @@
+<feature min="1" max="1" name="FeatureModel" type="NONE" id="My Feature Model">
+  <feature min="1" max="1" name="Eshop" type="NONE" id="smartHome">
+    <feature min="1" max="1" name="Registry" type="NONE" id="registry">
+      <feature min="0" max="1" name="Teste" type="NONE" id="teste">
+      </feature>
+      <featureGroup min="1" max="1" id="group">
+        <feature min="0" max="1" name="Completly" type="NONE" id="completly">
+        </feature>
+        <feature min="0" max="1" name="Simple" type="NONE" id="simple">
+        </feature>
+      </featureGroup>      
+    </feature>
+    <feature min="1" max="1" name="SearchOptions" type="NONE" id="searchOptions">
+      <featureGroup min="1" max="2" id="group0">
+        <feature min="0" max="1" name="Hints" type="NONE" id="hints">
+        </feature>
+        <feature min="0" max="1" name="SimilarResults" type="NONE" id="similarResults">
+        </feature>
+      </featureGroup>
+    </feature>
+    <feature min="0" max="1" name="Bonus" type="NONE" id="bonus">
+      <featureGroup min="1" max="2" id="group1">
+        <feature min="0" max="1" name="Points" type="NONE" id="points">
+        </feature>
+        <feature min="0" max="1" name="Deduction" type="NONE" id="deduction">
+        </feature>
+      </featureGroup>
+    </feature>
+    <feature min="0" max="1" name="UserPreferences" type="NONE" id="userPreferences">
+    </feature>
+  </feature>
+</feature>
