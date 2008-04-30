@@ -62,12 +62,12 @@ public aspect LocalSynchronization {
 \end{lstlisting}
 \normalsize
 
-Now, suppose a new feature that requires counting the number of
+Now, suppose a new feature intended to counting the number of
 Employees registered in a given profile. Such feature might be
 implemented as a new method in the \emph{EmployeeRepository} class
-(Listing~\ref{lst:new-method}). This method does not need to be
-synchronized, since it does not manipulate a specific instance of
-\emph{Employee}.
+(Listing~\ref{lst:new-method}). Notice that this method does not
+need to be synchronized, since it does not manipulate a specific
+instance of \emph{Employee}.
 
 \scriptsize
 \begin{lstlisting}[frame=single, caption={A new method for counting the number of Employees.},label=lst:new-method, numbers=left, language=Java]
@@ -122,6 +122,8 @@ is not under his responsibility, might break the system.
 %\emph{Employee}. However, the application will not behave as
 %presumed, since the method will be synchronized by the aspect.
 %
+% COLOCAR A CLASSE TODA??? TEM ESPAÇO MESMO...
+%
 %\scriptsize
 %\begin{lstlisting}[frame=single, caption={A new method for counting the number of Employees.},label=lst:ds, numbers=left, language=Java]
 %public class EmployeeRepository {
@@ -136,15 +138,29 @@ is not under his responsibility, might break the system.
 
 \subsection{Example 2}
 
-Another example of modularity issue might arise when a team is assigned to develop a crosscutting concern and another team is assigned to develop the base concerns of a system. In order to reduce the time to market, it may be desirable to develop both concerns in parallel. However, without the use of a clear interface between those concerns, a lot of communication might be required, which, in fact, compromises the parallel development. 
+Another example of modularity issue might arise when a team is
+assigned to develop a crosscutting concern and another team is
+assigned to develop the base concerns of a system. In order to
+reduce the time to market, it may be desirable to develop both
+concerns in parallel. However, without the use of a clear interface
+between those concerns, a lot of communication might be required,
+which, in fact, compromises the parallel development.
 
-When reasoning about modularity in software engineering, very often the benefit of parallel development is miss-considered. Even after Parnas has claimed that modularity is more than program structure, but also process a process structure \cite{}.
+When reasoning about modularity in software engineering, very often
+the benefit of parallel development is miss-considered. Even after
+Parnas has claimed that modularity is more than program structure,
+but also process a process structure \cite{}.
 
 % include the parnas review of modularity
 % read a bit more about the steimann discussion on AOP modularity
 % we need a clear interface for both aspect and base code....
 
-For instance, supposing that a team is responsible for developing the use cases related to the complaint management; and another team is responsible for an auditing concern that must be triggered whenever changes in a complain occur. In order to enable a parallel development, at least an agreement about the exposed join-points must be established.     
+For instance, supposing that a team is responsible for developing
+the use cases related to the complaint management; and another team
+is responsible for an auditing concern that must be triggered
+whenever changes in a complain occur. In order to enable a parallel
+development, at least an agreement about the exposed join-points
+must be established.
 
 % present a concrete example here!
 
