@@ -1,15 +1,24 @@
 module XmlFeatureModel where
 
 import BasicTypes
+-- import FeatureModel
 
 type CMin = Int
 type CMax = Int 
-type Children = [XmlFeature]
-type GroupOptions = Children 
+type XmlChildren = [XmlFeature]
+type XmlGroupOptions = XmlChildren 
 
 
-data XmlFeature = XmlFeature CMin CMax Name (Maybe Children) (Maybe XmlGroupFeature)
+data XmlFeature = XmlFeature {
+		featureId :: Id,
+		cmin :: CMin,
+		cmax :: CMax, 
+		name :: Name, 
+		children :: Maybe XmlChildren,
+		group :: Maybe XmlGroupFeature 
+	}
 	deriving(Show)  
 	
-data XmlGroupFeature = XmlGroupFeature CMin CMax GroupOptions
+data XmlGroupFeature = XmlGroupFeature CMin CMax XmlGroupOptions
 	deriving(Show)  	
+	
