@@ -10,6 +10,7 @@ import FeatureSampleEShop
 import UseCaseSampleEShop
 import ConfigurationKnowledgeSampleEShop
 import HUnit
+import List
 
 env01 = Environment[EnvItem ("ShipMethod", shipMethod01)]
 env02 = Environment[EnvItem ("ShipMethod", shipMethod02)] 
@@ -53,8 +54,8 @@ tc03 = TestCase (assertBool "tcData02 should be refined by tm02" (traceRefinemen
 tc04 = TestCase (assertBool "tcData02 should not be refined by tm02" (not (traceRefinement tcData01 tm02)))
 
 
-
-tests = TestList [TestLabel "TC01" tc01, TestLabel "TC02" tc02, TestLabel "TC03" tc03, TestLabel "TC04" tc04]
+tests = TestList[TestLabel "TC01" tc01]
+-- tests = TestList [TestLabel "TC01" tc01, TestLabel "TC02" tc02, TestLabel "TC03" tc03, TestLabel "TC04" tc04]
 
 
 -- test1 = TestCase (assertEqual )

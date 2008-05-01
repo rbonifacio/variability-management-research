@@ -17,11 +17,12 @@ exp4 = NotExpression exp2
 
 -- Configurations that relate a feature expression with 
 -- a set of artifacts (scenarios, in this case)
+conf0 = (exp0, [scBuyProductCommon])
 conf1 = (exp3, [scBuyProductBasic])
 conf2 = (exp1, [scBuyProductExtended])
 conf3 = (exp2, [scUpdatePreferences])
 
-ck01 = CK [conf1, conf2, conf3]
+ck01 = CK [conf0, conf1, conf2, conf3]
 
 
 eShop1 = Feature "FEA-01" "eShop Instance" mandatory basicFeature [register01, searchOptions01, paymentType01, shipMethod01] []

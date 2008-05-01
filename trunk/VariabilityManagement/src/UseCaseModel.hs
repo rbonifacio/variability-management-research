@@ -34,53 +34,34 @@ type Annotation = String
 -- for "from" and "to" steps. A step is defined with an Id, a reference to 
 -- the scenario, and the related user action, system state and system response. 
 -- A use case is a group of close related scenarios
-data UseCaseModel = UCM Name [UseCase]
+data UseCaseModel = UCM {
+	 	ucmName :: Name,  
+	 	useCases :: [UseCase]
+	 }
 	 deriving (Show)
 	 
-data UseCase = UseCase Id Name Description [Scenario]
+data UseCase = UseCase {
+		ucId :: Id,  
+		ucName :: Name,
+		ucDescription :: Description ,
+		ucScenarios :: ScenarioList 
+	}
 	 deriving (Show)
 	 
-data Scenario = Scenario Id Description FromStep StepList ToStep
+data Scenario = Scenario {
+		scenarioId :: Id,
+		scenarioDescription :: Description,
+		from :: FromStep,
+		steps :: StepList,
+		to :: ToStep
+	}
 	 deriving (Show) 
 	 
 data Step = Step Id Scenario Action State Response [Annotation]
-	 deriving (Show)
 	 
 data StepRef = IdRef Id | AnnotationRef String
 	 deriving (Show)
 	 
--- *********************************************************
--- Use case model access functions
--- *********************************************************
-useCases :: UseCaseModel -> [UseCase]
-useCases (UCM name ucs) = ucs
-
--- **********************************************************
--- Use case access functions
--- **********************************************************
-useCase :: UseCase -> Id
-useCase (UseCase id _ _ _) = id
-
-scenarios :: UseCase -> [Scenario]
-scenarios (UseCase _ _ _ scenarios) = scenarios
-
--- ********************************************************** 
--- Scenario access functions 
--- **********************************************************
-scenarioId :: Scenario -> Id 
-scenarioId (Scenario id description from steps to) = id
-
-write :: Scenario -> String
-write (Scenario id description from steps to) = description
-
-steps :: Scenario -> StepList
-steps (Scenario id description from steps to) = steps
-
-from :: Scenario -> FromStep
-from (Scenario id description from steps to) = from
-
-to :: Scenario -> ToStep
-to  (Scenario id description from steps to) = to
 
 -- ***********************************************************
 -- Step access functions
@@ -184,7 +165,7 @@ steps1 +++ steps2 = [ x ++ y | x<-steps1 , y <- steps2]
 
 extractScenariosFromUCs :: [UseCase] -> ScenarioList
 extractScenariosFromUCs [] = [] 
-extractScenariosFromUCs (x:xs) = (scenarios x) ++ (extractScenariosFromUCs xs)
+extractScenariosFromUCs (x:xs) = (ucScenarios x) ++ (extractScenariosFromUCs xs)
 
 extractStepsFromScenarios :: ScenarioList -> StepList
 extractStepsFromScenarios [] = [] 
@@ -202,3 +183,9 @@ ucIddle = UseCase "0" "IDDLE Use Case" "The iddle use case" [idle]
 idle = Scenario "0" "IDDLE" [] [start, end] []
 start = Step "start" idle "START" "" "" []
 end   = Step "end" idle "END" "" "" []
+
+instance Eq Scenario where 
+  s1 == s2 = scenarioId s1 == scenarioId s2
+ 
+instance Show Step where
+ show (Step i _ _ _ _ _)  = i 
