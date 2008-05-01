@@ -95,4 +95,4 @@ main
  
 processFeature	:: IOSArrow XmlFeature XmlFeature
 processFeature
-    = arrIO ( \ x -> do {print (x) ; return x})
+    = arrIO ( \ x -> do {print (xmlFeature2Feature x) ; return x})
