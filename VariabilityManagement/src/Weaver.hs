@@ -1,5 +1,6 @@
 module Weaver where
 
+import BasicTypes
 import TraceModel
 import UseCaseModel
 import FeatureModel
@@ -7,6 +8,11 @@ import ConfigurationKnowledge
 import Environment
 
 
+ucmWeaver :: FeatureModel -> FeatureConfiguration -> ConfigurationKnowledge -> UseCaseModel -> UseCaseModel
+ucmWeaver fm fc ck ucm = 
+ let composedScenarios = (configure fc ck) 
+ 	 in UCM (ucmName ucm)
+ 	 	[uc | uc <- useCases ucm, length (ucScenarios (composedUc uc composedScenarios)) > 0]
 
 scenarioWeaver :: FeatureModel -> FeatureConfiguration -> ConfigurationKnowledge -> UseCaseModel -> [StepList]
 scenarioWeaver fm fc ck ucm = 
@@ -17,6 +23,13 @@ scenarioWeaver fm fc ck ucm =
 traceModelWeaver :: FeatureModel -> FeatureConfiguration -> ConfigurationKnowledge -> UseCaseModel -> Environment Feature -> [[String]]
 traceModelWeaver fm fc ck ucm env = 
  computeAllTracesFromCompletePaths ucm env (scenarioWeaver fm fc ck ucm)
+  
+composedUc :: UseCase -> ScenarioList -> UseCase
+composedUc uc composedScenarios = 
+ UseCase (ucId uc) 
+ 		 (ucName uc)
+ 		 (ucDescription uc)
+ 		 ([s | s <- (ucScenarios uc), exists s composedScenarios]) 
   
 -- traceModel env1 (steps scBuyProductBasic) 
 
