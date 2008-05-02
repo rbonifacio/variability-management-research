@@ -20,7 +20,7 @@ instance XmlPickler XmlStep where
 	
 
 -- 
--- necessary, if the element has more five sub-elements or attributes.	
+-- necessary, if the element has more than five sub-elements or attributes.	
 --
 uncurry5 :: (a -> b -> c -> d -> e -> f) -> (a, b, c, d, e) -> f
 uncurry5 fn (a, b, c, d, e) = fn a b c d e 
