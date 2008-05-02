@@ -43,7 +43,12 @@ xmlUseCase2UseCase (XmlUseCase i n d xmlScenarios) =
 -- 
 xmlScenario2Scenario :: String -> XmlScenario -> Scenario
 xmlScenario2Scenario s (XmlScenario description fromSteps toSteps steps) = 
-   Scenario s description (xmlStepRefs2StepRefs fromSteps) [] (xmlStepRefs2StepRefs toSteps)
+ scenario where 
+ scenario = Scenario s 
+ 			 		description 
+ 			 		(xmlStepRefs2StepRefs fromSteps) 
+ 			 		[xmlStep2Step scenario step | step <- steps] 
+ 			 		(xmlStepRefs2StepRefs toSteps)
  
 xmlStep2Step :: Scenario -> XmlStep -> Step
 xmlStep2Step scenario (XmlStep i a s r) = 
