@@ -86,7 +86,7 @@ computeAllTracesFromScenarioList ucm env sl = nub (computeAllTracesFromCompleteP
 
 computeAllTracesFromCompletePaths :: UseCaseModel -> Environment Feature -> [StepList] -> [[String]]
 computeAllTracesFromCompletePaths ucm env [] = []
-computeAllTracesFromCompletePaths ucm env (x:xs) = (computeTraceModel env x) ++ (computeAllTracesFromCompletePaths ucm env xs) 
+computeAllTracesFromCompletePaths ucm env (x:xs) = nub ((computeTraceModel env x) ++ (computeAllTracesFromCompletePaths ucm env xs)) 
 
 
 

@@ -9,7 +9,7 @@ import Environment
 import FeatureSampleEShop
 import UseCaseSampleEShop
 import ConfigurationKnowledgeSampleEShop
-import HUnit
+import Test.HUnit
 import List
 
 env01 = Environment[EnvItem ("ShipMethod", shipMethod01)]

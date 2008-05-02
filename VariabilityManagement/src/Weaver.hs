@@ -6,6 +6,7 @@ import UseCaseModel
 import FeatureModel
 import ConfigurationKnowledge
 import Environment
+import List
 
 
 ucmWeaver :: FeatureModel -> FeatureConfiguration -> ConfigurationKnowledge -> UseCaseModel -> UseCaseModel
@@ -16,13 +17,15 @@ ucmWeaver fm fc ck ucm =
 
 scenarioWeaver :: FeatureModel -> FeatureConfiguration -> ConfigurationKnowledge -> UseCaseModel -> [StepList]
 scenarioWeaver fm fc ck ucm = 
- if (length (validInstance fm fc)) > 0 
-  then error "error..." 
-  else allPathsFromScenarioList ucm (configure fc ck)
+ let composedScenarios = (configure fc ck) 
+ 	in if (length (validInstance fm fc)) > 0 
+  		then error "error..." 
+  		else nub (allPathsFromScenarioList (ucmWeaver fm fc ck ucm) composedScenarios)
   
 traceModelWeaver :: FeatureModel -> FeatureConfiguration -> ConfigurationKnowledge -> UseCaseModel -> Environment Feature -> [[String]]
 traceModelWeaver fm fc ck ucm env = 
- computeAllTracesFromCompletePaths ucm env (scenarioWeaver fm fc ck ucm)
+ let composedScenarios = (configure fc ck) 
+ in computeAllTracesFromCompletePaths (ucmWeaver fm fc ck ucm) env (scenarioWeaver fm fc ck ucm)
   
 composedUc :: UseCase -> ScenarioList -> UseCase
 composedUc uc composedScenarios = 
