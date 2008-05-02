@@ -12,7 +12,7 @@ ucmWeaver :: FeatureModel -> FeatureConfiguration -> ConfigurationKnowledge -> U
 ucmWeaver fm fc ck ucm = 
  let composedScenarios = (configure fc ck) 
  	 in UCM (ucmName ucm)
- 	 	[uc | uc <- useCases ucm, length (ucScenarios (composedUc uc composedScenarios)) > 0]
+ 	 	([(composedUc uc composedScenarios)| uc <- useCases ucm, length (ucScenarios (composedUc uc composedScenarios)) > 0] ++ [ucIddle])
 
 scenarioWeaver :: FeatureModel -> FeatureConfiguration -> ConfigurationKnowledge -> UseCaseModel -> [StepList]
 scenarioWeaver fm fc ck ucm = 
@@ -33,4 +33,9 @@ composedUc uc composedScenarios =
   
 -- traceModel env1 (steps scBuyProductBasic) 
 
--- length (compose fm fc01 configuration)  
+-- length (compose fm fc01 configuration)
+
+--let ucm02 = ucmWeaver fm01 fc01 ck01 ucm01 
+-- in allPathsFromScenarioList ucm02 (concatMap (ucScenarios) [x | x <- useCases ucm02])
+-- []
+  
