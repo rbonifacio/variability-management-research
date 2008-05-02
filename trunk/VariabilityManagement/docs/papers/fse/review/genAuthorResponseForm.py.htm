@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><head><!--
+Generated on Wed Apr 30 10:06:39 2008.
+CyberChairPRO
+Copyright (c) by Richard van de Stadt
+Borbala Online Conference Services
+The Netherlands
+http://www.borbala.com
+stadt@borbala.com
+-->
+
+
+
+
+
+<link rev="made" href="mailto:%20stadt@borbala.com">
+
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Cache-control" content="no-cache, must-revalidate, no-store, max-age=0, s-maxage=0, proxy-revalidate">
+<meta name="ROBOTS" content="NOARCHIVE">
+
+<link href="genAuthorResponseForm.py_arquivos/cyberstyle.css" rel="STYLESHEET" type="text/css"><title>OOPSLA 2008 - Author Response form for Technical Papers</title>
+
+
+<script type="text/javascript" src="genAuthorResponseForm.py_arquivos/countwords2.js"></script></head><body>
+
+<h1>OOPSLA 2008 - Author Response form for Technical Papers</h1>
+
+
+<img src="genAuthorResponseForm.py_arquivos/oopsla2008logo.jpg"><br>
+<form enctype="multipart/form-data" method="post" action="/cgi-oopsla-papers/saveAuthorResponseForm.py">
+<input name="track" value="oopslapapers" type="hidden">
+<input name="key" value="OOP-316262670" type="hidden">
+
+<font color="red" size="-1">
+Note: Responses consisting of more than 500 words will NOT be stored!</font><p>
+<table border="1" width="800">
+<tbody><tr><th>Title</th><td>Scenario Variability as Crosscutting</td></tr>
+<tr><th> authors</th><td>Rodrigo Bonifácio, Informatics Center / Federal University of Pernambuco, rba2@cin.ufpe.br<br>Paulo Borba, Informatics Center / Federal University of Pernambuco, phmb@cin.ufpe.br</td></tr>
+<tr><td colspan="2"><table border="1" width="100%"><tbody><tr><th valign="top">First<br>reviewer's<br>review</th><td><pre>          &gt;&gt;&gt; Summary of the submission &lt;&lt;&lt;
+
+Describes a weaving approach for allowing separation of variability concerns<br>from core product concerns<br><br>
+          &gt;&gt;&gt; Evaluation &lt;&lt;&lt;
+
+- Points for<br>&nbsp;&nbsp;- Writing easy to follow<br>&nbsp;&nbsp;- Well chosen comparative empirical validation<br>- Points against<br>&nbsp;&nbsp;- The language is a little clunky, but not overly problematic<br>&nbsp;&nbsp;- The quantitative analysis is a little hard to follow, and not<br>&nbsp;&nbsp; utterly convincing. Perhaps more descriptions of Figures 13 and<br>&nbsp;&nbsp; 14, and what they really mean is needed. What is the difference<br>&nbsp;&nbsp; between the rows and the columns? How were the x's derived? The<br>&nbsp;&nbsp; chain of evidence for this validation is lacking.<br>&nbsp;&nbsp;- The quantitative evaluation is a good idea, and is well designed,<br>&nbsp;&nbsp; but the description lacks a good argument about how fairness was<br>&nbsp;&nbsp; maintained. Is it possible that this is a comparison between the<br>&nbsp;&nbsp; authors' perfect offering of a design, versus someone else's<br>&nbsp;&nbsp; imperfect offering? I believe that the authors did maintain<br>&nbsp;&nbsp; fairness, but a discussion of this is needed. <br>&nbsp;&nbsp;- More discussion of the results from the tables in 4.2 would help<br>&nbsp;&nbsp; the reader understand the impact of the numbers, and help them<br>&nbsp;&nbsp; interpret the results.<br><br><br><br>
+</pre></td></tr><tr><th valign="top">Second<br>reviewer's<br>review</th><td><pre>          &gt;&gt;&gt; Summary of the submission &lt;&lt;&lt;
+
+This paper presents a variability management framework for Software Product<br>Lines. In particular, use case scenario variability management is advocated -<br>from a use case model, feature model, product configuration, and configuration<br>knowledge the product specific use case model is obtained. The main<br>contribution of this paper is to show that there is a clear separation between<br>variability management and scenario specification (although this contribution<br>was already presented in authors' workshop paper at AOSD'08) and a description<br>of the framework for modeling the composition process of scenario variability<br>mechanisms (particularly, how selection of optional scenarios, scenario<br>composition, and scenario parameterization are performed in this framework). <br><br>After briefly introducing the problem statement, the motivating example (eShop<br>Product Line) is given. In section 3, the core of the paper is discussed –<br>first, variability as crosscutting is briefly introduced, and then explained on<br>a running example. The main part of this section is a description of the<br>modeling framework by explaining implementation of different weavers (product<br>derivation weaver, scenario composition weaver, bind parameters weaver). A<br>description of model verification is also given in this section. In section 4,<br>evaluation of the proposed approach is given by DSM (Design Structure Matrices)<br>analysis and quantitative analysis using different measure (e.g., feature<br>diffusion over use case, number of features pre use case). The paper ends with<br>a short description of related work and a conclusion. <br><br><br>
+          &gt;&gt;&gt; Evaluation &lt;&lt;&lt;
+
+The idea that is explored in this paper is quite novel an unique – the<br>consideration of variability management at the use case level may offer<br>benefits, especially with the separation of the variability from the scenario<br>specification. Although I liked the concepts explored in the paper, I still<br>have some concerns, as listed below.<br><br>I did not find the introduction as appealing as it could be. I think the<br>authors sort of sell their idea a little short by the manner in which the<br>introduction is written. The authors do not stress enough (in my opinion) the<br>importance of the problem they are dealing with. From the current description I<br>can see that the problem certainly exists and that some other researchers<br>proposed a solution, too. But, I can not see how crucial this problem is for<br>real software developers. How important is to solve this problem (I believe it<br>is very important, but the paper is not as strong in making the case as could<br>be)? <br><br>The authors have already shown that there is a clear separation between<br>variability management and scenario specification in their AOSD'08 workshop<br>paper (ref [7] I this paper). Despite that, it is clear that this paper is a<br>sufficient extension of the workshop paper. What is new in this paper appears<br>to be the description of the modeling framework (section 3.2) by showing<br>implementation of different weavers (product derivation weaver, scenario<br>composition weaver, bind parameters weaver). The rest of the paper is some<br>minor improvement over workshop paper.<br><br>A reader of this paper will notice that using the proposed approach assists<br>with the mean value of feature diffusion over use cases drop from 3.5 using the<br>PLUSS approach to 2 (on multimedia message product line) or from 1.3 to 1.2 (on<br>pedagogical product line). How significant are these results on these examples?<br>The benefits appear somewhat minor in these cases. Are there some other<br>difficulties using the proposed approach? Seems that this approach introduce<br>some hidden dependencies which might be difficult to follow.<br><br>Claiming that you are formally describing a modeling framework in section 3.2<br>may be a bit questionable. You just provide the implementation of weavers in<br>the functional language Haskell. Semantics of weavers is also not described<br>formally by functional code.<br><br>Running example 3.1 may not be that compelling. It can be shortened since<br>annotation [RegisterPreference] is included in Figure 7 and 8. Furthermore, the<br>description refers to some identifiers that are not explained. For example,<br>what does Step1M refer to in the statement "… and finishing at the Step 1M of<br>the Proceed to Purchase scenario …". The same is true for statement " …<br>ShipMethod is referenced in Step 4M of Figure 7". <br><br>Comparing "from step and to step" from Figure 7 and right complete graphs on<br>Figure 12 the reader can notice that "to step" is not "END" as specified in<br>Figure 7, but R1 which was weaved afterward. Short comment is in order to<br>explain this (or to improve my understanding if I am wrong here).<br><br>Section 3.2 seems to be out of the scope of the paper. It just shows that you<br>test and verify your implementation in Haskell. The discussion in this section<br>has very minor impact to the main contribution of the paper. It also feels like<br>you just wanted brownie points for mentioning Haskell in the paper.<br><br>The related work section is a bit weak. There is no deep related work<br>comparison. Claims such as "we believe that the textual language is the<br>preferred representation for scenario specification" could be omitted since<br>they are not supported by experiments. Perhaps explain your view of textual<br>languages would be insightful to readers.<br><br><br>Minor problems:<br><br>I did not really understand the connection between Figures 1 and 2. Some of the<br>names are not the same and I was expecting some linkage.<br><br>Figure 11 seems to come out of the blue. This is some sort of configuration<br>tree control that appears to be a part of some tool that has yet to be<br>described.<br><br>Many figures (e.g., 1, 4, 10, 15) are too small and hard to read. Please<br>expand.<br><br>The order of features in Figure 10 (Shopping Cart, Bonus) and Figure 11 (Bonus,<br>Shopping Cart) is not the same.<br><br>Missing information about how constraints are described in a feature model<br>(Section 3.1.2).<br><br>I could not see what are 7 parameters (for each weaver) in the statement "We<br>represent each weaver by filling in the seven parameters of our 6-tuple<br>representation, …". Why is this number is explicitly mentioned?<br><br>Many references do not have page numbers (e.g., 2, 3, 4, 11, 12, 14, …)<br><br><br>There are a few typographical errors in the paper. Some of the following may be<br>very minor, but may help I a revision:<br><br>Pg1: "We achieve such goal" -&gt; "We achieve such a goal"<br>Pg1: "Such crosscutting characteristic" -&gt; "Such a crosscutting<br>characteristic"<br>Pg1: "concern in the SPL development" -&gt; "concern in SPL development"<br>Pg1: "such approach does not" -&gt; "such an approach does not<br>Pg1: "Such framework aims" –&gt; "Such a framework aims"<br><br>Pg2: "Although this work focus" -&gt; "Although this work focuses"<br>Pg2: "on requirement artifacts" -&gt; "on requirements artifacts"<br>Pg2: "such framework is used" -&gt; "such a framework is used"<br><br>Pg3: "variability at source code" -&gt; "variability in source code"<br>Pg3: "in such way that" -&gt; "in such a way that"<br>Pg3: "aspect oriented" -&gt; "aspect-oriented"<br>Pg3: "Next section" -&gt; "The next section"<br>Pg3: "in this paper we are focus" -&gt; "in this paper we foucs"<br>Pg3: "The goal of MK framework" -&gt; "The goal of the MK framework"<br><br>Pg4: "weaving processes descriptions" -&gt; "weaving process descriptions"<br>Pg4: "of of pairs" -&gt; "of pairs"<br>Pg4: "System Response)" missing "("<br>Pg4: "an online shopping." -&gt; "an online shopping store."<br>Pg4:"This scenarios starts" -&gt; "This scenario starts"<br>Pg4: "Although It can be" -&gt; "Although it can be"<br><br>Pg 6: "that do not have been" -&gt; "that have not been"<br>Pg6: "results of this activity is" -&gt; "results of this activity are"<br>Pg6: "represented in Figure because"&nbsp;&nbsp;missing figure number<br>Pg6: "dependences" -&gt; "dependencies"<br>Pg6: "the semantic of crosscutting" -&gt; "the semantics of crosscutting"<br><br>Pg7: "seven parameters of our 6 tuple" Why seven parameters?<br>Pg7: "is showed in Table 4" -&gt; "is shown in Table 4"<br>Pg7: "retriveScenarios" -&gt; "retrieveScenarios"<br>Pg7: "ann Register User" -&gt; "and Register User"<br><br>Pg9: "kind of ship method" –&gt; "kind of shipment method"<br><br>Pg10: "the previous defined" -&gt; "the previously defined"<br>Pg10: "data as argument" -&gt; "data as an argument"<br><br><br><br>
+</pre></td></tr><tr><th valign="top">Third<br>reviewer's<br>review</th><td><pre>          &gt;&gt;&gt; Summary of the submission &lt;&lt;&lt;
+
+The authors appear to be saying the following. A product-line<br>definition has several components, including a feature model,<br>use-cases, etc. The addition of features impacts the use-cases in a<br>cross-cutting way. Therefore, it would be nice to have a language for<br>writing these better in the way we've grown accustomed to with<br>aspects.<br><br><br><br>
+          &gt;&gt;&gt; Evaluation &lt;&lt;&lt;
+
+If my summary above is wrong, then I may have missed the point of this<br>paper. If it is right (or close enough to right), then I'm just not<br>convinced about the magnitude of the contribution here. The<br>specifications just aren't all that large; even your "industrial" spec<br>doesn't show a whole lot of size. Therefore, while this work would be<br>interesting at a much narrower conference, like SPLC or AOSD, but I<br>just don't see an OOPSLA paper's worth of contribution here.<br><br>Some small comments:<br><br>I don't see what's hard about the specification of the scenario<br>composer.<br><br>I would avoid calling the use of HUnit/QuickCheck "verification" --<br>surely you know better!<br><br>[9] is in ICFP, not ICSP. Citation [27] is completely scrambled. I<br>find it very strange that you list the publication venues by<br>abbreviation -- even for obscure ones -- but print the location, as if<br>one might fly to those cities to find the proceedings. If you want to<br>save space, please do so *usefully* (cut out the cities and give the<br>names of the conferences).<br><br>The English needs significant work.<br><br><br><br>
+</pre></td></tr></tbody></table></td></tr>
+<tr>
+<td valign="top"><br><font color="blue"><b>Response<br>(Optional)</b></font></td>
+<td valign="top">
+<table width="600"><tbody><tr><td>
+<font color="red"><b>Note: This (optional) response form is to be used *only* to make corrections to *factual* errors in
+reviews, if any, or to answer specific
+reviewer questions. It is not to be used to clarify or elaborate on the submission, report on more
+recent work, or debate subjective evaluation points with reviewers. The limit is 500 words!
+<b></b></b></font><p>
+</p></td></tr></tbody></table>
+<textarea name="authorResponse" rows="25" cols="79"></textarea></td></tr>
+<tr><td><input value="Count Words" name="btn1" onclick="CountWords(this.form.authorResponse, true, true, 0);" type="button"></td><td></td></tr>
+</tbody></table>
+
+</p><p>
+</p><hr>
+<table width="100%">
+<tbody><tr><td align="left"><font size="+2">
+<input value="Submit Author Response" onclick="return CountWords(this.form.authorResponse, true, true, 1);" type="submit"></font><p>
+<font color="red"><b>Responses consisting of more than 500 words will not be stored!</b></font></p></td>
+</tr>
+</tbody></table>
+</form>
+
+<hr>
+<h6>In case of problems, please contact
+<a href="mailto:oopsla2008-papers-webadmin@borbala.com?subject=OOPSLA%202008%20oopslapapers%20submission">Richard van de Stadt</a>.</h6>
+<table cellpadding="0" cellspacing="0"><tbody><tr><td bgcolor="#ffffcc">
+<table border="1" bordercolor="purple" cellpadding="2" cellspacing="0" width="100%"><tbody><tr>
+<td align="center" bgcolor="#ffffcc"><font face="arial" size="-2">
+<a href="http://www.borbala.com/" target="_new">CyberChairPROv7</a>
+</font></td>
+<td align="center" bgcolor="#ffffcc"><font color="purple" face="arial" size="-2">
+Copyright © by
+Richard van de Stadt&nbsp;
+(<a href="http://www.borbala.com/" target="_new">Borbala Online Conference Services</a>)
+</font></td>
+</tr>
+</tbody></table>
+</td></tr><tr><td bgcolor="#ffffcc">
+<table border="1" bordercolor="purple" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="center" bgcolor="#ffffcc"><font color="purple" face="arial" size="-2">
+Linux system administration: <a href="http://canuck.gda.itesm.mx/%7Ekenbauer/" target="_new">Ken Bauer</a> (<a href="http://www.gda.itesm.mx/imagen/ingles/index.html" target="_new">Tec de Monterrey, Campus Guadalaraja, Mexico</a>)
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+
+</body></html>
