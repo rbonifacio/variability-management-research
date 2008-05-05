@@ -10,9 +10,9 @@ Acho que se há uma DR, há um contrato a ser implementado por ambos, classe e a
 
 Eu também acredito que limitar os _pointcuts_ não esteja na linguagem de DRs. Até onde eu entendo, ela é uma espécie de checker que verifica basicamente duas coisas:
 
-(i) a classe expõe os _pointcuts_ declarados na DR? (Ou seja, ela provê o método insertEmployee(Employee))???
+(i) a classe expõe os _pointcuts_ declarados na DR? (Ou seja, ela provê os métodos insert*(..))???
 
-(ii) o aspecto tem algum advice para os _pointcuts_ declarados na DR? (Ou seja, ele introduz algum código para alterar o comportamento de insertEmployee(Employee))?
+(ii) o aspecto tem algum advice para os _pointcuts_ declarados na DR? (Ou seja, ele introduz algum código para alterar o comportamento de insert*(..))?
 
 Em suma, acho que a linguagem não restringe, mas sim verifica se os _pointcuts_ existentes estão sendo expostos (pela classe) e tratados (pelo aspecto).
 
