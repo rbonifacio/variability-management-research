@@ -186,23 +186,41 @@ implement the auditing concern at the same time that the complaint management
 concern is being developed. Although these concerns can be encapsulated in 
 single unities, there is no modular design in this case. 
 
-We can represent these kind of dependencies by means of Design Structure
+We can represent this kind of dependence by means of Design Structure
 Matrices (DSMs). DSMs are used to visualize dependencies among design 
 parameters, which correspond to any decision that needs to be made along the 
 product design. Parameters are disposed in both rows and columns of a matrix.
 The notion of dependency, represented as a 'x' mark in the matrices, arises
-whenever a design decision depends on another. Figure~\ref{dsm:hw01}
+whenever a design decision depends on another. For
+instance, consider the DSM depicted in Figure~\ref{dsm:hw01}, which represent
+some design parameters and respective dependencies of the Health Watcher
+system. Based on this DSM, we can realize that decisions regarded to the
+complaint implementation (row 4) depends on decisions about complaint 
+requirements (dependence row 4, column 1), about architectural
+decisions~\footnote{Examples of architectural decisions for the Health Watcher
+system are the selected style (layers), patterns, and technologies for each
+layer or concern (presentation, distribution, persistence, and so on)} (dependence row
+4, column 3), and about the auditing concern (dependence row 4, column 5). 
+This last dependence occurs because the team responsible for developing 
+the \emph{complaint concern} have to know how to develop the extension points for 
+the \emph{auditing concern}. Moreover, as we can observe in
+Figure~\ref{dsm:hw01}, the auditing implementation also depends on the
+complaint implementation decisions, since changes in its implementation should
+be notified to the auditing implementation team. In this way, there is a
+cyclical dependency between complaint implementation and auditing
+implementation. A clear example of non modular design.
 
 \begin{figure}[htb]
 \centering
 \begin{small}
-\begin{tabular}{lllllll} \hline
-&  & 1 & 2 & 3 & 4 & 5 \\ \hline
-1 & Complaint requirements		& 		& 		& 		&   &	\\ 
-2 & Auditing requirements		& 	 	&  		&  		&   & 	\\ 
-3 & Architectural decisions		& 	x 	& 		& 		&   & 	\\
-4 & Complaint implementation	& 	x	&		&	x	&	& x	\\
-5 & Auditing AO implementation	& 		&	x	&		& x	&	\\\hline
+\begin{tabular}{|l|l|l|l|l|l|l|l|} \hline
+  &  							& 1 	& 2 	& 3 	& 4 	& 5 	& 6	\\ \hline
+1 & Goals and constraints		& 		&		&		&		&		&	\\ \hline
+2 & Complaint requirements		& x		& 		& 		&   	&		&	\\ \hline 
+3 & Auditing requirements		& x	 	&  		&  		&   	&		&	\\ \hline
+4 & Architectural decisions		& x	 	& x		& 		&    	&		&	\\ \hline
+5 & Complaint implementation	& 		& x		&		& x	 	&		& x	\\ \hline
+6 & Auditing AO implementation	& 		&		& x		& 		& x		&	\\	\hline
 \end{tabular}
 \end{small}
 \caption{DSM Analysis Health Watcher}
@@ -210,14 +228,51 @@ whenever a design decision depends on another. Figure~\ref{dsm:hw01}
 \end{figure}
   
 
+Based on the information hidden principle, we should encapsulate the
+dependences between complaint and auditing concerns in a special kind
+of interface (a design rule). Design rules establish strict partitions 
+of knowledge and effort at the outset of a design process. 
+They are not just guidelines or recommendations: they must be rigorously 
+obeyed in all phases of design and production. Applying design rules 
+to our current example, we improve the design structure by removing the 
+cyclical dependencies between complaint and auditing concerns. The reviewed 
+DSM is presented in Figure~\ref{dsm:hw02}. Notice that a new parameter
+(actually a design rule) was introduced (row 4) and all dependences are bellow
+the main diagonal (there is no more cyclical dependences). 
+ 
+\begin{figure}[htb]
+\centering
+\begin{small}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|} \hline
+  &  								& 1 	& 2 	& 3 	& 4 	& 5 	& 6	& 7	\\ \hline
+1 & Goals and constraints			& 		&		&		&		&		&	&	\\ \hline
+2 & Complaint requirements 			& x		& 		& 		&   	&		&	&	\\ \hline 
+3 & Auditing requirements			& x	 	&  		&  		&   	& 		&	&	\\ \hline 
+4 & Architectural decisions			& x  	& x		& 		&   	&		& 	&	\\ \hline
+5 & Auditing design rule			& 		& x		&   x	&		&		&	&	\\ \hline 
+6 & Complaint implementation		& 		& x		&		&	x	& x		& 	&	\\ \hline
+7 & Auditing AO implementation		& 		&		&	x	&   	& x		&	&	\\ \hline
+\end{tabular}
+\end{small}
+\caption{DSM Analysis Health Watcher}
+\label{dsm:hw02}
+\end{figure}
 
 
-  
+This idea of defining interfaces between base and aspect code is not really new.
+Next, we present some proposal to solve this problem and discuss how our
+approach improve existing works.
 
+\subsection{Existing solutions}  
 
-% present a concrete example here!
+% ok, o problema realmente existe. mas ele não é novo. precisamos discutir que
+% existem propostas para esse problema. Por outro lado elas não atendem.
+% Possivelmente, um caminho é a idéia de que design-rules precisam ser
+% rigorosamente seguidas. Sempre tenho dúvidas em relação a essa palavra:
+% ``rigorosamente''
 
-% Some text based on SBES work
-% Present the need for DR (CRITERIA: parallel development and fragile pointcuts)
-% Here we can present some DSMs, in order to illustrate the problem
-% Some information about HW or other system should be provided
+\subsubsection{Open Modules}
+
+\subsubsection{XPIs}
+
+\subsection{Aspect Box}
