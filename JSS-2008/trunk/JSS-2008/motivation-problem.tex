@@ -50,16 +50,16 @@ Listing~\ref{lst:ao-synchronizing} illustrates an implementation of
 this in AspectJ.
 
 \scriptsize
-\begin{lstlisting}[frame=single, caption={Concurrency concern tangled and scattered in EmployeeRepository.},label=lst:ao-synchronizing, numbers=left, language=Java]
-public aspect LocalSynchronization {
-
-    Object around(Object o): this(o) && execution(* EmployeeRepository.*(..)) {
-        synchronized(o) {
-            return proceed(o);
-        }
-    }
-}
-\end{lstlisting}
+% \begin{lstlisting}[frame=single, caption={Concurrency concern tangled and scattered in EmployeeRepository.},label=lst:ao-synchronizing, numbers=left, language=Java]
+% public aspect LocalSynchronization {
+% 
+%     Object around(Object o): this(o) && execution(* EmployeeRepository.*(..)) {
+%         synchronized(o) {
+%             return proceed(o);
+%         }
+%     }
+% }
+% \end{lstlisting}
 \normalsize
 
 Now, suppose a new feature intended to counting the number of
@@ -70,15 +70,15 @@ need to be synchronized, since it does not manipulate a specific
 instance of \emph{Employee}.
 
 \scriptsize
-\begin{lstlisting}[frame=single, caption={A new method for counting the number of Employees.},label=lst:new-method, numbers=left, language=Java]
-public class EmployeeRepository {
-
-    public int getNumberOfEmployees(Profile profile) {
-        // Business logic to count the number of Employees
-    }
-
-}
-\end{lstlisting}
+% \begin{lstlisting}[frame=single, caption={A new method for counting the number of Employees.},label=lst:new-method, numbers=left, language=Java]
+% public class EmployeeRepository {
+% 
+%     public int getNumberOfEmployees(Profile profile) {
+%         // Business logic to count the number of Employees
+%     }
+% 
+% }
+% \end{lstlisting}
 \normalsize
 
 If a class developer oblivious about the \emph{LocalSynchronization}
@@ -146,21 +146,74 @@ concerns in parallel. However, without the use of a clear interface
 between those concerns, a lot of communication might be required,
 which, in fact, compromises the parallel development.
 
-When reasoning about modularity in software engineering, very often
-the benefit of parallel development is miss-considered. Even after
-Parnas has claimed that modularity is more than program structure,
-but also process a process structure \cite{}.
+When reasoning about modularity in software engineering,
+the benefit of parallel development is frequently not considered. Even after
+Parnas has claimed that modularity is more than program structure. Actually, 
+his view of modularity is related to the assignment of development 
+activities, which, of course, may be reflected in the program
+structure~\cite{parnas-icse-03}.
+
+\begin{quote}
+My early work clearly treated modularisation as a design
+issue, not a language issue. A module was a work assignment,
+not a subroutine or other language element. Although
+some tools could make the job easier, no special tools were
+needed to use the principal, just discipline and skill.
+\end{quote}
+
 
 % include the parnas review of modularity
 % read a bit more about the steimann discussion on AOP modularity
 % we need a clear interface for both aspect and base code....
 
+A similar view of modularity was presented by Baldwin and
+Clark~\cite{clark-design-rules-book}. They proposed a theory that 
+considers a \emph{modular design} as a key factor for innovation in 
+different domains (hardware, software, and so on). Moreover, they 
+observed that a modular design reduces the communication paths among 
+design decisions, in such a way that unities of work can be developed 
+in parallel. 
+
 For instance, supposing that a team is responsible for developing
-the use cases related to the complaint management; and another team
-is responsible for an auditing concern that must be triggered
-whenever changes in a complain occur. In order to enable a parallel
-development, at least an agreement about the exposed join-points
-must be established.
+the use cases related to the \emph{complaint management} concern (a core concern
+of Health Watcher system~\cite{soares-oopsla-02}); and another team is responsible
+for an auditing concern that must be triggered whenever a change in a 
+complaint occurs. Without a clear interface stating which are the relevant 
+changes (the set of join-points) and how these join-points should be
+written by the complaint management team, any increment in the core concern
+must be communicated to the auditing team. Consequently, it is difficult to
+implement the auditing concern at the same time that the complaint management 
+concern is being developed. Although these concerns can be encapsulated in 
+single unities, there is no modular design in this case. 
+
+We can represent these kind of dependencies by means of Design Structure
+Matrices (DSMs). DSMs are used to visualize dependencies among design 
+parameters, which correspond to any decision that needs to be made along the 
+product design. Parameters are disposed in both rows and columns of a matrix.
+The notion of dependency, represented as a 'x' mark in the matrices, arises
+whenever a design decision depends on another. Figure~\ref{dsm:hw01}
+
+\begin{figure}[htb]
+\centering
+\begin{small}
+\begin{tabular}{lllllll} \hline
+&  & 1 & 2 & 3 & 4 & 5 \\ \hline
+1 & Complaint requirements		& 		& 		& 		&   &	\\ 
+2 & Auditing requirements		& 	 	&  		&  		&   & 	\\ 
+3 & Architectural decisions		& 	x 	& 		& 		&   & 	\\
+4 & Complaint implementation	& 	x	&		&	x	&	& x	\\
+5 & Auditing AO implementation	& 		&	x	&		& x	&	\\\hline
+\end{tabular}
+\end{small}
+\caption{DSM Analysis Health Watcher}
+\label{dsm:hw01}
+\end{figure}
+  
+
+
+
+  
+
 
 % present a concrete example here!
 
