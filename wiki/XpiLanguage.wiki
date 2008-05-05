@@ -1,0 +1,8 @@
+#summary Essa página (em português) é usada para discutir com Márcio (ou outros interessados) algumas decisões relacionadas com o paper JSS.
+
+== Questão 1: Relação com Open Modules ==
+
+Após ler o paper sobre open modules, percebi que um dos objetivos do Aldrich é expor _pointcuts_ nas interfaces dos módulos. Seriam permitidos advices apenas para tais _pointcuts_. Acredito que não exista esse recurso na linguagem de DRs (limitar quais _pointcuts_ estão disponíveis), ou aspectos obrigatoriamente implementam DRs? Quais os pontos positivos de open modules em relação a proposta de DRs?
+
+=== Resposta para a primeira questão === 
+-
