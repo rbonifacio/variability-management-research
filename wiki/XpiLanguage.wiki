@@ -5,4 +5,15 @@
 Após ler o paper sobre open modules, percebi que um dos objetivos do Aldrich é expor _pointcuts_ nas interfaces dos módulos. Seriam permitidos advices apenas para tais _pointcuts_. Acredito que não exista esse recurso na linguagem de DRs (limitar quais _pointcuts_ estão disponíveis), ou aspectos obrigatoriamente implementam DRs? Quais os pontos positivos de open modules em relação a proposta de DRs?
 
 === Resposta para a primeira questão === 
--
+
+Acho que se há uma DR, há um contrato a ser implementado por ambos, classe e aspecto. Assim sendo, o aspecto iria sim ser obrigado a implementar a DR, afinal acho que não faz sentido existir uma DR somente pra uma classe ou somente para um aspecto.
+
+Eu também acredito que limitar os _pointcuts_ não esteja na linguagem de DRs. Até onde eu entendo, ela é uma espécie de checker que verifica basicamente duas coisas:
+
+(i) a classe expõe os _join points_ declarados na DR? (Ou seja, ela provê o método insertEmployee(Employee))???
+
+(ii) o aspecto tem algum advice para os _join points_ declarados na DR? (Ou seja, ele introduz algum código para alterar o comportamento de insertEmployee(Employee))?
+
+Em suma, acho que a linguagem não restringe, mas sim verifica se os _join points_ existentes estão sendo expostos (pela classe) e tratados (pelo aspecto).
+
+Concordas???
