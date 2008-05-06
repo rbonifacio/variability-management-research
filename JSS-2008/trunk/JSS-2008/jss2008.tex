@@ -1,5 +1,6 @@
 \documentclass{elsart}
-\usepackage{graphicx,natbib,amssymb, listings}
+
+\usepackage{graphicx, natbib, amssymb, listings, color, colortbl, subfigure}
 
 \journal{Software and Systems}
 
@@ -40,6 +41,8 @@ Binaries: close \sep Novae, cataclysmic variables
 \PACS 97.10.Gz \sep 97.30.Qt \sep 97.80.Gm
 \end{keyword}
 \end{frontmatter}
+
+\newcommand{\paintcell}{\multicolumn{1}{>{\columncolor[gray]{0.8}}c}{}}
 
 \input{introduction}
 \input{motivation-problem}
