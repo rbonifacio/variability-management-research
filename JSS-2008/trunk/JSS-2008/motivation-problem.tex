@@ -47,13 +47,15 @@ Suppose the requirement of synchronizing (concurrency management)
 all methods of a class. Such requirement consists of encompassing
 with synchronized blocks the bodies of all methods.
 Listing~\ref{lst:ao-synchronizing} illustrates an implementation of
-this in AspectJ.
+this concern in AspectJ applied to the \emph{EmployeeRepository}
+class.
 
 \scriptsize
-\begin{lstlisting}[frame=single, caption={Concurrency concern tangled and scattered in EmployeeRepository.},label=lst:ao-synchronizing, numbers=left, language=Java]
-public aspect LocalSynchronization {
+\begin{lstlisting}[frame=single, caption={Aspect responsible for implementing the concurrency concern.},label=lst:ao-synchronizing, language=Java]
+public aspect SynchronizationAspect {
 
-    Object around(Object o): this(o) && execution(* EmployeeRepository.*(..)) {
+    Object around(Object o): this(o)
+            && execution(* EmployeeRepository.*(..)) {
         synchronized(o) {
             return proceed(o);
         }
@@ -62,16 +64,18 @@ public aspect LocalSynchronization {
 \end{lstlisting}
 \normalsize
 
-Now, suppose a new feature intended to counting the number of
-Employees registered in a given profile. Such feature might be
-implemented as a new method in the \emph{EmployeeRepository} class
-(Listing~\ref{lst:new-method}). Notice that this method does not
-need to be synchronized, since it does not manipulate a specific
-instance of \emph{Employee}.
+Now, suppose a new feature intended to count the number of employees
+registered in a given profile. Such feature might be implemented as
+a new method in the \emph{EmployeeRepository} class
+(Listing~\ref{lst:new-method}).
 
 \scriptsize
-\begin{lstlisting}[frame=single, caption={A new method for counting the number of Employees.},label=lst:new-method, numbers=left, language=Java]
+\begin{lstlisting}[frame=single, caption={A new method for counting the number of Employees.},label=lst:new-method, language=Java]
 public class EmployeeRepository {
+
+    public void insertEmployee(Employee employee) { ... }
+
+    public void removeEmployee(Employee employee) { ... }
 
     public int getNumberOfEmployees(Profile profile) {
         // Business logic to count the number of Employees
@@ -81,21 +85,20 @@ public class EmployeeRepository {
 \end{lstlisting}
 \normalsize
 
-If a class developer oblivious about the \emph{LocalSynchronization}
-aspect decides to implement the \emph{getNumberOfEmployees} method,
-at least three problems can occur:
-
-%However, the application will not behave as presumed, since the
-%method will be synchronized by the aspect.
+If a class developer oblivious about the
+\emph{SynchronizationAspect} aspect decides to implement the
+\emph{getNumberOfEmployees} method, at least three problems can
+occur:
 
 \begin{enumerate}
 
-    \item the methods created by the class developer might not need concurrency management,
-    but they will be synchronized by the aspect;
+    \item the \emph{getNumberOfEmployees} method created by the class
+    developer might not need concurrency management, but it will be
+    synchronized by the aspect;
 
     \item if the class developer, oblivious about the aspect,
-    implements concurrency management on methods class, these methods
-    would be synchronized twice; and
+    implements concurrency management in the \emph{getNumberOfEmployees} method,
+    such method would be synchronized twice; and
 
     \item depending on how the synchronization approaches are implemented
     by the aspect and class developers, together they might lead the system
@@ -114,27 +117,42 @@ modules should be studied in order to understand the concern; and
 can implement unintended behavior into a module which, although it
 is not under his responsibility, might break the system.
 
-%Suppose a new feature that requires counting the number of Employees
-%registered in a given profile. Such feature might be implemented as
-%a new method in the \emph{EmployeeRepository} class
-%(Listing~\ref{lst:ds}). This method does not need to be
-%synchronized, since it does not manipulate a specific instance of
-%\emph{Employee}. However, the application will not behave as
-%presumed, since the method will be synchronized by the aspect.
-%
-% COLOCAR A CLASSE TODA??? TEM ESPAÇO MESMO...
-%
-%\scriptsize
-%\begin{lstlisting}[frame=single, caption={A new method for counting the number of Employees.},label=lst:ds, numbers=left, language=Java]
-%public class EmployeeRepository {
-%
-%    public int getNumberOfEmployees(Profile profile) {
-%        // Business logic to count the number of Employees
-%    }
-%
-%}
-%\end{lstlisting}
-%\normalsize
+In summary, we conclude that any unanticipated change in the class
+may cause problems and the application might not behave as presumed.
+Notice that we have a cyclical dependency situation: the aspect
+depends on the class syntactically; and to change the class, the
+developer must be aware about the aspect.
+Figure~\ref{dsm:concurrency} illustrates such cyclical
+dependency through a DSM (presented in Section~\ref{}), whereas
+Figure~\ref{dsm:concurrency-drs} shows design rules coming into
+play to remove the dependency between the aspects and class.
+
+\begin{figure}[h]
+    \begin{center}
+        \subfigure[Cyclical Dependency between an aspect and a class.] {
+            \begin{scriptsize}
+            \begin{tabular}{|l|l|l|l|} \hline
+                  &                             & 1     & 2     \\ \hline
+                1 & SynchronizationAspect.aj    & \paintcell     & x     \\ \hline
+                2 & EmployeeRepository.java     & x     & \paintcell      \\ \hline
+            \end{tabular}
+            \end{scriptsize}
+            \label{dsm:concurrency}
+        }
+        \subfigure[Design Rules removing Cyclical Dependency.] {
+            \begin{scriptsize}
+            \begin{tabular}{|l|l|l|l|l|} \hline
+                  &                             & 1     & 2    & 3 \\ \hline
+                1 & Design Rules                &       &      &   \\ \hline
+                2 & SynchronizationAspect.aj    & x     &      &   \\ \hline
+                3 & EmployeeRepository.java     & x     &      &   \\ \hline
+            \end{tabular}
+            \end{scriptsize}
+            \label{dsm:concurrency-drs}
+        }
+        \caption{Concurrency concern with/without Design Rules.}
+    \end{center}
+\end{figure}
 
 \subsection{Example 2}
 
@@ -148,8 +166,8 @@ which, in fact, compromises the parallel development.
 
 When reasoning about modularity in software engineering,
 the benefit of parallel development is frequently not considered. Even after
-Parnas has claimed that modularity is more than program structure. Actually, 
-his view of modularity is related to the assignment of development 
+Parnas has claimed that modularity is more than program structure. Actually,
+his view of modularity is related to the assignment of development
 activities, which, of course, may be reflected in the program
 structure~\cite{parnas-icse-03}.
 
@@ -168,42 +186,42 @@ needed to use the principal, just discipline and skill.}
 % we need a clear interface for both aspect and base code....
 
 A similar view of modularity was presented by Baldwin and
-Clark~\cite{clark-design-rules-book}. They proposed a theory that 
-considers a \emph{modular design} as a key factor for innovation in 
-different domains (hardware, software, and so on). Moreover, they 
-observed that a modular design reduces the communication paths among 
-design decisions, in such a way that unities of work can be developed 
-in parallel. 
+Clark~\cite{clark-design-rules-book}. They proposed a theory that
+considers a \emph{modular design} as a key factor for innovation in
+different domains (hardware, software, and so on). Moreover, they
+observed that a modular design reduces the communication paths among
+design decisions, in such a way that unities of work can be developed
+in parallel.
 
 For instance, supposing that a team is responsible for developing
 the use cases related to the \emph{complaint management} concern (a core concern
 of Health Watcher system~\cite{soares-oopsla-02}); and another team is responsible
-for an auditing concern that must be triggered whenever a change in a 
-complaint occurs. Without a clear interface stating which are the relevant 
+for an auditing concern that must be triggered whenever a change in a
+complaint occurs. Without a clear interface stating which are the relevant
 complaint changes (the set of join-points) and how these join-points should be
 written by the complaint management team, any increment in the core concern
 must be communicated to the auditing team. Consequently, it is difficult to
-implement the auditing concern at the same time that the complaint management 
-concern is being developed. Although these concerns can be encapsulated in 
-single unities, there is no modular design in this case. 
+implement the auditing concern at the same time that the complaint management
+concern is being developed. Although these concerns can be encapsulated in
+single unities, there is no modular design in this case.
 
 We can represent this kind of dependence by means of Design Structure
-Matrices (DSMs). DSMs are used to visualize dependencies among design 
-parameters, which correspond to any decision that needs to be made along the 
+Matrices (DSMs). DSMs are used to visualize dependencies among design
+parameters, which correspond to any decision that needs to be made along the
 product design. Parameters are disposed in both rows and columns of a matrix.
 The notion of dependency, represented as a 'x' mark in the matrices, arises
 whenever a design decision depends on another. For
 instance, consider the DSM depicted in Figure~\ref{dsm:hw01}, which represent
 some design parameters and respective dependencies of the Health Watcher
 system. Based on this DSM, we can realize that decisions regarded to the
-complaint implementation (row 5) depends on decisions about complaint 
+complaint implementation (row 5) depends on decisions about complaint
 requirements (dependence row 5, column 2), about architectural
 decisions~\footnote{Examples of architectural decisions for the Health Watcher
 system are the selected style (layers), patterns, and technologies for each
-layer or concern (presentation, distribution, persistence, and so on)} 
+layer or concern (presentation, distribution, persistence, and so on)}
 (dependence row 4, column 4), and about the auditing concern (dependence row 4,
-column 6). This last dependency occurs because the team responsible for developing 
-the \emph{complaint concern} have to know how to develop the extension points for 
+column 6). This last dependency occurs because the team responsible for developing
+the \emph{complaint concern} have to know how to develop the extension points for
 the \emph{auditing concern}. Moreover, as we can observe in
 Figure~\ref{dsm:hw01}, the auditing implementation also depends on the
 complaint implementation decisions, since changes in its implementation should
@@ -215,44 +233,44 @@ implementation -- a clear example of non modular design.
 \centering
 \begin{scriptsize}
 \begin{tabular}{|l|l|l|l|l|l|l|l|} \hline
-  &  							& 1 	& 2 	& 3 	& 4 	& 5 	& 6	\\ \hline
-1 & Goals and constraints		& 		&		&		&		&		&	\\ \hline
-2 & Complaint requirements		& x		& 		& 		&   	&		&	\\ \hline 
-3 & Auditing requirements		& x	 	&  		&  		&   	&		&	\\ \hline
-4 & Architectural decisions		& x	 	& x		& 		&    	&		&	\\ \hline
-5 & Complaint implementation	& 		& x		&		& x	 	&		& x	\\ \hline
-6 & Auditing AO implementation	& 		&		& x		& 		& x		&	\\	\hline
+  &                             & 1     & 2     & 3     & 4     & 5     & 6 \\ \hline
+1 & Goals and constraints       &       &       &       &       &       &   \\ \hline
+2 & Complaint requirements      & x     &       &       &       &       &   \\ \hline
+3 & Auditing requirements       & x     &       &       &       &       &   \\ \hline
+4 & Architectural decisions     & x     & x     &       &       &       &   \\ \hline
+5 & Complaint implementation    &       & x     &       & x     &       & x \\ \hline
+6 & Auditing AO implementation  &       &       & x     &       & x     &   \\  \hline
 \end{tabular}
 \end{scriptsize}
 \caption{DSM Analysis Health Watcher}
 \label{dsm:hw01}
 \end{figure}
-  
+
 
 Based on the information hidden principle, we should encapsulate the
 dependences between complaint and auditing concerns in a special kind
-of interface (a design rule). Design rules establish strict partitions 
-of knowledge and effort at the outset of a design process. 
-They are not just guidelines or recommendations: they must be rigorously 
+of interface (a design rule). Design rules establish strict partitions
+of knowledge and effort at the outset of a design process.
+They are not just guidelines or recommendations: they must be rigorously
 obeyed in all phases of design and production~\cite{clark-design-rules-book}.
-Applying design rules to our current example, we improve the design structure 
-by removing the cyclical dependencies between complaint and auditing concerns. 
+Applying design rules to our current example, we improve the design structure
+by removing the cyclical dependencies between complaint and auditing concerns.
 The reviewed DSM is presented in Figure~\ref{dsm:hw02}. Notice that a new parameter
 (actually a design rule) was introduced (row 4) and all dependencies are bellow
-the main diagonal (there is no more cyclical dependencies). 
- 
+the main diagonal (there is no more cyclical dependencies).
+
 \begin{figure}[htb]
 \centering
 \begin{scriptsize}
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|} \hline
-  &  								& 1 	& 2 	& 3 	& 4 	& 5 	& 6	& 7	\\ \hline
-1 & Goals and constraints			& 		&		&		&		&		&	&	\\ \hline
-2 & Complaint requirements 			& x		& 		& 		&   	&		&	&	\\ \hline 
-3 & Auditing requirements			& x	 	&  		&  		&   	& 		&	&	\\ \hline 
-4 & Architectural decisions			& x  	& x		& 		&   	&		& 	&	\\ \hline
-5 & Auditing design rule			& 		& x		&   x	&		&		&	&	\\ \hline 
-6 & Complaint implementation		& 		& x		&		&	x	& x		& 	&	\\ \hline
-7 & Auditing AO implementation		& 		&		&	x	&   	& x		&	&	\\ \hline
+  &                                 & 1     & 2     & 3     & 4     & 5     & 6 & 7 \\ \hline
+1 & Goals and constraints           &       &       &       &       &       &   &   \\ \hline
+2 & Complaint requirements          & x     &       &       &       &       &   &   \\ \hline
+3 & Auditing requirements           & x     &       &       &       &       &   &   \\ \hline
+4 & Architectural decisions         & x     & x     &       &       &       &   &   \\ \hline
+5 & Auditing design rule            &       & x     &   x   &       &       &   &   \\ \hline
+6 & Complaint implementation        &       & x     &       &   x   & x     &   &   \\ \hline
+7 & Auditing AO implementation      &       &       &   x   &       & x     &   &   \\ \hline
 \end{tabular}
 \end{scriptsize}
 \caption{DSM Analysis Health Watcher}
@@ -264,7 +282,7 @@ This idea of defining interfaces between aspect code and adviced code is not
 really new. Next, we present some proposals to solve this problem and discuss
 how our approach improve existing works.
 
-\subsection{Existing solutions}  
+\subsection{Existing solutions}
 
 % ok, o problema realmente existe. mas ele não é novo. precisamos discutir que
 % existem propostas para esse problema. Por outro lado elas não atendem.
