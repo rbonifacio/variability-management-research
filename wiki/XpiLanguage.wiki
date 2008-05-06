@@ -17,3 +17,14 @@ Eu também acredito que limitar os _pointcuts_ não esteja na linguagem de DRs. 
 Em suma, acho que a linguagem não restringe, mas sim verifica se os _pointcuts_ existentes estão sendo expostos (pela classe) e tratados (pelo aspecto).
 
 Concordas???
+
+=== Resposta para a primeira questão === 
+
+> Concordas???
+> o aspecto iria sim ser obrigado a implementar a DR
+
+concordo. 
+
+mas tenho uma duvida quanto a todo aspecto implementar uma DR? No caso de open modules, aspectos podem interceptar apenas o que está público nas interfaces. Isso resolve o problema de evolução do código base quebrar os aspectos. Mas nao define a responsabilidade dos aspectos (ponto positivo da linguagem de DR). Se os aspectos puderem referenciar pointcuts nao descritos nas DRs, o problema de fragile poderia continuar existindo. 
+
+O resto eu concordo. :)
