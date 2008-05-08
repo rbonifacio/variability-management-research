@@ -28,3 +28,10 @@ concordo.
 mas tenho uma duvida quanto a todo aspecto implementar uma DR? No caso de open modules, aspectos podem interceptar apenas o que está público nas interfaces. Isso resolve o problema de evolução do código base quebrar os aspectos. Mas nao define a responsabilidade dos aspectos (ponto positivo da linguagem de DR). Se os aspectos puderem referenciar pointcuts nao descritos nas DRs, o problema de fragile poderia continuar existindo. 
 
 O resto eu concordo. :)
+
+
+== Questão 2: Discussão sobre XPIs no paper de LA-WASP ==
+
+Na seção 3 do paper submetido para LA-WASP, está escrito que as XPIs do Sullivam não guiam os desenvolvedores. Isso está correto?
+
+ 
