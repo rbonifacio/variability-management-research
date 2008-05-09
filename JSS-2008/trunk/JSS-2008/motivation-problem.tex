@@ -216,7 +216,7 @@ some design parameters and respective dependencies of the Health Watcher
 system. Based on this DSM, we can realize that decisions regarded to the
 complaint implementation (row 5) depends on decisions about complaint
 requirements (dependence row 5, column 2), about architectural
-decisions~\footnote{Examples of architectural decisions for the Health Watcher
+decisions\footnote{Examples of architectural decisions for the Health Watcher
 system are the selected style (layers), patterns, and technologies for each
 layer or concern (presentation, distribution, persistence, and so on)}
 (dependence row 4, column 4), and about the auditing concern (dependence row 4,
@@ -307,7 +307,7 @@ assigned for a different team and they can not assume the existence
 of any behavior expected to be modularized as an aspect. 
 
 For instance, consider the implementation of a mobile
-game product line. Listing~{lst:paint-method} presents part of 
+game product line. Listing~\ref{lst:paint-method} presents part of 
 a non-variant code responsible for painting graphical elements 
 on the screen. Methods \emph{paintBeforeScrolling} and
 paintScolling are introduced (by means of intertype declararions),
@@ -347,13 +347,14 @@ applied to the base code. These constraints might be written as \emph{declare wa
 or just as comments in the source code (when a constraint can not be expressed as a \emph{declare warning} 
 or \emph{declare error}). 
 
-XPIs authors argue that one interesting characteristic of the approach is that it is does not require any new construct in 
-the AspectJ language. In fact, this characteristic encourage the use of this approach in environments that are already 
-using the AspectJ language. However, most of the constraints required for defining the responsibilities of both 
+XPIs authors argue that an important characteristic of their approach is that it does not require any new construct in 
+the AspectJ language and there is no restriction to the pointcut visibility. In fact, this characteristic encourage the use of XPIs in environments that are already using the AspectJ language. However, most of the constraints required for defining the responsibilities of both 
 class developers and aspect developers can not be checked using the proposed XPI language. Consequently, it is not possible 
-to guarantee, at least automatically, if all design rules are being obeyed. For instance, we can not express using AspectJ constructs 
-that a call to a method must occurs within the flow of another method. Actually, we can define such pointcut, but if it does not exist, no 
-error is reported. 
+to guarantee, at least automatically, if certain design rules are being obeyed. For instance, we can not express, using AspectJ constructs, 
+that a call to a method \emph{must} occurs within the flow of another method. Actually, we can define such a pointcut, but if it does not exist,  no error is reported by the AspectJ compiler. Actually, pointcut constructs in AspectJ were proposed for specifying 
+points of execution that should be augmented by advices. They were not proposed for specifying restrictions applied for base code developing. 
 
+Aiming at specifying restrictions in base code using AspectJ like languages, developers are able to check if a {\bf non desirable} pointcut occurs in the source code (by means of \emph{declare error} or {declare warning} constructs). However, there is no construct which can be used for specifying that a specific pointcut {\bf must} occur in the source code. However, in order to improve modularity between crosscutting and base decisions, it is necessary to define what is expected from both teams (not only what aspect developers require, as supported by XPIs).   
 
-  
+Therefore, we propose a new design rule language that can be used for specifying interfaces between aspects and advised code. In what follows, 
+we present the syntax and semantics of our proposed language. Then, in Section~\ref{}, we present an evaluation though different case studies. 
