@@ -1,6 +1,7 @@
 %\documentclass{acm_proc_article-sp}
 %\usepackage{hyperref}
-\documentclass[preprint]{sigplanconf}
+\documentclass{sigplanconf}
+%\documentclass[preprint]{sigplanconf}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{epsfig}
@@ -29,7 +30,7 @@ numberstyle=\tiny,numbersep=5pt,basicstyle=\scriptsize,aboveskip=20pt}
 \begin{abstract}
 Variability management is a common challenge for Software Product
 Line (SPL) adoption, since developers need suitable
-mechanisms for describing or implementing different kinds of variability
+mechanisms for describing or implementing variability
 that might occur at different SPL views (requirements, design,
 implementation, and test). In this paper, we present an approach for
 use case scenario variability management, enabling a better
@@ -39,7 +40,10 @@ result is that both representations can be understood and evolved in
 a separated way. We achieve such goal by modeling variability management
 as a crosscutting phenomenon, for the reason that artifacts such as feature models, 
 product configurations, and configuration knowledge crosscut each 
-other with respect to a SPL specific member. 
+other with respect to a SPL specific member. Additionally, we argue 
+that our proposed approach might be customized to describe variability
+mechanisms in other SPL artifacts, being a contribution for
+automatic product generation and traceability.
 \end{abstract}
 
 \category{D.2.1}{Software Engineering}{Requirements}[Languages,
@@ -67,7 +71,7 @@ design, implementation, and test). So, variability management, in
 the same way as the feature model and the architecture, represents a central concern in the SPL 
 development and should not be tangled with existing artifacts~\cite{phol-spl-book}.   
  
-Several authors have proposed the use of \emph{aspect-oriented} mechanisms in order to better modularize the composition of common and variant assets of a product line~\cite{sousa:aosd-ea04, moreira-re07, eriksson-splc-2005, pohl-caise-2005, alves-gpce-06, apel-icse2006}. 
+Several authors have proposed the use of \emph{aspect-oriented} mechanisms in order to better modularize the composition of common and variant assets of a product line~\cite{sousa:aosd-ea04, moreira-re07, eriksson-splc-2005, alves-gpce-06, apel-icse2006}. 
 However, here we go beyond this composition issue. We mainly consider a more encompassing notion of variability management, including artifacts such as feature 
 models~\cite{gheyi-alloy-06,czarnecki-book} and configuration knowledge~ \cite{czarnecki-book, phol-spl-book}, and explain it  as a crosscutting phenomenon.
 
@@ -140,7 +144,7 @@ selected), \emph{Or} (one or more subfeatures might be selected), and \emph{Alte
  \begin{center}
   \includegraphics[scale=0.25]{img/eShop-fm3.eps}
    \includegraphics[scale=0.30]{img/fm-notation.eps}
-  \caption{eShop feature model.}
+  \nocaptionrule \caption{eShop feature model.}
   \label{fig:eshop-fm}
   \end{center}
 \end{figure}
@@ -172,7 +176,7 @@ never performed together. They are alternative steps: Step 1(a) will be present 
   \end{tabular}
   } 
 \end{scriptsize}
-\caption{Buy Products scenarios using the PLUSS notation.}
+\nocaptionrule \caption{Buy Products scenarios using the PLUSS notation.}
 \label{fig:pluss-01}
 \end{center}
 \end{figure}
@@ -217,7 +221,7 @@ of each tag is specified in the \emph{Variation Points} section of the scenario 
   } 
 \end{scriptsize}
 \end{center}
-\caption{Buy Products scenarios using the PLUC notation.}
+\nocaptionrule \caption{Buy Products scenarios using the PLUC notation.}
 \label{fig:pluc-01}
 
 \end{figure}
@@ -271,7 +275,7 @@ This leads to concise weaving processes descriptions (the related source code is
 \begin{figure}[h]
  \begin{center}
   \includegraphics[scale=0.30]{img/weave-process2.eps}
-  \caption{Overview of our weaving process.}
+  \nocaptionrule \caption{Overview of our weaving process.}
   \label{fig:weave-process}
   \end{center}
 \end{figure}
@@ -312,7 +316,7 @@ of pairs \emph{User Action} x \emph{System Response}).  A use case defines a set
   \end{center}
   } 
 \end{scriptsize}
-\caption{Buy product scenario.}
+\nocaptionrule \caption{Buy product scenario.}
 \label{fig:buy-product-scenario}
 \end{figure}
 
@@ -338,7 +342,7 @@ of pairs \emph{User Action} x \emph{System Response}).  A use case defines a set
   \end{center}
   } 
 \end{scriptsize}
-\caption{Buy products with shopping cart scenario.}
+\nocaptionrule \caption{Buy products with shopping cart scenario.}
 \label{fig:buy-product-changing-flow}
 \end{figure}
 
@@ -366,7 +370,7 @@ for different kinds of \emph{ship method} configurations.
   \end{center}
   } 
 \end{scriptsize}
-\caption{Proceed to purchase scenario.}
+\nocaptionrule \caption{Proceed to purchase scenario.}
 \label{fig:proceed-to-checkout}
 \end{figure}
 
@@ -391,7 +395,7 @@ for different kinds of \emph{ship method} configurations.
   \end{center}
   } 
 \end{scriptsize}
-\caption{Search for products scenario.}
+\nocaptionrule \caption{Search for products scenario.}
 \label{fig:search-products-flow}
 \end{figure}
 
@@ -416,7 +420,7 @@ that are configured with the \emph{Update User Preferences} feature.
   \end{center}
   } 
 \end{scriptsize}
-\caption{Register user preferences.}
+\nocaptionrule \caption{Register user preferences.}
 \label{fig:register-preferences-flow}
 \end{figure}
 
@@ -430,7 +434,7 @@ present only the features required  (Figure~\ref{fig:eshop-fm-re}) for understan
  \begin{figure}[h]
  \begin{center}
   \includegraphics[scale=0.40]{img/eShop-fm-re.eps}
-   \caption{Subset of eShop feature model.}
+   \nocaptionrule \caption{Subset of eShop feature model.}
   \label{fig:eshop-fm-re}
   \end{center}
 \end{figure}
@@ -447,7 +451,7 @@ This artifact is used for identifying which features were selected in order to c
     \mbox{\includegraphics[scale=0.4]{img/pc-01.eps}}
     \mbox{\includegraphics[scale=0.4]{img/pc-02.eps}}
   }
-  \caption{Examples of product configurations.}
+  \nocaptionrule \caption{Examples of product configurations.}
   \label{fig:product-config-01-02}
   \end{figure}
   
@@ -467,7 +471,8 @@ the \emph{Buy a Product} scenario is used in the composition of products that do
 
 \begin{table}[th]
 \begin{center}
-\caption{eShop configuration knowledge} \label{tab:ck-running-example}
+\nocaptionrule \caption{eShop configuration knowledge}
+\label{tab:ck-running-example}
 \begin{tabular}{ll}
    \hline\noalign{\smallskip}
   {\bf Expression} & {\bf Required Artifacts} \\
@@ -502,7 +507,7 @@ Table~\ref{tab:assembled-scenarios} shows the assembled scenarios for the config
 
 \begin{table}[h]
 \begin{center}
-\caption{Assembled scenarios} \label{tab:assembled-scenarios}
+\nocaptionrule \caption{Assembled scenarios} \label{tab:assembled-scenarios}
 \begin{tabular}{ll}
    \hline\noalign{\smallskip}
   {\bf Configuration} & {\bf Assembled scenarios} \\
@@ -567,7 +572,7 @@ The complete path is a high level representation, which uses the same constructi
 }
 \end{xy}
 \end{tiny}
-\caption{Complete paths represented  as a graph}
+\nocaptionrule \caption{Complete paths represented  as a graph}
 \label{fig:complete-paths}
 \end{center}
 \end{figure}
@@ -609,7 +614,7 @@ W = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\},
 
 \begin{table}[h]
 \begin{center}
-\caption{Modeling framework elements.} \label{tab:tup-01}
+\nocaptionrule \caption{Modeling framework elements.} \label{tab:tup-01}
 \begin{tabular}{|p{0.6in}|p{2.4in}|}
   \hline
   {\bf Element} & {\bf Description} \\ 
@@ -672,7 +677,7 @@ for a specific product.
 
 \begin{table}[htb]
 \begin{center}
-\caption{Model of Product Derivation} \label{tab:pd-weaver}
+\nocaptionrule \caption{Model of Product Derivation} \label{tab:pd-weaver}
 \begin{tabular}{p{0.6in}p{2.4in}}
    \hline\noalign{\smallskip}
   {\bf Element} & {\bf Description} \\
@@ -788,7 +793,8 @@ plays a fundamental role in this process, retrieving the steps in the use case m
 
 \begin{table}[hbt]
 \begin{center}
-\caption{Model of Scenario Composition Weaver} \label{tab:sc-weaver}
+\nocaptionrule \caption{Model of Scenario Composition Weaver}
+\label{tab:sc-weaver}
 \begin{tabular}{p{0.4in}p{2.6in}}
    \hline\noalign{\smallskip}
   {\bf Element} & {\bf Description} \\
@@ -871,7 +877,7 @@ bpWeaver m pc s =
 
 \begin{table}[th]
 \begin{center}
-\caption{Model of Bind Parameters Weaver} \label{tab:bp-weaver}
+\nocaptionrule \caption{Model of Bind Parameters Weaver} \label{tab:bp-weaver}
 \begin{tabular}{p{0.7in}p{2.3in}}
    \hline\noalign{\smallskip}
   {\bf Element} & {\bf Description} \\
@@ -1023,7 +1029,7 @@ For now, let us reproduce the DSMs to understand the benefits of SoC in variabil
 4 & Configuration knowledge 	& x 	& x 	& 	&    	\\ \hline
 \end{tabular}
 \end{small}
-\caption{DSM Analysis of PLUC}
+\nocaptionrule \caption{DSM Analysis of PLUC}
 \label{dsm:pluc}
 \end{figure}
 
@@ -1042,7 +1048,7 @@ Our approach reduces the dependences between variability management and scenario
 5 & Configuration model 	& x 	&  	&  x	&  	& 	\\  \hline
 \end{tabular}
 \end{small}
-\caption{DSM Analysis of the proposed approach}
+\nocaptionrule \caption{DSM Analysis of the proposed approach}
 \label{dsm:cc}
 \end{figure}   
 
@@ -1091,7 +1097,7 @@ We have specified the MMS product line using three techniques: our notation, PLU
 
 \begin{table}[htb]
 \centering
-\caption{MMS quantitative evaluation}
+\nocaptionrule \caption{MMS quantitative evaluation}
 \label{tab:metrics}
 \begin{small}
 \begin{tabular}{lccc} \hline
@@ -1122,7 +1128,7 @@ The lack of crosscutting mechanisms for composing scenarios of different use cas
  \begin{figure}[htb]
  \begin{center}
   \includegraphics[scale=0.42]{img/fds-mms.eps}
-  \caption{Relative FDS for evaluated techniques}
+  \nocaptionrule \caption{Relative FDS for evaluated techniques}
   \label{fig:fds-mms}
   \end{center}
 \end{figure}
@@ -1135,7 +1141,7 @@ The original specification of PPL is already well modularized, since its feature
 
 \begin{table}[hb]
 \centering
-\caption{PPL quantitative evaluation}
+\nocaptionrule \caption{PPL quantitative evaluation}
 \label{tab:ppl-metrics}
 \begin{small}
 \begin{tabular}{lccc} \hline
@@ -1170,7 +1176,7 @@ Still in this context, our approach also achieves some improvements in the resul
   \end{center}
   } 
 \end{scriptsize}
-\caption{Scenario of error handle use case.}
+\nocaptionrule \caption{Scenario of error handle use case.}
 \label{fig:error-handle}
 \end{figure}
     
