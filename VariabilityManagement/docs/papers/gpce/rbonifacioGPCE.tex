@@ -1193,20 +1193,78 @@ variability management, crosscutting modeling, and use case scenario
 composition. This section details some of these approaches, relating
 them to the proposed solution.
 
-\subsection{Variability management}
+\subsection{Semantics of Crossuctting Mechanisms}
 
-% Feature modeling
+Masuhara and Kiczales (MK) proposed a modeling framework 
+for characterizing implementation techniques as 
+\emph{crosscutting mechanisms}~\cite{kiczales-ecoop-2003}. 
+A critical property of their model is that two different input 
+programs crosscut each other with respect to the resulting 
+program or computation. 
+
+In this paper, we applied the MK framework for representing
+\emph{variability management} as a crosscutting mechanism. Improving 
+modularity is the main reason for representing variability management 
+as a crosscutting concern. Actually, we improved both changeability and 
+modular reason by applying our approach for managing variabilities 
+in use case scenarios(Section~\ref{sec:evaluation}). 
+
+Our proposed framework is used for describing how 
+different input SPL specifications crosscut each other to derive 
+product specific artifacts. The contribution of each input 
+specification is well defined. Observing the whole process, 
+not only two specifications are taken as input. Actually, 
+in order to derive product specific scenarios, four input 
+models are required: feature model, product configuration, 
+configuration knowledge, and use case model. Despite that, 
+just a few changes were required to applied the MK framework 
+in our context. 
+
+\subsection{Variability Management and Feature Modeling}
 
 Pohl et al. argue that variability management should not be
 integrated into existing models~\cite{phol-spl-book}. Their proposed
 Orthogonal Variability Model (OVM) describes traceability links
 between variation points and the conceptual models of a SPL. Our
-approach can be applied in conjunction with OVM, since it also
-decouple variability representation and offers a crosscutting
-mechanism for specific product requirement derivation.
+approach also decouple variability concern. However, we describe, in more
+details, its semantics as a crosscutting mechanism. Additionally, we make
+clear how to relate SPL features to software engineering assets by means of the
+configuration model. In our approach, sucha a model can be used for reasoning 
+about traceability.
+
+Feature modeling (FM) has been successfully applied for representing relevant 
+characteristics of a SPL, highlighting its common and variant concepts. 
+Although different notations for FM have been
+proposed~\cite{kang-foda,czarnecki-book,czarnecki-wsfactory-2005}, the 
+abstract syntax followed in this paper is based
+on~\cite{czarnecki-wsfactory-2005}, supporting constraints,
+properties, and cardinality. As a minnor change, in our
+work the feature cardinality, described in~\cite{czarnecki-wsfactory-2005}, is
+used for identifying the semantics of a feature group (it represents 
+an \emph{alternativeFeature} or an \emph{orFeature}). 
 
 
-\subsection{Scenario composition}
+\subsection{Scenario Variability}
+
+Several approaches have been proposed for representing 
+scenario variability~\cite{jacobson-reuse-book, favaro-icsr-98, eriksson-splc-2005,bertolino-esec-2003}. 
+However, in this paper we only compared our crosscutting approach with PLUC and 
+PLUSS techniques because they encompass a broad range of SoC between 
+variability management and scenario specification. PLUC presents the lowest level of 
+modularity, since almost all information related to variability is tangled within use 
+cases. Although PLUSS partially reduces such coupling, by considering the 
+importance of feature modeling, some dependences from feature to use cases are
+still present. These dependences are avoided in our approach.
+
+Design Structure Matrices (DSMs) and crosscutting metrics have being applied 
+for assessing modularity in \emph{aspect-oriented} 
+systems~\cite{vlopes-aosd-2005,garcia-taosd-2005, greenwood-ecoop-2007}. 
+In this work, we also applied DSMs in the context of scenario variability 
+management. Moreover, we applied a suite of metrics for quantifying feature 
+diffusion and tangling over use cases. Such a suite was first presented
+in~\cite{rbonifacio-ea-2008}.
+
+
 In order to avoid the problem of \emph{fragile point-cuts}, Rashid
 et al. proposed a semantic approach for scenario
 composition~\cite{rashid-aosd-2007}. Such approach is based on
