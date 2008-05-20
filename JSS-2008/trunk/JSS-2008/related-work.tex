@@ -6,3 +6,21 @@
 % ..
 % We conclude that we should improve this section
 
+\subsubsection{Open Modules}
+
+Open Modules is an approach for dealing with modularity issues in 
+AOP~\cite{aldrich-ecoop-05}. Besides exposing data structures and 
+functions, Open Modules' interfaces can also expose pointcuts denoting 
+internal semantic of events. Clients of these modules are able to advice 
+only exported pointcuts. Moreover, by exporting a pointcut, the module's 
+developer is compromised to maintain the semantics of that pointcuts, 
+which, in fact, mitigates the fragile pointcut problem. 
+
+\ldots
+
+%However, Open Modules do not offers mechanims for describing which 
+%are the responsabilities of aspect developers. As a consequence, 
+%module developers are still able to implement part of a concern 
+%assigned for a different team and they can not assume the existence 
+%of any behavior expected to be modularized as an aspect. 
+
