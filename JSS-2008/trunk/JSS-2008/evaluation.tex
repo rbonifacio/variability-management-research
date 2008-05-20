@@ -6,3 +6,141 @@
 % Evaluate the benefits based on metrics
 % - Concern metrics or Lattix Metrics
 
+Example 1: Auditing Concern without Design Rules
+
+The auditing concern must be triggered when inserting, removing,
+updating, or searching for a complaint.
+
+Two teams working in parallel without design rules: the first one
+works on the base code (the ComplaintRepository) and the second one
+works on the auditing concern. Such a concern is implemented as an
+aspect.
+
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Complaint Repository implementation.},label=lst:complaint-repository, language=Java]
+public class ComplaintRepository implements IComplaintRepository {
+
+    public int insert(Complaint c) throws RepositoryException, ObjectAlreadyInsertedException {
+
+    }
+
+    public void update(Complaint c) throws RepositoryException, ObjectNotFoundException {
+
+    }
+
+    public void remove(int id) throws RepositoryException, ObjectNotFoundException {
+
+    }
+
+    public Complaint search(int id) throws RepositoryException, ObjectNotFoundException {
+
+    }
+
+}
+\end{lstlisting}
+\normalsize
+
+Aspect for implementing the auditing concern:
+
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Complaint Repository implementation.},label=lst:complaint-repository, language=Java]
+public aspect AuditingAspect {
+
+    pointcut auditWhen():
+           execution(int ComplaintRepository.insert(Complaint)
+        || execution(void ComplaintRepository.update(Complaint)
+        || execution(void ComplaintRepository.remove(int)
+        || execution(Complaint ComplaintRepository.search(int)
+
+    after() returning(): auditWhen() {
+        // audit code.
+    }
+
+}
+\end{lstlisting}
+\normalsize
+
+In the meanwhile, suppose that the teams are working on their
+respective concerns (the repository and the auditing concerns). Now,
+suppose that the team of the repository changes the following:
+
+\begin{itemize}
+    \item the insert method returns void instead of int; and
+
+    \item the remove and search methods should take as parameter the
+    Complaint object instead of an id.
+\end{itemize}
+
+Such changes might break the aspects...
+
+% =================================== até aqui entraria na seção 2...
+
+% ===== seção 4
+
+Design Rule:
+
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Complaint Repository implementation.},label=lst:complaint-repository, language=Java]
+dr AuditingDesignRule {
+
+    class ComplaintRepository {
+
+        public int insert(Complaint c) throws RepositoryException, ObjectAlreadyInsertedException {}
+
+        public void update(Complaint c) throws RepositoryException, ObjectNotFoundException {}
+
+        public void remove(int id) throws RepositoryException, ObjectNotFoundException {}
+
+        public Complaint search(int id) throws RepositoryException, ObjectNotFoundException {}
+
+    }
+
+    aspect AuditingAspect {
+
+        pointcut auditWhen():
+            execution(int ComplaintRepository.insert(Complaint)
+            || execution(void ComplaintRepository.update(Complaint)
+            || execution(void ComplaintRepository.remove(int)
+            || execution(Complaint ComplaintRepository.search(int)
+
+        % precisa do args aqui...??? Acho que sim...
+
+        after() returning(): auditWhen() {
+            xcall(void Auditing.auditComplaint(Complaint));
+        }
+
+    }
+
+}
+\end{lstlisting}
+\normalsize
+
+XPI of this example:
+
+public aspect AuditingXPI {
+
+    pointcut auditWhen():
+        execution(int ComplaintRepository.insert(Complaint)
+        || execution(void ComplaintRepository.update(Complaint)
+        || execution(void ComplaintRepository.remove(int)
+        || execution(Complaint ComplaintRepository.search(int)
+
+    pointcut callToAudit(): call(void Auditing.auditComplaint(Complaint));
+
+    declare error: (callToAudit() && !within(AuditingXPI)):
+        "Contract violation: the auditComplaint method can not
+        be called outside the aspect AuditingXPI";
+
+}
+
+In order to guarantee the contract that classes, aspects and their
+respective methods and advices must exist, we can informally
+document it like a prose, as mentioned in~\cite{}. Obviously, in
+this case the contract is not verified by using the AspectJ
+compiler, for instance.
+
+However, we can guarantee the aforementioned contract by using
+Aspect-Aware interfaces~\cite{}. Figure TAL illustrates that when a
+pointcut does not match any piece of code, the compiler emits a
+warning to the developer. Such a warning might be used to alert the
+developer that some method must exist, for example.
