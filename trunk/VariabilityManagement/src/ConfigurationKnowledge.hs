@@ -33,11 +33,11 @@ scenarioList (e, sl) = sl
 -- Usage: 
 -- a) [scenario x | x<- (configure fc configuration)]
 -- b) computeAllTracesFromScenarioList env1 (configure fc configuration) 
-configure :: FeatureConfiguration -> ConfigurationKnowledge -> ScenarioList
-configure fc (CK []) = []
-configure fc (CK (x:xs)) = 
+selectScenarios :: FeatureConfiguration -> ConfigurationKnowledge -> ScenarioList
+selectScenarios fc (CK []) = [idle]
+selectScenarios fc (CK (x:xs)) = 
  if (eval fc (expression x)) 
-  then (scenarioList x) ++ (configure fc (CK xs))
-  else configure fc (CK xs) 
+  then (scenarioList x) ++ (selectScenarios fc (CK xs))
+  else selectScenarios fc (CK xs) 
   
   

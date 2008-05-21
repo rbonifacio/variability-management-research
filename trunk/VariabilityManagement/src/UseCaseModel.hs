@@ -97,7 +97,7 @@ instance Eq Step where
 matchAll :: UseCaseModel -> [StepRef] -> StepList
 matchAll _ [] = []
 matchAll ucm (r:rs) = 
- [s | s <- (extractStepsFromScenarios (extractScenariosFromUCs (useCases ucm))), match s r] ++ matchAll ucm rs
+ [s | s <- (extractStepsFromScenarios (ucmScenarios ucm)), match s r] ++ matchAll ucm rs
 
 -- match
 match :: Step -> StepRef -> Bool
@@ -152,25 +152,26 @@ lastElements x y = reverse (firstElements (reverse x) y)
 (^) :: String -> [[String]] -> [[String]]
 x ^ y = [ x:e | e<-y ]
 
+
+
 -- *************************************************************
--- Operator that distribute the concat operator over lists.
--- The result is:
--- [[1M, 2M, 3M], [A11, A12]] +++ [[A21, A22, A23]] = 
--- [[1M, 2M, 3M, A21, A22, A23], [A11, A12, A21, A22, A23]] 
+-- This function return all scenarios from a use case model.
 -- *************************************************************
+ucmScenarios :: UseCaseModel -> ScenarioList
+ucmScenarios ucm = plainList [ucScenarios uc | uc <- useCases ucm] 
 
-(+++) :: [StepList] -> [StepList] -> [StepList]
-steps1 +++ steps2 = [ x ++ y | x<-steps1 , y <- steps2]
 
-
-extractScenariosFromUCs :: [UseCase] -> ScenarioList
-extractScenariosFromUCs [] = [] 
-extractScenariosFromUCs (x:xs) = (ucScenarios x) ++ (extractScenariosFromUCs xs)
-
+-- *************************************************************
+-- This function return all steps from a list of 
+-- scenarios.
+-- *************************************************************
 extractStepsFromScenarios :: ScenarioList -> StepList
-extractStepsFromScenarios [] = [] 
-extractStepsFromScenarios (x:xs) = (steps x) ++ (extractStepsFromScenarios xs)
+extractStepsFromScenarios scenarios = plainList [steps s | s <- scenarios]
 
+allPathsFromUCM :: UseCaseModel -> [StepList]
+allPathsFromUCM ucm = 
+ let scenarios = (ucmScenarios ucm) 
+ 	in plainList [completePaths ucm x | x <- scenarios] 
 
 allPathsFromScenarioList :: UseCaseModel -> [Scenario] -> [StepList] 
 allPathsFromScenarioList ucm [] = []
