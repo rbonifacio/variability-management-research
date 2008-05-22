@@ -144,10 +144,9 @@ featureOptions (Feature _ _ _ group children _) =
 -- Description: 
 -- Return a string representation of a group features.
 --
-optionValues :: FeatureList -> String
-optionValues [] = []
-optionValues (x:[]) = (fName x)
-optionValues (x:xs) = (fName x) ++ "," ++ (optionValues xs)
+optionValues :: FeatureList -> [String]
+optionValues features = 
+ [fName x | x <- features]
 
 -- 
 -- featureOptionPropertyValues(feature, name) 
