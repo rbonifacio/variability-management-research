@@ -78,7 +78,7 @@ the architecture, represents a central concern in SPL development and should not
 be tangled with existing artifacts~\cite{phol-spl-book}.
  Several authors have proposed the use of \emph{aspect-oriented} mechanisms in
  order to better modularize the composition of common and variant assets of a
- product line~\cite{sousa:aosd-ea04, moreira-re07, eriksson-splc-2005,
+ product line~\cite{ moreira-re07, eriksson-splc-2005,
  alves-gpce-06, apel-icse2006}.
 However, in this paper we go beyond this composition issue. We mainly consider a
 more encompassing notion of variability management, including artifacts such as
@@ -358,7 +358,7 @@ After that, we describe the semantics of our weaving process. For simplicity, it
 was decomposed in three parts --- one weaver process for each kind of
 variability.  The semantics of those weavers (and the meta-model of the input and
 output languages) are described using the Haskell programming
-language~\cite{haskell-report}. This leads to concise weaving process
+language. This leads to concise weaving process
 descriptions (the related source code is available at a web site~\cite{spg-url})
 and keeps our model close to MK work, where weaving processes are specified in
 the Scheme programming language. 
@@ -390,7 +390,7 @@ are described. Then, we present the role of each input language in respect of th
 weaving process.
 
 
-\subsubsection{SPL use case model}
+\subsubsection{SPL use case model}\label{subsub:ucm}
 
 This artifact defines a set of scenarios that might be used to describe possible
 products of the SPL. Although not being directly concerned with variability
@@ -573,7 +573,7 @@ this section, each artifact (feature model, product configuration, configuration
 knowledge, and use case model) provides a specific contribution to the definition
 of a SPL member.
 
-\subsubsection{Feature model}
+\subsubsection{Feature model}\label{subsub:fm}
 
 We have introduced part of this artifact for the eShop product line in
 Section~\ref{sec:example}. However, here we present only the features required 
@@ -594,31 +594,39 @@ have to be configured with at least one of its child. A short review about the
 feature model notation was presented in Section~\ref{sec:example}. More details
 can be found elsewhere~\cite{gheyi-alloy-06,czarnecki-book}.
 
-\subsubsection{Product configuration}
+\subsubsection{Product configuration}\label{subsub:pc}
 
 This artifact is used for identifying which features were selected in order to compose a specific member of a product line. Each product configuration should conform to a feature model (the selected features should obey the feature model relationships and constraints). Two possible configurations are presented in Figure~\ref{fig:product-config-01-02}. We represent these configurations as a tree, highlighting which features were selected. Such a representation was created using the \emph{Feature Modeling Plugin}~\cite{czarnecki-eclipse-2004} 
 
-\begin{figure}[htb]
-  \centerline{
-    \mbox{\includegraphics[scale=0.4]{img/pc-01.eps}}
-    \mbox{\includegraphics[scale=0.4]{img/pc-02.eps}}
-  }
-  \nocaptionrule \caption{Examples of product configurations.}
+ \begin{figure}[h]
+ \begin{center}
+  \includegraphics[scale=0.40]{img/pc-03.eps}
+   \nocaptionrule \caption{Examples of product configurations.}
   \label{fig:product-config-01-02}
-  \end{figure}
+  \end{center}
+\end{figure}
+
+%\begin{figure}[htb]
+%  \centerline{
+%    \mbox{\includegraphics[scale=0.4]{img/pc-01.eps}}
+%    \mbox{\includegraphics[scale=0.4]{img/pc-02.eps}}
+%  }
+%  \nocaptionrule \caption{Examples of product configurations.}
+%  \label{fig:product-config-01-02}
+%  \end{figure}
   
 The first configuration (on the left side of the Figure~\ref{fig:product-config-01-02}) defines a product that has no support for shopping cart, bonus and preferences update. Additionally, it supports only the economical and fast ship methods. The second configuration selects all possible features. 
 In order to select the required assets (scenarios, classes and aspects, test cases) for a specific product configuration, it is necessary to relate features to them. This is the role of the configuration knowledge as an input artifact of our weaving process.  
 
-\subsubsection{Configuration knowledge}
+\subsubsection{Configuration knowledge}\label{subsub:ck}
 
 This artifact is used for relating feature expressions to assets that must be assembled in a given product. Such artifacts allow, during product engineering, the automatic selection of assets that are required for a specific product configuration. 
 
 Table~\ref{tab:ck-running-example} presents a configuration knowledge 
-for the running example, enforcing that the \emph{Proceed to Purchase} and 
+for the running example, enforcing that \emph{Proceed to Purchase} and 
 \emph{Search for Products} are mandatory scenarios, since they are related 
 to the root feature of eShop product line;  
-the \emph{Buy a Product} scenario is used in the composition of products that have not been configured with both \emph{Shopping Cart} and \emph{Bonus} features --- if both features were selected for a product, it will be configured with the \emph{Buy Product with Cart} scenario; and finally, Table~\ref{tab:ck-running-example} states that \emph{Register User Preference} scenario is not used in composition unless the \emph{Update Preference feature} is selected.
+\emph{Buy a Product} scenario is used in the composition of products that have not been configured with both \emph{Shopping Cart} and \emph{Bonus} features --- if both features were selected for a product, it will be configured with \emph{Buy Product with Cart} scenario; and finally, Table~\ref{tab:ck-running-example} states that \emph{Register User Preference} scenario is not used in composition unless the \emph{Update Preference} feature is selected.
 
 
 \begin{table}[th]
@@ -643,9 +651,9 @@ the \emph{Buy a Product} scenario is used in the composition of products that ha
 \end{center}
 \end{table}
 
-In what follows, we describe a high level view of the weaving process that combines the input languages in order to manage scenario variability.  Then, in Section~\ref{sub:modeling-framework} we formally present its semantics in terms of our modeling framework. 
+In what follows, we describe a high level view of the weaving process that combines the input languages in order to manage scenario variability.  Then, in Section~\ref{sub:modeling-framework} we present its semantics in terms of our modeling framework. 
 
-\subsubsection{Weaving process}
+\subsection{Weaving process}\label{sub:wp}
 
 The weaving process represented in Figure~\ref{fig:weave-process} is responsible for performing the following activities: 
 
@@ -751,13 +759,12 @@ Next, we introduce the modeling framework used to formally describe the weaving 
 
 
 
-\subsection{Modeling Framework}\label{sub:modeling-framework}
+\section{Modeling Framework}\label{sub:modeling-framework}
 
 As mentioned before, the semantics of crosscutting, used for representing our variability management weaving process, is based on the Masuhara and Kiczales work~\cite{kiczales-ecoop-2003}. 
+It is important to notice that their requirement for characterizing a mechanism as crosscutting is fulfilled by our approach, since different specifications contribute to the definition of a specific SPL member. As a consequence, due to its crosscutting nature, the modeling framework proposed in~\cite{kiczales-ecoop-2003}  is suitable for representing variability management compositions. 
 
-First of all, their requirement for characterizing a mechanism as crosscutting is fulfilled by our approach, since different specifications contribute to the definition of a specific SPL member. As a consequence, due to its crosscutting nature, the modeling framework proposed in~\cite{kiczales-ecoop-2003}  is suitable for formalizing variability management compositions. 
-
-For simplicity, our weaving process is formally described as being composed by three major weavers: \emph{product derivation weaver}, \emph{scenario composition weaver}, and \emph{bind parameters weaver}. As a customization of MK work, our modeling framework represents each weaver as an 6-tuple (Eq.~\ref{eq:tuple} and Table~\ref{tab:tup-01}), highlighting the contribution of each input language in the composition processes. 
+For simplicity, our weaving process is described as being composed by three major weavers: \emph{product derivation weaver}, \emph{scenario composition weaver}, and \emph{bind parameters weaver}. As a customization of MK work, our modeling framework represents each weaver as an 6-tuple (Eq.~\ref{eq:tuple} and Table~\ref{tab:tup-01}), highlighting the contribution of each input language in the composition processes. 
 
 \begin{equation}
 W = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\}, 
@@ -783,13 +790,13 @@ W = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\},
 \end{table}
 
 We represent each weaver by 
-filling in the six parameters of our 6-tuple representation, and by stating 
-how elements of the weaver implementation correspond to elements of the model.
+filling in the six parameters of our 6-tuple representation, by providing an reference implementation for each 
+weaver, and by stating how elements of the weaver implementation correspond to elements of the model.
 
 % ---
 % Product derivation weaver
 % ---
-\subsubsection{Product derivation weaver}\label{sub:pd-weaver}
+\subsection{Product derivation weaver}\label{sub:pd-weaver}
 
 This weaver is responsible for selecting artifacts based on specific product configurations. 
 As a consequence, it implements the first two activities of our variability management approach: 
@@ -866,19 +873,25 @@ In order to identify which artifacts are required for a specific product, the \e
 % Scenario composition weaver
 % ---
 
-\subsubsection{Scenario composition weaver}\label{sub:sc-weaver}
+\subsection{Scenario composition weaver}\label{sub:sc-weaver}
 
 This weaver is responsible for the third activity of our variability management 
 approach. It aims at composing variant scenarios of a use case and is applied whenever a use case scenario supports different execution paths.
 This mechanism takes as input the product specific use case model (a list of scenarios). Each scenario, often partially specified, is then composed in order to generate concrete specifications.
 
-As shown in Section{~\ref{sub:running}, a variant scenario 
+As discussed in Section{~\ref{subsub:ucm}, a variant scenario 
 might refer to steps either in basic or other variant scenarios. In order
 to compute the complete paths defined by a scenario, we need to compose the events that precede all steps referenced by its \emph{From step
 clause} (up to the IDLE step), followed by its own steps, and then by all
 events that follow all of the steps referenced by its \emph{To step clause} (down to the END step). 
 
-For instance, consider a product configured with the features \emph{Shopping Cart} and \emph{Bonus}, which requires the \emph{Buy Products with Cart} scenario, and with the feature \emph{Update User Preferences}. Referring to Figure~\ref{fig:buy-product-changing-flow}, the  \emph{Buy Product with Cart} scenario starts from the IDLE state (\emph{From step} clause) and then, after its own flow of events, goes to Step P1 of \emph{Proceed to Purchase} (see the \emph{To step} clause). In a similar way, Figure~\ref{fig:register-preferences-flow} depicts that \emph{Register User Preferences} scenario starts from any step that is marked with the \emph{RegisterPreferences} annotation (for example, Step P3 of of \emph{Proceed to Purchase}). In this context, the result of applying the composition scenario weaver is a concrete path of execution for this configuration, that can be represented as this sequence of step ids: \mbox{<IDLE, V1, V2, P1, P2.ShipMethod, P3, R1, END>}.
+For instance, consider a product configured with the features \emph{Shopping Cart} and \emph{Bonus}, which requires the \emph{Buy Products with Cart} scenario, and with the feature \emph{Update User Preferences}. Referring to Figure~\ref{fig:buy-product-changing-flow}, the  \emph{Buy Product with Cart} scenario starts from the IDLE state (\emph{From step} clause) and then, after its own flow of events, goes to Step P1 of \emph{Proceed to Purchase} (see the \emph{To step} clause). In a similar way, Figure~\ref{fig:register-preferences-flow} depicts that \emph{Register User Preferences} scenario starts from any step that is marked with the \emph{RegisterPreferences} annotation (for example, Step P3 of of \emph{Proceed to Purchase}). In this context, the result of applying the composition scenario weaver is a concrete path of execution for this configuration, that can be represented as this sequence of step ids: 
+
+\begin{center}
+\begin{small}
+\mbox{$<IDLE, V1, V2, P1, P2.ShipMethod, P3, R1, END>$}.
+\end{small}
+\end{center}
 
 Note that this sequence still has  the \emph{ShipMethod} parameter, 
 referred in Step P2 of \emph{Proceed to Purchase} scenario. The \emph{Binding parameter weaver}, discussed in the next section, is responsible for resolving parameters in the final 
@@ -930,15 +943,13 @@ completePaths :: ScenarioList -> Scenario -> [StepList]
 completePaths ucm scn =
  (fromList ucm (match ucm (fromSteps scn)) +++ [stepsOf scn]) +++  (toList ucm (match ucm (toSteps scn)))
 
-traceModel [] = [[]]
-traceModel (x:xs) = [] : (x) ^ (traceModel (xs))
 \end{lstlisting}
 \end{figure*}
 
 The model of this weaver is in Table~\ref{tab:sc-weaver}. The output ($o$ element of our modeling framework) is the complete paths of the product specific scenarios, computed directly from \emph{scWeaver} function. Therefore, the input language (L) corresponds to the product specific scenarios, related to the \emph{scWeaver} 
  parameters. 
 The join points are modeled as the final scenarios and steps in the output language. They result from the composition of partial scenarios by means of 
-\emph{from steps} and \emph{to steps} clauses ($L_{ID}$).  
+\emph{From steps} and \emph{To steps} clauses ($L_{ID}$).  
 The effect of the input languages ($L_{EFF}$) in the composition process is to combine 
 product specific scenarios that, before this activity, did not define a concrete flow of events. As a consequence, the \emph{match} function 
 plays a fundamental role in this process, retrieving the steps in the use case model that satisfies the \emph{From step} and \emph{To step} clauses.  
@@ -964,30 +975,31 @@ plays a fundamental role in this process, retrieving the steps in the use case m
 \end{center}
 \end{table}
 
+%
+%After computing the complete paths (using the \emph{scWeaver} function), it is possible to derive another representation for product specific scenarios. This is essentially a \emph{trace model}, since it describe all possible sequences of events specified by the complete paths. This representation is useful for checking, for example, if a non-expected sequence of events is present in a final product, which means that a problem in the composition has occurred. Actually, we used this representation in the verification process of our model (Section~\ref{sub:model-verification}. The \emph{traceModel} function (lines 8 and 9 of Listing~\ref{lst:trace}) is responsible for computing this representation. For instance, the trace model for the the first configuration of our running example is the set of sequences:
 
-After computing the complete paths (using the \emph{scWeaver} function), it is possible to derive another representation for product specific scenarios. This is essentially a \emph{trace model}, since it describe all possible sequences of events specified by the complete paths. This representation is useful for checking, for example, if a non-expected sequence of events is present in a final product, which means that a problem in the composition has occurred. Actually, we used this representation in the verification process of our model (Section~\ref{sub:model-verification}. The \emph{traceModel} function (lines 8 and 9 of Listing~\ref{lst:trace}) is responsible for computing this representation. For instance, the trace model for the the first configuration of our running example is the set of sequences:
-
-\begin{small}
-\begin{tabular}{rlc}
-$Trace_{C1}$ = & \{<>, <idle>, <idle, S1>, <idle, S1, S2>, \\ 
-                    & <idle, S1, S2, S3>,  <idle, S1, S2, S3, end>, \\ 
-                    & <idle, B1>, <idle, B1, B2>, \ldots, \\ 
-                    & <idle, B1, B2, P1, P2.ShipMethod, P3, end> \}
-\end{tabular}
-\end{small}
+%\begin{small}
+%\begin{tabular}{rlc}
+%$Trace_{C1}$ = & \{<>, <idle>, <idle, S1>, <idle, S1, S2>, \\ 
+%                    & <idle, S1, S2, S3>,  <idle, S1, S2, S3, end>, \\ 
+%                    & <idle, B1>, <idle, B1, B2>, \ldots, \\ 
+%                    & <idle, B1, B2, P1, P2.ShipMethod, P3, end> \}
+%\end{tabular}
+%\end{small}
 
 
 % ---
 % Bind parameters weaver
 % ---
 
-\subsubsection{Bind parameters weaver}\label{sub:bind-weaver}
+\subsection{Bind parameters weaver}\label{sub:bind-weaver}
 
 This weaver is responsible for the third activity of our variability
 management process. Parameters are used in scenario specifications 
-in order to create reusable requirements. This kind of variability can be applied
-whenever two or more scenarios share the same behavior (the sequence
-of actions) and differ in relation only to values of a same concept.
+in order to create reusable requirements. 
+%This kind of variability can be applied
+%whenever two or more scenarios share the same behavior (the sequence
+%of actions) and differ in relation only to values of a same concept.
 For instance, Figure~\ref{fig:proceed-to-checkout} depicts the \emph{Proceed to Purchase} 
 scenario that can be reused for different \emph{ship methods}. Without this
 parameterized specification, and aiming, for example, at automatically generating a test case suite 
@@ -999,7 +1011,7 @@ parameter. Thus, in order to reduce the coupling between scenarios and features,
 we propose a mapping that relate them. A constraint must be obeyed in this mapping: features related to parameters must be either an {\bf alternative feature} or an {\bf or feature}~\cite{gheyi-alloy-06,czarnecki-wsfactory-2005,czarnecki-book}.
 
 The implementation of this weaver consists of calls to 
-the \emph{bpWeaver} function (Listing~\ref{lst:bind}) for each step 
+the \mbox{\emph{bpWeaver}} function (Listing~\ref{lst:bind}) for each step 
 available in the product specific scenarios or complete paths. This
 function (lines 1-5 of Listing~\ref{lst:bind}) takes as
 input a mapping (\emph{m}), which relates a scenario parameter to a 
@@ -1011,13 +1023,6 @@ corresponding parameter values. Each text between the symbols ``$<$'' and ``$>$'
 step) is treated as a parameter and must be defined in the
 mapping.
 
-For example, if a product is configured with either \emph{Economical} and 
-\emph{Fast} ship methods, the result of applying this weaver for 
-the Step P2 of the \emph{Proceed to Purchase} scenario will result in the 
-representation (\emph{Economical or Fast}) in each place that the parameter \emph{ShipMethod} is referred.
-
-Table~\ref{tab:bp-weaver} describes the Bind Parameters model. This weaver just resolves parameters in scenario specifications. Therefore, its output language is also a list of scenarios; but with resolved parameters (the join points). 
-
 \begin{lstlisting}[belowskip=10pt,frame=tb,caption={Bind parameter weaver function},label=lst:bind]
 bpWeaver :: Mapping -> PC -> Step -> Step
 bpWeaver m pc s =
@@ -1026,6 +1031,11 @@ bpWeaver m pc s =
   else replaceParameterValues m pc s
 \end{lstlisting}
 
+For example, if a product is configured with either \emph{Economical} and 
+\emph{Fast} shipment methods, the result of applying this weaver for 
+the Step P2 of the \emph{Proceed to Purchase} scenario will result in the 
+representation (\emph{Economical or Fast}) in each place that the parameter \emph{ShipMethod} is referred.
+Table~\ref{tab:bp-weaver} describes the Bind Parameters model. This weaver just resolves parameters in scenario specifications. Therefore, its output language is also a list of scenarios; but with resolved parameters (the join points). 
 
 \begin{table}[th]
 \begin{center}
@@ -1055,105 +1065,109 @@ bpWeaver m pc s =
 
 The use case model (UCM) defines the list of scenarios that might be parameterized ($UCM_{EFF}$). Each step of a scenario ($UCM_{ID}$), indeed, contributes to the definition of one join point in this weaver. The 
 other contributions come from the configuration knowledge (CK), in the sense that the domain values 
-of a parameter is defined ($CK_{EFF}$) in the product specific features; and from the mapping ($m$ parameter of the \emph{bind} function) that is used for relating parameters to features. 
-In what follows, we discuss about some verifications applied to the weaving processes just presented. Such verifications were conduced by applying both \emph{random} and \emph{guided} test cases.
+of a parameter is defined ($CK_{EFF}$) in the product specific features; and from the mapping ($m$ parameter of the \emph{bind} function) that is used for relating parameters to features. In what follows, we present an evaluation of our approach based on the specification of SPLs in different domains. 
 
-\subsection{Model Verification}\label{sub:model-verification}
 
-The specifications presented in the 
-previous section allow us to verify if the composition 
-processes have desired properties or behavior. 
-Aiming at doing that, we applied two techniques for testing 
-Haskell programs: unit tests; and 
-formal specifications for checking properties of our modeling 
-framework. 
+%In what follows, we discuss about some verifications applied to the weaving processes just presented. Such verifications were conduced by applying both \emph{random} and \emph{guided} test cases.
 
-Unit tests were developed using the HUnit library~\cite{hunit-tutorial}. 
-Similar to other \emph{xUnit} tools, it requires well defined input data and 
-expected results. After that, it is possible to check if 
-a call to a \emph{function under test}, sending the previously defined input data as an
-argument, yields a value equal to the expected results. 
-For instance, we applied unit tests for checking if the composition process 
-for the product configurations depicted in Figure~\ref{fig:product-config-01-02} 
-yields expected traces. Therefore, the trace model notation discussed in 
-a previous section plays an important role in our verification process. 
-In order to perform such kind of checking, we first implemented 
-a \emph{refine} function (Listing~\ref{lst:traceRefinement}), 
-which checks if all sequences of traces in the \emph{model under test} (mut) are 
-present in the expected results --- named here as reference model. 
 
-\begin{lstlisting}[belowskip=10pt,frame=tb,caption={The \emph{traceRefinement} function},label=lst:traceRefinement]
-refine :: TraceModel -> TraceModel -> Bool
-refine referenceModel mut = 
- and [exists (x referenceModel) | x <- mut]
-\end{lstlisting}
+%\subsection{Model Verification}\label{sub:model-verification}
 
-Then, we defined expected traces (such as \emph{data01} and 
-\emph{data02} in Listing~\ref{lst:unitTest}) for both configurations 
-of Figure~\ref{fig:product-config-01-02}, considering the complete paths 
-shown in Figure~\ref{fig:complete-paths}. Additionally, two trace models
-(\emph{tm01} and \emph{tm02}), computed by the composition process, were defined 
-as input data. Notice that the input trace models were computed varying just the 
-products configurations (\emph{pc01} and \emph{pc02}). 
-Finally, test cases (such as tc01 and tc04) were developed 
-for verifying expected and non-expected traces in the resulting composed models. 
+%The specifications presented in the 
+%previous section allow us to verify if the composition 
+%processes have desired properties or behavior. 
+%Aiming at doing that, we applied two techniques for testing 
+%Haskell programs: unit tests; and 
+%formal specifications for checking properties of our modeling 
+%framework. 
 
-\begin{lstlisting}[belowskip=10pt,frame=tb,caption={Unit test for composition process},label=lst:unitTest]
-data01 = [[], [idle], [idle, 1M], ...
- [idle,1M, 2M, 3M, 4M, 5M, end]]
+%Unit tests were developed using the HUnit library~\cite{hunit-tutorial}. 
+%Similar to other \emph{xUnit} tools, it requires well defined input data and 
+%expected results. After that, it is possible to check if 
+%a call to a \emph{function under test}, sending the previously defined input data as an
+%argument, yields a value equal to the expected results. 
+%For instance, we applied unit tests for checking if the composition process 
+%for the product configurations depicted in Figure~\ref{fig:product-config-01-02} 
+%yields expected traces. Therefore, the trace model notation discussed in 
+%a previous section plays an important role in our verification process. 
+%In order to perform such kind of checking, we first implemented 
+%a \emph{refine} function (Listing~\ref{lst:traceRefinement}), 
+%which checks if all sequences of traces in the \emph{model under test} (mut) are 
+%present in the expected results --- named here as reference model. 
 
-data02 = [[],[idle], [idle, V1], ...
- [idle, V1, V2, 3M, 4M, 5M, end]]
+%\begin{lstlisting}[belowskip=10pt,frame=tb,caption={The \emph{traceRefinement} function},label=lst:traceRefinement]
+%refine :: TraceModel -> TraceModel -> Bool
+%refine referenceModel mut = 
+% and [exists (x referenceModel) | x <- mut]
+%\end{lstlisting}
 
-tm01 = computeTraces (fm01 pc01 ck01 ucm01)
-tm02 = computeTraces (fm01 pc02 ck01 ucm01)
--- expected traces for configuration 01
-tc01 = 
- TestCase (assertBool (refine tm01 data01 tm01))
+%Then, we defined expected traces (such as \emph{data01} and 
+%\emph{data02} in Listing~\ref{lst:unitTest}) for both configurations 
+%of Figure~\ref{fig:product-config-01-02}, considering the complete paths 
+%shown in Figure~\ref{fig:complete-paths}. Additionally, two trace models
+%(\emph{tm01} and \emph{tm02}), computed by the composition process, were defined 
+%as input data. Notice that the input trace models were computed varying just the 
+%products configurations (\emph{pc01} and \emph{pc02}). 
+%Finally, test cases (such as tc01 and tc04) were developed 
+%for verifying expected and non-expected traces in the resulting composed models. 
 
--- non-expected traces for configuration 02
-tc04 = 
- TestCase (assertBool (not (refine data01 tm02)))
-\end{lstlisting}
+%\begin{lstlisting}[belowskip=10pt,frame=tb,caption={Unit test for composition process},label=lst:unitTest]
+%data01 = [[], [idle], [idle, 1M], ...
+% [idle,1M, 2M, 3M, 4M, 5M, end]]
 
-Based on the examples just presented, unit tests are useful for 
-verifying the presence of errors under well defined test cases 
-(described by the input data and expected results). A complementary 
-approach consists in checking function properties based on formal 
-specifications. In order to perform this kind of verification, we use 
-the \emph{QuickCheck} library~\cite{claessen00-icfp-2000}, which provides 
-an \emph{embedded specific language} that is used to specify 
-properties of Haskell programs; and several functions for checking 
-formal properties and for randomly generating input data. 
-This second verification approach is also suitable in our context since 
-several properties related to each input model (or to the compositions between them) 
-should be obeyed. Applying just unit tests for checking these properties may 
-require a huge effort for designing and implementing input data and expected results 
-for each interesting test scenario. On the other hand, this formal technique 
-requires the specification of properties that a \emph{function under test} 
-should hold. These properties are then checked against randomly input data. 
+%data02 = [[],[idle], [idle, V1], ...
+% [idle, V1, V2, 3M, 4M, 5M, end]]
+
+%tm01 = computeTraces (fm01 pc01 ck01 ucm01)
+%tm02 = computeTraces (fm01 pc02 ck01 ucm01)
+%-- expected traces for configuration 01
+%tc01 = 
+% TestCase (assertBool (refine tm01 data01 tm01))
+
+%-- non-expected traces for configuration 02
+%tc04 = 
+% TestCase (assertBool (not (refine data01 tm02)))
+%\end{lstlisting}
+
+%Based on the examples just presented, unit tests are useful for 
+%verifying the presence of errors under well defined test cases 
+%(described by the input data and expected results). A complementary 
+%approach consists in checking function properties based on formal 
+%specifications. 
+
+%In order to perform this kind of verification, we use 
+%the \emph{QuickCheck} library~\cite{claessen00-icfp-2000}, which provides 
+%an \emph{embedded specific language} that is used to specify 
+%properties of Haskell programs; and several functions for checking 
+%formal properties and for randomly generating input data. 
+%This second verification approach is also suitable in our context since 
+%several properties related to each input model (or to the compositions between them) 
+%should be obeyed. Applying just unit tests for checking these properties may 
+%require a huge effort for designing and implementing input data and expected results 
+%for each interesting test scenario. On the other hand, this formal technique 
+%requires the specification of properties that a \emph{function under test} 
+%should hold. These properties are then checked against randomly input data. 
 
 %It is important 
 %to notice that functions for generating input data can be overloaded in the \emph{QuickCheck} 
 %library, which means that we can define the generation of data based on occurrence probabilities.
 
-We applied this verification technique for checking several properties of feature modeling (briefly introduced in Section~\ref{sec:example}). For example, an alternative feature requires exactly one sub feature to be selected in a product configuration. Using the \emph{QuickCheck} library, this property can be expressed as the function \emph{prop\_ExactlyOneSelected} in Listing~\ref{lst:quick-check}. 
-It takes two feature as parameters and returns a property to be checked. The first parameter (fm) should be an alternative feature (from a feature model). The second one (fc), instead, is a corresponding feature from the product configuration. If the number of children of \emph{fc} is different than one (the expression before the implies symbol), it is expected that a call to the \emph{existError} function will return \emph{True}. After specifying this kind of property, it is possible to verify if they hold for different input data.  
+%We applied this verification technique for checking several properties of feature modeling (briefly introduced in Section~\ref{sec:example}). For example, an alternative feature requires exactly one sub feature to be selected in a product configuration. Using the \emph{QuickCheck} library, this property can be expressed as the function \emph{prop\_ExactlyOneSelected} in Listing~\ref{lst:quick-check}. 
+%It takes two feature as parameters and returns a property to be checked. The first parameter (fm) should be an alternative feature (from a feature model). The second one (fc), instead, is a corresponding feature from the product configuration. If the number of children of \emph{fc} is different than one (the expression before the implies symbol), it is expected that a call to the \emph{existError} function will return \emph{True}. After specifying this kind of property, it is possible to verify if they hold for different input data.  
 
-\begin{figure*}
- \begin{lstlisting}[belowskip=10pt,frame=tb,caption={Example of QuickCheck property},label=lst:quick-check]
-prop_ExactlyOneSelected :: Feature -> Feature -> QuickCheck.Property 
-prop_ExactlyOneSelected fm fc = (not (length (children fc) == 1)) => 
- existError (checkAlternativeFeature fm fc) 
-\end{lstlisting}
-\end{figure*}
+%\begin{figure*}
+% \begin{lstlisting}[belowskip=10pt,frame=tb,caption={Example of QuickCheck property},label=lst:quick-check]
+%prop_ExactlyOneSelected :: Feature -> Feature -> QuickCheck.Property 
+%prop_ExactlyOneSelected fm fc = (not (length (children fc) == 1)) => 
+% existError (checkAlternativeFeature fm fc) 
+%\end{lstlisting}
+%\end{figure*}
 
-We also performed this kind of verification for checking properties related to the weaving process. For instance, we defined properties for checking if all scenario parameters are related exclusively to \emph{alternativeFeatures} or \emph{orFeatures}. Such constraint was discussed in the previous section.  
+%We also performed this kind of verification for checking properties related to the weaving process. For instance, we defined properties for checking if all scenario parameters are related exclusively to \emph{alternativeFeatures} or \emph{orFeatures}. Such constraint was discussed in the previous section.  
 
-Both verification approaches were important to improve the confidence of our models. Actually, several unit tests and properties revealed to us interesting case; we were not initially concerned with some of them. To our knowledge, no existing work for representing variability management in scenarios apply these level of verifications.
+%Both verification approaches were important to improve the confidence of our models. Actually, several unit tests and properties revealed to us interesting case; we were not initially concerned with some of them. To our knowledge, no existing work for representing variability management in scenarios apply these level of verifications.
 
-In the next section we present an evaluation of our approach based on the 
-specification of SPLs in different domains. 
+
 
 %=============================
 % Evaluation
@@ -1208,7 +1222,6 @@ Our approach reduces the dependencies between variability management and scenari
 
 For confirming the observations derived from the DSM analysis, we applied the metric suite for 
 the \emph{MMS} and \emph{Pedagogical} product lines. We compared our specification of \emph{MMS} product line to the specifications we wrote for both PLUC and PLUSS techniques~\cite{spg-url}.  
-
 In a similar way, we compared our specification of the \emph{Pedagogical} product line 
 to a specification that was sent to us by the authors of the PLUSS approach. 
 
@@ -1242,7 +1255,7 @@ present the quantitative analysis of the \emph{MMS} and \emph{Pedagogical} produ
 
 \subsubsection{MMS Product Line}
 
-As explained earlier, the MMS product line, which is a real case study from Motorola phones, enables the customization of 
+As explained earlier, the MMS product line, based on a real case study from Motorola phones, enables the customization of 
 multimedia message applications. The primary goal of each one of these applications is to create and 
 send messages with embedded multimedia content (image, audio, video)~\cite{rbonifacio-ea-2008}. 
 We have specified the MMS product line using three techniques: our notation, PLUC, and PLUSS approaches. After that, we evaluated these specifications observing the metric suite just presented. The results of this evaluation are summarized in Table~\ref{tab:metrics}. 
@@ -1275,15 +1288,16 @@ less concise (NFU) in these approaches (Table~\ref{tab:metrics}). The crosscutti
 approach, in contrast, allows the composition of scenarios
 through \emph{from steps} and \emph{to steps} clauses. 
 
-The lack of crosscutting mechanisms for composing scenarios of different use cases also results in greater complexity, when observing the \emph{Steps of Specification} metric. Although our approach resulted in a greater number of use cases, we improve the specification reuse, since scenarios that crosscut different use cases can be specified without duplication. For instance, consider the \emph{Structure Data Operation} feature which presents this crosscutting nature. As we can realize observing Figure~\ref{fig:fds-mms}, by applying our approach we can reduce the diffusion over scenario of such features.
+The lack of crosscutting mechanisms for composing scenarios of different use cases also results in greater complexity, when observing the \emph{Steps of Specification} metric. Although our approach resulted in a greater number of use cases, we improve the specification reuse, since scenarios that crosscut different use cases can be specified without duplication. 
+%For instance, consider the \emph{Structure Data Operation} feature which presents this crosscutting nature. As we can realize observing Figure~\ref{fig:fds-mms}, by applying our approach we can reduce the diffusion over scenario of such features.
 
- \begin{figure}[htb]
- \begin{center}
-  \includegraphics[scale=0.42]{img/fds-mms.eps}
-  \nocaptionrule \caption{Relative FDS for evaluated techniques}
-  \label{fig:fds-mms}
-  \end{center}
-\end{figure}
+% \begin{figure}[htb]
+% \begin{center}
+%  \includegraphics[scale=0.42]{img/fds-mms.eps}
+%  \nocaptionrule \caption{Relative FDS for evaluated techniques}
+%  \label{fig:fds-mms}
+%  \end{center}
+%\end{figure}
 
 \subsubsection{Pedagogical Product Line}
 
@@ -1309,31 +1323,34 @@ SS 					& 44		& 38		& 32		\\	\hline
 \end{small}
 \end{table}
 
-Still in this context, our approach also achieves some improvements in the resulting specifications. The main factor for these improvements in the \emph{Pedagogical} product line was the error handling modularization. By applying our approach, all behavior related to the \emph{error handling} concern is specified in a single use case. The composition of \emph{error handling} with the basic scenarios was done by means of annotations attributed to the corresponding steps. For instance, Figure~\ref{fig:error-handle} depicts just one scenario for error handling: raising  an error when there is no space available. 
+Still in this context, our approach also achieves some improvements in the resulting specifications. The main factor for these improvements in the \emph{Pedagogical} product line was the error handling modularization. By applying our approach, all behavior related to the \emph{error handling} concern is specified in a single use case. The composition of \emph{error handling} with the basic scenarios was done by means of annotations attributed to the corresponding steps. 
 
-\begin{figure}[h]
-\begin{scriptsize}
-  \texttt{
-   \begin{tabular}{l}
-     Description: There is no available space in file system.\\
-     From step: [CatchFileException] \\
-     To step: END
-   \end{tabular}  
-  \begin{center} 
-   \begin{tabular}{|p{0.1in}|p{0.6in}|p{1.0in}|p{1.0in}|}
-   \hline
-       Id & User Action & System State & System Response \\ \hline \hline
-       E1 & & There is not enough space to save the file. &  Raise the Disk is Full exception. The arcade game application is finished. \\  \hline
-  \end{tabular}
-  \end{center}
-  } 
-\end{scriptsize}
-\nocaptionrule \caption{Scenario of error handle use case.}
-\label{fig:error-handle}
-\end{figure}
-    
-Notice that this scenario can be started from any step that has been marked with the \emph{CatchFileException} annotation (see the \emph{From step} clause). Several features of the PPL need to save information in the file system. Therefore, both in the SEI and PLUSS specifications of the \emph{Pedagogical} product line, several use cases were specified with scenarios for handling this kind of exception.
+%For instance, Figure~\ref{fig:error-handle} depicts just one scenario for error handling: raising  an error when there is no space available. 
 
+%\begin{figure}[h]
+%\begin{scriptsize}
+%  \texttt{
+%   \begin{tabular}{l}
+%     Description: There is no available space in file system.\\
+%     From step: [CatchFileException] \\
+%     To step: END
+%   \end{tabular}  
+%  \begin{center} 
+%   \begin{tabular}{|p{0.1in}|p{0.6in}|p{1.0in}|p{1.0in}|}
+%   \hline
+%       Id & User Action & System State & System Response \\ \hline \hline
+%       E1 & & There is not enough space to save the file. &  Raise the Disk is Full exception. The arcade game application is finished. \\  \hline
+%  \end{tabular}
+%  \end{center}
+%  } 
+%\end{scriptsize}
+%\nocaptionrule \caption{Scenario of error handle use case.}
+%\label{fig:error-handle}
+%\end{figure}
+%    
+%Notice that this scenario can be started from any step that has been marked with the \emph{CatchFileException} annotation (see the \emph{From step} clause). Several features of the PPL need to save information in the file system. 
+
+Therefore, both in the SEI and PLUSS specifications of the \emph{Pedagogical} product line, several use cases were specified with scenarios for handling this kind of exception.
 As a consequence, we achieve a reduction (almost 20\%) in the number of specification steps (SS in Table~\ref{tab:ppl-metrics}) when comparing to the PLUSS approach. It is important to notice that this reduction of size does not compromise the requirement coverage; but actually it represents an improvement in the specification reuse.
 
 For concluding our Pedagogical product line analysis, we can realize, based on Table~\ref{tab:ppl-metrics}, that our approach achieved real benefits only in the complexity metrics. This result comes from the non crosscutting nature of PPL features. Comparing to the MMS product line results, we argue that the benefits of applying our approach should be greater in contexts where features can not be well modularized using existing techniques. 
@@ -1341,12 +1358,10 @@ For concluding our Pedagogical product line analysis, we can realize, based on T
 \section{Related Work}
 \label{sec:related}
 
-Our work is linked to the body of research related to SPL
-variability management, crosscutting modeling, and use case scenario
-composition. This section details some of these approaches, relating
-them to the proposed solution.
-
-\subsection{Semantics of Crossuctting Mechanisms}
+%Our work is linked to the body of research related to SPL
+% crosscutting modeling, variability management, and use case scenario
+%variability. This section details some of these approaches, relating
+%them to the proposed solution.
 
 Masuhara and Kiczales (MK) proposed a modeling framework 
 for characterizing implementation techniques as 
@@ -1354,26 +1369,23 @@ for characterizing implementation techniques as
 A critical property of their model is that two different input 
 programs crosscut each other with respect to the resulting 
 program or computation. 
-
 In this paper, we applied the MK framework for representing
 \emph{variability management} as a crosscutting mechanism. Improving 
 modularity is the main reason for representing variability management 
 as a crosscutting concern. Actually, we improved both changeability and 
 modular reason by applying our approach for managing variabilities 
-in use case scenarios(Section~\ref{sec:evaluation}). 
+in use case scenarios (Section~\ref{sec:evaluation}). 
 
-Our proposed framework is used for describing how 
-different input SPL specifications crosscut each other to derive 
-product specific artifacts. The contribution of each input 
-specification is well defined. Observing the whole process, 
-not only two specifications are taken as input. Actually, 
-in order to derive product specific scenarios, four input 
-models are required: feature model, product configuration, 
-configuration knowledge, and use case model. Despite that, 
-just a few changes were required to applied the MK framework 
-in our context. 
-
-\subsection{Variability Management and Feature Modeling}
+%Our proposed framework is used for describing how 
+%different input SPL specifications crosscut each other to derive 
+%product specific artifacts. The contribution of each input 
+%specification is well defined. Observing the whole process, 
+%not only two specifications are taken as input. Actually, 
+%in order to derive product specific scenarios, four input 
+%models are required: feature model, product configuration, 
+%configuration knowledge, and use case model. Despite that, 
+%just a few changes were required to applied the MK framework 
+%in our context. 
 
 Pohl et al. argue that variability management should not be
 integrated into existing models~\cite{phol-spl-book}. Their proposed
@@ -1382,24 +1394,21 @@ between variation points and the conceptual models of a SPL. Our
 approach also decouple variability concern. However, we describe, in more
 details, its semantics as a crosscutting mechanism. Additionally, we make
 clear how to relate SPL features to software engineering assets by means of the
-configuration model. In our approach, sucha a model can be used for reasoning 
+configuration model. In our approach, such a model can be used for reasoning 
 about traceability.
 
-Feature modeling (FM) has been successfully applied for representing relevant 
-characteristics of a SPL, highlighting its common and variant concepts. 
-Although different notations for FM have been
-proposed~\cite{kang-foda,czarnecki-book,czarnecki-wsfactory-2005}, the 
-abstract syntax followed in this paper is based
-on~\cite{czarnecki-wsfactory-2005}, supporting constraints,
-properties, and cardinality. As a minnor change, in our
-work the feature cardinality, described in~\cite{czarnecki-wsfactory-2005}, is
-used for identifying the semantics of a feature group (it represents 
-an \emph{alternativeFeature} or an \emph{orFeature}). 
+%Feature modeling (FM) has been successfully applied for representing relevant 
+%characteristics of a SPL, highlighting its common and variant concepts. 
+%Although different notations for FM have been
+%proposed~\cite{kang-foda,czarnecki-book,czarnecki-wsfactory-2005}, the 
+%abstract syntax followed in this paper is based
+%on~\cite{czarnecki-wsfactory-2005}, supporting constraints,
+%properties, and cardinality. As a minnor change, in our
+%work the feature cardinality, described in~\cite{czarnecki-wsfactory-2005}, is
+%used for identifying the semantics of a feature group (it represents 
+%an \emph{alternativeFeature} or an \emph{orFeature}). 
 
-
-\subsection{Scenario Variability}
-
-Several approaches have been proposed for representing 
+Finally, several approaches have been proposed for representing 
 scenario variability~\cite{jacobson-reuse-book, favaro-icsr-98, eriksson-splc-2005,bertolino-esec-2003}. 
 However, in this paper we only compared our crosscutting approach with PLUC and 
 PLUSS techniques because they encompass a broad range of SoC between 
@@ -1409,22 +1418,22 @@ cases. Although PLUSS partially reduces such coupling, by considering the
 importance of feature modeling, some dependences from feature to use cases are
 still present. These dependences are avoided in our approach.
 
-Design Structure Matrices (DSMs) and crosscutting metrics have being applied 
-for assessing modularity in \emph{aspect-oriented} 
-systems~\cite{vlopes-aosd-2005,garcia-taosd-2005, greenwood-ecoop-2007}. 
-In this work, we also applied DSMs in the context of scenario variability 
-management. Moreover, we applied a suite of metrics for quantifying feature 
-diffusion and tangling over use cases. Such a suite was first presented
-in~\cite{rbonifacio-ea-2008}.
+%Design Structure Matrices (DSMs) and crosscutting metrics have being applied 
+%for assessing modularity in \emph{aspect-oriented} 
+%systems~\cite{vlopes-aosd-2005,garcia-taosd-2005, greenwood-ecoop-2007}. 
+%In this work, we also applied DSMs in the context of scenario variability 
+%management. Moreover, we applied a suite of metrics for quantifying feature 
+%diffusion and tangling over use cases. Such a suite was first presented
+%in~\cite{rbonifacio-ea-2008}.
 
-
-In order to avoid the problem of \emph{fragile point-cuts}, Rashid
-et al. proposed a semantic approach for scenario
-composition~\cite{rashid-aosd-2007}. Such approach is based on
-natural language processing. Using our scenario composition weaver
-(Section~\ref{sub:sc-weaver}), a scenario composition can be
-represented using references to \emph{step ids} or \emph{step annotations}, 
-which also reduce the problem of \emph{fragile point-cut}.
+%
+%In order to avoid the problem of \emph{fragile point-cuts}, Rashid
+%et al. proposed a semantic approach for scenario
+%composition~\cite{rashid-aosd-2007}. Such approach is based on
+%natural language processing. Using our scenario composition weaver
+%(Section~\ref{sub:sc-weaver}), a scenario composition can be
+%represented using references to \emph{step ids} or \emph{step annotations}, 
+%which also reduce the problem of \emph{fragile point-cut}.
 
 \section{Conclusions}\label{sec:conclusions}
 
@@ -1432,7 +1441,6 @@ In this paper we formally described variability management as a
 crosscutting mechanism, considering the contribution 
 of different input languages that crosscut each other for deriving 
 specific members of a product line. 
-
 We applied this notion of variability management in the context of use 
 case scenarios, achieving several benefits. First, applying our approach resulted in 
 a clear separation of concerns between variability and scenario specifications, 
@@ -1441,7 +1449,6 @@ in the size of specifications by composing scenarios in a quantified way. Finall
 formal specification allowed us to perform several automatic verification in the composition 
 process. This is an interesting characteristic of our approach, since it can be used 
 for finding inconsistencies in the final products.
-
 Although our modeling framework was instantiated for representing 
 scenario variabilities, we believe that it could be applied in 
 other SPL artifacts. Particularly, optional and parameterized artifacts 
