@@ -6,7 +6,18 @@
 % Evaluate the benefits based on metrics
 % - Concern metrics or Lattix Metrics
 
-Example 1: Auditing Concern without Design Rules
+In this section we evaluate our language for specifying design rules
+in AO systems. Basically, we discuss advantages and disadvantages of
+using our approach when compared to other ones like Crosscutting
+Programming Interfaces (XPIs). In what follows, we describe the
+details of our evaluation:
+
+%\begin{itemize}
+%    \item[$\square$] hhh
+%    \item[$\square$] aaa
+%\end{itemize}
+
+\subsection{Auditing Concern}
 
 The auditing concern must be triggered when inserting, removing,
 updating, or searching for a complaint.
@@ -20,19 +31,23 @@ aspect.
 \begin{lstlisting}[frame=single, caption={Complaint Repository implementation.},label=lst:complaint-repository, language=Java]
 public class ComplaintRepository implements IComplaintRepository {
 
-    public int insert(Complaint c) throws RepositoryException, ObjectAlreadyInsertedException {
+    public int insert(Complaint c) throws RepositoryException,
+            ObjectAlreadyInsertedException {
 
     }
 
-    public void update(Complaint c) throws RepositoryException, ObjectNotFoundException {
+    public void update(Complaint c) throws RepositoryException,
+            ObjectNotFoundException {
 
     }
 
-    public void remove(int id) throws RepositoryException, ObjectNotFoundException {
+    public void remove(int id) throws RepositoryException,
+            ObjectNotFoundException {
 
     }
 
-    public Complaint search(int id) throws RepositoryException, ObjectNotFoundException {
+    public Complaint search(int id) throws RepositoryException,
+            ObjectNotFoundException {
 
     }
 
@@ -43,7 +58,7 @@ public class ComplaintRepository implements IComplaintRepository {
 Aspect for implementing the auditing concern:
 
 \scriptsize
-\begin{lstlisting}[frame=single, caption={Complaint Repository implementation.},label=lst:complaint-repository, language=Java]
+\begin{lstlisting}[frame=single, caption={Auditing Aspect.},label=lst:auditing-aspect, language=Java]
 public aspect AuditingAspect {
 
     pointcut auditWhen():
@@ -80,18 +95,22 @@ Such changes might break the aspects...
 Design Rule:
 
 \scriptsize
-\begin{lstlisting}[frame=single, caption={Complaint Repository implementation.},label=lst:complaint-repository, language=Java]
+\begin{lstlisting}[frame=single, caption={Auditing Design Rule.},label=lst:auditing-dr, language=Java]
 dr AuditingDesignRule {
 
     class ComplaintRepository {
 
-        public int insert(Complaint c) throws RepositoryException, ObjectAlreadyInsertedException {}
+        public int insert(Complaint c) throws RepositoryException,
+                ObjectAlreadyInsertedException {}
 
-        public void update(Complaint c) throws RepositoryException, ObjectNotFoundException {}
+        public void update(Complaint c) throws RepositoryException,
+                ObjectNotFoundException {}
 
-        public void remove(int id) throws RepositoryException, ObjectNotFoundException {}
+        public void remove(int id) throws RepositoryException,
+                ObjectNotFoundException {}
 
-        public Complaint search(int id) throws RepositoryException, ObjectNotFoundException {}
+        public Complaint search(int id) throws RepositoryException,
+                ObjectNotFoundException {}
 
     }
 
@@ -117,6 +136,8 @@ dr AuditingDesignRule {
 
 XPI of this example:
 
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Auditing XPI.},label=lst:auditing-xpi, language=Java]
 public aspect AuditingXPI {
 
     pointcut auditWhen():
@@ -132,15 +153,78 @@ public aspect AuditingXPI {
         be called outside the aspect AuditingXPI";
 
 }
+\end{lstlisting}
+\normalsize
 
 In order to guarantee the contract that classes, aspects and their
 respective methods and advices must exist, we can informally
-document it like a prose, as mentioned in~\cite{}. Obviously, in
+document it like a prose, as mentioned in~\cite{sss}. Obviously, in
 this case the contract is not verified by using the AspectJ
 compiler, for instance.
 
 However, we can guarantee the aforementioned contract by using
-Aspect-Aware interfaces~\cite{}. Figure TAL illustrates that when a
-pointcut does not match any piece of code, the compiler emits a
+Aspect-Aware interfaces~\cite{sss}. Figure TAL illustrates that when
+a pointcut does not match any piece of code, the compiler emits a
 warning to the developer. Such a warning might be used to alert the
 developer that some method must exist, for example.
+
+\subsection{Transaction Concern}
+
+All methods of the HealthWatcherFacade must have transaction
+management. In this case, due to the crosscutting nature of this
+concern throughout the methods, we can use aspects to modularize it,
+as showed in Listing TAL.
+
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Transaction Management Aspect.},label=lst:transaction-aspect, language=Java]
+public aspect HWTransactionManagement {
+
+    pointcut transactionalMethods(): execution(* HealthWatcherFacade.*(..));
+
+    after() returning: transactionalMethods()  {
+        // ta errado... não é a interface
+        IPersistenceMechanism.commitTransaction();
+    }
+
+    after() throwing: transactionalMethods()  {
+        IPersistenceMechanism.rollbackTransaction();
+    }
+
+    before(): transactionalMethods() {
+        IPersistenceMechanism.beginTransaction();
+    }
+
+}
+\end{lstlisting}
+\normalsize
+
+\subsection{Concurrency Concern}
+
+Section TAL showed the concurrency concern implemented as an aspect.
+All methods of the \emph{EmployeeRepository} were synchronized by
+the \emph{SynchronizationAspect}. In what follows, we present design
+rules and XPIs to avoid modularity problems.
+
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Concurrency Design Rule.},label=lst:concurrency-dr, language=Java]
+dr Concurrency {
+
+    class EmployeeRepository {
+
+    }
+
+    aspect SynchronizationAspect {
+
+        pointcut concurrency(): execution(* EmployeeRepository.*(..));
+
+        Object around(): concurrency() {
+
+        }
+
+    }
+
+}
+\end{lstlisting}
+\normalsize
+
+\subsection{Product Line Games}
