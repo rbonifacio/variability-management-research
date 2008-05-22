@@ -57,23 +57,19 @@ data Scenario = Scenario {
 	}
 	 deriving (Show) 
 	 
-data Step = Step Id Scenario Action State Response [Annotation]
+data Step = Step {
+		stepId :: Id,  
+		owner :: Scenario,
+		action :: Action,
+		state ::  State,
+		response :: Response, 
+		annotations :: [Annotation]
+	}
 	 
 data StepRef = IdRef Id | AnnotationRef String
 	 deriving (Show)
 	 
 
--- ***********************************************************
--- Step access functions
--- ***********************************************************
-stepId :: Step -> Id
-stepId (Step id _ _ _ _ _) = id
-
-owner :: Step -> Scenario
-owner (Step _ scenario _ _ _ _)  = scenario
-
-annotations :: Step -> [String]
-annotations (Step _ _ _ _ _ annotationList) = annotationList
 
 stepListIds :: StepList -> [String]
 stepListIds l = [stepId x | x <- l]
@@ -189,4 +185,4 @@ instance Eq Scenario where
   s1 == s2 = scenarioId s1 == scenarioId s2
  
 instance Show Step where
- show (Step i _ _ _ _ _)  = i 
+ show (Step i _ action state response _)  = i ++ " " ++ action ++ " " ++ state ++ response 

@@ -18,6 +18,26 @@ existAll [] _ = True
 existAll (x:xs) [] = False
 existAll (x:xs) (y:ys) = (exists x (y:ys)) && (existAll xs (y:ys))  
 
+replaceString :: String -> String -> String -> String
+replaceString str1 str2 str3 = 
+ unwords [if x == str2 then str3 ++ " " else x ++ " " | x <- words str1] 
+
+firstOccurence :: Eq a => [a] -> a -> Int
+firstOccurence [] c = 0
+firstOccurence (x:xs) c =   
+ if x == c 
+  then 0
+  else 1 + firstOccurence xs c  
+  
+findDelimitedString :: String -> Char -> Char -> [String] 
+findDelimitedString str c1 c2 = 
+ let pc1 = firstOccurence str c1 
+     pc2 = firstOccurence str c2
+     in 
+      if (pc1 < (length str)) && (pc2 < (length str)) && (pc1 < pc2)
+      	 then ([take (pc2-pc1-1) (drop (pc1+1) str)] ++ (findDelimitedString (drop (pc2+1) str) c1 c2))
+      	 else []    
+
 -- *************************************************************
 -- Operator that distribute the concat operator over lists.
 -- The result is:
