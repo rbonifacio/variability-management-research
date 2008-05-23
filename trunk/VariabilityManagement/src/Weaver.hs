@@ -36,10 +36,10 @@ scenarioComposition :: FeatureModel -> FeatureConfiguration ->
 					   ConfigurationKnowledge -> UseCaseModel -> 
 					   [StepList]
 scenarioComposition fm fc ck ucm = 
- let selectedScenarios = (selectScenarios fc ck) 
+ let rucm = selectUseCases fm fc ck ucm 
  	in if (length (validInstance fm fc)) > 0 
   	 then error "error..." 
-  	 else nub (allPathsFromScenarioList (selectUseCases fm fc ck ucm) selectedScenarios)
+  	 else nub (allPathsFromUCM rucm)
   	 
 -- 
 -- This function is responsible for binding 
@@ -94,15 +94,15 @@ bindParameterFromSequence fc (x:xs) env =
   else  
    (extractParameterValuesFromStep x env) : (bindParameterFromSequence fc xs env)
  
-traceModelWeaver :: 
- FeatureModel -> FeatureConfiguration -> 
- ConfigurationKnowledge -> UseCaseModel -> 
- Environment Feature -> 
- [[String]]
-
-traceModelWeaver fm fc ck ucm env = 
- let selectedScenarios = (selectScenarios fc ck) 
- in computeAllTracesFromCompletePaths (selectUseCases fm fc ck ucm) env (scenarioComposition fm fc ck ucm)
+--traceModelWeaver :: 
+-- FeatureModel -> FeatureConfiguration -> 
+-- ConfigurationKnowledge -> UseCaseModel -> 
+-- Environment Feature -> 
+-- [[String]]
+--
+--traceModelWeaver fm fc ck ucm env = 
+-- let selectedScenarios = (selectScenarios fc ck) 
+-- in computeAllTracesFromCompletePaths (selectUseCases fm fc ck ucm) env (scenarioComposition fm fc ck ucm)
 
 -- 
 -- This auxiliarly function returns true if a step has parameters. 

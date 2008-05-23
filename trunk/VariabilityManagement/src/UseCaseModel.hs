@@ -69,8 +69,6 @@ data Step = Step {
 data StepRef = IdRef Id | AnnotationRef String
 	 deriving (Show)
 	 
-
-
 stepListIds :: StepList -> [String]
 stepListIds l = [stepId x | x <- l]
 
@@ -78,48 +76,55 @@ details :: Step -> String
 details (Step id scenario action state response annotationList) = 
  "Action: " ++ action ++ " State:" ++ state ++ " Response: " ++ response
 
--- ***********************************************************
+-- 
 -- A Step must be an instance of Eq. In this way, it is 
 -- possible to test equality as (step1 == step2). The equality 
 -- is based on the step id.
--- ***********************************************************
+-- 
 instance Eq Step where 
  Step id1 _ _ _ _ _ == Step id2 _ _ _ _ _ = id1 == id2
 
 -- 
--- This function retrieve all steps in a use case model that 
--- staisfies the the reference StepRef
+-- This function retrieves all steps in a use case model that 
+-- statisfies the references StepRef
 --  
 matchAll :: UseCaseModel -> [StepRef] -> StepList
 matchAll _ [] = []
 matchAll ucm (r:rs) = 
- [s | s <- (extractStepsFromScenarios (ucmScenarios ucm)), match s r] ++ matchAll ucm rs
+ let steps = extractStepsFromScenarios (ucmScenarios ucm) 
+  in [s | s <- steps, match s r] ++ matchAll ucm rs
 
--- match
+-- 
+-- This function checks if a given step matches with a 
+-- stepref. Notice that a StepRef migh be either an step id or 
+-- an annotation. In the first case, the step will match with 
+-- the step ref iff both have the same id. In the second 
+-- case, a step will match with an annotation ref iff the 
+-- step has the specific annotation. 
+--
 match :: Step -> StepRef -> Bool
-match step (IdRef id) = if (stepId step) == id then True else False
-match step (AnnotationRef ann) = exists ann (annotations step)  
+match step (IdRef id) = 
+ if (stepId step) == id 
+  then True 
+  else False
+match step (AnnotationRef x) = exists x (annotations step)  
  
- 
-
--- **********************************************************
+-- 
 -- Compute the complete steps of a given scenario.
 -- This take in consideration, in a recursive way, all 
 -- from steps and to steps.
---
--- TODO: This function must be changed. We need to retrieve 
--- the list from steps using [match x | x <- (from scenario)] or
--- [match x | x<- (to scenario)]
--- **********************************************************
+-- 
 completePaths :: UseCaseModel -> Scenario -> [StepList]
 completePaths ucm scenario = 
- (fromList ucm (matchAll ucm (from scenario)) +++ [steps scenario]) +++ (toList ucm (matchAll ucm (to scenario)))
+ let fromSteps = matchAll ucm (from scenario)
+     toSteps = matchAll ucm (to scenario)
+  in (fromList ucm (fromSteps) +++ [steps scenario]) +++ (toList ucm (toSteps))
 
 fromList :: UseCaseModel -> StepList -> [StepList]
 fromList ucm [] = []
 fromList ucm (x:xs) = 
   if x == start
-   then ([firstElements (steps (owner x)) (x)]) ++ (fromList ucm xs)
+   then ([firstElements (steps (owner x)) (x)]) ++ (fromList ucm xs) 
    else ((fromList ucm (matchAll ucm (from (owner x))) +++ [firstElements (steps (owner x)) (x)]) ++ (fromList ucm xs))
 
 toList :: UseCaseModel -> StepList -> [StepList]
@@ -169,9 +174,6 @@ allPathsFromUCM ucm =
  let scenarios = (ucmScenarios ucm) 
  	in plainList [completePaths ucm x | x <- scenarios] 
 
-allPathsFromScenarioList :: UseCaseModel -> [Scenario] -> [StepList] 
-allPathsFromScenarioList ucm [] = []
-allPathsFromScenarioList ucm (x:xs) = (completePaths ucm x) ++ (allPathsFromScenarioList ucm xs)
 
 -- **********************************************************
 -- Iddle scenario definition
