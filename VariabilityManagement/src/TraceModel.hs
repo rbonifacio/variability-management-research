@@ -38,7 +38,7 @@ type TraceModel = [Trace]
 
 computeTraceModel :: Environment Feature -> [Step] -> TraceModel
 computeTraceModel _ [] = [[]]
-computeTraceModel e (x:xs) = [] : (bind e x) ^ (computeTraceModel e (xs))
+computeTraceModel e (x:xs) = [] : (stepId x) ^ (computeTraceModel e (xs))
 
 traceRefinement :: TraceModel -> TraceModel -> Bool
 traceRefinement t [] = False
@@ -48,19 +48,9 @@ traceRefinement (x:xs) referenceModel =
   then traceRefinement xs referenceModel
   else False
 
-bind :: Environment Feature -> Step -> String
-bind e x =  
- if (length (extractParameters (details x)) == 0)
-  then stepId x
-  else stepId x ++ (concatStrList (extractParameterValues e x))
 
-extractParameterValues :: Environment Feature -> Step -> [String]
-extractParameterValues e s = 
- [optionValues (featureOptions y) | y <- [hash e x | x <- (nub (extractParameters (details s)))]]
 
-concatStrList :: [String] -> String
-concatStrList [] = []
-concatStrList (x:xs) = "(" ++ x ++ ")" ++ (concatStrList xs) 
+
 
 -- 
 -- Extract parameters from a String

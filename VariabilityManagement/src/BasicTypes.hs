@@ -5,6 +5,7 @@ import List
 type Id = String
 type Name = String
 type Description = String
+type Position = (Int, Int)
 
 exists :: Eq a => a -> [a] -> Bool
 exists e [] = False
@@ -18,9 +19,13 @@ existAll [] _ = True
 existAll (x:xs) [] = False
 existAll (x:xs) (y:ys) = (exists x (y:ys)) && (existAll xs (y:ys))  
 
-replaceString :: String -> String -> String -> String
-replaceString str1 str2 str3 = 
- unwords [if x == str2 then str3 ++ " " else x ++ " " | x <- words str1] 
+replace :: Eq a => [a] -> [a] -> [a] -> [a]
+replace [] _ _ = []
+replace s find repl =
+    if take (length find) s == find
+        then repl ++ (replace (drop (length find) s) find repl)
+        else [head s] ++ (replace (tail s) find repl)
+
 
 firstOccurence :: Eq a => [a] -> a -> Int
 firstOccurence [] c = 0
