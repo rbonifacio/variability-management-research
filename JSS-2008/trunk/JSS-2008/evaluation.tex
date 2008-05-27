@@ -136,6 +136,14 @@ dr AuditingDesignRule {
 
 XPI of this example:
 
+\textbf{Observação para colocar no texto: a XPI garante que não há
+chamadas fora do aspecto. No entanto, ela não garante:}
+
+\begin{itemize}
+    \item Que ocorre realmente uma chamada para auditComplaint;
+    \item O local exato dessa chamada (dentro de um aspecto, por exemplo).
+\end{itemize}
+
 \scriptsize
 \begin{lstlisting}[frame=single, caption={Auditing XPI.},label=lst:auditing-xpi, language=Java]
 public aspect AuditingXPI {
@@ -167,6 +175,17 @@ Aspect-Aware interfaces~\cite{sss}. Figure TAL illustrates that when
 a pointcut does not match any piece of code, the compiler emits a
 warning to the developer. Such a warning might be used to alert the
 developer that some method must exist, for example.
+
+\textbf{Observação para colocar no texto:}
+
+As marcações de AJDT (did not match) pode nos ajudar a identificar
+classes ou métodos que não existem. Mas elas não ajudam a
+identificar que determinados aspectos ou advices existem.
+
+Com quantificação, a AJDT consegue fazer as marcações. No entanto,
+ao remover um join point que é capturado pelo aspecto, nenhum erro é
+apresentado (ou seja, não há garantias que um determinado join point
+existe ou não).
 
 \subsection{Transaction Concern}
 
