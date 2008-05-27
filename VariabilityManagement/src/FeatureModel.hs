@@ -66,7 +66,7 @@ data Feature =
 -- data Restriction = ImpliesFeature | NotFeatures
 
 data ImpliesFeature = ImpliesFeature FeatureExpression FeatureList
-data NotFeatures = NotFeatures FeatureExpression FeatureList
+data NotFeatures = NotFeature FeatureExpression FeatureList
 
 data FeatureExpression = 
  FeatureRef Id | 
