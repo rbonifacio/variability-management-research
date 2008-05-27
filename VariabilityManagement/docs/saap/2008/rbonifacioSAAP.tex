@@ -1,45 +1,29 @@
-\documentclass{report}
+\documentclass[11pt]{report}
 
 \usepackage{graphicx, natbib, amssymb, listings, color, colortbl, subfigure}
-
-\journal{Software and Systems}
+\usepackage[all]{xy}
 
 \begin{document}
-\begin{frontmatter}
 
-\title{A Design Rule Language for Aspect-oriented Programming}
+\title{Representing Variability Management as a Crosscutting Concern}
 
-\author[UFPE]{Rodrigo Bonif\'{a}cio\corauthref{cor}},
-\corauth[cor]{Corresponding author.}
-\ead{rba2@cin.ufpe.br}
-\author[UFPE]{M\'{a}rcio Ribeiro},
-\ead{mmr3@cin.ufpe.br}
-\author[UFPE]{Marcos D\'{o}sea},
-\ead{mbd@cin.ufpe.br}
-\author[UFPE]{Alberto Costa Neto},
-\ead{acn@cin.ufpe.br}
-\author[UFPE]{Paulo Borba},
-\ead{phmb@cin.ufpe.br}
-\author[UPE]{S\'ergio Soares}
-\ead{sergio@dsc.upe.br}
-\address[UFPE]{Informatics Center, Federal University of Pernambuco, Recife,
-Brazil}
-\address[UPE]{Department of Computing and
-Systems, University of Pernambuco, Recife, Brazil}
-
+\author{Rodrigo Bonif\'{a}cio and Paulo Borba}
 
 \maketitle              
+
+\tableofcontents
 
 \begin{abstract}
 Variability management is a common challenge for Software Product
 Line (SPL) adoption, since developers need suitable
 mechanisms for describing or implementing variability
 that might occur at different SPL views (requirements, design,
-implementation, and test). In this paper, we present an approach for
-use case scenario variability management, enabling a better
-separation of concerns between languages used to manage
-variabilities and languages used to specify use case scenarios. The
-result is that both representations can be understood and evolved in
+implementation, and test). In this research, we are proposing an 
+approach for use case scenario variability management. The main goal is to 
+improve the separation of concerns between languages used to manage
+variabilities and languages used to specify use case scenarios. 
+Initial results gave evidence that, by applying our prposed 
+approach, both representations can be understood and evolved in
 a separated way. We achieve such a goal by modeling variability management
 as a crosscutting phenomenon, for the reason that artifacts such as feature models, 
 product configurations, and configuration knowledge crosscut each 
@@ -49,17 +33,9 @@ mechanisms in other SPL artifacts, being a contribution for
 automatic product generation and traceability.
 \end{abstract}
 
-\category{D.2.1}{Software Engineering}{Requirements}[Languages,
-Methodologies]\
-\category{D.2.13}{Software Engineering}{Reusable
-Software}
-
-\terms{Design, Documentation}
-
-\keywords{Software product line, variability management, requirement models}
 
 %
-\section{Introduction}
+\chapter{Introduction}
 %
 Software Product Line (SPL) development is a well known technique for 
 improving systematic reuse by considering the common features of products in a 
@@ -78,21 +54,44 @@ feature is often spread not only in several artifacts, but also at the different
 product line views (requirements, design, implementation, and test).
 Consequently, variability management, in the same way as the feature model and
 the architecture, represents a central concern in SPL development and should not
-be tangled with existing artifacts~\cite{phol-spl-book}.
- Several authors have proposed the use of \emph{aspect-oriented} mechanisms in
- order to better modularize the composition of common and variant assets of a
- product line~\cite{ moreira-re07, eriksson-splc-2005,
- alves-gpce-06, apel-icse2006}.
-However, in this paper we go beyond this composition issue. We mainly consider a
+be tangled with existing artifacts~\cite{phol-spl-book}--- otherwise the
+SPL evolution might be comprimized. In order to mitigate this problem in
+source code, several authors have proposed the use of \emph{aspect-oriented}
+mechanisms to better modularize the composition of common and variant assets 
+of a product line~\cite{alves-gpce-06, apel-icse2006}.
+
+In this thesis we go beyond this composition issue. We mainly consider a
 more encompassing notion of variability management, including artifacts such as
 feature models~\cite{gheyi-alloy-06,czarnecki-book} and configuration
 knowledge~\cite{czarnecki-book, phol-spl-book}, and explain it  as a crosscutting
-phenomenon.
+phenomenon. Our goal is to investigate the real benefitis of representing 
+variability management as a crosscutting mechanism. More specifically, we
+aim to (a) present the role of each variability management artifact (such as
+feature models, product configurations, and configuration knowledge); and (b)
+describe how they contribute to generate product specific artifacts.
+One key characteristic of our approach is that variability management should be
+separated from software engineering assets. We achieve such a goal 
+by modeling the variability management concern as a crosscutting mechanism.
+Reducing the impact of changes both in variability space (introducing new
+features or products) and in soluction space is the main expected benefit
+of applying our proposed approach. As secondary benefits, we also expect
+to improve traceability and product generation. 
 
-In this paper, we apply this view of \emph{variability management as
+Therefore, we can describe our reseach hypotheses as: 
+
+ \hrulefill
+
+{\emph{Hypotheses.} A clear and formal separation between
+{\bf variability management} and {\bf software engineering assets} improves SPL evolvability,
+traceability, and product generation.}
+
+\hrulefill
+
+
+In a first moment, we applied this view of \emph{variability management as
 crosscutting} for modularizing SPL use case scenarios. The choice of applying our
 approach in this context was motivated because current techniques for scenario
-variability
+variability 
 management~\cite{favaro-icsr-98,bertolino-esec-2003,eriksson-splc-2005} do not
 present a clear separation between variability management and scenario
 specification. As consequence, supposing that details about product variants are
@@ -111,46 +110,29 @@ to check if the specified compositions between common and variant scenarios are
 correct.  Although  the semantic composition of PLUC (Product Line Use
 Case)~\cite{bertolino-esec-2003} is defined in~\cite{fantechi-splc-2004}, such an
 approach does not separate scenario specification from variability management, as
-presented in Section~\ref{sec:example}.
+presented in Section~\ref{chapter:example}.
 
-In order to describe our approach, we propose 
-a framework for modeling the composition processes of scenario variabilities with feature models, product configuration, and configuration knowledge (Section~\ref{sec:models}). 
-Such a framework aims to: (1) represent a clear separation between variability management 
-and scenario specification; and (2) specify how to weave these representations in order to generate
-specific scenarios for a SPL member. Therefore, the main contributions of this work are
-
-\begin{itemize}
-
-\item Characterize the broader notation of variability management as a crosscutting concern and, in this way, propose an approach for representing it as an independent view of the SPL. Although this work focuses on requirements artifacts, 
-more specifically use case scenarios, we argue that such separation is also valid for other SPL views. Actually,
-it has already been claimed for source code~\cite{alves-gpce-06, apel-icse2006}, without considering the importance of variability artifacts.  
-  
-\item A framework for modeling the composition processes of scenario variability mechanisms. 
-This framework gives a basis for describing variability mechanisms (such as scenario composition and parameterization), 
-allowing a better understanding of each of them. In this work, such a framework is used for modeling 
-the semantics of scenario variability mechanisms, but it might be customized for other SPL views.
-
-\item Describe three scenario variability mechanisms (selection of optional scenarios, scenario composition, scenario parameterization) 
-using the modeling framework. Such descriptions present
-a more formal representation when compared to existing works; this is an
-important property for supporting the automatic derivation of product
-specific artifacts.
-
-\end{itemize}
-
-Since our concept of crosscutting mechanism is based on Masuhara and Kiczales work~\cite{kiczales-ecoop-2003}, another 
-contribution of this paper is that we apply their ideas to the languages of variability management,  reinforcing the generality of their model, which was originally instantiated only for mechanisms of aspect-oriented programming languages. Based on their view of crosscutting, we can reason about variability management as a crosscutting concern, since different input specifications contribute to derive a specific SPL member. 
-
-Finally, we evaluate our approach (Section~\ref{sec:evaluation}) by comparing it 
-to existing works on different product lines.  We 
-also relate our work with other research topics (Section~\ref{sec:related}) and present 
-our concluding remarks in Section~\ref{sec:conclusions}.
+This report is organized as followed. First we present a motivating problem
+which describe, in more details, some issues regard to modularity of the
+current techniques for representing variabilities in SPL
+scenarios (Chapter \ref{chapter:example}. Then, in
+Chapter~\ref{chapter:initial-results}, we report the initial results of
+this research, presenting the contributions of each involved language
+(Section~\ref{sec:models}, the proposed variability modeling framework
+(Section~\ref{sub:modeling-framework}), and the semantics of three kinds of
+variability in SPL scenarios (optional scenarios, \ldots, and parameterized
+scenarios). Chapter~\ref{chapter:evaluation} presents some cases that we have
+evaluated and compared our approach with existing ones. Such a evaluatetion
+considered both Design Structure Matrices~\cite{clark-design-rules-book} and a
+suite of metrics that we have customized for our
+context~\cite{rbonifacio-ea-2008}. Finally, we conclude by presenting a
+schedulling for the next activities of this research.
 
 %-----------------------------------------------------------------------
-% Subsection: Motivating example
+% Chapter: Motivating example
 %-----------------------------------------------------------------------
-\section{Motivating Example}
-\label{sec:example}
+\chapter{Motivating Example}
+\label{chapter:example}
 
 In order to customize specific products, by selecting a valid feature
 configuration, variantion points must be represented in the product line
@@ -181,7 +163,7 @@ subfeature must be selected for each product).
  \begin{center}
   \includegraphics[scale=0.25]{img/eShop-fm3.eps}
    \includegraphics[scale=0.30]{img/fm-notation.eps}
-  \nocaptionrule \caption{eShop feature model.}
+   \caption{eShop feature model.}
   \label{fig:eshop-fm}
   \end{center}
 \end{figure}
@@ -236,7 +218,7 @@ and evolve the product line might increase.
   \end{tabular}
   } 
 \end{scriptsize}
-\nocaptionrule \caption{Buy Products scenarios using the PLUSS notation.}
+ \caption{Buy Products scenarios using the PLUSS notation.}
 \label{fig:pluss-01}
 \end{center}
 \end{figure}
@@ -281,7 +263,7 @@ scenario specification.
   } 
 \end{scriptsize}
 \end{center}
-\nocaptionrule \caption{Buy Products scenarios using the PLUC notation.}
+ \caption{Buy Products scenarios using the PLUC notation.}
 \label{fig:pluc-01}
 
 \end{figure}
@@ -312,6 +294,7 @@ maintainability. Consequently, we argue that the variability
 management concern should be separated from the other artifacts and used as a
 language for supporting product configuration and traceability. 
 
+
 % Furthermore,
 % in order to support the automatic derivation of product specific artifacts, 
 % it is necessary not only to have a more precise definition of each language used
@@ -329,6 +312,42 @@ scenarios, the idea of separating product line artifacts from variability
 management (using feature models, product configurations, and configuration
 knowledge) is also applied to other SPL views.
 
+\chapter{Initial Results}
+\label{chapter:initial-results}
+
+In order to describe our approach, we propose 
+a framework for modeling the composition processes of scenario 
+variabilities with feature models, product configuration, and configuration knowledge (Section~\ref{sec:models}). 
+Such a framework aims to: (1) represent a clear separation between variability management 
+and scenario specification; and (2) specify how to weave these representations in order to generate
+specific scenarios for a SPL member. Therefore, the main contributions of this work are
+
+\begin{itemize}
+
+\item Characterize the broader notation of variability management as a crosscutting concern and, in this way, propose an approach for representing it as an independent view of the SPL. Although this work focuses on requirements artifacts, 
+more specifically use case scenarios, we argue that such separation is also valid for other SPL views. Actually,
+it has already been claimed for source code~\cite{alves-gpce-06, apel-icse2006}, without considering the importance of variability artifacts.  
+  
+\item A framework for modeling the composition processes of scenario variability mechanisms. 
+This framework gives a basis for describing variability mechanisms (such as scenario composition and parameterization), 
+allowing a better understanding of each of them. In this work, such a framework is used for modeling 
+the semantics of scenario variability mechanisms, but it might be customized for other SPL views.
+
+\item Describe three scenario variability mechanisms (selection of optional scenarios, scenario composition, scenario parameterization) 
+using the modeling framework. Such descriptions present
+a more formal representation when compared to existing works; this is an
+important property for supporting the automatic derivation of product
+specific artifacts.
+
+\end{itemize}
+
+Since our concept of crosscutting mechanism is based on Masuhara and Kiczales work~\cite{kiczales-ecoop-2003}, another 
+contribution of this paper is that we apply their ideas to the languages of variability management,  reinforcing the generality of their model, which was originally instantiated only for mechanisms of aspect-oriented programming languages. Based on their view of crosscutting, we can reason about variability management as a crosscutting concern, since different input specifications contribute to derive a specific SPL member. 
+
+Finally, we evaluate our approach (Section~\ref{sec:evaluation}) by comparing it 
+to existing works on different product lines.  We 
+also relate our work with other research topics (Section~\ref{sec:related}) and present 
+our concluding remarks in Section~\ref{sec:conclusions}.
 
 %-------------------------------------------------------------------------
 % Section: Modeling the Variability Mechanisms
@@ -377,7 +396,7 @@ the Scheme programming language.
 \begin{figure}[h]
  \begin{center}
   \includegraphics[scale=0.35]{img/weave-process2.eps}
-  \nocaptionrule \caption{Overview of our weaving process.}
+   \caption{Overview of our weaving process.}
   \label{fig:weave-process}
   \end{center}
 \end{figure}
@@ -388,7 +407,7 @@ the Scheme programming language.
 In order to explain how the input languages crosscut each other and produce a
 product specific use case model, here we present a running example of our
 approach based on the eShop Product Line (briefly introduced in
-Section~\ref{sec:example}). For this, several artifacts of each input language
+Section~\ref{chapter:example}). For this, several artifacts of each input language
 are described. Then, we present the role of each input language in respect of the
 weaving process.
 
@@ -431,7 +450,7 @@ and ending points of execution.
   \end{center}
   } 
 \end{scriptsize}
-\nocaptionrule \caption{Buy product scenario.}
+ \caption{Buy product scenario.}
 \label{fig:buy-product-scenario}
 \end{figure}
 
@@ -464,7 +483,7 @@ step} clause). This behavior is required for products that are configured with
   \end{center}
   } 
 \end{scriptsize}
-\nocaptionrule \caption{Buy products with shopping cart scenario.}
+ \caption{Buy products with shopping cart scenario.}
 \label{fig:buy-product-changing-flow}
 \end{figure}
 
@@ -503,7 +522,7 @@ kinds of \emph{ship method} configurations.
   \end{center}
   } 
 \end{scriptsize}
-\nocaptionrule \caption{Proceed to purchase scenario.}
+ \caption{Proceed to purchase scenario.}
 \label{fig:proceed-to-checkout}
 \end{figure}
 
@@ -536,7 +555,7 @@ that might occur by changing step ids.
   \end{center}
   } 
 \end{scriptsize}
-\nocaptionrule \caption{Search for products scenario.}
+ \caption{Search for products scenario.}
 \label{fig:search-products-flow}
 \end{figure}
 
@@ -563,7 +582,7 @@ configured with the \emph{Update User Preferences} feature.
   \end{center}
   } 
 \end{scriptsize}
-\nocaptionrule \caption{Register user preferences.}
+ \caption{Register user preferences.}
 \label{fig:register-preferences-flow}
 \end{figure}
 
@@ -579,13 +598,13 @@ of a SPL member.
 \subsubsection{Feature model}\label{subsub:fm}
 
 We have introduced part of this artifact for the eShop product line in
-Section~\ref{sec:example}. However, here we present only the features required 
+Section~\ref{chapter:example}. However, here we present only the features required 
 (Figure~\ref{fig:eshop-fm-re}) for understanding the running example.
 
  \begin{figure}[h]
  \begin{center}
   \includegraphics[scale=0.40]{img/eShop-fm-re.eps}
-   \nocaptionrule \caption{Subset of eShop feature model.}
+    \caption{Subset of eShop feature model.}
   \label{fig:eshop-fm-re}
   \end{center}
 \end{figure}
@@ -594,7 +613,7 @@ Based on the feature model of Figure~\ref{fig:eshop-fm-re}, the \emph{Shopping
 Cart}, \emph{Bonus} and \emph{Update User Preferences} features are optional;
 on the other hand, the \emph{Ship Method} feature is mandatory and all products
 have to be configured with at least one of its child. A short review about the
-feature model notation was presented in Section~\ref{sec:example}. More details
+feature model notation was presented in Section~\ref{chapter:example}. More details
 can be found elsewhere~\cite{gheyi-alloy-06,czarnecki-book}.
 
 \subsubsection{Product configuration}\label{subsub:pc}
@@ -604,7 +623,7 @@ This artifact is used for identifying which features were selected in order to c
  \begin{figure}[h]
  \begin{center}
   \includegraphics[scale=0.40]{img/pc-03.eps}
-   \nocaptionrule \caption{Examples of product configurations.}
+    \caption{Examples of product configurations.}
   \label{fig:product-config-01-02}
   \end{center}
 \end{figure}
@@ -614,7 +633,7 @@ This artifact is used for identifying which features were selected in order to c
 %    \mbox{\includegraphics[scale=0.4]{img/pc-01.eps}}
 %    \mbox{\includegraphics[scale=0.4]{img/pc-02.eps}}
 %  }
-%  \nocaptionrule \caption{Examples of product configurations.}
+%   \caption{Examples of product configurations.}
 %  \label{fig:product-config-01-02}
 %  \end{figure}
   
@@ -634,7 +653,7 @@ to the root feature of eShop product line;
 
 \begin{table}[th]
 \begin{center}
-\nocaptionrule \caption{eShop configuration knowledge}
+ \caption{eShop configuration knowledge}
 \label{tab:ck-running-example}
 \begin{tabular}{ll}
    \hline\noalign{\smallskip}
@@ -670,7 +689,7 @@ Table~\ref{tab:assembled-scenarios} shows the assembled scenarios for the config
 
 \begin{table}[h]
 \begin{center}
-\nocaptionrule \caption{Assembled scenarios} \label{tab:assembled-scenarios}
+ \caption{Assembled scenarios} \label{tab:assembled-scenarios}
 \begin{tabular}{ll}
    \hline\noalign{\smallskip}
   {\bf Configuration} & {\bf Assembled scenarios} \\
@@ -735,7 +754,7 @@ The complete path is a high level representation, which uses the same constructi
 }
 \end{xy}
 \end{tiny}
-\nocaptionrule \caption{Complete paths represented  as a graph}
+ \caption{Complete paths represented  as a graph}
 \label{fig:complete-paths}
 \end{center}
 \end{figure}
@@ -776,7 +795,7 @@ W = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\},
 
 \begin{table}[h]
 \begin{center}
-\nocaptionrule \caption{Modeling framework elements.} \label{tab:tup-01}
+ \caption{Modeling framework elements.} \label{tab:tup-01}
 \begin{tabular}{|p{0.6in}|p{2.4in}|}
   \hline
   {\bf Element} & {\bf Description} \\ 
@@ -839,7 +858,7 @@ for a specific product.
 
 \begin{table}[htb]
 \begin{center}
-\nocaptionrule \caption{Model of Product Derivation} \label{tab:pd-weaver}
+ \caption{Model of Product Derivation} \label{tab:pd-weaver}
 \begin{tabular}{p{0.6in}p{2.4in}}
    \hline\noalign{\smallskip}
   {\bf Element} & {\bf Description} \\
@@ -882,7 +901,7 @@ This weaver is responsible for the third activity of our variability management
 approach. It aims at composing variant scenarios of a use case and is applied whenever a use case scenario supports different execution paths.
 This mechanism takes as input the product specific use case model (a list of scenarios). Each scenario, often partially specified, is then composed in order to generate concrete specifications.
 
-As discussed in Section{~\ref{subsub:ucm}, a variant scenario 
+As discussed in Section~\ref{subsub:ucm}, a variant scenario 
 might refer to steps either in basic or other variant scenarios. In order
 to compute the complete paths defined by a scenario, we need to compose the events that precede all steps referenced by its \emph{From step
 clause} (up to the IDLE step), followed by its own steps, and then by all
@@ -959,7 +978,7 @@ plays a fundamental role in this process, retrieving the steps in the use case m
 
 \begin{table}[hbt]
 \begin{center}
-\nocaptionrule \caption{Model of Scenario Composition Weaver}
+ \caption{Model of Scenario Composition Weaver}
 \label{tab:sc-weaver}
 \begin{tabular}{p{0.4in}p{2.6in}}
    \hline\noalign{\smallskip}
@@ -1042,7 +1061,7 @@ Table~\ref{tab:bp-weaver} describes the Bind Parameters model. This weaver just 
 
 \begin{table}[th]
 \begin{center}
-\nocaptionrule \caption{Model of Bind Parameters Weaver} \label{tab:bp-weaver}
+ \caption{Model of Bind Parameters Weaver} \label{tab:bp-weaver}
 \begin{tabular}{p{0.7in}p{2.3in}}
    \hline\noalign{\smallskip}
   {\bf Element} & {\bf Description} \\
@@ -1155,7 +1174,7 @@ of a parameter is defined ($CK_{EFF}$) in the product specific features; and fro
 %to notice that functions for generating input data can be overloaded in the \emph{QuickCheck} 
 %library, which means that we can define the generation of data based on occurrence probabilities.
 
-%We applied this verification technique for checking several properties of feature modeling (briefly introduced in Section~\ref{sec:example}). For example, an alternative feature requires exactly one sub feature to be selected in a product configuration. Using the \emph{QuickCheck} library, this property can be expressed as the function \emph{prop\_ExactlyOneSelected} in Listing~\ref{lst:quick-check}. 
+%We applied this verification technique for checking several properties of feature modeling (briefly introduced in Section~\ref{chapter:example}). For example, an alternative feature requires exactly one sub feature to be selected in a product configuration. Using the \emph{QuickCheck} library, this property can be expressed as the function \emph{prop\_ExactlyOneSelected} in Listing~\ref{lst:quick-check}. 
 %It takes two feature as parameters and returns a property to be checked. The first parameter (fm) should be an alternative feature (from a feature model). The second one (fc), instead, is a corresponding feature from the product configuration. If the number of children of \emph{fc} is different than one (the expression before the implies symbol), it is expected that a call to the \emph{existError} function will return \emph{True}. After specifying this kind of property, it is possible to verify if they hold for different input data.  
 
 %\begin{figure*}
@@ -1178,14 +1197,37 @@ of a parameter is defined ($CK_{EFF}$) in the product specific features; and fro
 \section{Evaluation}
 \label{sec:evaluation}
 
-We have applied our approach to three SPLs: the eShop Product Line, introduced in Section~\ref{sec:example}; the  
+We have applied our approach to three SPLs: the eShop Product Line, introduced in Section~\ref{chapter:example}; the  
 {\bf Pedagogical Product Line (PPL)}~\cite{ppl-url}, which was proposed for learning about and experimenting with software product lines and focus on the arcade game domain; and the 
 {\bf Multimedia Message Product Line (MMS-PL)}, which allows the assembling of specific products for creating, sending, and receiving multimedia messages (MMS) in mobile phones.
 
-Based on the last application of our approach, we noticed the benefits of a clear separation between variability management and scenario specification~\cite{rbonifacio-ea-2008}, compared our approach with the PLUC and PLUSS techniques. This comparison uses Design Structure Matrices (DSMs), a suite of metrics for quantifying modularity and complexity of specifications, and observations of the effort required to introduce SPL increments (such as new variants or products). It is important to note that we did not formalize variability management as crosscutting in our previous work~\cite{rbonifacio-ea-2008}; we just report on the benefits related to the \emph{separation of concerns} (SoC) claimed in this paper.
+Based on the last application of our approach, we noticed the benefits of a clear
+separation between variability management and scenario
+specification~\cite{rbonifacio-ea-2008}, compared our approach with the PLUC and
+PLUSS techniques. This comparison uses Design Structure Matrices (DSMs), a suite
+of metrics for quantifying modularity and complexity of specifications, and
+observations of the effort required to introduce SPL increments (such as new
+variants or products). It is important to note that we did not formalize
+variability management as crosscutting in our previous
+work~\cite{rbonifacio-ea-2008}; we just report on the benefits related to the
+\emph{separation of concerns} (SoC) claimed in this paper.
 
 \subsection{DSM Analysis}
-For now, let us reproduce the DSMs to understand the benefits of SoC in variability management. DSMs is an interesting and simple tool for visualizing dependencies between design decisions~\cite{clark-design-rules-book}. Such decisions appear in the rows and columns of a matrix. We can identify a dependency by observing the columns in a given row~\cite{clark-design-rules-book}. For example, the first row in Figure~\ref{dsm:pluc} indicates that the task of creating the feature model depends on the task of creating the use case model. The first can not be independently performed after the second. As presented in Section~\ref{sec:example}, the PLUC approach describes product instances and variability space at specific sections of use cases. Therefore, it is not possible to evolve variability management (introducing new features, products, or relations between features and artifacts) without reviewing the use case model.  This is expressed in the non modular DSM of Figure~\ref{dsm:pluc}, which depicts cyclical dependencies between use cases and variability management artifacts. 
+For now, let us reproduce the DSMs to understand the benefits of SoC in
+variability management. DSMs is an interesting and simple tool for visualizing
+dependencies between design decisions~\cite{clark-design-rules-book}. Such
+decisions appear in the rows and columns of a matrix. We can identify a
+dependency by observing the columns in a given
+row~\cite{clark-design-rules-book}. For example, the first row in
+Figure~\ref{dsm:pluc} indicates that the task of creating the feature model
+depends on the task of creating the use case model. The first can not be
+independently performed after the second. As presented in
+Section~\ref{chapter:example}, the PLUC approach describes product instances and
+variability space at specific sections of use cases. Therefore, it is not
+possible to evolve variability management (introducing new features, products, or
+relations between features and artifacts) without reviewing the use case model. 
+This is expressed in the non modular DSM of Figure~\ref{dsm:pluc}, which depicts
+cyclical dependencies between use cases and variability management artifacts.
 
 \begin{figure}[htb]
 \centering
@@ -1198,7 +1240,7 @@ For now, let us reproduce the DSMs to understand the benefits of SoC in variabil
 4 & Configuration knowledge 	& x 	& x 	& 	&    	\\ \hline
 \end{tabular}
 \end{small}
-\nocaptionrule \caption{DSM Analysis of PLUC}
+ \caption{DSM Analysis of PLUC}
 \label{dsm:pluc}
 \end{figure}
 
@@ -1217,7 +1259,7 @@ Our approach reduces the dependencies between variability management and scenari
 5 & Configuration model 	& x 	&  	&  x	&  	& 	\\  \hline
 \end{tabular}
 \end{small}
-\nocaptionrule \caption{DSM Analysis of the proposed approach}
+ \caption{DSM Analysis of the proposed approach}
 \label{dsm:cc}
 \end{figure}   
 
@@ -1265,7 +1307,7 @@ We have specified the MMS product line using three techniques: our notation, PLU
 
 \begin{table}[htb]
 \centering
-\nocaptionrule \caption{MMS quantitative evaluation}
+ \caption{MMS quantitative evaluation}
 \label{tab:metrics}
 \begin{small}
 \begin{tabular}{lccc} \hline
@@ -1297,7 +1339,7 @@ The lack of crosscutting mechanisms for composing scenarios of different use cas
 % \begin{figure}[htb]
 % \begin{center}
 %  \includegraphics[scale=0.42]{img/fds-mms.eps}
-%  \nocaptionrule \caption{Relative FDS for evaluated techniques}
+%   \caption{Relative FDS for evaluated techniques}
 %  \label{fig:fds-mms}
 %  \end{center}
 %\end{figure}
@@ -1310,7 +1352,7 @@ The original specification of PPL is already well modularized, since its feature
 
 \begin{table}[hb]
 \centering
-\nocaptionrule \caption{PPL quantitative evaluation}
+ \caption{PPL quantitative evaluation}
 \label{tab:ppl-metrics}
 \begin{small}
 \begin{tabular}{lccc} \hline
@@ -1347,7 +1389,7 @@ Still in this context, our approach also achieves some improvements in the resul
 %  \end{center}
 %  } 
 %\end{scriptsize}
-%\nocaptionrule \caption{Scenario of error handle use case.}
+% \caption{Scenario of error handle use case.}
 %\label{fig:error-handle}
 %\end{figure}
 %    
@@ -1475,6 +1517,6 @@ is straightforward.
 %
 
 \bibliographystyle{abbrv}
-\bibliography{rbonifacioGPCE}
+\bibliography{rbonifacioSAAP}
 
 \end{document}
