@@ -36,6 +36,8 @@ that, explicitly expressing the design rules, and specially being
 capable of verifying them, makes easy the task of developing new
 components.
 
+% comparar com uma documentação textual
+
 In this section we present LSD main constructs, based on previous
 work... %~cite\{DoseaLAWASP}.
 
@@ -69,7 +71,7 @@ methods and advices (only aspects).
 
 \begin{figure}[htp]
   \begin{center}
-  \includegraphics[width=1.0\textwidth]{images/meta-model}\\
+  \includegraphics[width=1.0\textwidth]{images/meta-model.png}\\
   \caption{Design Rule Language and Configuration Module Meta-Models}
   \label{fig:meta-model}
   \end{center}
@@ -214,10 +216,10 @@ dr System {
     aspect TransactionalManagement {
       pointcut service(): execution(ComponentRecord.insert(Component));
       before(): service() {
-          xcall( Persistence.beginTransactional() );
+          xcall( Persistence.beginTransaction() );
       }
       after(): service() {
-          xcall( Persistence.endTransactional() );
+          xcall( Persistence.endTransaction() );
       }
    }
 }
@@ -361,6 +363,10 @@ rule \texttt{ComponentRecord} must explicitly implement the
 interface \texttt{BaseRecord}. Following, the structural rule
 \texttt{Component} must extend directly class
 \texttt{BaseComponent}.
+
+% BaseRecord é uma interface real? Está definida na Design Rule?
+% Implements em Interfaces para declarar que implementa uma DR?
+% Discutir melhor as opções de implements nas classes, módulo com mapeamento e anotações
 
 \scriptsize
 \begin{lstlisting}[frame=single, caption={Implements/Extends constraints.},
