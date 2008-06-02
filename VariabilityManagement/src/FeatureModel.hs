@@ -322,6 +322,21 @@ instance Eq Feature where
  Feature _ _ _ _ _ _  == FeatureError = False
  FeatureError == Feature _ _ _ _ _ _ = False
 
+instance Eq FeatureExpression where 
+ FeatureRef id1 == FeatureRef id2 = id1 == id2
+ FeatureRef id1 == _ = False  
+ 
+ NotExpression fExp1 == NotExpression fExp2 = fExp1 == fExp2 
+ NotExpression fExp1 == _ = False
+ 
+ AndExpression fExp1 fExp2 == AndExpression fExp3 fExp4 = 
+  ((fExp1 == fExp3) && (fExp2 == fExp4)) || ((fExp1 == fExp4) && (fExp2 == fExp3))
+ AndExpression fExp1 fExp2 == _ = False
+  
+ OrExpression fExp1 fExp2 == OrExpression fExp3 fExp4 = 
+  ((fExp1 == fExp3) && (fExp2 == fExp4)) || ((fExp1 == fExp4) && (fExp2 == fExp3))
+ OrExpression fExp1 fExp2 == _ = False
+
 -- 
 -- Show instance definition are 
 -- placed in this point.
