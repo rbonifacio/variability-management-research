@@ -26,6 +26,7 @@ type State = String
 type Response = String
 type ScenarioList = [Scenario]
 type StepList = [Step] 
+type Sequences = [StepList]
 type FromStep = [StepRef] 
 type ToStep = [StepRef]
 type Annotation = String
@@ -114,7 +115,7 @@ match step (AnnotationRef x) = exists x (annotations step)
 -- This take in consideration, in a recursive way, all 
 -- from steps and to steps.
 -- 
-completePaths :: UseCaseModel -> Scenario -> [StepList]
+completePaths :: UseCaseModel -> Scenario -> Sequences
 completePaths ucm scenario = 
  let fromSteps = matchAll ucm (from scenario)
      toSteps = matchAll ucm (to scenario)
@@ -169,7 +170,7 @@ ucmScenarios ucm = plainList [ucScenarios uc | uc <- useCases ucm]
 extractStepsFromScenarios :: ScenarioList -> StepList
 extractStepsFromScenarios scenarios = plainList [steps s | s <- scenarios]
 
-allPathsFromUCM :: UseCaseModel -> [StepList]
+allPathsFromUCM :: UseCaseModel -> Sequences
 allPathsFromUCM ucm = 
  let scenarios = (ucmScenarios ucm) 
  	in plainList [completePaths ucm x | x <- scenarios] 
