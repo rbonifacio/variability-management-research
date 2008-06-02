@@ -54,10 +54,13 @@ orFeature = 2
 
 -- type Restrictions = [Restriction]
 
-data FeatureModel = FeatureModel Root  -- Restrictions 
- deriving (Show)
+data FeatureModel = FeatureModel {
+	fmRoot :: Root  -- Restrictions 
+} deriving (Show)
+
 data FeatureConfiguration = FeatureConfiguration Root
  deriving (Show)
+
 data Feature = 
  Feature Id Name FeatureType GroupType Children Properties | 
  FeatureError  
@@ -86,8 +89,8 @@ eval config (AndExpression e1 e2) = (eval config e1) && (eval config e2)
 eval config (OrExpression e1 e2) = (eval config e1) || (eval config e2)
 
 -- FeatureModel (and Feature) related functions
-fmRoot :: FeatureModel -> Feature
-fmRoot (FeatureModel root) = root
+-- fmRoot :: FeatureModel -> Feature
+-- fmRoot (FeatureModel root) = root
 
 fcRoot :: FeatureConfiguration -> Feature
 fcRoot (FeatureConfiguration root) = root

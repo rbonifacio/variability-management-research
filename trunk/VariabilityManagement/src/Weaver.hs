@@ -9,6 +9,50 @@ import Environment
 import List
 
 
+
+-- High level function exposed by this model. 
+-- Responsible for generating product specific 
+-- use cases (or scenarios).
+generateProductSpecificModel :: FeatureModel -> 
+								FeatureConfiguration -> 
+								ConfigurationKnowledge -> 
+								UseCaseModel -> 
+								Environment Feature ->
+								Sequences
+								
+generateProductSpecificModel fm fc ck ucm env = 
+ if (typeChecker fm fc ck ucm env) then
+   let selectedUCM = selectUseCases fc ck ucm 
+    in bindAllParameters fc (scenarioComposition selectedUCM) env
+  else 
+   error "Type checking error..."
+
+typeChecker :: FeatureModel -> 
+			   FeatureConfiguration ->
+			   ConfigurationKnowledge -> 
+			   UseCaseModel ->
+			   Environment Feature -> 
+			   Bool
+			   
+typeChecker fm fc ck ucm env = 
+ length (validInstance fm fc) == 0
+   			   	   
+
+-- 
+-- TODO: TypeCheck list
+-- 
+-- FM must be ok
+--   - must be a tree (not a graph)
+--   - constraints should be coherent (a implies b and b not implies a) 
+--   - properties with same name in a group must have the same type
+--   - 
+--
+-- FC must be ok
+-- CK must be ok 
+--   - SAT solver for feature expressions
+-- UCM must be ok
+--     								
+
 -- 
 -- Given a product instance (a feature configuration),
 -- a configuration knowledge and a SPL use case model, 
@@ -17,10 +61,10 @@ import List
 -- Only use cases that have at least one scenario selected 
 -- will be present in the resulting use case model. 
 -- 
-selectUseCases :: FeatureModel -> FeatureConfiguration -> 
+selectUseCases :: FeatureConfiguration -> 
 				  ConfigurationKnowledge -> UseCaseModel -> 
 				  UseCaseModel
-selectUseCases fm fc ck ucm = 
+selectUseCases fc ck ucm = 
  let selectedScenarios = (selectScenarios fc ck) 
   	in UCM (ucmName ucm) (selectUseCasesFromUCM ucm selectedScenarios)
 
@@ -32,14 +76,8 @@ selectUseCases fm fc ck ucm =
 -- TODO: all type checking should be performed before 
 -- composing scenarios. 
 -- 
-scenarioComposition :: FeatureModel -> FeatureConfiguration -> 
-					   ConfigurationKnowledge -> UseCaseModel -> 
-					   [StepList]
-scenarioComposition fm fc ck ucm = 
- let rucm = selectUseCases fm fc ck ucm 
- 	in if (length (validInstance fm fc)) > 0 
-  	 then error "error..." 
-  	 else nub (allPathsFromUCM rucm)
+scenarioComposition :: UseCaseModel -> Sequences
+scenarioComposition ucm = nub (allPathsFromUCM ucm)
   	 
 -- 
 -- This function is responsible for binding 
@@ -47,11 +85,11 @@ scenarioComposition fm fc ck ucm =
 -- list is represented, in this version, just as a list 
 -- of step sequences. 
 --
-bindAllParameters :: FeatureConfiguration -> [StepList] -> 
+bindAllParameters :: FeatureConfiguration -> Sequences -> 
 					 (Environment Feature) ->  
-					 [StepList]
-bindAllParameters fc stepSequences env = 
-  [bindParameterFromSequence fc x env | x <- stepSequences]
+					 Sequences
+bindAllParameters fc sequences env = 
+  [bindParameterFromSequence fc x env | x <- sequences]
 
 
 -- 
@@ -89,11 +127,11 @@ bindParameterFromSequence :: FeatureConfiguration -> StepList -> (Environment Fe
 bindParameterFromSequence fc [] env = []
 bindParameterFromSequence fc (x:xs) env = 
  if (hasParameters x) 
-  then
-   x : (bindParameterFromSequence fc xs env)
-  else  
+  then  
    (extractParameterValuesFromStep x env) : (bindParameterFromSequence fc xs env)
- 
+  else
+   x : (bindParameterFromSequence fc xs env)
+  
 --traceModelWeaver :: 
 -- FeatureModel -> FeatureConfiguration -> 
 -- ConfigurationKnowledge -> UseCaseModel -> 
@@ -148,7 +186,11 @@ replaceParameters env s (x:xs) =
 -- 
 -- Example: [p1, p2] => (p1 or p2) 
 concatValueList :: [String] -> String
-concatValueList values = "(" ++ (replace (unwords values) " " " or ") ++ ")"
+concatValueList [] = ""
+concatValueList (x:xs) = 
+ if (length xs > 0)
+  then x ++ " or " ++ concatValueList xs 
+  else x   
 
 
 -- 
