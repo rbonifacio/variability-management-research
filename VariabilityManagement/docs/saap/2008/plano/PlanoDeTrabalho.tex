@@ -1,0 +1,503 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+
+\setlength{\oddsidemargin}{0.0cm}
+\setlength{\evensidemargin}{0.0cm}
+\setlength{\textwidth}{15cm}
+\setlength{\textheight}{22cm}
+\setlength{\topmargin}{1.5cm}
+\setlength{\headheight}{0.0cm}
+\setlength{\headsep}{0.0cm}
+
+\usepackage{ifpdf}
+\usepackage{isolatin1}
+\usepackage[portuges]{babel}
+\usepackage{url}
+\ifpdf
+\usepackage[pdftex]{epsfig}
+\usepackage[pdftex,raiselinks=false,colorlinks=true,linkcolor=blue,anchorcolor=blue,citecolor=blue,filecolor=blue,urlcolor=blue,linktocpage=true,bookmarksopen=true%,pagebackref=true
+    ]{hyperref}
+\else
+\usepackage[dvips]{epsfig}
+\newcommand{\href}[2]{#2}
+%\newcommand{\url}[1]{#1}
+\fi
+
+\newcommand{\seismeses}{\rule{26.0mm}{2mm}}
+\newcommand{\tresmeses}{\rule{9.0mm}{2mm}}
+\newcommand{\doismeses}{\rule{5.33mm}{2mm}}
+\newcommand{\ummes}{\rule{2.67mm}{2mm}}
+\newcommand{\spdoismeses}{\hspace{5.33mm}}
+\newcommand{\spummes}{\hspace{2.67mm}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{titlepage}
+\vfill
+\vfill
+\begin{center}
+{\large\bf \underline{Plano de Trabalho Atualizado}}
+\end{center}
+\vfill
+\vfill
+\vfill
+\begin{center}
+{\LARGE\bf Gerenciamento de Variações em \\
+Linhas de Produtos de Software}  
+\vfill
+{\LARGE Uma Abordagem Baseada em \\ Preocupações Transversais}
+\end{center}
+\vfill
+\begin{center}
+{\large {\bf Rodrigo Bonifácio e Paulo Borba} \\ 
+				Centro de Informática \\
+        Universidade Federal de Pernambuco}
+\end{center}
+\vfill
+\vfill
+\vfill
+\vfill
+\vfill
+\vfill
+\begin{center}
+\hspace*{1,12cm} \epsfig{file=LogoDoCInGrande,height=3cm}
+\hspace*{1,2cm}
+\end{center}
+\begin{center}
+{\large\bf Recife, outubro de 2007}
+\end{center}
+\vfill
+\vfill
+\end{titlepage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\
+
+\section{Introdução e Justificativa}
+\label{sec:introducao}
+
+%Contexto
+Um diferencial competitivo importante para empresas de software é a
+capacidade de lançar produtos similares, ou variações de um produto
+adaptadas às peculiaridades de clientes específicos, com agilidade e
+custos reduzidos, sem comprometer a qualidade. Isto tem se tornado
+possível através do desenvolvimento de Linhas de Produtos de
+Software (LPS) \cite{Clem02a}, um conjunto gerenciado de
+\emph{features} definidas e implementadas por artefatos de software
+(\emph{core assets}) que são sistematicamente reusados e compostos
+para construir uma família de produtos similares, como as versões de
+uma aplicação móvel, que funcionam em diferentes tipos de
+dispositivos.
+
+%Problema
+%Por que é interessante, cientificamente?
+%Por que é importante, relevante na prática?
+%Quem é o cliente?
+
+Além de fatores gerenciais e de mercado, a gerência de variações é
+essencial para o sucesso desta abordagem. O suporte a pontos de
+extensão é o mecanismo que permite a customização de produtos a
+partir dos \emph{core assets}. Por outro lado, a gerência de
+variação costuma ser um desafio recorrente na adoção de uma abordagem
+baseada em LPS. Parte da complexidade envolvida nessa atividade se
+deve a sua natureza transversal (ou \emph{crosscutting}): as
+variações de uma feature tendem a se manifestar entre diferentes
+artefatos que compõem as diferentes representações (requisitos,
+arquitetura, design, implementação e testes) da LPS.
+
+Por outro lado, técnicas para o suporte de variações em requisitos e testes não
+apresentam uma separação clara entre o papel de cada artefato
+envolvido~\cite{eriksson-splc-2005,
+favaro-icsr-98,bertolino-esec-2003}. O resultado é que os mecanismos
+de variação se tornam entrelaçados com as especificações dos
+cenários, por exemplo. No modelo de requisitos, um mesmo artefato pode
+descrever todas suas possíveis variações. Nesse contexto, se uma variação for
+removida da linha de produtos, será necessário alterar todos os
+cenários relacionados. Como conseqüência, se torna difícil evoluir ambas as
+representações. Outro problema observado nos trabalhos existentes é
+a falta de formalismo para representar a derivação de membros da
+LPS, o que não é adequado para a abordagem
+generativa~\cite{krueger-cacm-200712}, atualmente recomendada ao
+desenvolvimento de LPS. Seguindo os trabalhos de suporte a variação
+existentes, é difícil automaticamente derivar os requisitos de um
+membro específico da LPS.
+
+%Esboço de solução
+%Qual a idéia para resolver o problema?
+%Some technical meat!
+%Esboço da metodologia
+%Originalidade, Inovação
+%Diferencial da minha abordagem em relação a outras
+%Qual a evidência de que a abordagem é promissora (trabalhos preliminares, protótipos, etc.)?
+%Mas ainda falta coisa a ser feita!
+
+Como principal resultado desse trabalho de doutorado, construímos um
+modelo para a gerência de variações nos requisitos de uma
+LPS~\cite{rbonifacio-gpce-2008}. Tal resultado foi submetido para
+divulgação em GPCE-2008 (international Conference on Generative Programming and
+Component Engineering)\footnote{O resultado da submissão será divulgado
+em junho deste ano.}. Esse modelo apresenta como principais
+diferenciais:
+
+\begin{itemize}
+\item Uma separação mais clara entre os artefatos usados para especificar
+os requisitos e os artefatos usados para gerenciar as variações da
+linha de produtos de software.
+
+\item Uma semântica operacional (utilizando a linguagem de programação
+\emph{Haskell}) do processo que permite derivar o conjunto de
+requisitos específico a um membro da LPS.
+\end{itemize}
+
+Outro resultado alcançado foi a realização de um estudo empírico utilizando
+técnicas inicialmente propostas para avaliar a modularidade de software orientado a aspectos~\cite{rbonifacio-ea-2008}. Tal resultado foi apresentado no
+Workshop de Early-Aspects 2008, realizada em conjunto com a \emph{International
+Conference on Aspect-Oriented Software Development}. Nesses resultados, foram
+comparadas a abordagem proposta com duas existentes: PLUC ~\cite{bertolino-esec-2003} e PLUSS~\cite{eriksson-splc-2005}. A
+comparação foi baseada em Design Structure Matrices~\cite{designrules}, em um conjunto de métricas
+adaptada da comunidade de desenvolvimento de software orientada a aspectos~\cite{greenwoodecoop07}, e
+na análise de impacto da evolução em LPS. 
+
+Durante a realização desse projeto, pretendemos identificar
+qual o impacto que as variações de requisitos causam nas demais
+representações da LPS (arquitetura, design, implementação e testes).
+Mais especificamente, pretendemos identificar os diferentes tipos de
+variações em artefatos de teste (casos de testes e scripts de
+testes) e como os mesmos estão relacionados com as variações de
+requisitos. Utilizando um modelo unificado para representar
+variações e formalizando o impacto que as variações possuem nas
+diferentes representações da LPS, acreditamos ser possível
+aprimorar, em termos de redução de esforço e melhoria da qualidade,
+duas atividades essenciais ao desenvolvimento em LPS : (a) a
+gerência de variações; e (b) o desenvolvimento de ferramentas que
+automatizam a geração de produtos.
+
+Esse projeto está sendo desenvolvido no contexto da cooperação entre
+o Centro de Informática da UFPE e a Motorola do Brasil Ltda.
+Resultados anteriores dessa cooperação foram integrados em um
+ambiente que permite derivar artefatos de teste a partir dos
+requisitos. Por outro lado, esse ambiente não suporta mecanismos
+para representar variações associadas às especificidades de cada
+produto. Com uma melhor compreensão do impacto das variações de
+requisitos em termos de artefatos de software, podemos aplicar os
+resultados dessa tese para favorecer a transformação de requisitos
+de uma linha de produtos em artefatos de testes.
+
+Assim, durante a realização desse projeto, nós objetivamos
+identificar, formalizar, desenvolver e relacionar \textbf{modelos de
+gerência de variações} em requisitos e artefatos de testes de
+software. Diferentemente dos modelos existentes, nossa proposta tem
+como critério a clara separação entre as responsabilidades de cada
+uma das linguagens envolvidas (linguagens para especificar
+variações, linguagem para especificar as features de um produto,
+linguagens usadas para especificar os requisitos, os casos de teste
+e os scripts de teste). Adicionalmente, \textbf{formalizaremos os
+processos de seleção e composição de artefatos (e variações)},
+permitindo um melhor entendimento dos mecanismos usados para derivar
+os produtos específicos de uma LPS.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Objetivo e Metas}
+
+% Objetivo, mais geral, mais alto nível, não facilmente mensurável
+O objetivo deste trabalho de doutorado é contribuir para aperfeiçoar
+a gerência de variações de LPS, de forma que empresas e instituições
+que adotem esta abordagem possam melhor representar os pontos de
+variação da linha de produto, consigam preservar a rastreabilidade
+entre artefatos e tenham facilidades para automatizar o processo de
+seleção e composição de artefatos durante a derivação de produtos
+específicos a LPS.
+
+%Metas mensuráveis, de interesse para clientes
+Em particular, temos as seguintes metas:
+\begin{itemize}
+\item definir e formalizar os mecanismos de variação de requisitos e
+artefatos de testes em uma LPS. Acreditamos que a formalização
+proposta para representar variações nesses artefatos poderá ser útil
+para representar variações em outros artefatos;
+
+\item identificar o relacionamento entre as variações do modelo de
+requisitos e as variações do modelo de testes. Tal relacionamento
+pode ser usado para automatizar a transformação de variações de
+requisitos em variações de testes; e
+
+\item realizar estudos empíricos com o intuito de avaliar a expressividade
+do framework de modelagem de variações a ser desenvolvido. Além
+disso, analisar os custos e benefícios da abordagem proposta em
+linhas de produtos reais.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Atividades e Metodologia}
+
+Visando atingir as metas do projeto, executaremos algumas atividades
+continuamente:
+\begin{itemize}
+\item acompanhamento das atividades do projeto,
+recursos envolvidos, e cooperações com outros grupos de pesquisa;
+
+\item divulgação (através de publicações, estudos de caso,
+seminários e tutoriais em eventos técnico-científicos
+nacionais e internacionais) da iniciativa e dos resultados gerados para a
+comunidade acadêmica e empresas de desenvolvimento de produtos de software.
+\end{itemize}
+
+Além destas atividades gerais, descrevemos a seguir atividades
+específicas deste projeto e a metodologia a ser utilizada para
+executá-las. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{\textbf{Atividade 1---Analisar as propriedades do modelo de variação}}
+%O que vai ser feito?
+%Por que vai ser feito?
+%Como vai ser feito?
+%Quais as entradas necessárias? Recursos, materiais?
+%Detalhes sobre as saídas.
+%Por que coisas existentes não resolvem isso?
+
+Esta atividade tem como objetivo verificar se o framework 
+de modelagem proposto atende a um conjunto de propriedades, ainda alvo 
+de estudo e delimitação de escopo. Exemplos dessas propriedades envolvem 
+a análise da completude em relação às variações suportadas, checagem do sistema 
+de tipos usados para representar as variações e se o relacionamento entre 
+variações em diferentes artefatos suportam transformações em ambos os sentidos (fundamental para manter a sincronização entre artefatos). Novamente, trabalhos relacionados pecam na avaliação formal das soluções existentes. O resultado desta atividade é essencial para suprir tal lacuna na gerência de variações em LPS, além de servir para o aprimoramento do framework de modelagem proposto na tese. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{\textbf{Atividade 2---Identificar e modelar variações em testes}}
+%O que vai ser feito?
+%Por que vai ser feito?
+%Como vai ser feito?
+%Quais as entradas necessárias? Recursos, materiais?
+%Detalhes sobre as saídas.
+%Por que coisas existentes não resolvem isso?
+
+Como destacado na Seção~\ref{sec:introducao}, resultados iniciais
+dessa tese produziram uma abordagem (ou framework) para modelar
+variações em requisitos de software~\cite{rbonifacio-gpce-2008}.
+Nesta atividade identificaremos os tipos de variações que ocorrem em
+artefatos de testes de LPS. Para isso, nos basearemos em trabalhos
+publicados em conferências relacionadas e em estudos de casos
+desenvolvidos no contexto da parceria entre o Centro de Informática
+e a Motorola do Brasil Ltda. Importante destacar que exploraremos
+variações tanto em casos de testes (documentos que descrevem as
+condições iniciais, seqüência de eventos e estado final de um
+cenário de teste) quanto em scripts de testes (código usado para
+automatizar a execução de testes). Em seguida, instanciaremos (e/ou
+adequaremos) o framework de modelagem de variações com o intuito de
+representar os mecanismos de extensão em artefatos de testes. Nosso
+objetivo é apresentar um suporte a variação menos acoplado, que
+simplifique o entendimento e a evolução de ambas as representações;
+uma vez que as soluções existentes entrelaçam mecanismos de variação
+com os artefatos de testes~\cite{bertolino-pfe-2004,
+pohl-caise-2005, pohl-split-2006}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{\textbf{Atividade 3---Relacionar variações de requisitos e testes}}
+%O que vai ser feito?
+%Por que vai ser feito?
+%Como vai ser feito?
+%Quais as entradas necessárias? Recursos, materiais?
+%Detalhes sobre as saídas.
+%Por que coisas existentes não resolvem isso?
+A segunda atividade consiste em identificar como as variações de
+requisitos são refletidas em artefatos de testes de software. Essa
+atividade é fundamental para automatizar o processo de derivação de
+testes a partir de requisitos. Nossa experiência, baseada em
+análises de linhas de produtos existentes, aponta que um tipo de
+variação em requisitos pode ser mapeado de diferentes formas em
+termos de artefatos de testes. Ou seja, um parâmetro referenciado em
+um cenário de requisitos pode ser mapeado tanto para um parâmetro na
+seqüência de ações do caso de teste quanto para definir as
+fronteiras de execução do caso de teste (um valor de fronteira para
+o caso de teste). Como resultado dessa atividade, evoluiremos o
+framework de modelagem para que o mesmo possa ser usado para
+representar como as variações em artefatos distintos se relacionam.
+Trabalhos existentes pecam na formalização desse tipo de
+relacionamento.
+
+\subsubsection*{\textbf{Atividade 4---Desenvolver suporte ferramental}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%O que vai ser feito?
+%Por que vai ser feito?
+%Como vai ser feito?
+%Quais as entradas necessárias? Recursos, materiais?
+%Detalhes sobre as saídas.
+%Por que coisas existentes não resolvem isso?
+
+Com base no modelo de suporte a variações a ser construído, desenvolveremos o suporte ferramental, ainda que em termos de protótipos, necessário para uma avaliação mais precisa em relação aos custos benefícios da abordagem proposta. Apesar de não prover uma contribuição científica, essa atividade pode auxiliar na aplicação prática dos resultados dessa tese. Como destacado na Seção~\ref{sec:introducao}, a parceria entre o Centro de Informática e a Motorola do Brasil Ltda. desenvolveu um ambiente~\cite{snogueira-sast-2007}, baseado na plataforma Eclipse\footnote{http://www.eclipse.org}, que permite transformar requisitos de software em artefatos de teste. O resultado desta atividade consiste em uma importante extensão para esse ambiente, oferecendo o suporte a gerência de variações em requisitos e artefatos de testes. 
+
+\subsubsection*{\textbf{Atividade 5---Realização de estudos de caso}}
+%O que vai ser feito?
+%Por que vai ser feito?
+%Como vai ser feito?
+%Quais as entradas necessárias? Recursos, materiais?
+%Detalhes sobre as saídas.
+%Por que coisas existentes não resolvem isso?
+
+Para avaliar os resultados das atividades anteriores, realizaremos
+estudos empíricos relacionados à usabilidade (custo) e eficácia
+(benefício) das práticas para a gerência de variações propostas nessa tese. Entendemos que isso é essencial para identificar pontos fracos do nosso trabalho e justificar melhor os pontos fortes. O \emph{feedback} gerado por
+estes estudos servirá para ajustar o esforço antes do final do
+projeto. Os estudos serão planejados rigorosamente, conforme projetos
+anteriores~\cite{sergio-tese,greenwoodecoop07} conduzidos pelo grupo SPG (Software Productivity Group\footnote{\url{http://www.cin.ufpe.br/spg}}). Esperamos usar pelo menos três LPS como objetos dos estudos: uma a ser definida em parceria com a Motorola do Brasil Ltda.; uma linha derivada do \emph{Health Watcher}~\cite{soaresborbaspe}, sistema \emph{web} usado como \emph{benchmark} por vários pesquisadores da área; e uma a ser definida em conjunto com o projeto AMPLE\footnote{http://ample.holos.pt/}, caso uma cooperação de pesquisa seja estabelecida.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Cronograma}
+
+As atividades apresentadas na seção anterior serão realizadas de acordo com o seguinte cronograma. Importante destacar 
+que, durante a realização das atividades, serão escritos e revisados artigos, relatórios técnicos e/ou capítulos da tese de doutorado. 
+Tais tarefas contribuem para o acompanhamento e conclusão das atividades.
+ 
+\begin{small}
+\begin{center}
+\begin{tabular}{|p{23mm}@{\hspace{0mm}}|@{\hspace{0mm}}p{8mm}@{\hspace{0mm}}p{8mm}@{\hspace{0mm}}|@{\hspace{0mm}}p{8mm}@{\hspace{0mm}}p{8mm}@{\hspace{0mm}}|@{\hspace{0mm}}p{8mm}@{\hspace{0mm}}p{8mm}@{\hspace{0mm}}|@{\hspace{0mm}}p{8mm}@{\hspace{0mm}}p{8mm}@{\hspace{0mm}}|@{\hspace{0mm}}p{8mm}@{\hspace{0mm}}p{8mm}@{\hspace{0mm}}|@{\hspace{0mm}}p{8mm}@{\hspace{0mm}}p{8mm}@{\hspace{0mm}}|@{\hspace{0mm}}p{8mm}|}\hline
+\textbf{Atividade} & \multicolumn{2}{|c|}{01 a 06 de 2008} &
+\multicolumn{2}{|c|}{07 a 12 de 2008} & \multicolumn{2}{|c|}{01 a 06 de 2009} &
+\multicolumn{2}{|c|}{07 a  12 de 2009} \\
+\hline
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{A1} &
+         \seismeses\seismeses & & &
+                    & & &
+                    &
+\\ \hline
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{A2} &
+                    & \seismeses & \seismeses &
+         			  &            &            &
+                    &
+\\ \hline
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{A3} &
+                    &  & &  \seismeses
+         			  &  &            &
+                    &
+\\ \hline
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{A4} &
+                    &            &            &
+        & \seismeses  & \tresmeses & 				 
+        				  &
+\\ \hline
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{A5} &
+                    &            &            &
+                    & \seismeses & \seismeses &
+        \seismeses  & \tresmeses\doismeses\doismeses\ummes 
+\\ \hline
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{tabular}
+\end{center}
+\end{small}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Resultados Esperados}
+Como resultados diretos da realização deste plano de trabalho, esperamos ter
+\begin{itemize}
+\item 1 artigo em periódico internacional de qualidade;
+\item 3 artigos científicos completos em conferências internacionais de qualidade;
+\item 2 artigos científicos completos em eventos nacionais de qualidade;
+\item 2 a 3 estudos de caso documentados e disponibilizados na página do SPG.
+\end{itemize}
+
+%Só para casos que exijam uma descrição mais rigorosa...
+%Os principais resultados a serem obtidos com o desenvolvimento deste
+% trabalho são apresentados na tabela a seguir. Além de dar a descrição e o
+%tipo de cada resultado, indicamos a data na qual o resultado será apresentado e
+%as atividades associadas à produção do mesmo. O tipo do resultado é especificado
+%de acordo com a seguinte notação: S--Software, P--Publicação (em revistas ou em anais
+%de simpósios e conferências). E teses patente tutoriais
+
+%\begin{center}
+%\begin{tabular}{|c|c|p{7cm}|p{2.6cm}|}\hline
+%\textbf{Data} & \textbf{Tipo} & \textbf{Descrição}
+%       & \textbf{Atividades} \\\hline
+% mes/ano & tipo
+%     & nome do resultado
+%     & a1 e a2 \\\hline
+%\end{tabular}
+%\end{center}
+Além destes resultados diretos, este projeto ajudará a consolidar  a
+cooperação entre o SPG e outros grupos de pesquisa, nacionais e
+internacionais, que vem trabalhando em tópicos similares.  Também é
+importante notar que a possível contribuição de alunos de graduação na realização das atividades deste plano é de fundamental
+importância para a formação dos mesmos, já que eles obterão
+experiência em tecnologias de ponta como LPS e técnicas avançadas em relação a requisitos, testes e transformação de artefatos de software.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Relevância e Originalidade}\label{sec:relevancia}
+
+%Diferencial em relação a trabalhos de pesquisa relacionados.
+%Diferencial em relação a práticas usadas no mercado.
+Conforme discutido na Seção~\ref{sec:introducao}, nosso trabalho tem
+um diferencial claro em relação a trabalhos de outros grupos da
+área: maior formalismo para gerenciar e relacionar variações de LPS. Também oferece avanços importantes em relação a soluções atuais de mercado, que se baseiam em transformações manuais de variações de requisitos para variações de testes; enquanto nossa proposta permitirá automatizar esse processo.
+
+%Relevância para a produção científica nacional
+Devido a esta originalidade, a publicação dos resultados deste
+projeto, em eventos e periódicos de qualidade no exterior,
+contribuirá para o reconhecimento da qualidade da pesquisa
+científica que pode ser realizada no Brasil. O projeto também
+ajudará a consolidar as cooperações que o SPG possui com centros de
+referência, nacionais e internacionais, em LPS. Este tipo de
+cooperação é essencial para o amadurecimento do nosso grupo e
+para aumentar a qualidade do ensino e da pesquisa feitos no
+CIn-UFPE.
+
+%Relevância para a indústria nacional
+Do ponto de vista econômico, os resultados deste trabalho podem ajudar
+empresas de software a lançar famílias de produtos com agilidade e
+custos reduzidos, sem comprometer qualidade. Estes benefícios são
+essenciais para garantir a competitividade das empresas em mercados
+altamente globalizados e competitivos, com grandes portfólios e
+curtos ciclos de produto, como os de desenvolvimento de aplicações
+para dispositivos móveis. Em particular, a indústria de software
+brasileira certamente pode obter estes benefícios. Trabalhamos há
+mais de 2 anos em parceria com o \emph{Brazil Test Center} da
+Motorola, que financia nosso projeto de testes de LPS, onde
+exploramos a derivação de artefatos de testes a partir de requisitos, mas ainda sem o suporte a variações presentes nas famílias de dispositivos.
+
+No médio prazo, outras empresas do
+\href{http://www.portodigital.org.br}{Porto Digital}, um sistema
+local de inovação em software, também podem vir a ter interesse
+direto no projeto, já que existe a preocupação de 
+de identificar novas oportunidades de negócios, buscando
+empresas que se interessem em usar produtos aqui desenvolvidos, ou
+formando parcerias locais, regionais e nacionais. No longo prazo, é
+importante notar que a derivação automatizada (ou generativa) de LPS tende a se consolidar.
+
+%Relevância para formação de RH e ensino
+Além destes aspectos, a formação de recursos humanos
+qualificados, tem uma importância estratégica para a indústria de software brasileira,
+atualmente com demanda por arquitetos e engenheiros de
+software com conhecimento de mecanismos avançados de desenvolvimento,
+incluindo os abordadas neste projeto. Por fim, o modelo e ferramenta de
+transformação desenvolvidos possibilitarão a transferência de tecnologia
+via cursos de pós-graduação e até cursos avançados de graduação.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Citou, ao longo de toda a proposta, os principais, e mais recentes, artigos?
+
+\bibliographystyle{plain}
+\bibliography{especificoprojeto}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
