@@ -176,6 +176,29 @@ allPathsFromUCM ucm =
  	in plainList [completePaths ucm x | x <- scenarios] 
 
 
+checkLoopInUCM :: UseCaseModel -> Bool 
+checkLoopInUCM ucm = False
+
+checkLoopInScenario :: UseCaseModel -> Scenario -> ScenarioList 
+checkLoopInScenario ucm scenario = [] 
+-- let f sc = matchAll ucm (from sc)
+--     t sc = matchAll ucm (to sc) 
+-- in  
+-- (exists scenario [owner (y) | x <- (f scenario), y <- f (owner x)]) || 
+-- (exists scenario [owner (y) | x <- (t scenario), y <- t (owner x)])  
+
+checkLoopInScenarioClauses :: UseCaseModel -> Scenario -> StepList -> ((Scenario) -> [StepRef]) ->ScenarioList
+checkLoopInScenarioClauses ucm scenario [] fn = []
+checkLoopInScenarioClauses ucm scenario (x:xs) fn  =
+ let other = owner x 
+     f fsteps = checkLoopInScenarioClauses ucm scenario fsteps fn 
+ in    
+  if(scenario == other) 
+  then 
+   [other] ++ (f xs) ++ (f (matchAll ucm (fn other)))
+  else
+    (f xs) ++ (f (matchAll ucm (fn other)))
+    
 -- **********************************************************
 -- Iddle scenario definition
 -- **********************************************************
