@@ -5,6 +5,9 @@
 \documentclass[times, 11pt,twocolumn]{article}
 \usepackage{latex8}
 \usepackage{times}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{epsfig}
 
 
 
@@ -17,7 +20,7 @@
 
 \title{Towards a Crosscutting Approach for Variability Management}
 
-\author{Rodrigo Bonif\'{a}cio \and Paulo Borba\\
+\author{Rodrigo Bonif\'{a}cio and Paulo Borba\\
 Informatics Center \\ Federal University of Pernambuco \\ Recife, Brazil \\
 \{rba2, phmb\}@cin.ufpe.br\\ }
 
@@ -37,7 +40,7 @@ Informatics Center \\ Federal University of Pernambuco \\ Recife, Brazil \\
 
 
 %------------------------------------------------------------------------- 
-\Section{Introduction}
+\Section{Introduction}\label{sec:intro}
 
 In order to reduce time-to-marketing and improve quality of software products,
 several approaches and techniques for economy of scope, mass customization, and
@@ -55,8 +58,7 @@ features are optional, being useful for diferentiating specific products in a
 family. Therefore, aiming to generate specific products, it would be necessary
 to: (a) introduce suitable variation points in common assets, (b) develop
 variant assets that extend these variation points, and (c) relate features to both common and
-variant assets.
-In this work, we consider \emph{variability management} as the discipline that
+variant assets.In this work, we consider \emph{variability management} as the discipline that
 guides these activities. Actually, variability management is an interesting kind
 of crosscutting concern, since certain features require variation points to be
 spread in different places of requirements, design, code, and test artifacts.
@@ -110,24 +112,165 @@ might be customized for other SPL views.
  scenarios), but also a comparison of existing works with regard to
  SPL evolvability and traceability.  
 \end{itemize}The next section describes our approach, named as \emph{variability management
-as crosscutting} (Section~\ref{sec:vmcc}). It also relate some open questions of our
-aproach, which we are trying to solve in this thesis. After that,
-Section~\ref{sec:evaluation} presents the results of three empirical studies
-that we have applied our proposed technique, comparing it with existing works.
-In these studies, we have applied \emph{Design Structure Matrices} and a suite
-of metrics, addapted from aspect-oriented communit, for quantifying modularity.
-We also present in Section~\ref{sec:evaluation} a discussion about how we will
-improve our evaluation process. Then, we relate our thesis with existing works
-and concludes with \ldots
+as crosscutting} (Section~\ref{sec:vmcc}). It also relates some open questions
+of our aproach, which we are going to solve in this thesis. After that,
+Section~\ref{sec:evaluation} presents the results of three empirical studies,
+which we have compared our proposed approach with existing
+works. These comparisons were based on \emph{Design Structure Matrices} and on a
+suite of metrics, addapted from aspect-oriented communit, for quantifying modularity.
+We also present in Section~\ref{sec:evaluation} a discussion about several
+improvements on our evaluation processes. Then, we relate our
+thesis with existing works (Section~\ref{sec:related}) and present final concludings 
+in Section~\ref{sec:concludings}.
 
 %-------------------------------------------------------------------------
 \section{Variability Management as Crosscutting}\label{sec:vmcc}
 
-%-------------------------------------------------------------------------
-\section{Evaluation}\label{sec:evaluation}
+As we said in the previous section, we are proposing an approach for
+variability management that aims to separate variability models
+from common software engineering models. However, once these concerns 
+had been saparated, it would be necessary to weave those models in order to 
+generate specific products. Moreover, in this work we consider variability
+management as a crosscutting concern, since certain features require variation
+points to be spread in different places of SPL artifacts. 
+
+In order to represent variability management as a crosscutting concern, we
+proposed a modeling framework (Section~\ref{sub:framework}), that slightly
+generalizes the Masuhara and Kiczales (MK) framework~\cite{Masuhara:2003aa}, and instantiate it for the 
+product line domain. The MK framework aims to explain
+how different \emph{aspect-oriented} technologies support crosscutting
+modularity. In their proposed framework, each technology is modeled as a
+three-part description: the related weaving processes take two programs as input, 
+which crosscut each other with respect to the resulting program or
+computation~\cite{Masuhara:2003aa}.
+
+Specifically in the context of use case scenario variabilities, we represent the
+semantics of \textbf{scenario variability management} as a weaver that takes as input four specifications
+(\emph{product line use case model}, \emph{feature model}, \emph{product
+configuration}, and \emph{configuration knowledge}) that crosscut each other with
+respect to the resulting product specific use case model
+(Figure~\ref{fig:weave-process}). Combining these input languages, it is possible
+to represent the kinds of variability that we are interested in: \emph{optional
+use cases and scenarios}, \emph{quantified changed scenarios}, and
+\emph{parameterized} scenarios.
+
+\begin{figure}[t]
+ \begin{center}
+  \includegraphics[scale=0.35]{../images/weave-process.eps}
+  \caption{Overview of our weaving process.}
+  \label{fig:weave-process}
+  \end{center}
+\end{figure}
+
+In what follows, we present our modeling framework, proposed to explain
+variability management as a crosscutting concern. Then, we instantiate such a
+framework (Section~\ref{framework-instance}) for representing one scenario variability
+technique --- optional use cases and scenarios. More details about our approach can be found
+elsewhere~\cite{}.
+
+\subsection{Modeling Framework}\label{sub:framework}
+
+As explained early, our proposed modeling framework, used for representing 
+variability management weaving processes, is based on the Masuhara and Kiczales
+work~\cite{Masuhara:2003aa}. Therefore, we describe each variability technique
+as a weaver, represented as an \emph{6-tuple} (Eq.~\ref{eq:tuple} and
+Table~\ref{tab:tup-01}), highlighting the contribution of each input model
+(Figure~\ref{fig:weave-process}) in the composition process.
+
+\begin{equation}
+Weaver = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\}, 
+\label{eq:tuple}
+\end{equation}
+
+\begin{table}[bth]
+\begin{center}
+\caption{Modeling framework elements.} \label{tab:tup-01}
+\begin{tabular}{|p{0.6in}|p{2.4in}|}
+  \hline
+  {\bf Element} & {\bf Description} \\ 
+   \hline
+  $o$          & Output language used for describing the results of the weaving process \\ \hline
+  $o_{jp}$     & Set of join points in the output language \\ \hline
+  $L$          & Set of languages used for describing the input specifications \\ \hline
+  $L_{ID}(l)$  & Set of constructions in each input language $l$, used for identifying the output join points \\ \hline 
+  $L_{EFF}(l)$ & For each input language $l$, this element represent the effect of its constructions in the weaving process \\ \hline
+  $L_{MOD}(l)$ & Set of modular unities of each input language $l$\\ \hline
+  \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+As a consequence, each variability technique is modeled by filling in the six
+parameters of our \emph{6-tuple} representation, by providing a reference
+implementation for each weaver, and by stating how elements of the weaver 
+implementation correspond to elements of the model. In this way, we can
+represent the semantics of a variability technique at the same time that we
+explain the contribution of each involved model. Altogether, we improve the
+separation between variability models and common software engineering 
+models. 
+
+The reference implementation (and the meta-model of the input and
+output models) are being described using the Haskell programming
+language. This leads to concise weaving processes
+descriptions and keeps our model close to MK work, where weaving processes are 
+specified in the Scheme programming language. 
+
+
+
+\subsection{Modeling Framework Instance}\label{sub:framework-instance}
+
+In this section we present an instance of our modeling framework. This
+instance describes the variation technique responsible for selecting optional
+use cases and scenarios. The selection process is based on a specific product
+configuration. 
+
+For instance, consider a product line for the eletronic commerce domain.
+Figure\ref{fig:eshop-fm-re} presents part of the feature model for this SPL.
+Additionally, consider the rules for product derivation descibed in
+Table~\ref{tab:ck-running-example}. Actually, such a table
+represents our configuration knowledge, being responsible for relating feature
+expressions to artifacts. For instance, the configuration knowlege enforces
+that if the features \emph{shopping cart} and \emph{bonus} were selected for a
+specific product, it would be configured with the optional scenario \emph{Buy
+Products with Cart}. 
+
+ \begin{figure}[h]
+ \begin{center}
+  \includegraphics[scale=0.40]{../images/eShop-fm-re.eps}
+   \caption{Subset of eShop feature model.}
+  \label{fig:eshop-fm-re}
+  \end{center}
+\end{figure}
+
+
+\begin{table}[th]
+\begin{center}
+ \caption{eShop configuration knowledge}
+\label{tab:ck-running-example}
+\begin{tabular}{ll}
+   \hline\noalign{\smallskip}
+  {\bf Expression} & {\bf Required Artifacts} \\
+   \noalign{\smallskip}
+   \hline
+   \noalign{\smallskip}
+    eShop & Proceed to Purchase \\
+               & Search for Products \\
+               & \ldots \\ 
+    {\bf not} (Cart {\bf and} Bonus)\hspace{2pt} & Buy a Product \\ 
+    Cart {\bf and} Bonus & Buy Products with Cart \\ 
+    Update Preferences & Register user Preferences	 \\  
+    \ldots & \ldots \\ 
+  \hline
+\end{tabular}
+\end{center}
+\end{table}
+% -------------------------------------------------------------------------
+\section{Evaluation}\label{sec:evaluation}
 
 %-------------------------------------------------------------------------
 \section{Related Work}\label{sec:related}
+
+\section{Concluding Remarks}\label{sec:concludings}
 
 %------------------------------------------------------------------------- 
 
