@@ -17,6 +17,8 @@
 
 % -------------------------------------------------------------------------
 \begin{document}
+\lstset{language=Haskell, numbers=left,
+numberstyle=\tiny,numbersep=5pt,basicstyle=\scriptsize,aboveskip=20pt}
 
 \title{Towards a Crosscutting Approach for Variability Management}
 
@@ -124,7 +126,7 @@ thesis with existing works (Section~\ref{sec:related}) and present final conclud
 in Section~\ref{sec:concludings}.
 
 %-------------------------------------------------------------------------
-\section{Variability Management as Crosscutting}\label{sec:vmcc}
+\section{Variability management as crosscutting}\label{sec:vmcc}
 
 As we said in the previous section, we are proposing an approach for
 variability management that aims to separate variability models
@@ -139,7 +141,7 @@ proposed a modeling framework (Section~\ref{sub:framework}), that slightly
 generalizes the Masuhara and Kiczales (MK) framework~\cite{Masuhara:2003aa}, and instantiate it for the 
 product line domain. The MK framework aims to explain
 how different \emph{aspect-oriented} technologies support crosscutting
-modularity. In their proposed framework, each technology is modeled as a
+modularity. In their proposed approach, each technology is modeled as a
 three-part description: the related weaving processes take two programs as input, 
 which crosscut each other with respect to the resulting program or
 computation~\cite{Masuhara:2003aa}.
@@ -164,18 +166,19 @@ use cases and scenarios}, \emph{quantified changed scenarios}, and
 
 In what follows, we present our modeling framework, proposed to explain
 variability management as a crosscutting concern. Then, we instantiate such a
-framework (Section~\ref{framework-instance}) for representing one scenario variability
-technique --- optional use cases and scenarios. More details about our approach can be found
+framework (Section~\ref{sub:framework-instance}) for representing one scenario
+variability technique --- optional use cases and scenarios. More details about our approach can be found
 elsewhere~\cite{}.
 
-\subsection{Modeling Framework}\label{sub:framework}
+\subsection{Modeling framework}\label{sub:framework}
 
-As explained early, our proposed modeling framework, used for representing 
+As explained before, our modeling framework, proposed for representing 
 variability management weaving processes, is based on the Masuhara and Kiczales
-work~\cite{Masuhara:2003aa}. Therefore, we describe each variability technique
-as a weaver, represented as an \emph{6-tuple} (Eq.~\ref{eq:tuple} and
-Table~\ref{tab:tup-01}), highlighting the contribution of each input model
-(Figure~\ref{fig:weave-process}) in the composition process.
+work~\cite{Masuhara:2003aa}. Thereby, we describe each variability technique
+as a weaver. In our work, we represent these weavers as an
+\emph{6-tuple} (see Eq.~\ref{eq:tuple} and Table~\ref{tab:tup-01}), in
+such a way that we can describe the contribution of each input model used 
+in the composition process (Figure~\ref{fig:weave-process}).
 
 \begin{equation}
 Weaver = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\}, 
@@ -200,41 +203,46 @@ Weaver = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\},
 \end{center}
 \end{table}
 
-As a consequence, each variability technique is modeled by filling in the six
-parameters of our \emph{6-tuple} representation, by providing a reference
-implementation for each weaver, and by stating how elements of the weaver 
-implementation correspond to elements of the model. In this way, we can
-represent the semantics of a variability technique at the same time that we
-explain the contribution of each involved model. Altogether, we improve the
-separation between variability models and common software engineering 
-models. 
+As a consequence, we model each variation technique by filling in
+the six parameters of our \emph{6-tuple} representation. In order to do
+that, we first provide a reference implementation for the corresponding
+weaver. After that, we state how elements of the reference implementation
+correspond to elements of the modeling framework. In this way, we can represent the semantics
+of a variability technique at the same time that we explain the contribution of each involved model. 
+Altogether, by applying our approach, it is possible to design variation
+techniques that present a better separation between variability models and
+common software engineering artifacts.
 
-The reference implementation (and the meta-model of the input and
-output models) are being described using the Haskell programming
-language. This leads to concise weaving processes
-descriptions and keeps our model close to MK work, where weaving processes are 
-specified in the Scheme programming language. 
+In our case studies, we are representing the reference implementations (and the
+meta-model of the input and output models) using the Haskell programming language. 
+This leads to concise weaving processes descriptions and keeps our model close
+to MK work, where weaving processes are specified in the Scheme programming language. 
 
-
-
-\subsection{Modeling Framework Instance}\label{sub:framework-instance}
+%-------------------------------------------------------------------------------
+\subsection{Modeling framework instance}\label{sub:framework-instance}
 
 In this section we present an instance of our modeling framework. This
-instance describes the variation technique responsible for selecting optional
-use cases and scenarios. The selection process is based on a specific product
-configuration. 
+instance describes the variation technique responsible for selecting, based on a specific product
+configuration, which scenarios will be assembled in a product.
+Notice that we do not present the semantics of other scenario
+variability techniques in this paper. More examples can be found
+elsewhere~\cite{}.
 
-For instance, consider a product line for the eletronic commerce domain.
-Figure\ref{fig:eshop-fm-re} presents part of the feature model for this SPL.
-Additionally, consider the rules for product derivation descibed in
+At first, consider a SPL (\emph{eShop product line}) for the eletronic
+commerce domain. Figure~\ref{fig:eshop-fm-re} presents part of the feature
+model for this SPL. Additionally, consider the rules for product derivation descibed in
 Table~\ref{tab:ck-running-example}. Actually, such a table
 represents our configuration knowledge, being responsible for relating feature
-expressions to artifacts. For instance, the configuration knowlege enforces
-that if the features \emph{shopping cart} and \emph{bonus} were selected for a
-specific product, it would be configured with the optional scenario \emph{Buy
-Products with Cart}. 
+expressions to artifacts. In this example, the configuration knowlege
+enforces that any product that includes \emph{Shopping Cart} and
+\emph{Bonus} features will be configured with the optional scenario \emph{Buy
+Products with Cart}. In a simliar way, any product that includes \emph{Update
+User Preferences} feature will be assembled with the optional scenario
+\emph{Register User Preference}. In our approach, scenarios are obliviousness
+about being mandatory or optional. The configuration knowledge is
+responsible for enforcing such design decisions.
 
- \begin{figure}[h]
+\begin{figure}[h]
  \begin{center}
   \includegraphics[scale=0.40]{../images/eShop-fm-re.eps}
    \caption{Subset of eShop feature model.}
@@ -242,14 +250,19 @@ Products with Cart}.
   \end{center}
 \end{figure}
 
+Notice that \emph{Proceed to Purchase} and \emph{Search for Products} scenarios
+are mandatory (Table~\ref{tab:ck-running-example}), since they are related to a feature
+expression that allways hold true (the root feature). Other scenarios will
+be present only if the related expression is evaluated as \emph{true} for
+the specific product being generated.
 
-\begin{table}[th]
+\begin{table}[tbh]
 \begin{center}
  \caption{eShop configuration knowledge}
 \label{tab:ck-running-example}
 \begin{tabular}{ll}
    \hline\noalign{\smallskip}
-  {\bf Expression} & {\bf Required Artifacts} \\
+  {\bf Expression} & {\bf Required Scenarios} \\
    \noalign{\smallskip}
    \hline
    \noalign{\smallskip}
@@ -258,19 +271,111 @@ Products with Cart}.
                & \ldots \\ 
     {\bf not} (Cart {\bf and} Bonus)\hspace{2pt} & Buy a Product \\ 
     Cart {\bf and} Bonus & Buy Products with Cart \\ 
-    Update Preferences & Register user Preferences	 \\  
+    Update Preferences & Register User Preferences	 \\  
     \ldots & \ldots \\ 
   \hline
 \end{tabular}
 \end{center}
 \end{table}
+
+Listing~\ref{lst:configure} presents the product derivation function
+(\emph{pdWeaver}), which corresponds to the reference implementation for
+\emph{optional use cases and scenarios} technique. This function takes as input a
+\emph{SPL use case model} (UCM), a \emph{feature model} (FM), a \emph{product
+configuration} (PC), and a \emph{configuration knowledge} (CK).
+
+\begin{lstlisting}[belowskip=20pt,frame=tb,caption={Product derivation weaver function},label=lst:configure]
+pdWeaver :: UCM -> FM -> PC -> CK -> ScenarioList
+pdWeaver ucm fm pc ck = 
+ if not (validInstance fm pc) 
+  then error InvalidProduct
+  else retrieveScenarios ucm (configure pc ck)
+
+configure :: PC -> CK -> ListOfScenarioId
+configure pc (CK []) = []
+configure pc (CK (x:xs)) =
+ if (eval pc (expression x))
+  then (artifacts x) ++ (configure pc (CK xs))
+  else configure pc (CK xs)
+\end{lstlisting} 
+
+Initially, this function verifies if the product configuration is a well formed
+instance of the feature model (Line 3 in Listing~\ref{lst:configure}) --- if it is not
+the case,  an \emph{InvalidProduct} error is thrown. Then, the IDs of selected
+scenarios are computed by the \emph{configure} function. This is done by
+evaluating which feature expressions, defined in the list elements (x:xs) of
+the configuration knowledge, are valid for the specific product instance
+(\emph{eval} function). Finally, given the resulting list of scenario IDs, the function
+\emph{retrieveScenarios} returns the product specific scenarios. 
+
+It is important to notice that this variation technique presents two levels of
+crosscutting. First, the feature model, the product configuration, and
+the configuration knowledge crosscut each other with respect to the
+list of valid scenario IDs. Then, the resulting list of scenario IDs crosscuts
+with the use case model for selecting the product specific scenarios.   
+
+The model of the \emph{optional use cases and scenarios} technique, in terms of
+our modeling framework, is shown in Table~\ref{tab:pd-weaver}. The
+\emph{pdWeaver} function is used to argue that the model is realizable and
+appropriate. We achieve this by matching the model elements to corresponding parameters 
+and auxiliary functions in the reference implementation. Therefore, the input languages UCM,
+FM, CK, and PC are represented as different parameters of the \emph{pdWeaver}
+function. An instance of the UCM corresponds to the specification of all SPL
+scenarios. A FM instance is only responsible for declaring the SPL features and
+the relationships between them. As a consequence, there is no coupling between
+FMs and UCMs. Instead, relationships between features and artifacts are
+documented in the configuration knowledge. Finally, the PC specifies which
+features were selected for a specific product. 
+
+The UCM has a greater importance over the other input languages ($UCM_{EFF}$),
+since it declares the product specific scenarios (the output of this weaver
+process generated by the \emph{pdWeaver} function). These scenarios ($UCM_{ID}$) are used
+in the \emph{retrieveScenarios} function in order to identify which artifacts
+will be assembled in the final product.
+In order to identify which artifacts are required for a specific product, the
+\emph{configure} function ($CK_{EFF}$) checks the feature expression ($CK_{ID}$)
+against the product specific features ($PC_{ID}$). The effect of FM in this
+weaver ($FM_{EFF}$) is to check if the PC is well formed. Such evaluation is
+implemented by the \emph{validInstance} function and considers the PC feature
+selection ($PC_{EFF}$). 
+
+\begin{table}[htb]
+\begin{center}
+ \caption{Model of Product Derivation} \label{tab:pd-weaver}
+\begin{tabular}{p{0.6in}p{2.4in}}
+   \hline\noalign{\smallskip}
+  {\bf Element} & {\bf Description} \\
+   \noalign{\smallskip}
+   \hline
+   \noalign{\smallskip}
+   $o$               & Product specific scenarios (list of scenarios) \\ 
+   $o_{jp}$        & Scenario declarations \\ 
+   $L$               & \{UCM, FM, CK, PC\} \\ 
+   $UCM_{ID}$ & SPL scenarios \\ 
+   $FM_{ID}$    & SPL features \\ 
+   $CK_{ID}$    & Feature expressions and scenario IDs\\  
+   $PC_{ID}$    & Product specific feature selection \\ 
+   $UCM_{EFF}$ & Provides declaration of scenarios \\  
+   $FM_{EFF}$    & Checks if a SPL instance is well formed \\ 
+   $CK_{EFF}$    & Identifies selected artifacts  \\ 
+   $PC_{EFF}$    &Triggers scenario selection \\
+   $UCM_{MOD}$ & Scenario \\  
+   $FM_{MOD}$   & Feature \\ 
+   $CK_{MOD}$    & Each pair $(expression, artifact\ list)$  \\ 
+   $PC_{MOD}$    & Feature \\
+  \hline
+  \end{tabular}
+\end{center}
+\end{table}
+
+
 % -------------------------------------------------------------------------
 \section{Evaluation}\label{sec:evaluation}
 
 %-------------------------------------------------------------------------
-\section{Related Work}\label{sec:related}
+\section{Related work}\label{sec:related}
 
-\section{Concluding Remarks}\label{sec:concludings}
+\section{Concluding remarks}\label{sec:concludings}
 
 %------------------------------------------------------------------------- 
 
