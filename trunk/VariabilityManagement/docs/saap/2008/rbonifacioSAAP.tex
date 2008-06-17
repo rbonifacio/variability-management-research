@@ -2,7 +2,7 @@
 
 \usepackage{graphicx, natbib, amssymb, listings, color, colortbl, subfigure}
 \usepackage[all]{xy}
-
+\usepackage{draftcopy}
 \begin{document}
 
 \title{Representing Variability Management as a Crosscutting Concern}
@@ -401,7 +401,7 @@ the Scheme programming language.
   \end{center}
 \end{figure}
 
-\subsection{Running Example}
+\section{Running Example}
 \label{sub:running}
 
 In order to explain how the input languages crosscut each other and produce a
@@ -412,7 +412,7 @@ are described. Then, we present the role of each input language in respect of th
 weaving process.
 
 
-\subsubsection{SPL use case model}\label{subsub:ucm}
+\subsection{SPL use case model}\label{subsub:ucm}
 
 This artifact defines a set of scenarios that might be used to describe possible
 products of the SPL. Although not being directly concerned with variability
@@ -595,7 +595,7 @@ this section, each artifact (feature model, product configuration, configuration
 knowledge, and use case model) provides a specific contribution to the definition
 of a SPL member.
 
-\subsubsection{Feature model}\label{subsub:fm}
+\subsection{Feature model}\label{subsub:fm}
 
 We have introduced part of this artifact for the eShop product line in
 Section~\ref{chapter:example}. However, here we present only the features required 
@@ -616,7 +616,7 @@ have to be configured with at least one of its child. A short review about the
 feature model notation was presented in Section~\ref{chapter:example}. More details
 can be found elsewhere~\cite{gheyi-alloy-06,czarnecki-book}.
 
-\subsubsection{Product configuration}\label{subsub:pc}
+\subsection{Product configuration}\label{subsub:pc}
 
 This artifact is used for identifying which features were selected in order to compose a specific member of a product line. Each product configuration should conform to a feature model (the selected features should obey the feature model relationships and constraints). Two possible configurations are presented in Figure~\ref{fig:product-config-01-02}. We represent these configurations as a tree, highlighting which features were selected. Such a representation was created using the \emph{Feature Modeling Plugin}~\cite{czarnecki-eclipse-2004} 
 
@@ -640,7 +640,7 @@ This artifact is used for identifying which features were selected in order to c
 The first configuration (on the left side of the Figure~\ref{fig:product-config-01-02}) defines a product that has no support for shopping cart, bonus and preferences update. Additionally, it supports only the economical and fast ship methods. The second configuration selects all possible features. 
 In order to select the required assets (scenarios, classes and aspects, test cases) for a specific product configuration, it is necessary to relate features to them. This is the role of the configuration knowledge as an input artifact of our weaving process.  
 
-\subsubsection{Configuration knowledge}\label{subsub:ck}
+\subsection{Configuration knowledge}\label{subsub:ck}
 
 This artifact is used for relating feature expressions to assets that must be assembled in a given product. Such artifacts allow, during product engineering, the automatic selection of assets that are required for a specific product configuration. 
 
@@ -675,7 +675,7 @@ to the root feature of eShop product line;
 
 In what follows, we describe a high level view of the weaving process that combines the input languages in order to manage scenario variability.  Then, in Section~\ref{sub:modeling-framework} we present its semantics in terms of our modeling framework. 
 
-\subsection{Weaving process}\label{sub:wp}
+\section{Weaving process}\label{sub:wp}
 
 The weaving process represented in Figure~\ref{fig:weave-process} is responsible for performing the following activities: 
 
@@ -818,7 +818,7 @@ weaver, and by stating how elements of the weaver implementation correspond to e
 % ---
 % Product derivation weaver
 % ---
-\subsection{Product derivation weaver}\label{sub:pd-weaver}
+\section{Product derivation weaver}\label{sub:pd-weaver}
 
 This weaver is responsible for selecting artifacts based on specific product configurations. 
 As a consequence, it implements the first two activities of our variability management approach: 
@@ -895,7 +895,7 @@ In order to identify which artifacts are required for a specific product, the \e
 % Scenario composition weaver
 % ---
 
-\subsection{Scenario composition weaver}\label{sub:sc-weaver}
+\section{Scenario composition weaver}\label{sub:sc-weaver}
 
 This weaver is responsible for the third activity of our variability management 
 approach. It aims at composing variant scenarios of a use case and is applied whenever a use case scenario supports different execution paths.
@@ -1014,7 +1014,7 @@ plays a fundamental role in this process, retrieving the steps in the use case m
 % Bind parameters weaver
 % ---
 
-\subsection{Bind parameters weaver}\label{sub:bind-weaver}
+\section{Bind parameters weaver}\label{sub:bind-weaver}
 
 This weaver is responsible for the third activity of our variability
 management process. Parameters are used in scenario specifications 
@@ -1194,7 +1194,7 @@ of a parameter is defined ($CK_{EFF}$) in the product specific features; and fro
 %=============================
 % Evaluation
 % ============================
-\section{Evaluation}
+\chapter{Evaluation}
 \label{sec:evaluation}
 
 We have applied our approach to three SPLs: the eShop Product Line, introduced in Section~\ref{chapter:example}; the  
@@ -1212,7 +1212,7 @@ variability management as crosscutting in our previous
 work~\cite{rbonifacio-ea-2008}; we just report on the benefits related to the
 \emph{separation of concerns} (SoC) claimed in this paper.
 
-\subsection{DSM Analysis}
+\section{DSM Analysis}
 For now, let us reproduce the DSMs to understand the benefits of SoC in
 variability management. DSMs is an interesting and simple tool for visualizing
 dependencies between design decisions~\cite{clark-design-rules-book}. Such
@@ -1263,7 +1263,7 @@ Our approach reduces the dependencies between variability management and scenari
 \label{dsm:cc}
 \end{figure}   
 
-\subsection{Quantitative Analysis}
+\section{Quantitative Analysis}
 
 For confirming the observations derived from the DSM analysis, we applied the metric suite for 
 the \emph{MMS} and \emph{Pedagogical} product lines. We compared our specification of \emph{MMS} product line to the specifications we wrote for both PLUC and PLUSS techniques~\cite{spg-url}.  
@@ -1298,7 +1298,7 @@ whose main purpose is to describe the behavior of a feature.
 A complete description of these metrics can be found elsewhere~\cite{rbonifacio-ea-2008}. Next we 
 present the quantitative analysis of the \emph{MMS} and \emph{Pedagogical} product lines using these metrics.
 
-\subsubsection{MMS Product Line}
+\subsection{MMS Product Line}
 
 As explained earlier, the MMS product line, based on a real case study from Motorola phones, enables the customization of 
 multimedia message applications. The primary goal of each one of these applications is to create and 
@@ -1344,7 +1344,7 @@ The lack of crosscutting mechanisms for composing scenarios of different use cas
 %  \end{center}
 %\end{figure}
 
-\subsubsection{Pedagogical Product Line}
+\subsection{Pedagogical Product Line}
 
 We compared our approach against two specifications of the Pedagogical Product Line (PPL): the original one~\cite{ppl-url}, proposed by the Software Engineering Institute, and a specification that was sent to us by the authors of the PLUSS technique. 
 
@@ -1400,7 +1400,7 @@ As a consequence, we achieve a reduction (almost 20\%) in the number of specific
 
 For concluding our Pedagogical product line analysis, we can realize, based on Table~\ref{tab:ppl-metrics}, that our approach achieved real benefits only in the complexity metrics. This result comes from the non crosscutting nature of PPL features. Comparing to the MMS product line results, we argue that the benefits of applying our approach should be greater in contexts where features can not be well modularized using existing techniques. 
    
-\section{Related Work}
+\chapter{Related Work}
 \label{sec:related}
 
 %Our work is linked to the body of research related to SPL
@@ -1480,7 +1480,7 @@ still present. These dependences are avoided in our approach.
 %represented using references to \emph{step ids} or \emph{step annotations}, 
 %which also reduce the problem of \emph{fragile point-cut}.
 
-\section{Conclusions}\label{sec:conclusions}
+\chapter{Conclusions}\label{sec:conclusions}
 
 In this paper we formally described variability management as a 
 crosscutting mechanism, considering the contribution 
