@@ -30,13 +30,17 @@ Informatics Center \\ Federal University of Pernambuco \\ Recife, Brazil \\
 \thispagestyle{empty}
 
 \begin{abstract}
-   The ABSTRACT is to be in fully-justified italicized text, at the top 
-   of the left-hand column, below the author and affiliation 
-   information. Use the word ``Abstract'' as the title, in 12-point 
-   Times, boldface type, centered relative to the column, initially 
-   capitalized. The abstract is to be in 10-point, single-spaced type. 
-   The abstract may be up to 3 inches (7.62 cm) long. Leave two blank 
-   lines after the Abstract, then begin the main text. 
+Variability management is a common challenge for Software Product
+Line (SPL) adoption, since developers need suitable
+mechanisms for describing or implementing variability
+that might occur at different SPL views (requirements, design,
+implementation, and test). In this research, we are proposing a
+novel approach for variability management. The main goal is
+to improve the separation of concerns between languages used to manage
+variabilities and languages used to specify software engineering assets. 
+Initial results gave evidence that, by applying our prposed 
+approach, both representations can be understood and evolved in
+a separated way.
 \end{abstract}
 
 
@@ -46,33 +50,36 @@ Informatics Center \\ Federal University of Pernambuco \\ Recife, Brazil \\
 
 In order to reduce time-to-marketing and improve quality of software products,
 several approaches and techniques for economy of scope, mass customization, and
-systematic reuse have been recently proposed. Examples of such approaches include \emph{Software Product
-Lines}~\cite{Pohl:2005aa, Clements:2001aa}, \emph{Generative Programming
+systematic reuse have been proposed. Examples of such approaches include \emph{Software Product
+Lines} (SPLs)~\cite{Pohl:2005aa, Clements:2001aa}, \emph{Generative Programming
 Techniques}~\cite{Czarnecki:2000aa}, and \emph{Software
-Factories}~\cite{Greenfield:2003aa}. Actually, there is a lot in common among
+Factories}~\cite{Greenfield:2003aa}. Actually, there are commonalities among
 such approaches. For instance, one common characteristic is the relevance of
 domain analysis, which aims at defining a scope (often in the business sense)
 in which reusable assets can be used for generating specific products.
 
 Additionally, it is a common practice to use \emph{feature modeling} for
 representing features that are common to all products within a scope and which
-features are optional, being useful for diferentiating specific products in a
+features are optional, being useful for differentiating specific products in a
 family. Therefore, aiming to generate specific products, it would be necessary
-to: (a) introduce suitable variation points in common assets, (b) develop
-variant assets that extend these variation points, and (c) relate features to both common and
-variant assets.In this work, we consider \emph{variability management} as the discipline that
-guides these activities. Actually, variability management is an interesting kind
-of crosscutting concern, since certain features require variation points to be
-spread in different places of requirements, design, code, and test artifacts.
-This crosscutting nature of variability management results in interesting
-challenges regarded to SPL traceability, evolvability, and product derivation. As
-a consequence, several authors have proposed the use of \emph{aspect-oriented}
-techniques to better modularize the composition of common and variant assets of a
-product line~\cite{}. In this thesis we go beyond this composition issue. We
-mainly consider a more encompassing notion of variability management, presenting
-its semantics as a crosscutting concern and describing the contribution of
-relevant artifacts (such as feature models and configuration knowledge) in
-product generation.
+to: (a) introduce suitable variation points in common assets, (b) develop variant
+assets that extend these variation points, and (c) relate features to both common
+and variant assets.  In this work, we consider \emph{variability management} as
+the discipline that guides these activities. Actually, variability management is
+an interesting kind of crosscutting concern, since certain features require
+variation points to be spread in different places of requirements, design, code,
+and test artifacts. This crosscutting nature of variability management results in
+interesting challenges regarded to SPL traceability, evolvability, and product
+derivation. 
+
+As a consequence, several authors have proposed the use of
+\emph{aspect-oriented} techniques to better modularize the composition of common
+and variant assets of a product
+line~\cite{Figueiredo:2008aa,Alves:2006aa,Apel:2006aa}. In this thesis we go
+beyond this composition issue. We mainly consider a more encompassing notion of
+variability management, presenting its semantics as a crosscutting concern and
+describing the contribution of relevant artifacts (such as feature models and
+configuration knowledge) in product generation.
 
 Our hypotheses is that a clear separation between variability management and
 common software engineering artifacts improves SPL evolvability, traceability,
@@ -97,17 +104,12 @@ In summary, the contributions of this thesis are threefold
 \begin{itemize}
  \item Characterize the broader notation of variability management as
 a crosscutting concern and, in this way, propose an approach for
-representing it as an independent view of the SPL. Although
-this work focuses on requirements artifacts, more specifically
-use case scenarios, we argue that such separation is also required
-in other SPL models.
- \item A framework for modeling the composition processes of scenario
+representing it as an independent view of the SPL. 
+ \item A framework for modeling the composition processes of 
 variability mechanisms. This framework gives a basis for
 describing variability mechanisms (such as scenario composition
 and parameterization), allowing a better understanding of each mechanism and
 highlighting the contribution of each model used in the composition processes.
-In this work, such a framework is used for modeling the semantics of scenario variability mechanisms, but it
-might be customized for other SPL views.
  \item A deeper evaluation of existing techniques for representing scenario
  variability. Such an evaluation will take into consideration not only the
  support for different variability techniques (parameterization, optional
@@ -119,8 +121,8 @@ of our approach, which we are going to solve in this thesis. After that,
 Section~\ref{sec:evaluation} presents the results of three empirical studies,
 which we have compared our proposed approach with existing
 works. These comparisons were based on \emph{Design Structure Matrices} and on a
-suite of metrics, addapted from aspect-oriented communit, for quantifying modularity.
-We also present in Section~\ref{sec:evaluation} a discussion about several
+suite of metrics, adapted from aspect-oriented community, for quantifying
+modularity. We also present in Section~\ref{sec:evaluation} a discussion about several
 improvements on our evaluation processes. Then, we relate our
 thesis with existing works (Section~\ref{sec:related}) and present final concludings 
 in Section~\ref{sec:concludings}.
@@ -128,13 +130,13 @@ in Section~\ref{sec:concludings}.
 %-------------------------------------------------------------------------
 \section{Variability management as crosscutting}\label{sec:vmcc}
 
-As we said in the previous section, we are proposing an approach for
-variability management that aims to separate variability models
-from common software engineering models. However, once these concerns 
-had been saparated, it would be necessary to weave those models in order to 
-generate specific products. Moreover, in this work we consider variability
-management as a crosscutting concern, since certain features require variation
-points to be spread in different places of SPL artifacts. 
+% As we said in the previous section, we are proposing an approach for
+% variability management that aims to separate variability models
+% from common software engineering models. However, once these concerns 
+% had been separated, it would be necessary to weave those models in order to 
+% generate specific products. Moreover, in this work we consider variability
+% management as a crosscutting concern, since certain features require variation
+% points to be spread in different places of SPL artifacts. 
 
 In order to represent variability management as a crosscutting concern, we
 proposed a modeling framework (Section~\ref{sub:framework}), that slightly
@@ -168,13 +170,15 @@ In what follows, we present our modeling framework, proposed to explain
 variability management as a crosscutting concern. Then, we instantiate such a
 framework (Section~\ref{sub:framework-instance}) for representing one scenario
 variability technique --- optional use cases and scenarios. More details about our approach can be found
-elsewhere~\cite{}.
+elsewhere~\cite{Bonifacio:2008ab}.
 
 \subsection{Modeling framework}\label{sub:framework}
 
 As explained before, our modeling framework, proposed for representing 
 variability management weaving processes, is based on the Masuhara and Kiczales
-work~\cite{Masuhara:2003aa}. Thereby, we describe each variability technique
+work~\cite{Masuhara:2003aa}. 
+
+Thereby, we describe each variability technique
 as a weaver. In our work, we represent these weavers as an
 \emph{6-tuple} (see Eq.~\ref{eq:tuple} and Table~\ref{tab:tup-01}), in
 such a way that we can describe the contribution of each input model used 
@@ -226,17 +230,19 @@ instance describes the variation technique responsible for selecting, based on a
 configuration, which scenarios will be assembled in a product.
 Notice that we do not present the semantics of other scenario
 variability techniques in this paper. More examples can be found
-elsewhere~\cite{}.
+elsewhere~\cite{Bonifacio:2008ab}.
 
-At first, consider a SPL (\emph{eShop product line}) for the eletronic
-commerce domain, whose part of feature model is depcted in
-Figure~\ref{fig:eshop-fm-re}. Additionally, consider the rules for product derivation descibed in
-Table~\ref{tab:ck-running-example}. Actually, such a table
+At first, consider a SPL (\emph{eShop product line}) for the electronic
+commerce domain, whose part of feature model is depicted in
+Figure~\ref{fig:eshop-fm-re}. Additionally, consider the rules for product
+derivation described in Table~\ref{tab:ck-running-example}. Actually, such a table
 represents our configuration knowledge, being responsible for relating feature
-expressions to artifacts. In this example, the configuration knowlege
+expressions to artifacts. 
+
+In this example, the configuration knowledge
 enforces that any product that includes \emph{Shopping Cart} and
 \emph{Bonus} features will be configured with the optional scenario \emph{Buy
-Products with Cart}. In a simliar way, any product that includes \emph{Update
+Products with Cart}. In a similar way, any product that includes \emph{Update
 User Preferences} feature will be assembled with the optional scenario
 \emph{Register User Preference}. In our approach, scenarios are obliviousness
 about being mandatory or optional. The configuration knowledge is
@@ -250,11 +256,11 @@ responsible for enforcing such design decisions.
   \end{center}
 \end{figure}
 
-Notice that \emph{Proceed to Purchase} and \emph{Search for Products} scenarios
-are mandatory (Table~\ref{tab:ck-running-example}), since they are related to a feature
-expression that allways hold \emph{true} (the root feature). Other scenarios
-will be present only if the related expression is evaluated as \emph{true} for
-the specific product being generated.
+% Notice that \emph{Proceed to Purchase} and \emph{Search for Products} scenarios
+% are mandatory (Table~\ref{tab:ck-running-example}), since they are related to a feature
+% expression that always hold \emph{true} (the root feature). Other scenarios
+% will be present only if the related expression is evaluated as \emph{true} for
+% the specific product being generated.
 
 \begin{table}[bth]
 \begin{center}
@@ -368,7 +374,7 @@ selection ($PC_{EFF}$).
   \end{tabular}
 \end{center}
 \end{table}
-As mentioned before, it is beyound the scope of this paper presenting other
+As mentioned before, it is beyond the scope of this paper presenting other
 instances of our modeling framework, although we have already instantiated it
 for two other scenario variability techniques: \emph{quantified changed
 scenarios} and \emph{parameterized scenarios}. Next, we point some activities
@@ -380,34 +386,37 @@ Previous results of our work reveal to us research activities that can
 be conduced in the scope of our modeling framework. Below we summarize part of
 these activities.
 
-\begin{description}
-  \item [Improve type checking] The current version of our variability
+\noindent
+
+\begin{itemize}
+\item {\bf Improve type checking.} The current version of our variability
   framework is structured in a single phase, responsible for both type checking and
   for weaving the input models. Recently, we have realized the importance of
   checking properties of the input models before the composition process.
   These properties correspond to \emph{pre-conditions} that should hold, in
   order to verify the correctness of a composition. Therefore, this activity
-  aims to identify other properties that should be checked and reestructure our
-  variability framwork to modularize type checking and composition processes in
+  aims to identify other properties that should be checked and restructure our
+  variability framework to modularize type checking and composition processes in
   different phases.
-  \item [Improve the configuration knowledge] The variability techniques that
-  we have represented~\cite{} are well supported by a model of
+\item {\bf Improve the configuration knowledge.} The variability techniques that
+  we have represented~\cite{Bonifacio:2008ab} are well supported by a model of
   configuration knowledge that relates feature
   expressions to artifacts. If a feature expression is valid for a
   specific instance, the related artifacts will be assembled in the final
   product. However, we have identified other kinds of scenario variability that
-  can be easly represented using a more expressive view of the configuration
+  can be easily represented using a more expressive view of the configuration
   knowledge. In this view, feature expressions are related to \emph{model
   transformations}, instead of being related to software artifacts. If a
   feature expression is valid for a specific instance, the \emph{model
   transformation} will be applied. However, we have not evaluated this design
   yet.
-  \item [Apply our model to other contexts] Until now, we have applied our
+  
+\item {\bf Apply our model to other contexts.} Until now, we have applied our
   variability framework for the context of use case scenarios. As a future
   work, we aim at representing, using our approach, techniques for SPL test
   case variability. By doing that, we will be able to identify, more
-  precisaly, the real benefits regarded to SPL traceability.
-\end{description}
+  precisely, the real benefits regarded to SPL traceability.
+\end{itemize}
  
 The next section presents some results that we have achieved based on
 evaluating our approach. Additionally, it also presents future activities for
@@ -421,9 +430,9 @@ achieved such a result by comparing our approach with
 PLUC~\cite{Bertolino:2003aa} and PLUSS~\cite{Eriksson:2005aa}, two representative notations for SPL scenario
 variability. In order to increase our confidence, different techniques for
 evaluating modularity had been used: \emph{Design Structure Matrices} 
-(Section~\ref{sub:dsm})), quantitative analysis associated to a proposed
-metric suite (Section~\ref{sub:metrics}), and observations of theeffort needed to introduce SPL increments using each approach (Section~\ref{sub:increments}).
-In this section, we are going to present just the evaluation techniques.
+(Section~\ref{sub:dsm}), quantitative analysis associated to a proposed
+metric suite (Section~\ref{sub:metrics}), and observations of theeffort needed to introduce SPL increments using each approach (not detailed inthis paper).
+In this section, we present just the evaluation techniques.
 Detailed results of our analysis can be found
 elsewhere~\cite{Bonifacio:2008aa,Bonifacio:2008ab}. Additionally,
 Section~\ref{sub:eval-improvments} presents how we are planning to evolve our evaluation
@@ -461,10 +470,7 @@ cyclical dependencies between use cases and variability management artifacts.
 
 Our approach reduces the dependencies between variability management and scenario
 specifications (Figure~\ref{dsm:cc}). For instance, changes in feature model or
-new definitions of products do not require changes in the use case model. This
-clear separation is also desirable in source code, as claimed
-in~\cite{Alves:2006aa, Apel:2006aa}, and might be required in other artifacts
-too. 
+new definitions of products do not require changes in the use case model. 
 
 \begin{figure}[h]
 \centering
@@ -482,7 +488,7 @@ too.
 \label{dsm:cc}
 \end{figure}   
 
-We have applyed DSMs to visualize design dependencies in two levels: the first
+We have applied DSMs to visualize design dependencies in two levels: the first
 one presents a high level view of dependencies between variability management
 (feature model, SPL instances and configuration model) and use cases (as shown in
 Figure~\ref{dsm:pluc} and Figure~\ref{dsm:cc}); the second one presents how
@@ -494,7 +500,7 @@ of the metrics present in the next section.
 
 We derived several metrics for quantifying feature modularity and use case model
 complexity (related to the size of specifications)~\cite{Bonifacio:2008aa}.
-Increasing levels of feature modularity implies better evolv- ability, since SPL
+Increasing levels of feature modularity implies better evolvability, since SPL
 changes or increments can be performed in a isolated way. Also, if a modular
 feature specification could crosscut other specifications, it would be expected
 more reusable assets. The metric suite described in this section was adapted
@@ -522,12 +528,9 @@ scenario. Additionally, we also relate modularity to complexity by applying
 steps of specification whose main purpose is to describe the behavior of a
 feature. A complete description of these metrics can be found
 elsewhere~\cite{Bonifacio:2008aa}.
-
 Table~\ref{tab:metrics} summarizes the evaluation of these metrics applied to
 one of our case studies --- a real multimedia message (MMS) product
-line~\cite{Bonifacio:2008aa}. Next, we present the third kind of evalation,
-which tryies to quantify SPL evolvability by observing the impact of introducing
-common SPL changes.
+line~\cite{Bonifacio:2008aa}. 
 
 \begin{table}[htb]
 \centering
@@ -547,37 +550,44 @@ SS 					    & 75	& 64	& 56				\\	\hline
 \end{small}
 \end{table}
 
-\subsection{SPL evolution analysis}\label{sub:increments}
+%\subsection{SPL evolution analysis}\label{sub:increments}
 
-Besides applying DSM analysis and
-quantitative analysis, we also evaluated the impact needed to introduce a few
-increments in the MMS product line, whose original version was specified in the
-three evaluated approaches~\cite{Bonifacio:2008aa}. 
+% Besides applying DSM analysis and
+% quantitative analysis, we also evaluated the impact needed to introduce a few
+% increments in the MMS product line, whose original version was specified in the
+% three evaluated approaches~\cite{Bonifacio:2008aa}. 
+% The conclusion of this evaluation enforces that a clear separation of
+% variability management and scenario specifications, as supported by PLUSS and by
+% our approach, is necessary to improve SPL evolvability. However, 
 
-In this evaluation, we basicaly proposed three scenarios of changing that were
-suppose to occur in the MMS product line. The new version of MMS product line 
-introduced a new \emph{structured data operation}, allowing a subscriber to make
-a call for a number embedded in a message; introduced a new
-\emph{content type}, allowing a subscriber to attach emotion icons
-to messages; and defined new product instances. These scenarios of modification
-were signifficant because the first one required changes in the behavior,
-the second one required changes in scenario parameters, and the last one
-required changes in the variability models. 
+In order to enhance our confidence, more controlled studies should be performed
+in this thesis. In what follows, we present possible improvements in our evaluation
+process.
 
-The conclusion of this evaluation enforce that a clear separation of
-variability management and scenario specifications, as supported by PLUSS and by
-our approach, is necessary to improve SPL evolvability. However, in order to
-enhance our confidence, more controlled studies should be performed in this
-thesis. In what follows, we present possible improvements in our evaluation
-process. 
+% In this evaluation, we basically proposed three scenarios of changing that were
+% suppose to occur in the MMS product line. The new version of MMS product line 
+% introduced a new \emph{structured data operation}, allowing a subscriber to make
+% a call for a number embedded in a message; introduced a new
+% \emph{content type}, allowing a subscriber to attach emotion icons
+% to messages; and defined new product instances. These scenarios of modification
+% were significant because the first one required changes in the behavior,
+% the second one required changes in scenario parameters, and the last one
+% required changes in the variability models. 
+% 
+% The conclusion of this evaluation enforce that a clear separation of
+% variability management and scenario specifications, as supported by PLUSS and by
+% our approach, is necessary to improve SPL evolvability. However, in order to
+% enhance our confidence, more controlled studies should be performed in this
+% thesis. In what follows, we present possible improvements in our evaluation
+% process. 
 
 \subsection{Evaluation improvements}\label{sub:eval-improvments}
 
 Although we have performed some empirical studies using our approach, and
 compared it with existing ones, the level of control in these studies can be
 considered low. Therefore, performing a formal experiment is the primary
-improvement of our evaliation process. The goal of this experiment is twofold:
-confirm the benefits of a clear separation between variablity models and use
+improvement of our evaluation process. The goal of this experiment is twofold:
+confirm the benefits of a clear separation between variability models and use
 case scenarios; and validate (or enhance) our proposed metric suite. Due to
 space constraints, we just present an overview of our initial experiment design.
 
@@ -585,12 +595,12 @@ The experiment will be conduced as a class activity, involving undergraduate
 Computer Science students. They will be responsible for specifying and evolving
 scenarios of different SPLs. The technique used for specifying scenarios will be
 used as the treatment variable of our experiment~\cite{Pfleeger:1994aa}.
-Dependend on the number of techniques that will be evaluated, two or three
+Depended on the number of techniques that will be evaluated, two or three
 systems are going to be specified. Therefore, if just PLUSS and our approach are
 going to be compared, just two SPLs will be used in our experiment. On the other
 hand,if PLUC, PLUSS, and our approach are going to be compared, three SPLs
 will be used.
-Students and SPLs are the two variables (or factors) that must be controled. In
+Students and SPLs are the two variables (or factors) that must be controlled. In
 order to minimize the \emph{experimental error} motivated by such
 variables~\cite{Pfleeger:1994aa}, we have to randomize the activities in such a
 way that each student will be assigned to each evaluated technique and SPL. An
@@ -601,31 +611,59 @@ specify the SPLs and to perform a sequence of changes.
 % -------------------------------------------------------------------------
 \section{Related work}\label{sec:related}
 
+{\bf Aspect-oriented semantics.} Masuhara and Kiczales propose a framework for
+representing the semantics of different aspect-oriented
+mechanisms~\cite{Masuhara:2003aa}. A key characteristic of of this framework is
+that aspect-oriented techniques are described as a three-part description, where
+two input languages crosscut each other with respect to the result computation or
+program. In our approach, we present a slight customization of the Masuhara and
+Kiczales work, proposed to represent the semantics of variability management as
+a crosscutting mechanism. In this case, different product line models crosscut
+each other to derive product specific artifacts.
 
-{\bf Scenario Variability.} Several approaches have been proposed for
+{\bf Variability models.} Pohl et al. argue that variability management
+should not be integrated into existing models~\cite{Pohl:2005aa}. Their
+proposed Orthogonal Variability Model (OVM) describes traceability links between variation
+points and the conceptual models of a SPL. Our approach also decouple
+variability concern. However, we describe, in more details,
+its semantics as a crosscutting mechanism. Additionally, we make
+clear how to relate SPL features to software engineering assets by
+means of the configuration model. In our approach, such a model
+can also be used for reasoning about traceability.  
+
+{\bf Scenario variability.} Several approaches have been proposed for
 representing scenario variability~\cite{Jacobson:1997aa, Griss:1998aa,
-Eriksson:2005aa,Bertolino:2003aa}. However, in this work we only compare our
-crosscutting approach with PLUC and PLUSS techniques because they encompass a
-broad range of SoC between variability management and scenario specification.
-Moreover, they were propose specifically for representing variability in SPLs. It
-is important to notice that the primary goal of existing approaches is to provide
-variation points in use case scenarios. Hence, the main contribution of our
-crosscutting approach is that we introduce the perspective of creating a better
-separation between variability management and scenario specification.
+Eriksson:2005aa,Bertolino:2003aa}. However, in this work we are only comparing
+our approach with PLUC and PLUSS techniques, because they encompass a broad range
+of SoC between variability management and scenario specification. Moreover, they
+were propose specifically for representing variability in SPLs. It is important
+to notice that the primary goal of existing approaches is to provide variation
+points in use case scenarios. Hence, the main contribution of our crosscutting
+approach is that we introduce the new perspective of creating a better separation
+between variability management and scenario specification.
  
-{\bf Modularity Assestment.} Design Structure Matrices (DSMs) and crosscutting
-metrics have been applied for assessing modularity in \emph{aspect-oriented}}
-systems~\cite{Lopes:2005ab,Sullivan:2005aa, Garcia:2005aa, Greenwood:2007aa,
-Figueiredo:2008aa}. In this work, we also applied DSMs in the context of scenario variability management. Moreover, we
-customized a suite of metrics for quantifying feature diffusion and tangling over
-use cases. To our knowledge, our work is unique in applying both DSMs and
-crosscutting metrics for evaluating SoC in scenario variability.
-
+% {\bf Assessment of modularization.} Design Structure Matrices (DSMs) and
+% crosscutting metrics have been applied for assessing modularity in \emph{aspect-oriented}
+% systems~\cite{Lopes:2005ab,Sullivan:2005aa, Garcia:2005aa, Greenwood:2007aa,
+% Figueiredo:2008aa}. Differently, in this work, we applied DSMs in the context of
+% scenario variability management. Moreover, we customized a suite of metrics for
+% quantifying feature diffusion and tangling over use cases. To our knowledge, our
+% work is unique in applying both DSMs and crosscutting metrics for evaluating SoC
+% in scenario variability. Several ideas related to  the evolution of
+% aspect-oriented systems and software-product lines were presented
+% in~\cite{Greenwood:2007aa,Figueiredo:2008aa}. These ideas might be useful in
+% our ongoing evaluation.
 \section{Concluding remarks}\label{sec:concludings}
 
-% Apresentar uma visao geral
-% DISCUTIR SOBRE O SUPORTE FERRAMENTAL
-% Resumir as atividades futuras
+In this paper we presented an overview of our research, describing its
+objectives, achieved results, intended evaluation, and future work. In
+summary, this thesis aims to evaluate the benefits of reasoning
+about variability management as a crosscutting concern. In order to do that, we
+are proposing a modeling framework that describes how \emph{variability
+artifacts} (feature models, product configuration, and configuration knowledge)
+crosscut to \emph{common software engineering artifacts} with respect to
+product line instances.
+
 %------------------------------------------------------------------------- 
 
 \bibliographystyle{latex8}
