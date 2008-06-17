@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="My Feature Model" min="1" max="1" name="FeatureModel">
+  <feature id="smartHome" min="1" max="1" name="Eshop">
+    <feature id="registry" min="1" max="1" name="Registry">
+      <featureGroup min="1" max="1">
+        <feature id="completly" min="0" max="1" name="Completly"/>
+        <feature id="simple" min="0" max="1" name="Simple"/>
+      </featureGroup>
+    </feature>
+    <feature id="searchOptions" min="1" max="1" name="SearchOptions">
+      <featureGroup min="1" max="2">
+        <feature id="hints" min="0" max="1" name="Hints"/>
+        <feature id="similarResults" min="0" max="1" name="SimilarResults"/>
+      </featureGroup>
+    </feature>
+    <feature id="bonus" min="0" max="1" name="Bonus">
+      <featureGroup min="1" max="2">
+        <feature id="points" min="0" max="1" name="Points"/>
+        <feature id="deduction" min="0" max="1" name="Deduction"/>
+      </featureGroup>
+    </feature>
+    <feature id="userPreferences" min="0" max="1" name="UserPreferences"/>
+  </feature>
+</feature>
+
