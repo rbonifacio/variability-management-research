@@ -7,37 +7,37 @@
   
 -}
 
-module ConfigurationKnowledge where
+module ConfigurationKnowledge 
+ (ConfigurationKnowledge, Configuration, Model2Model, buildConfiguration) 
+where
 
+import AbstractModel
 import FeatureModel
-import UseCaseModel
 
--- TODO: In the future, a configuration must be composed 
--- by a feature expression and a list of artifacts. 
-type Configuration = (FeatureExpression, ScenarioList)
+type ConfigurationKnowledge model = [Configuration model]
 
--- A configuration knowledge is a list of configurations.
--- Each configuration is composed by a feature expression and a 
--- list of artifacts (nowadays, a list of scenarios)
-data ConfigurationKnowledge = CK [Configuration]
+data Configuration model = Configuration {
+ expression :: FeatureExpression,
+ transformations :: [Model2Model model] 	 
+}
 
-expression :: Configuration -> FeatureExpression
-expression (e, sl) = e
+buildConfiguration :: (Model m) => m -> FeatureConfiguration -> ConfigurationKnowledge m -> m
+buildConfiguration im fc ck = applyAllTransformations im fc ck (emptyModel im) 
+    
+applyAllTransformations im fc [] om = om
+applyAllTransformations im fc (x:xs) om = 
+ let t = (transformations x) 
+  in if (eval fc (expression x)) 
+      then applyAllTransformations im fc xs (applyTransformations im t om) 
+      else applyAllTransformations im fc xs om
+ 
+applyTransformations :: (Model m) => m -> [Model2Model m] -> m -> m
+applyTransformations im [] om = om
+applyTransformations im (x:xs) om = applyTransformations im xs (x im om) 
 
-scenarioList :: Configuration -> ScenarioList
-scenarioList (e, sl) = sl
 
--- 
--- This function selects all artifacts whose configurations are valid 
--- for the feature configuration.
--- Usage: 
--- a) [scenario x | x<- (configure fc configuration)]
--- b) computeAllTracesFromScenarioList env1 (configure fc configuration) 
-selectScenarios :: FeatureConfiguration -> ConfigurationKnowledge -> ScenarioList
-selectScenarios fc (CK []) = [idle]
-selectScenarios fc (CK (x:xs)) = 
- if (eval fc (expression x)) 
-  then (scenarioList x) ++ (selectScenarios fc (CK xs))
-  else selectScenarios fc (CK xs) 
+
+
+
   
   
