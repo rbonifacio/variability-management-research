@@ -1,6 +1,8 @@
 module AbstractModel where
 
-class Model m where 
+class AbstractModel m where 
  emptyModel :: m -> m
  
 type Model2Model model = (model -> model -> model)
+
+
