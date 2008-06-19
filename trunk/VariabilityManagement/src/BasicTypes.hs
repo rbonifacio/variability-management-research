@@ -26,6 +26,13 @@ replace s find repl =
         then repl ++ (replace (drop (length find) s) find repl)
         else [head s] ++ (replace (tail s) find repl)
 
+firstElement :: Eq a => [a] -> a -> Maybe a
+firstElement [] y = Nothing
+firstElement (h:t) y = if (h == y) then Just h else firstElement t y
+
+disjointConcatenation :: Eq a => [a] -> [a] -> [a]
+disjointConcatenation l1 l2 = 
+ l1 ++ [e | e <-l2 , (exists e l1) == False ]
 
 firstOccurence :: Eq a => [a] -> a -> Int
 firstOccurence [] c = 0

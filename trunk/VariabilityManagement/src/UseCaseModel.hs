@@ -17,6 +17,7 @@ module UseCaseModel where
 
 import Prelude hiding ( (^) )
 import List 
+import Maybe
 import BasicTypes
 import AbstractModel
 
@@ -209,19 +210,18 @@ idle = Scenario "0" "IDDLE" [] [start, end] []
 start = Step "start" idle "START" "" "" []
 end   = Step "end" idle "END" "" "" []
 
-
-addScenariosM2M :: [Id] -> UseCaseModel -> UseCaseModel -> UseCaseModel
-addScenariosM2M ids input output = 
- let ins = ucmScenarios input
-     outUseCases = useCases output
-     name = ucm
-  in UCM name [addUseCaseM2M input output s | s <- ins, exists ((scenarioId s) ins)]
-
-addUseCaseM2M :: UseCaseModel -> UseCaseModel -> Scenario -> UseCase
-
+getUseCaseFromScenario :: [UseCase]-> Scenario -> Maybe UseCase
+getUseCaseFromScenario [] sc = Nothing 
+getUseCaseFromScenario (x:xs) sc = 
+ if (length [s | s <- ucScenarios x, s == sc] > 0)
+  then Just x
+  else getUseCaseFromScenario xs sc
 
 instance Eq Scenario where 
   s1 == s2 = scenarioId s1 == scenarioId s2
+  
+instance Eq UseCase where 
+  uc1 == uc2 = ucId uc1 == ucId uc2 
  
 instance Show Step where
  show (Step i _ action state response _)  = i ++ " " ++ action ++ " " ++ state ++ response 

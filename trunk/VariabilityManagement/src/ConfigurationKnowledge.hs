@@ -8,7 +8,7 @@
 -}
 
 module ConfigurationKnowledge 
- (ConfigurationKnowledge, Configuration, Model2Model, buildConfiguration) 
+ --(ConfigurationKnowledge, Configuration, Model2Model, buildConfiguration) 
 where
 
 import AbstractModel
@@ -21,7 +21,7 @@ data Configuration model = Configuration {
  transformations :: [Model2Model model] 	 
 }
 
-buildConfiguration :: (Model m) => m -> FeatureConfiguration -> ConfigurationKnowledge m -> m
+buildConfiguration :: (AbstractModel m) => m -> FeatureConfiguration -> ConfigurationKnowledge m -> m
 buildConfiguration im fc ck = applyAllTransformations im fc ck (emptyModel im) 
     
 applyAllTransformations im fc [] om = om
@@ -31,7 +31,7 @@ applyAllTransformations im fc (x:xs) om =
       then applyAllTransformations im fc xs (applyTransformations im t om) 
       else applyAllTransformations im fc xs om
  
-applyTransformations :: (Model m) => m -> [Model2Model m] -> m -> m
+applyTransformations :: (AbstractModel m) => m -> [Model2Model m] -> m -> m
 applyTransformations im [] om = om
 applyTransformations im (x:xs) om = applyTransformations im xs (x im om) 
 
