@@ -15,7 +15,7 @@ import AbstractModel
 import FeatureModel
 
 type ConfigurationKnowledge model = [Configuration model]
-
+ 
 data Configuration model = Configuration {
  expression :: FeatureExpression,
  transformations :: [Model2Model model] 	 

@@ -43,6 +43,7 @@ data UseCaseModel = UCM {
 	 	useCases :: [UseCase]
 	 }
 	 deriving (Show)
+
 	 
 data UseCase = UseCase {
 		ucId :: Id,  
@@ -224,7 +225,7 @@ instance Eq UseCase where
   uc1 == uc2 = ucId uc1 == ucId uc2 
  
 instance Show Step where
- show (Step i _ action state response _)  = i ++ " " ++ action ++ " " ++ state ++ response 
+ show (Step i _ action state response _)  = i  ++ " " -- ++ action ++ " " ++ state ++ response 
  
 instance AbstractModel UseCaseModel where
  emptyModel (ucm) = 
