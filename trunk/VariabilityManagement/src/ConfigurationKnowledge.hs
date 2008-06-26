@@ -28,12 +28,16 @@ applyAllTransformations im fc [] om = om
 applyAllTransformations im fc (x:xs) om = 
  let t = (transformations x) 
   in if (eval fc (expression x)) 
-      then applyAllTransformations im fc xs (applyTransformations im t om) 
+      then applyAllTransformations im fc xs (applyTransformations im fc t om) 
       else applyAllTransformations im fc xs om
  
-applyTransformations :: (AbstractModel m) => m -> [Model2Model m] -> m -> m
-applyTransformations im [] om = om
-applyTransformations im (x:xs) om = applyTransformations im xs (x im om) 
+applyTransformations :: (AbstractModel m) => m -> FeatureConfiguration -> [Model2Model m] -> m -> m
+applyTransformations im fc [] om = om
+applyTransformations im fc (x:xs) om = 
+ case x of 
+  (ConsM2MType1 _) -> applyTransformations im fc xs (fnModel1 (x) im om)
+  (ConsM2MType2 _) -> applyTransformations im fc xs (fnModel2 (x) fc om)
+  (ConsM2MType3 _) -> applyTransformations im fc xs (fnModel3 (x) fc im om) 
 
 
 
