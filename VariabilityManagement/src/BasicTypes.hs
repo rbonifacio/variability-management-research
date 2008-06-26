@@ -73,3 +73,10 @@ split c s =
  
 splitAndRemoveBlanks :: Char -> String -> [String] 
 splitAndRemoveBlanks c s = [filter (/= ' ') x | x <- (split c s) ] 
+
+concatValueList :: [String] -> String
+concatValueList [] = ""
+concatValueList (x:xs) = 
+ if (length xs > 0)
+  then x ++ " or " ++ concatValueList xs 
+  else x  
