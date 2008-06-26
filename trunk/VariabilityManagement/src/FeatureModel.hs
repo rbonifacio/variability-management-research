@@ -204,6 +204,18 @@ allFeatureExists :: FeatureList -> FeatureList -> Bool
 allFeatureExists base [] = False
 allFeatureExists base (x:xs) = and [featureExists base (fId(y)) | y <- (x:xs)] 
 
+findFeatureFromConfiguration :: FeatureConfiguration -> Id -> Maybe Feature
+findFeatureFromConfiguration fc id1 = findFeature [fcRoot fc] id1
+
+findFeature :: FeatureList -> Id -> Maybe Feature
+findFeature [] _ = Nothing
+findFeature (x:xs) id1 = 
+ if (fId x == id1) then Just x
+ else 
+  let r = findFeature (children x) id1 in 
+   if (r == Nothing) then findFeature xs id1
+   else r
+
 --
 -- Check if a feature configuration is a valid 
 -- feature model instance. They must have the same 

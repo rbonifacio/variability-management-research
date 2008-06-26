@@ -17,6 +17,7 @@ exp2 = FeatureRef "FEA-15" -- register user preferences
 exp3 = NotExpression exp1 
 exp4 = NotExpression exp2
 
+exp5 = FeatureRef "FEA-16" -- ship Method
 
 -- Configurations that relate a feature expression with 
 -- a set of model2model functions
@@ -24,8 +25,9 @@ conf0 = Configuration exp0 [(ConsM2MType1 (addScenariosM2M ["1", "4"]))]
 --conf1 = Configuration exp3 [(addScenariosM2M ["1"])]
 conf2 = Configuration exp1 [(ConsM2MType1 (addScenariosM2M ["2"]))]
 conf3 = Configuration exp2 [(ConsM2MType1 (addScenariosM2M ["3"]))]
+conf4 = Configuration exp5 [(ConsM2MType2 (bindParametersM2M "ShipMethod" shipMethod))]
 
-ck01 = [conf0,conf2, conf3]
+ck01 = [conf0,conf2, conf3, conf4]
 
 
 eShop1 = Feature "FEA-01" "eShop Instance" mandatory basicFeature [register01, searchOptions01, paymentType01, shipMethod01] []
