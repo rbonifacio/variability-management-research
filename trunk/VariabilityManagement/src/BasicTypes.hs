@@ -25,6 +25,23 @@ replace s find repl =
     if take (length find) s == find
         then repl ++ (replace (drop (length find) s) find repl)
         else [head s] ++ (replace (tail s) find repl)
+        
+replaceElement :: Eq a => a -> a -> [a] -> [a]
+replaceElement x y [] = []
+replaceElement x y (h:t) = 
+  (if (x == h) then y else h) : (replaceElement x y t)
+  
+composeBefore :: Eq a => a -> [a] -> [a] -> [a]
+composeBefore k [] _ = []
+composeBefore k (h:t) l = 
+ if (k == h) then l ++ (h:t)
+ else h : composeBefore k t l     
+ 
+composeAfter :: Eq a => a -> [a] -> [a] -> [a]
+composeAfter k [] _ = []
+composeAfter k (h:t) l = 
+ if (k == h) then h: (l ++ t)
+ else h : composeAfter k t l    
 
 firstElement :: Eq a => [a] -> a -> Maybe a
 firstElement [] y = Nothing
