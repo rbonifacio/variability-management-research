@@ -217,6 +217,17 @@ getUseCaseFromScenario (x:xs) sc =
  if (length [s | s <- ucScenarios x, s == sc] > 0)
   then Just x
   else getUseCaseFromScenario xs sc
+  
+replaceScenarioInUseCase :: UseCase -> Scenario -> UseCase
+replaceScenarioInUseCase useCase scenario = 
+ let scenarios = ucScenarios useCase 
+ in  useCase {ucScenarios = (replaceElement scenario scenario scenarios) }   
+ 
+replaceUseCaseInUCM :: UseCaseModel -> UseCase -> UseCaseModel
+replaceUseCaseInUCM ucm useCase = 
+ let ucs = useCases ucm
+ in  ucm {useCases = (replaceElement useCase useCase ucs)} 
+ 
 
 instance Eq Scenario where 
   s1 == s2 = scenarioId s1 == scenarioId s2
