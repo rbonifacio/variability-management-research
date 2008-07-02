@@ -1,5 +1,5 @@
 
-module UseCaseModel2Model (addScenariosM2M, bindParametersM2M)
+module UseCaseModel2Model (addScenariosM2M, bindParametersM2M, evaluateAspectM2M)
 where
 
 import Maybe

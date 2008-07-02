@@ -13,6 +13,7 @@ class AbstractModel m where
 
 
 data Model2Model model  =
+ ConsM2MType0 { fnModel0 :: model -> model} |
  ConsM2MType1 { fnModel1 :: model -> model -> model} |
  ConsM2MType2 { fnModel2 :: FeatureConfiguration -> model -> model} | 
  ConsM2MType3 { fnModel3 :: FeatureConfiguration -> model -> model -> model }
