@@ -1,19 +1,24 @@
 \section{Software Modularity}\label{sec:software-modularity}
 
-The criteria of modularity applied to software development was proposed
-by Parnas~\cite{parnas-cacm-1972}. Such
-criteria are still used as a guide for architects and is being applied
-in another areas. Modularity is closely related to design decisions
-that decompose and organize the system into a set of modules. The
-following qualities attributes are expected in a modular design:
+Since software modularity is a key concept of our work, in this section we
+spend a few pages reviewing important ideas related to it. First of all, it
+is important to notice that the criteria used in this paper for
+considering a modular design is based on the proposal of David Parnas~\cite{parnas-cacm-1972}. 
+Although proposed more thant thirty years ago, these criteria are still used as
+a guide for architects and has been applied in another areas. Based on
+such criteria, modularity is closely related to design decisions that decompose
+and organize the system into a set of modules. 
+Moreover, the following qualities attributes are expected in a modular design:
 
 \begin{description}
 
 \item[Comprehensibility] A modular design allows developers to
 understand a module looking only at: (1) the implementation of the
 module itself; and (2) the interfaces of the other modules
-referenced by it\footnote{This comprehensibility degree is also
-known as \emph{modular reasoning}.}.
+referenced by it. 
+
+%footnote{This comprehensibility degree is also
+%known as \emph{modular reasoning}.}.
 
 \item[Changeability] A modular design enables local
 changes. If changes are necessary in the internal implementation of
@@ -34,33 +39,40 @@ criteria to be used in decomposition of systems into modules.
 According to Parnas, the parts of a system that are more likely to
 changes must be hidden into modules with stable interfaces.
 
-Baldwin and Clark~\cite{clark-design-rules-book} proposed a theory which considers
-modularity as a key factor to innovation and market growth, independent of the industry
-area. Their theory uses Design Structure Matrixes (DSMs) to reason about dependencies
-among artifacts and defend that the task structure organization is closely related to
-them. In this way, if two modules are coupled, their parallel and independent development
-is impossible, requiring more communication between the different teams, or their
-implementation by a single team.
+Recently, Baldwin and Clark~\cite{clark-design-rules-book} proposed a theory
+which considers modularity as a key factor to innovation and market growth,
+independent of the industry area. Their theory uses Design Structure Matrixes
+(DSMs) to reason about dependencies among artifacts and argues that the task
+structure of a organization is closely related to such dependencies. As a
+consequence, if two modules are coupled, they can not be developed in
+parallel, which actually requires either (a) more communication between
+different teams; or (b) their implementation to be assigned to a single team.
 
-Design Structure Matrixes (DSMs) are used to visualize dependencies among design
-parameters. These parameters correspond to any decision that needs to be made along
-the product design.
-Design parameters may have different abstraction levels. In software industry,
-some design decisions are related to process development, language, code/architectural
-style, and so forth. Moreover, if we consider implementation as design activities, software
-components like classes, interfaces, packages, and aspects should be represented as design
-parameters.
+In order to reason about modularity in this paper, we use Design Structure
+Matrixes (DSMs) as a tool for visualizing dependencies among design parameters.
+These parameters correspond to any decision that needs to be made along the
+product design. Design parameters might have different abstraction levels. In
+software industry, for example, some design decisions are related to process
+development, language, code or architectural style, and so
+forth~\cite{ribeiro-sbes-07}. Moreover, in this paper we also consider
+implementation as a design activity. Therefore, software components like
+classes, interfaces, packages, and aspects are also represented as design
+parameters. We need to made several decisions about them. 
 
-The notion of dependency arises whenever a design decision depends on another.
-Each design parameter is disposed in both rows and columns of the matrix. A dependency 
-between two parameters is marked with a X.
+Based on the DSM notation, a dependency arises whenever a design
+decision depends on another. Such decisions, as explained earlier, are
+represented as design parameters and disposed in both rows and columns of a
+matrix. A dependency between two design decisions (or parameters) is represented
+with a X in their corresponding lines and columns.
 
-Figure~\ref{dsm:example} represents software components as parameters in a DSM. A mark in row
-B, column A represents that component B depends on component A. In the same way a X
-in row A, column B represents that component A depends on component B. Whenever this
-mutual dependency occurs, we have an example of cyclical dependency, which implies
-that both components can not be independently addressed, which means that their parallel
-development is compromised.
+For example, suppose that the DSM depicted in Figure~\ref{dsm:example} represents
+software components as parameters. The mark in row B, column A means that design
+decisions regarded to component B depends on decisions concerned to the component
+A. In a similar way, a X in row A, column B means that design decisions of
+component A depends on decisions of component B. Whenever this mutual dependency
+occurs, we have an occurence of cyclical dependency, which in fact implies that
+both components can not be independently addressed. As a consequence, their
+parallel development is compromised.
 
 \begin{figure}[h]
     \begin{center}
@@ -77,14 +89,17 @@ development is compromised.
     \end{center}
 \end{figure}
 
-Additionally, component B depends on C (expressed by a X in row B, column
-C) but C does not depend on any other component. Therefore, C can be independently
-developed but B can not be completely developed until C has been concluded. Aiming
-at removing these dependencies, Baldwin and Clark~\cite{clark-design-rules-book} propose
-defining Design Rules.
+In the same DSM of Figure~\ref{dsm:example}, component B depends on C (expressed
+by a X in row B, column C) but C does not depend on any other component (there is
+no mark in row C). Therefore, C can be independently developed but B can not be
+completely developed until design decisions of C have been concluded. In order to
+improve modularity, which means remove some dependencies between design
+decisions, several assumptions must be made before start the design of a
+parameter. Such assumptions, represented as a special kind of parameter,
+were named by Baldwin and Clark~\cite{clark-design-rules-book} as Design Rules.
 
-Design Rules are parameters used as interfaces between modules that are less
-likely to be changed~\cite{lopes-taosd-2006}. In this way, they can promote decoupling
+Therefore, Design Rules are parameters used as interfaces between modules that
+are less likely to be changed~\cite{lopes-taosd-2006}. In this way, they can promote decoupling
 of design parameters, like interfaces decrease the coupling between software
 components. Such design rules establish strict partitions of knowledge and effort at the
 outset of a design process. They are not just guidelines or recommendations: they must
@@ -108,11 +123,12 @@ of the services provided by health care institutions, allowing citizens
 to register complaints regarding health issues, and heath care
 institutions to investigate and take the required actions. 
 
-We  selected this system because 
-its design has a significant number of non-crosscutting and crosscutting concerns. 
-Furthermore, it requires a number of common day-to-day design decisions related
-to GUI, persistence, and concurrency. Finally, the HW system has been used
-as a case study in several \emph{aspect-oriented} works~\cite{greenwood-ecoop-2007, greenwood-ea-2007, soares-oopsla-02}. 
+We  selected the HW system because its design has a significant number of
+non-crosscutting and crosscutting concerns. Furthermore, it requires a number of
+common day-to-day design decisions related to GUI, persistence, and concurrency.
+Finally, the HW system has been used as a case study in several
+\emph{aspect-oriented} works~\cite{greenwood-ecoop-2007, greenwood-ea-2007,
+soares-oopsla-02}.
 
 \begin{figure}[t]
 \centering
