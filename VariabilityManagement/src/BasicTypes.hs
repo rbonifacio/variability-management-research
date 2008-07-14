@@ -42,6 +42,12 @@ composeAfter k [] _ = []
 composeAfter k (h:t) l = 
  if (k == h) then h: (l ++ t)
  else h : composeAfter k t l    
+ 
+composeAround :: Eq a => a -> [a] -> [a] -> [a]
+composeAround k [] _ = []
+composeAround k (h:t) l = 
+ if (k == h) then l ++ (t)
+ else h : composeAround k t l  
 
 firstElement :: Eq a => [a] -> a -> Maybe a
 firstElement [] y = Nothing
