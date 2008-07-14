@@ -10,14 +10,8 @@ data AspectualUseCase = AspectualUseCase {
 } 
 
 data Advice = 
- BeforeAdvice { 
-  	pointCut :: [StepRef], 
-  	aspectualScenario :: Scenario
- }  | 
- AfterAdvice { 
- 	pointCut :: [StepRef], 
- 	aspectualScenario :: Scenario
- }
+ BeforeAdvice {pointCut :: [StepRef], aspectualScenario :: Scenario}  | 
+ AfterAdvice { pointCut :: [StepRef], aspectualScenario :: Scenario }
   
 
 isBeforeAdvice :: Advice -> Bool
