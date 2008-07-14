@@ -7,7 +7,13 @@ import Text.ParserCombinators.Parsec.Language( haskellStyle )
 
 import FeatureModel
 
-
+charWithoutSpace :: Char -> Parser Char
+charWithoutSpace c =  
+ do { skipMany space; 
+  	  r <- char c; 
+  	  skipMany space;
+  	  return r
+  	}	
 --
 -- A simple parser for identifiers.
 -- This parser recongnizes strings with the following 
@@ -23,7 +29,9 @@ identifier = do {
 				c <- letter;
 				s <- many alphaNum;
 				return (c : s)
-	   		 }		
+	   		 }	
+	   		 
+	   		 	
 
 -- 
 -- A parser for feature expressions.
