@@ -154,12 +154,12 @@ code, are necessary for developing different concerns in parallel.
 
 \subsection{Unanticipated Changes in Base Code}
 
-Suppose the requirement of synchronizing (concurrency management)
-all methods of a class. Such a requirement consists of encompassing
-with synchronized blocks the bodies of all methods.
-Listing~\ref{lst:ao-synchronizing} illustrates an implementation of
-this concern in AspectJ applied to the \emph{EmployeeRepository}
-class.
+Suppose the requirement of synchronizing (concurrency management) all methods of
+a class. Such a requirement consists of encompassing with synchronized blocks the
+method body of all of its methods. Listing~\ref{lst:ao-synchronizing} illustrates
+an implementation of this concern in AspectJ applied to the
+\emph{EmployeeRepository} class (implemented in the business layer of Health
+Watcher system, Figure~\ref{fig:hw-architecture}).
 
 \scriptsize
 \begin{lstlisting}[frame=single, caption={Aspect responsible for implementing the concurrency concern.},label=lst:ao-synchronizing, language=Java]
