@@ -14,6 +14,8 @@ charWithoutSpace c =
   	  skipMany space;
   	  return r
   	}	
+  	
+  	
 --
 -- A simple parser for identifiers.
 -- This parser recongnizes strings with the following 
@@ -25,11 +27,31 @@ charWithoutSpace c =
 -- strings starting with a number.
 --	 
 identifier :: Parser String		
-identifier = do {
-				c <- letter;
-				s <- many alphaNum;
-				return (c : s)
-	   		 }	
+identifier = 
+ do { c <- letter;
+	  s <- many alphaNum;
+	  return (c : s)
+	 }	
+	 
+parseBinaryExp :: (FeatureExpression -> FeatureExpression -> FeatureExpression)	-> Parser FeatureExpression
+parseBinaryExp cons = 
+ do { 
+ 	  skipMany space; char '('; skipMany space;	
+      exp1 <- parseExp;
+      char ',';
+      exp2 <- parseExp;
+      skipMany space; char ')'; skipMany space;
+      return (cons exp1 exp2)
+  }
+    
+parseNotExp :: Parser FeatureExpression
+parseNotExp = 
+ do {
+ 	  skipMany space; char '('; skipMany space;			 
+      exp1 <- parseExp;
+      skipMany space; char ')'; skipMany space;
+      return (NotExpression exp1)
+ }    
 	   		 
 	   		 	
 
@@ -46,29 +68,10 @@ identifier = do {
 --   			
 parseExp :: Parser FeatureExpression
 parseExp = 
- do { try  (string "And");
-      skipMany space; char '('; skipMany space;			 
-      exp1 <- parseExp;
-      char ',';
-      exp2 <- parseExp;
-      skipMany space; char ')'; skipMany space;
-      return (AndExpression exp1 exp2) 
-    } <|>
- do { try  (string "Or");
-      skipMany space; char '('; skipMany space;			 
-      exp1 <- parseExp;
-      char ',';
-      exp2 <- parseExp;
-      skipMany space; char ')'; skipMany space;
-      return (OrExpression exp1 exp2) 
-    } <|>
- do { try  (string "Not");
-      skipMany space; char '('; skipMany space;			 
-      exp1 <- parseExp;
-      skipMany space; char ')'; skipMany space;
-      return (NotExpression exp1) 
-    }<|> 
- do {skipMany space; id1 <- identifier; skipMany space; return (FeatureRef id1) }
+ do { try  (string "And"); expression <- parseBinaryExp AndExpression; return expression } <|>
+ do { try  (string "Or");  expression <- parseBinaryExp OrExpression;  return expression } <|>
+ do { try  (string "Not"); expression <- parseNotExp;                  return expression } <|> 
+ do { skipMany space; id1 <- identifier; skipMany space;               return (FeatureRef id1) }
 
 
 featureExpressionParser :: String -> FeatureExpression
