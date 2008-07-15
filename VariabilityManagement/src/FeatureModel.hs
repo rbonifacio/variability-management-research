@@ -357,4 +357,9 @@ instance Show Feature where
  show (Feature i1 n1 t1 g1 [] _) = i1   
  show (Feature i1 n1 t1 g1 (x:xs) _) = i1 ++ show [y | y<-(x:xs)]   
  show (FeatureError) = "Feature error"   
-
+ 
+instance Show FeatureExpression where
+  show (FeatureRef id1) = show id1
+  show (AndExpression exp1 exp2) = "And (" ++ (show exp1) ++ ", " ++ (show exp2) ++ ")"
+  show (OrExpression exp1 exp2) = "Or (" ++ (show exp1) ++ ", " ++ (show exp2) ++ ")"
+  show (NotExpression exp1) = "Not (" ++ (show exp1)  ++ ")"
