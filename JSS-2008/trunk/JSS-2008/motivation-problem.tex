@@ -67,9 +67,9 @@ with a X in their corresponding lines and columns.
 
 For example, suppose that the DSM depicted in Figure~\ref{dsm:example} represents
 software components as parameters. The mark in row B, column A means that design
-decisions regarded to component B depends on decisions concerned to the component
+decisions regarded to component B depend on decisions concerned to the component
 A. In a similar way, a X in row A, column B means that design decisions of
-component A depends on decisions of component B. Whenever this mutual dependency
+component A depend on decisions of component B. Whenever this mutual dependency
 occurs, we have an occurence of cyclical dependency, which in fact implies that
 both components can not be independently addressed. As a consequence, their
 parallel development is compromised.
@@ -123,7 +123,7 @@ of the services provided by health care institutions, allowing citizens
 to register complaints regarding health issues, and heath care
 institutions to investigate and take the required actions. 
 
-We  selected the HW system because its design has a significant number of
+We have selected the HW system because its design has a significant number of
 non-crosscutting and crosscutting concerns. Furthermore, it requires a number of
 common day-to-day design decisions related to GUI, persistence, and concurrency.
 Finally, the HW system has been used as a case study in several
@@ -143,8 +143,8 @@ distribution, business rules, and data management concerns. Below
 we describe the major architectural components of the HW system:
 
 \begin{description}
-\item [View Layer:] related with the HW web interface. Theimplementation of this layer is based on FrontController~\cite{alur-book-2003} andCommand~\cite{gamma-dpbook-1995} patterns, using \emph{servlets}and \emph{plain Java objects}. The communication with the business layeris implemented with calls to the \emph{IFBusiness}, which may bedistributed or not.\item [Business Layer:] responsible for businesslogic and transactional concern implementation. The\emph{HWFacade}, which implements \emph{IFBusiness}, is the uniquepoint of interaction with this layer. This class uses\emph{record} components to interact with the Data Access Layer.\item [Data Access Layer:] responsible for abstracting the persistencemechanism following the Data Access Objectpattern~\cite{alur-book-2003}. Some interfaces tomanage data persistence are defined in this layer. Twoimplementations are available: the first one uses volatile memorywhereas the second one is based on relational databases.\item [Model:] responsible for implementing the \emph{domain objects}.These objects represent the core concepts of the application;transit between all architectural layers; and have a fewimplementation logic. Complain, employee, and health unity are examples of 
-core concepts in the HW system. \item [Lib Components:] represent reusable components that are usefulto the implementation of concerns like persistence, distribution,and concurrency.\end{description}
+\item [View Layer:] related with the HW web interface. Theimplementation of this layer is based on FrontController~\cite{alur-book-2003} andCommand~\cite{gamma-dpbook-1995} patterns, using \emph{servlets}and \emph{plain Java objects}. The communication with the business layeris implemented with calls to the \emph{IFBusiness}, which may bedistributed or not.\item [Business Layer:] responsible for businesslogic and transactional concern implementation. The\emph{HWFacade}, which implements \emph{IFBusiness}, is the uniquepoint of interaction with this layer. This class uses\emph{record} components to interact with the Data Access Layer.\item [Data Access Layer:] responsible for abstracting the persistencemechanism following the Data Access Objectpattern~\cite{alur-book-2003}. Some interfaces tomanage data persistence are defined in this layer. Twoimplementations are available: the first one uses volatile memorywhereas the second one is based on relational databases.\item [Model:] responsible for implementing the \emph{domain objects}.These objects represent the core concepts of the application;transit between all architectural layers; and have a fewimplementation logic. \emph{Complain}, \emph{employee}, and \emph{health unity}
+are examples of core concepts in the HW system. \item [Lib Components:] represent reusable components that are usefulto the implementation of concerns like persistence, distribution,and concurrency.\end{description}
 
 In what follows, we present several issues related to \emph{aspect-oriented} 
 modularity. First, we discuss about the problem of unanticipated changes 
@@ -317,7 +317,7 @@ single unities, there is no modular design in this case.
 For instance, consider the DSM depicted in Figure~\ref{dsm:hw01}, which represent
 some design parameters and respective dependencies of the Health Watcher
 system. Based on this DSM, we can realize that decisions regarded to the
-complaint implementation (row 5) depends on decisions about complaint
+complaint implementation (row 5) depend on decisions about complaint
 requirements (dependency row 5, column 2), about architectural
 decisions\footnote{Examples of architectural decisions for the Health Watcher
 system are the selected style (layers), patterns, and technologies for each
