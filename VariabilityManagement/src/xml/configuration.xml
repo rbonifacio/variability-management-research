@@ -1,0 +1,10 @@
+<configurationModel>
+ <name>Configuration</name>
+ <configuration>
+ 	<expression>And (a,b)</expression>
+ 	<transformation>
+ 		<name>weaveAspect</name>
+ 		<args>aspect</args>
+    </transformation> 
+ </configuration>
+</configurationModel>
