@@ -14,6 +14,8 @@ import XmlFeatureModel
 import XmlFeatureParser
 
 data UseCaseDocument = UseCaseDocument { path :: String }
+data ConfigurationData = ConfigurationData { expressionData :: String , transformationData :: String }
+-- data CKData = CKData { listOfConfigurationData :: [ConfigurationData] } 
 
 main :: IO ()
 main = do
@@ -24,10 +26,19 @@ main = do
   window   <- xmlGetWidget xml castToWindow "mainWindow"
   onDestroy window mainQuit
   
+  ckWindow   <- xmlGetWidget xml castToWindow "ckWindow";
+  -- onDelete ckWindow widgetHideAll ckWindow
+  
   useCaseList <- xmlGetWidget xml castToTreeView "useCasesList"
   useCaseStore <- createUseCaseStore
   New.treeViewSetModel useCaseList useCaseStore
   setupUseCaseView useCaseList useCaseStore
+  
+  ckList <- xmlGetWidget xml castToTreeView "ckList"
+  ckStore <- createCKStore
+  New.treeViewSetModel ckList ckStore
+  setupCKView ckList ckStore
+  
   
   featureModelEntry <- xmlGetWidget xml castToEntry "featureModelEntry"
    
@@ -37,8 +48,25 @@ main = do
   selectFMButton <- xmlGetWidget xml castToButton "selectFeatureModelButton"
   selectFMButton `onClicked` openSelectFMDialog featureModelEntry window
   
+  newCKButton <- xmlGetWidget xml castToButton "newCKButton"
+  newCKButton `onClicked` openNewCKDialog ckWindow
+  
   cancelButton <- xmlGetWidget xml castToButton "cancelButton"
   onClicked cancelButton $ do widgetDestroy window
+  
+  featureExpressionEntry <- xmlGetWidget xml castToEntry "featureExpressionEntry"
+  transformationListEntry <- xmlGetWidget xml castToEntry "transformationListEntry"
+  
+   
+  addCKButton <- xmlGetWidget xml castToButton "addCKButton"
+  onClicked addCKButton $ 
+   do expressionTxt  <- entryGetText featureExpressionEntry
+      transformationTxt <- entryGetText transformationListEntry
+      let configData = ConfigurationData expressionTxt transformationTxt
+      New.listStorePrepend ckStore configData
+  
+  buttonQuitCK <- xmlGetWidget xml castToButton "buttonQuitCK"
+  onClicked buttonQuitCK $ do widgetHide ckWindow
   
   executeButton <- xmlGetWidget xml castToButton "executeButton"
   onClicked executeButton $ 
@@ -111,6 +139,13 @@ openSelectFMDialog fmEntry parentWindow = do
     ResponseDeleteEvent -> putStrLn "dialog closed"
   widgetHide dialog
 
+openNewCKDialog :: Window -> IO () 
+openNewCKDialog ckWindow = 
+ do {
+	 widgetShowAll ckWindow;
+ }
+ 
+
  
 
 -- 
@@ -129,11 +164,26 @@ setupUseCaseView view model = do
   New.treeViewColumnSetTitle col1 "Use case document"
   New.treeViewAppendColumn view col1
 
--- 
--- This function creates a store with the selected use case documents. 
--- Such a store is used as the UC model element of the GUI.
--- 
+setupCKView view model = do 
+  New.treeViewSetHeadersVisible view True
+
+  renderer1 <- New.cellRendererTextNew
+  col1 <- New.treeViewColumnNew
+  New.treeViewColumnPackStart col1 renderer1 True
+  New.cellLayoutSetAttributes col1 renderer1 model $ \row -> [ New.cellText := expressionData row ]
+  New.treeViewColumnSetTitle col1 "Feature expression"
+  New.treeViewAppendColumn view col1
+ 
+  renderer2 <- New.cellRendererTextNew
+  col2 <- New.treeViewColumnNew
+  New.treeViewColumnPackStart col2 renderer2 True
+  New.cellLayoutSetAttributes col2 renderer2 model $ \row -> [ New.cellText := show (transformationData row)]
+  New.treeViewColumnSetTitle col2 "Transformations"
+  New.treeViewAppendColumn view col2
+ 
 createUseCaseStore = New.listStoreNew [ ]
+createCKStore = New.listStoreNew [ ]
+
 -- createUseCaseStore = New.listStoreNew [UseCaseDocument { path = "foo.xml" }]
 
 
