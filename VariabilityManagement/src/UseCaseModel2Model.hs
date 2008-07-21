@@ -17,10 +17,10 @@ addScenariosM2M ids input output =
      name = ucmName output
    in UCM name (addUseCaseM2M input output  [s | s <- ins, exists (scenarioId s) ids])
 
-bindParametersM2M :: Name -> Feature -> FeatureConfiguration -> UseCaseModel -> UseCaseModel
+bindParametersM2M :: Name -> Id -> FeatureConfiguration -> UseCaseModel -> UseCaseModel
 bindParametersM2M pName feature  fc  output = 
  let 
-   f = findFeatureFromConfiguration fc (fId feature)
+   f = findFeatureFromConfiguration fc feature
    name = ucmName output
  in 
    if isNothing f then error "..."
