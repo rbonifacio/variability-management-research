@@ -3,11 +3,11 @@
 Since software modularity is a key concept of our work, in this section we
 spend a few pages reviewing important ideas related to it. First of all, it
 is important to notice that the criteria used in this paper for
-considering a modular design is based on the proposal of David Parnas~\cite{parnas-cacm-1972}. 
-Although proposed more thant thirty years ago, these criteria are still used as
+considering a modular design is based on the proposal of David Parnas~\cite{parnas-cacm-1972}.
+Although proposed more than thirty years ago, these criteria are still used as
 a guide for architects and has been applied in another areas. Based on
 such criteria, modularity is closely related to design decisions that decompose
-and organize the system into a set of modules. 
+and organize the system into a set of modules.
 Moreover, the following qualities attributes are expected in a modular design:
 
 \begin{description}
@@ -15,7 +15,7 @@ Moreover, the following qualities attributes are expected in a modular design:
 \item[Comprehensibility] A modular design allows developers to
 understand a module looking only at: (1) the implementation of the
 module itself; and (2) the interfaces of the other modules
-referenced by it. 
+referenced by it.
 
 %footnote{This comprehensibility degree is also
 %known as \emph{modular reasoning}.}.
@@ -28,7 +28,7 @@ modification in the module interface.
 
 \item[Parallel development] After the specification of the module
 interfaces, a modular design enables the parallel development of
-modules. Different teams might only focus in their own modules
+modules. Different teams might only focus on their own modules
 development, reducing the time-to-market and the need of
 communication.
 
@@ -43,7 +43,7 @@ Recently, Baldwin and Clark~\cite{clark-design-rules-book} proposed a theory
 which considers modularity as a key factor to innovation and market growth,
 independent of the industry area. Their theory uses Design Structure Matrixes
 (DSMs) to reason about dependencies among artifacts and argues that the task
-structure of a organization is closely related to such dependencies. As a
+structure of an organization is closely related to such dependencies. As a
 consequence, if two modules are coupled, they can not be developed in
 parallel, which actually requires either (a) more communication between
 different teams; or (b) their implementation to be assigned to a single team.
@@ -57,7 +57,7 @@ development, language, code or architectural style, and so
 forth~\cite{ribeiro-sbes-07}. Moreover, in this paper we also consider
 implementation as a design activity. Therefore, software components like
 classes, interfaces, packages, and aspects are also represented as design
-parameters. We need to made several decisions about them. 
+parameters. We need to make several decisions about them.
 
 Based on the DSM notation, a dependency arises whenever a design
 decision depends on another. Such decisions, as explained earlier, are
@@ -70,7 +70,7 @@ software components as parameters. The mark in row B, column A means that design
 decisions regarded to component B depend on decisions concerned to the component
 A. In a similar way, a X in row A, column B means that design decisions of
 component A depend on decisions of component B. Whenever this mutual dependency
-occurs, we have an occurence of cyclical dependency, which in fact implies that
+occurs, we have an occurrence of cyclical dependency, which in fact implies that
 both components can not be independently addressed. As a consequence, their
 parallel development is compromised.
 
@@ -78,10 +78,10 @@ parallel development is compromised.
     \begin{center}
            \begin{scriptsize}
             \begin{tabular}{|l|l|l|l|} \hline
-                        & A     & B    & C 	\\ \hline
-                A      &        &  x    &   	\\ \hline
-                B 	&  x    &       &  x 	\\ \hline
-                C	&        &       &   	\\ \hline
+                       & A     & B     & C 	\\ \hline
+                A      &       &  x    &   	\\ \hline
+                B 	   &  x    &       &  x \\ \hline
+                C	   &       &       &   	\\ \hline
             \end{tabular}
             \end{scriptsize}
             \label{dsm:example}
@@ -93,8 +93,8 @@ In the same DSM of Figure~\ref{dsm:example}, component B depends on C (expressed
 by a X in row B, column C) but C does not depend on any other component (there is
 no mark in row C). Therefore, C can be independently developed but B can not be
 completely developed until design decisions of C have been concluded. In order to
-improve modularity, which means remove some dependencies between design
-decisions, several assumptions must be made before start the design of a
+improve modularity, i.e. removing some dependencies between design
+decisions, several assumptions must be made before starting the design of a
 parameter. Such assumptions, represented as a special kind of parameter,
 were named by Baldwin and Clark~\cite{clark-design-rules-book} as Design Rules.
 
@@ -104,6 +104,28 @@ of design parameters, like interfaces decrease the coupling between software
 components. Such design rules establish strict partitions of knowledge and effort at the
 outset of a design process. They are not just guidelines or recommendations: they must
 be rigorously obeyed in all phases of design and production~\cite{clark-design-rules-book}.
+Figure~\ref{dsm:example-drs} illustrates components A and B being decoupled
+by using design rules. Since A and B do not depend each other anymore, it is possible
+for example to change A for A' as long as A' respects the design rule. In addition,
+when both respect the design rules, the parallel development becomes possible. However, notice
+that the coupling does not disappear. Its place has been changed instead: A is coupled
+to the design rule. The same happens to B.
+
+\begin{figure}[h]
+    \begin{center}
+           \begin{scriptsize}
+            \begin{tabular}{|l|l|l|l|l|} \hline
+                        & DRs    & A     & B    & C  \\ \hline
+                DRs     &        &       &   	&    \\ \hline
+                A       &  x     &       &   	&    \\ \hline
+                B 	    &  x     &       &   	& x  \\ \hline
+                C	    &        &       &   	&    \\ \hline
+            \end{tabular}
+            \end{scriptsize}
+            \label{dsm:example-drs}
+        \caption{Design Rules decoupling components A and B.}
+    \end{center}
+\end{figure}
 
 \section{Modularity Issues in Aspect-Oriented Programming}\label{sec:aop-issues}
 
@@ -112,8 +134,8 @@ concerns~\cite{kiczales-ecoop-1997}. However, constructions supported by
 AspectJ~\cite{kiczales-cacm-2001} like languages can produce high
 coupling between the base code and the aspects, which may compromise
 the aforementioned modular criteria. In this section, we illustrate
-this problem through some examples, which were primarily extracted from 
-the Health Watcher system~\cite{soares-oopsla-02}, but also from a mobile 
+this problem through some examples, which were primarily extracted from
+the Health Watcher system~\cite{soares-oopsla-02}, but also from a mobile
 game product line~\cite{a}.
 
 Health Watcher (HW) is a real web-based information system
@@ -121,7 +143,7 @@ originally implemented in Java and restructured to use AspectJ
 \cite{kiczales-cacm-2001}. The system was developed to improve the quality
 of the services provided by health care institutions, allowing citizens
 to register complaints regarding health issues, and heath care
-institutions to investigate and take the required actions. 
+institutions to investigate and take the required actions.
 
 We have selected the HW system because its design has a significant number of
 non-crosscutting and crosscutting concerns. Furthermore, it requires a number of
@@ -143,16 +165,60 @@ distribution, business rules, and data management concerns. Below
 we describe the major architectural components of the HW system:
 
 \begin{description}
-\item [View Layer:] related with the HW web interface. Theimplementation of this layer is based on FrontController~\cite{alur-book-2003} andCommand~\cite{gamma-dpbook-1995} patterns, using \emph{servlets}and \emph{plain Java objects}. The communication with the business layeris implemented with calls to the \emph{IFBusiness}, which may bedistributed or not.\item [Business Layer:] responsible for businesslogic and transactional concern implementation. The\emph{HWFacade}, which implements \emph{IFBusiness}, is the uniquepoint of interaction with this layer. This class uses\emph{record} components to interact with the Data Access Layer.\item [Data Access Layer:] responsible for abstracting the persistencemechanism following the Data Access Objectpattern~\cite{alur-book-2003}. Some interfaces tomanage data persistence are defined in this layer. Twoimplementations are available: the first one uses volatile memorywhereas the second one is based on relational databases.\item [Model:] responsible for implementing the \emph{domain objects}.These objects represent the core concepts of the application;transit between all architectural layers; and have a fewimplementation logic. \emph{Complain}, \emph{employee}, and \emph{health unity}
-are examples of core concepts in the HW system. \item [Lib Components:] represent reusable components that are usefulto the implementation of concerns like persistence, distribution,and concurrency.\end{description}
+\item [View Layer:] related to the HW web interface. The
+implementation of this layer is based on Front
+Controller~\cite{alur-book-2003} and
+Command~\cite{gamma-dpbook-1995} patterns, using \emph{servlets}
+and \emph{plain Java objects}. The communication with the business layer
+is implemented with calls to the \emph{IFBusiness}, which may be
+distributed or not.
 
-In what follows, we present several issues related to \emph{aspect-oriented} 
-modularity. First, we discuss about the problem of unanticipated changes 
-in base code --- problem named as fragile pointcut in the \emph{aspect-oriented} community. After that, 
-we argue that clear interfaces, for decoupling crosscutting code from base 
-code, are necessary for developing different concerns in parallel.    
+\item [Business Layer:] responsible for business
+logic and transactional concern implementation. The
+\emph{HWFacade}, which implements \emph{IFBusiness}, is the unique
+point of interaction with this layer. This class uses
+\emph{record} components to interact with the Data Access Layer.
+
+\item [Data Access Layer:] responsible for abstracting the persistence
+mechanism following the Data Access Object
+pattern~\cite{alur-book-2003}. Some interfaces to
+manage data persistence are defined in this layer. Two
+implementations are available: the first one uses volatile memory
+whereas the second one is based on relational databases.
+
+\item [Model:] responsible for implementing the \emph{domain objects}.
+These objects represent the core concepts of the application;
+transit between all architectural layers; and have a few
+implementation logic. \emph{Complaint}, \emph{employee}, and \emph{health unit}
+are examples of core concepts in the HW system.
+
+\item [Lib Components:] represent reusable components that are useful
+to the implementation of concerns like persistence, distribution,
+and concurrency.
+\end{description}
+
+In what follows, we present several issues related to \emph{aspect-oriented}
+modularity. First, we discuss the problem of unanticipated changes
+in base code --- problem named as fragile pointcut in the \emph{aspect-oriented} community. After that,
+we argue that clear interfaces, for decoupling crosscutting code from base
+code, are necessary for developing different concerns in parallel.
 
 \subsection{Unanticipated Changes in Base Code}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Realmente, estas duas seções podem não ter uma separação...
+
+% Aqui, fala-se de fragile. No segundo exemplo também. Aqui, a gente
+% supõe um desenvolvedor da classe  "not aware" sobre os aspectos, mas que
+% não deixa de ser um problema de paralelismo. O desenvolvimento em
+% paralelo é discutido no segundo exemplo... não sei não, mas talvez seja
+% melhor não fazer essas separações... (pelo menos foi essa a impressão que
+% eu tive hoje). Talvez seja bom atacarmos algo mais geral: "problemas de modularidade..."
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this section, we present an example of unanticipated changes in the base code.
+We aim at showing that, when unanticipated changes happens, the aspects might not
+work as presumed.
 
 Suppose the requirement of synchronizing (concurrency management) all methods of
 a class. Such a requirement consists of encompassing with synchronized blocks the
@@ -283,7 +349,7 @@ activities, which, of course, may be reflected in the program
 structure~\cite{parnas-icse-03}.
 
 \begin{quote}\emph{
-My early work clearly treated modularisation as a design
+My early work clearly treated modularization as a design
 issue, not a language issue. A module was a work assignment,
 not a subroutine or other language element. Although
 some tools could make the job easier, no special tools were
@@ -314,7 +380,7 @@ implement the auditing concern at the same time that the complaint management
 concern is being developed. Although these concerns can be encapsulated in
 single unities, there is no modular design in this case.
 
-For instance, consider the DSM depicted in Figure~\ref{dsm:hw01}, which represent
+In what follows, consider the DSM depicted in Figure~\ref{dsm:hw01}, which represent
 some design parameters and respective dependencies of the Health Watcher
 system. Based on this DSM, we can realize that decisions regarded to the
 complaint implementation (row 5) depend on decisions about complaint
@@ -322,7 +388,7 @@ requirements (dependency row 5, column 2), about architectural
 decisions\footnote{Examples of architectural decisions for the Health Watcher
 system are the selected style (layers), patterns, and technologies for each
 layer or concern (presentation, distribution, persistence, and so on.)}
-(dependency row 4, column 4), and about the auditing concern (dependency row 4,
+(dependency row 5, column 4), and about the auditing concern (dependency row 5,
 column 6). This last dependency occurs because the team responsible for developing
 the \emph{complaint concern} have to know how to develop the extension points for
 the \emph{auditing concern}. Moreover, as we can observe in
@@ -349,14 +415,74 @@ implementation -- a clear example of non modular design.
 \label{dsm:hw01}
 \end{figure}
 
+Now, let's look at the source code of this example. Listing~\ref{lst:complaint-repository}
+illustrates the ComplaintRepository class. Suppose that the auditing concern must be
+triggered when inserting, removing, updating, or searching for a complaint.
 
-Based on the information hidden principle, we should encapsulate the
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Complaint Repository implementation.},label=lst:complaint-repository, language=Java]
+public class ComplaintRepository implements IComplaintRepository {
+
+    public int insert(Complaint c) throws RepositoryException,
+            ObjectAlreadyInsertedException {
+
+    }
+
+    public void update(Complaint c) throws RepositoryException,
+            ObjectNotFoundException {
+
+    }
+
+    public void remove(int id) throws RepositoryException,
+            ObjectNotFoundException {
+
+    }
+
+    public Complaint search(int id) throws RepositoryException,
+            ObjectNotFoundException {
+
+    }
+
+}
+\end{lstlisting}
+\normalsize
+
+Remember that two teams are working in parallel without design rules: the first one
+works on the base code (ComplaintRepository) and the second one
+works on the auditing concern. Such a concern is implemented as an
+aspect (Listing~\ref{lst:auditing-aspect}).
+
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Auditing Aspect.},label=lst:auditing-aspect, language=Java]
+public aspect AuditingAspect {
+
+    pointcut auditWhen():
+           execution(int ComplaintRepository.insert(Complaint)
+        || execution(void ComplaintRepository.update(Complaint)
+        || execution(void ComplaintRepository.remove(int)
+        || execution(Complaint ComplaintRepository.search(int)
+
+    after() returning(): auditWhen() {
+        // audit code.
+    }
+
+}
+\end{lstlisting}
+\normalsize
+
+In the meanwhile, when the teams are working on their
+respective concerns, for some reason the team of the repository changed the following:
+(i) the insert method now returns void instead of int; and (ii) the remove method
+take as parameter a Complaint object instead of an id. Obviously, such changes might
+break the aspects and the auditing concern will not work correctly.
+
+This way, based on the information hiding principle, we should again encapsulate the
 dependencies between complaint and auditing concerns in a special kind
-of interface (a design rule). 
-Applying design rules to our current example, we improve the design structure
+of interface (a design rule).
+Applying design rules to this example, we improve the design structure
 by removing the cyclical dependencies between complaint and auditing concerns.
 The reviewed DSM is presented in Figure~\ref{dsm:hw02}. Notice that a new parameter
-(actually a design rule) was introduced (row 4) and all dependencies are bellow
+(actually a design rule) was introduced (row 5) and all dependencies are bellow
 the main diagonal (there is no more cyclical dependencies).
 
 \begin{figure}[htb]
@@ -377,24 +503,27 @@ the main diagonal (there is no more cyclical dependencies).
 \label{dsm:hw02}
 \end{figure}
 
-In order to improve the parallel development between class developers and 
-aspect developers, it would be necessary to establish contracts for defining what 
-is expected from both teams. Existing works, such as \emph{Open Modules}~\cite{aldrich-ecoop-05}, 
-propose the use of interfaces for exposing \emph{joinpoints} in the base code, which, in fact, 
-defines the responsibilities just for class developers, besides limiting the scope of advised code. 
-Therefore, existing approaches do not offer mechanims for describing the responsibilities of aspect developers. 
-As a consequence, class developers are still able to implement part of a concern 
-assigned for a different team and they can not assume the existence 
-of any behavior expected to be modularized as an aspect. 
+In order to improve the parallel development between class developers and
+aspect developers, it would be necessary to establish contracts for defining what
+is expected from both teams. Existing works, such as \emph{Open Modules}~\cite{aldrich-ecoop-05},
+propose the use of interfaces for exposing \emph{joinpoints} in the base code, which, in fact,
+defines the responsibilities just for class developers, besides limiting the scope of advised code.
+Therefore, existing approaches do not offer mechanisms for describing the responsibilities of aspect developers.
+As a consequence, class developers are still able to implement part of a concern
+assigned for a different team and they can not assume the existence
+of any behavior expected to be modularized as an aspect.
+
+% Acho que podemos tirar esse exemplo de jogos e colocar o código de auditing no exemplo acima
+% (ou seja, pegar o código da seção 5 e colocar aqui...)
 
 For instance, consider the implementation of a mobile
-game product line. Listing~\ref{lst:paint-method} presents part of 
-a non-variant code responsible for painting graphical elements 
+game product line. Listing~\ref{lst:paint-method} presents part of
+a non-variant code responsible for painting graphical elements
 on the screen. Methods \emph{paintBeforeScrolling} and
 \emph{paintScolling} are introduced (by means of intertype declararions),
-and represent variation points that should be implemented as aspects for each 
-target device. To our knowledge, there is no approach for specifying that such methods must be called 
-within the \emph{paint} method and that they must be introduced by aspects. 
+and represent variation points that should be implemented as aspects for each
+target device. To our knowledge, there is no approach for specifying that such methods must be called
+within the \emph{paint} method and that they must be introduced by aspects.
 
 \scriptsize
 \begin{lstlisting}[frame=single, caption={Dependency of a base code to an aspect code.},label=lst:paint-method, numbers=left, language=Java]
