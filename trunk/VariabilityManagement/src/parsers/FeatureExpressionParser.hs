@@ -4,8 +4,16 @@ module FeatureExpressionParser where
 import Text.ParserCombinators.Parsec
 import qualified Text.ParserCombinators.Parsec.Token as P
 import Text.ParserCombinators.Parsec.Language( haskellStyle )
+import AbstractModel
+import UseCaseModel2Model
+import UseCaseModel
 
 import FeatureModel
+
+data ParseResult = 
+ ParseExpressionResult { expression :: FeatureExpression } |
+ ParseTransformationResult { transformations :: [Model2Model UseCaseModel] } | 
+ ParseError  { parseErrorMessage :: String }
 
 charWithoutSpace :: Char -> Parser Char
 charWithoutSpace c =  
@@ -14,7 +22,6 @@ charWithoutSpace c =
   	  skipMany space;
   	  return r
   	}	
-  	
   	
 --
 -- A simple parser for identifiers.
@@ -38,7 +45,8 @@ parseBinaryExp cons =
  do { 
  	  skipMany space; char '('; skipMany space;	
       exp1 <- parseExp;
-      char ',';
+      char ','; 
+      skipMany space;
       exp2 <- parseExp;
       skipMany space; char ')'; skipMany space;
       return (cons exp1 exp2)
@@ -54,7 +62,6 @@ parseNotExp =
  }    
 	   		 
 	   		 	
-
 -- 
 -- A parser for feature expressions.
 -- This parser recongnize strings with the followin
@@ -73,12 +80,34 @@ parseExp =
  do { try  (string "Not"); expression <- parseNotExp;                  return expression } <|> 
  do { skipMany space; id1 <- identifier; skipMany space;               return (FeatureRef id1) }
 
+--parseTransformationList  :: Parser [Model2Model UseCaseModel]
+--parseTransformationList = 
+-- do {
+-- 	char '['; functions <- parseTransformations [];  char ']'; return functions
+-- }
+-- 
+parseTransformations ::  Parser [Model2Model UseCaseModel]
+parseTransformations = 
+ do { char '['; list <- sepBy1 parseTransformation separator; char ']'; return list}
+ 
+separator :: Parser ()
+separator = skipMany1 (space <|> char ',') 
+ 
+parseTransformation :: Parser (Model2Model UseCaseModel) 
+parseTransformation = 
+ do { try (string "addScenarios"); char '('; id1 <- identifier; char ')'; return (ConsM2MType1 (addScenariosM2M [id1]))}
 
-featureExpressionParser :: String -> FeatureExpression
+featureExpressionParser :: String -> ParseResult
 featureExpressionParser str = 
  case (parse parseExp " " str) of
-  Left err -> error (show err)
-  Right x -> x   
+  Left err -> ParseError (show err)
+  Right x -> ParseExpressionResult x   
+  
+transformationParser :: String -> ParseResult
+transformationParser str = 
+ case (parse parseTransformations " " str) of
+  Left err -> ParseError (show err)
+  Right x -> ParseTransformationResult x     
 
 run :: Show a => Parser a -> String -> IO ()
 run p input = 
