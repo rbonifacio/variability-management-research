@@ -632,7 +632,7 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkButton" id="buttonFeatureExpressionCheck">
+		    <widget class="GtkButton" id="checkFeatureExpButton">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
 		      <property name="label">gtk-spell-check</property>

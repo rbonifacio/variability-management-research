@@ -9,62 +9,118 @@ import Graphics.UI.Gtk.ModelView as New
 import Text.XML.HXT.Arrow
 import System.Environment
 
+import FeatureExpressionParser
+
 import XmlUseCaseParser
 import XmlFeatureModel
 import XmlFeatureParser
 
 data UseCaseDocument = UseCaseDocument { path :: String }
 data ConfigurationData = ConfigurationData { expressionData :: String , transformationData :: String }
--- data CKData = CKData { listOfConfigurationData :: [ConfigurationData] } 
-
+ 
 main :: IO ()
 main = do
   initGUI
   
+  -- sets the glade file reference.
+  -- with this reference, we can access the window widgets
   Just xml <- xmlNew "vm.glade"  
   
+  -- the main window of our application
+  -- when the main window is closed, the application finishes.
   window   <- xmlGetWidget xml castToWindow "mainWindow"
   onDestroy window mainQuit
   
+  -- the configuration knowledge window
+  -- this window is used for creating new configuration models; and
+  -- for previewing existing ones.
   ckWindow   <- xmlGetWidget xml castToWindow "ckWindow";
-  -- onDelete ckWindow widgetHideAll ckWindow
-  
+
+  -- list used for rendering which use case documents 
+  -- have been added into the build process. 
+  -- this list is presented in the main window.
   useCaseList <- xmlGetWidget xml castToTreeView "useCasesList"
   useCaseStore <- createUseCaseStore
   New.treeViewSetModel useCaseList useCaseStore
   setupUseCaseView useCaseList useCaseStore
   
+  -- list used for rendering configurations, which means 
+  -- each entry of the configuration knowledge.
+  -- this list (or tree view with a table format) is presented in the ck window
   ckList <- xmlGetWidget xml castToTreeView "ckList"
   ckStore <- createCKStore
   New.treeViewSetModel ckList ckStore
   setupCKView ckList ckStore
   
-  
+  -- the entry used for handling the selected feature model.
   featureModelEntry <- xmlGetWidget xml castToEntry "featureModelEntry"
-   
+  
+  -- the entry used for handling feature expressions.
+  -- note: this entry is presented in the ck window
+  featureExpressionEntry <- xmlGetWidget xml castToEntry "featureExpressionEntry"
+  
+  -- the entry used for handling transformations
+  -- note: this entry is presented in the ck window
+  transformationListEntry <- xmlGetWidget xml castToEntry "transformationListEntry"
+  
+  -- the add use case button.
+  -- this button is used for allowing the user to select 
+  -- a new use case document as being part of the build process. 
   addUseCaseButton <- xmlGetWidget xml castToButton "addUseCaseButton"
   addUseCaseButton `onClicked` openSelectFileDialog useCaseStore window 
   
+  -- the select feture model button
+  -- this button is used for selecting the feature model 
+  -- used in the build process.
   selectFMButton <- xmlGetWidget xml castToButton "selectFeatureModelButton"
   selectFMButton `onClicked` openSelectFMDialog featureModelEntry window
   
+  -- the new configuration knowledge button
+  -- this button is used for allowing the user to create a new 
+  -- configuration model.
   newCKButton <- xmlGetWidget xml castToButton "newCKButton"
   newCKButton `onClicked` openNewCKDialog ckWindow
   
+  -- the cancel button
+  -- this button is used for canceling the build process, 
+  -- finishing the application.
   cancelButton <- xmlGetWidget xml castToButton "cancelButton"
   onClicked cancelButton $ do widgetDestroy window
   
-  featureExpressionEntry <- xmlGetWidget xml castToEntry "featureExpressionEntry"
-  transformationListEntry <- xmlGetWidget xml castToEntry "transformationListEntry"
-  
-   
+  -- the check feature expression button
+  -- this button is used for performing a spell checking 
+  -- in the feature expression entry. 
+  checkFeatureExpButton <- xmlGetWidget xml castToButton "checkFeatureExpButton" 
+  onClicked checkFeatureExpButton $ 
+   do expressionTxt  <- entryGetText featureExpressionEntry
+      let parseResult = featureExpressionParser expressionTxt
+      let message = case parseResult of 
+      		ParseResult x -> "Feature expression " ++ (show x) ++ " is correct"
+      		ParseError y -> "Error parsing feature expression... on" ++ y
+      messageDialog <- messageDialogNew (Just ckWindow) [] MessageInfo ButtonsClose message	
+      widgetShowAll messageDialog	
+      response <- dialogRun messageDialog
+      widgetHide messageDialog
+      
+
+  -- the add configuration button
+  -- this button is used for creating a new entry in the configuration 
+  -- model.    
   addCKButton <- xmlGetWidget xml castToButton "addCKButton"
   onClicked addCKButton $ 
-   do expressionTxt  <- entryGetText featureExpressionEntry
-      transformationTxt <- entryGetText transformationListEntry
-      let configData = ConfigurationData expressionTxt transformationTxt
-      New.listStorePrepend ckStore configData
-  
+   do	expressionTxt  <- entryGetText featureExpressionEntry
+      	transformationTxt <- entryGetText transformationListEntry
+      	case (checkConfiguration expressionTxt transformationTxt) of
+      		True -> do 	{
+      						New.listStorePrepend ckStore  (ConfigurationData expressionTxt transformationTxt)
+      					}	
+      		False -> do {
+      					 	dialog <- messageDialogNew (Just ckWindow) [] MessageInfo ButtonsClose "Both feature expression and transformations must be valid";
+      					 	widgetShowAll dialog;
+      					 	response <- dialogRun dialog;
+      					  	widgetHide dialog;
+  						}
+  					 
   buttonQuitCK <- xmlGetWidget xml castToButton "buttonQuitCK"
   onClicked buttonQuitCK $ do widgetHide ckWindow
   
@@ -79,6 +135,15 @@ main = do
       print (xmlFeature2Feature x)	  	  				
   widgetShowAll window   
   mainGUI
+
+-- Check if the new configuration is valid
+-- In order to do that, both feature expression and transformation 
+-- list must be well written.
+checkConfiguration :: String -> String -> Bool
+checkConfiguration e t = 
+ case featureExpressionParser e of
+ 	ParseResult x -> True
+ 	ParseError y -> False 
 
 --
 -- Action related to addUseCaseButton
