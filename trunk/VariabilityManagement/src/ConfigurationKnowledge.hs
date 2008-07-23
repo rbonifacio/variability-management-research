@@ -11,35 +11,33 @@ module ConfigurationKnowledge
  --(ConfigurationKnowledge, Configuration, Model2Model, buildConfiguration) 
 where
 
-import AbstractModel
+import ProductLineModel
 import FeatureModel
 
-type ConfigurationKnowledge model = [Configuration model]
+type ConfigurationKnowledge = [Configuration]
  
-data Configuration model = Configuration {
+data Configuration  = Configuration {
  expression :: FeatureExpression,
- transformations :: [Model2Model model] 	 
+ transformations :: [Model2Model] 	 
 }
 
-buildConfiguration :: (AbstractModel m) => m -> FeatureConfiguration -> ConfigurationKnowledge m -> m
-buildConfiguration im fc ck = applyAllTransformations im fc ck (emptyModel im) 
+buildConfiguration :: ProductLine -> FeatureConfiguration -> ConfigurationKnowledge -> ProductInstance
+buildConfiguration spl fc ck = applyAllTransformations spl ck (emptyInstance spl fc)
     
-applyAllTransformations im fc [] om = om
-applyAllTransformations im fc (x:xs) om = 
- let t = (transformations x) 
-  in if (eval fc (expression x)) 
-      then applyAllTransformations im fc xs (applyTransformations im fc t om) 
-      else applyAllTransformations im fc xs om
+applyAllTransformations spl [] productInstance = productInstance
+applyAllTransformations spl (x:xs) productInstance = 
+ let
+ 	f = (instanceConfiguration productInstance)
+ 	e = (expression x) 
+ 	t = (transformations x)
+   in if (eval f e) 
+      then applyAllTransformations spl xs (applyTransformations spl t productInstance) 
+      else applyAllTransformations spl xs productInstance
  
-applyTransformations :: (AbstractModel m) => m -> FeatureConfiguration -> [Model2Model m] -> m -> m
-applyTransformations im fc [] om = om
-applyTransformations im fc (x:xs) om = 
- case x of 
-  (ConsM2MType0 _) -> applyTransformations im fc xs (fnModel0 (x) om)
-  (ConsM2MType1 _) -> applyTransformations im fc xs (fnModel1 (x) im om)
-  (ConsM2MType2 _) -> applyTransformations im fc xs (fnModel2 (x) fc om)
-  (ConsM2MType3 _) -> applyTransformations im fc xs (fnModel3 (x) fc im om) 
-
+applyTransformations :: ProductLine -> [Model2Model] -> ProductInstance -> ProductInstance
+applyTransformations spl [] productInstance = productInstance
+applyTransformations spl (x:xs) productInstance = applyTransformations spl xs (x spl productInstance)
+  
 
 
 

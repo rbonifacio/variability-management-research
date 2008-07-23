@@ -7,31 +7,50 @@ import BasicTypes
 import UseCaseModel
 import AspectualUseCaseModel
 import FeatureModel
+import ProductLineModel
 import List
 
 
-addScenariosM2M :: [Id] -> UseCaseModel -> UseCaseModel -> UseCaseModel
-addScenariosM2M ids input output = 
- let ins = ucmScenarios input
-     outUseCases = useCases output
-     name = ucmName output
-   in UCM name (addUseCaseM2M input output  [s | s <- ins, exists (scenarioId s) ids])
-
-bindParametersM2M :: Name -> Id -> FeatureConfiguration -> UseCaseModel -> UseCaseModel
-bindParametersM2M pName feature  fc  output = 
+addScenariosM2M :: [Id] -> ProductLine -> ProductInstance -> ProductInstance
+addScenariosM2M ids spl productInstance = 
  let 
-   f = findFeatureFromConfiguration fc feature
-   name = ucmName output
- in 
-   if isNothing f then error "..."
-   else UCM name (bindUseCasesParametersM2M pName (fromJust f) [uc | uc <- useCases output])
+ 	inputUCM = splUseCaseModel spl
+ 	outputUCM = instanceUseCaseModel productInstance
+	ins = ucmScenarios inputUCM
+	outUseCases = useCases outputUCM
+	name = ucmName outputUCM
+   in 
+    productInstance { 
+   	 instanceUseCaseModel = UCM name (addUseCaseM2M inputUCM outputUCM  [s | s <- ins, exists (scenarioId s) ids])
+   	}
 
-evaluateAspectM2M :: AspectualUseCase -> UseCaseModel -> UseCaseModel
-evaluateAspectM2M aspect output = 
+bindParametersM2M :: Name -> Id -> ProductLine -> ProductInstance -> ProductInstance
+bindParametersM2M pName feature  spl productInstance = 
+ let 
+   fc = instanceConfiguration productInstance
+   outputUCM = instanceUseCaseModel productInstance
+   ft = findFeatureFromConfiguration fc feature
+   name = ucmName outputUCM
+ in 
+   if isNothing ft then error "..."
+   else 
+    productInstance {
+   	 instanceUseCaseModel = UCM name (bindUseCasesParametersM2M pName (fromJust ft) [uc | uc <- useCases outputUCM])
+   	}
+
+-- TODO: devemos passar o nome do aspecto.
+-- dessa forma, eh necessario recuperar o aspecto 
+-- no modelo de caso de uso da linha de produto 
+evaluateAspectM2M :: AspectualUseCase -> ProductLine -> ProductInstance -> ProductInstance
+evaluateAspectM2M aspect spl productInstance = 
  let
+   outputUCM = instanceUseCaseModel productInstance	
    adviceList = advices aspect
-   name = ucmName output
- in UCM name (evaluateAdvices output [advice | advice <- adviceList])
+   name = ucmName outputUCM
+ in 
+  productInstance {
+  	instanceUseCaseModel = UCM name (evaluateAdvices outputUCM [advice | advice <- adviceList])
+  }
  
 evaluateAdvices :: UseCaseModel -> [Advice] -> [UseCase] 
 evaluateAdvices ucm [] = useCases ucm 

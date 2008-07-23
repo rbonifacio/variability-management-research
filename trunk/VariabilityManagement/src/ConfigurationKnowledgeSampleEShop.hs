@@ -1,6 +1,5 @@
 module ConfigurationKnowledgeSampleEShop where
 
-import AbstractModel
 import ConfigurationKnowledge
 import FeatureModel
 import UseCaseModel
@@ -20,11 +19,11 @@ exp5 = FeatureRef "FEA-16" -- ship Method
 
 -- Configurations that relate a feature expression with 
 -- a set of model2model functions
-conf0 = Configuration exp0 [(ConsM2MType1 (addScenariosM2M ["1"]))]
-conf1 = Configuration exp1 [(ConsM2MType0 (evaluateAspectM2M aucShoppingCart))]
-conf2 = Configuration exp3 [(ConsM2MType0 (evaluateAspectM2M aucBasicFlow))]
-conf3 = Configuration exp2 [(ConsM2MType0 (evaluateAspectM2M aucUpdatePreferences))]
-conf4 = Configuration exp5 [(ConsM2MType2 (bindParametersM2M "ShipMethod" shipMethod))]
+conf0 = Configuration exp0 [(addScenariosM2M ["1"])]
+conf1 = Configuration exp1 [(evaluateAspectM2M aucShoppingCart)]
+conf2 = Configuration exp3 [(evaluateAspectM2M aucBasicFlow)]
+conf3 = Configuration exp2 [(evaluateAspectM2M aucUpdatePreferences)]
+conf4 = Configuration exp5 [(bindParametersM2M "ShipMethod" (fId shipMethod))]
 
 ck01 = [conf0,conf1, conf2, conf3, conf4]
 
