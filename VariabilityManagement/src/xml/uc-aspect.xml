@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<useCaseModel name="user-view.target.v20071129">
+		<useCase>
+			<id>UC_01</id>
+			<name>Opening TaRGeT</name>
+			<description>This use case describes how the TaRGeT should behave when it is started up.</description>
+			
+			<flow>
+				<description>Start up the TaRGeT.</description>
+				<fromSteps>START</fromSteps>
+				<toSteps>END</toSteps>
+				<step>
+					<stepId>1M</stepId>
+					<action>Start the TaRGeT.</action>
+					<condition>The .NET and Java runtime environment are installed in the machine (see requirements for further information about Java and .NET versions) [ER_TARGET_0015, ER_TARGET_0020, ER_TARGET_0025]</condition>
+					<response>A splash screen is displayed. Verify the requirements document to check the splash screen. [FR_TARGET_0220]</response>
+				</step>
+				<step>
+					<stepId>2M</stepId>
+					<action>Wait some seconds.</action>
+					<condition/>
+					<response>The TaRGeT is started. No TaRGeT project is opened. A background image is displayed (see requirements document for more details). [FR_TARGET_0225]</response>
+				</step>
+			</flow>
+			<flow>
+				<description>The .NET runtime environment is not installed in the machine.</description>
+				<fromSteps>START</fromSteps>
+				<toSteps>END</toSteps>
+				<step>
+					<stepId>1A</stepId>
+					<action>Try to start the TaRGeT.</action>
+					<condition>Java runtime environment is installed in the machine. The .NET runtime environment is not installed in the machine (see requirements for further information about Java and .NET versions). [ER_TARGET_0020, ER_TARGET_0025]</condition>
+					<response>A message is displayed informing that an error has occurred and asking the user to see the log file. [FR_TARGET_0230]</response>
+				</step>
+			</flow>
+			<flow>
+				<description>The Java runtime environment is not installed in the machine.</description>
+				<fromSteps>START</fromSteps>
+				<toSteps>END</toSteps>
+				<step>
+					<stepId>1B</stepId>
+					<action>Try to start the TaRGeT.</action>
+					<condition>The Java runtime environment is not installed in the machine (see requirements for further information about Java version). [ER_TARGET_0020]</condition>
+					<response>A message is displayed informing that no JRE is installed. The TaRGeT is not started up. [FR_TARGET_0230]</response>
+				</step>
+			</flow>
+		</useCase>
+		
+		<aspect>
+			<name>Aspect 01</name>
+			<advice type="before">
+				<pointcut>2M</pointcut>
+				<flow>
+					<description>The Java runtime environment is not installed in the machine.</description>
+					<fromSteps>START</fromSteps>
+					<toSteps>END</toSteps>
+					<step>
+						<stepId>1AS</stepId>
+						<action>-</action>
+						<condition>-</condition>
+						<response>A message is logged</response>
+					</step>
+				</flow>		
+			</advice>
+		</aspect>
+		
+</useCaseModel>

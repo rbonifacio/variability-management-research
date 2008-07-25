@@ -56,6 +56,6 @@ xmlFunction2Function (x:xs) =
 --transformation2XmlFunction [] = []
 --transformation2XmlFunction (x:xs) = 
 -- case x of 
---  ConsM2MType1 a -> 
+--  ConsM2MType1 -> fn 
 --   case a of 
 --    addScenariosM2M  ->  XmlFunction { fName = "addScenarios", fArgs = (replaceElement ' ' ',' (unwords ids))}
