@@ -21,6 +21,7 @@ import Maybe
 import BasicTypes
 import AbstractModel
 
+
 -- import FeatureModel
 -- import Environment 
 
@@ -40,7 +41,8 @@ type Annotation = String
 -- A use case is a group of close related scenarios
 data UseCaseModel = UCM {
 	 	ucmName :: Name,  
-	 	useCases :: [UseCase]
+	 	useCases :: [UseCase],
+	 	aspects :: [AspectualUseCase]
 	 }
 	 deriving (Show)
 
@@ -73,6 +75,22 @@ data Step = Step {
 	 
 data StepRef = IdRef Id | AnnotationRef String
 	 deriving (Show)
+	 
+data AspectualUseCase = AspectualUseCase {
+		aspectName :: Name,
+		advices :: [Advice]
+	} 
+	deriving(Show)
+	
+
+data Advice = 
+ BeforeAdvice {pointCut :: [StepRef], aspectualScenario :: Scenario}  | 
+ AfterAdvice { pointCut :: [StepRef], aspectualScenario :: Scenario }
+ deriving(Show) 
+
+isBeforeAdvice :: Advice -> Bool
+isBeforeAdvice (BeforeAdvice _ _) = True
+isBeforeAdvice (AfterAdvice _ _) = False 	 
 	 
 stepListIds :: StepList -> [String]
 stepListIds l = [stepId x | x <- l]
@@ -238,7 +256,5 @@ instance Eq UseCase where
 instance Show Step where
  show (Step i _ action state response _)  = i  ++ " " ++ action ++ " " ++ state ++ response 
  
-instance AbstractModel UseCaseModel where
- emptyModel (ucm) = 
-  let name = ucmName ucm in UCM name [] 
+
  
