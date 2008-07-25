@@ -5,7 +5,6 @@ where
 import Maybe
 import BasicTypes
 import UseCaseModel
-import AspectualUseCaseModel
 import FeatureModel
 import ProductLineModel
 import List
