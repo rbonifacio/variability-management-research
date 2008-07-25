@@ -11,7 +11,13 @@ instance XmlPickler XmlUseCaseModel where
 
 instance XmlPickler XmlUseCase where
 	xpickle = xpUseCase
+	
+instance XmlPickler XmlAspectualUseCase where 
+	xpickle = xpAspectualUseCase	
 
+instance XmlPickler XmlAdvice where 
+	xpickle = xpAdvice
+		
 instance XmlPickler XmlScenario where 
  	xpickle = xpScenario
 
@@ -28,14 +34,26 @@ uncurry5 fn (a, b, c, d, e) = fn a b c d e
 xpUseCaseModel :: PU XmlUseCaseModel
 xpUseCaseModel =
 	xpElem "useCaseModel" $
-	xpWrap ( uncurry XmlUCM, \ (XmlUCM n ucs) -> (n, ucs) ) $
-	xpPair ( xpAttr "name" xpText ) ( xpList xpUseCase )
+	xpWrap ( uncurry3 XmlUCM, \ (XmlUCM n ucs aspect) -> (n, ucs, aspect) ) $
+	xpTriple ( xpAttr "name" xpText ) ( xpList xpUseCase )  ( xpList xpAspectualUseCase )
 
 xpUseCase :: PU XmlUseCase
 xpUseCase =
 	xpElem "useCase" $
 	xpWrap ( uncurry4 XmlUseCase, \ (XmlUseCase i n d s) -> (i, n, d, s) ) $
 	xp4Tuple (xpElem "id" xpText) (xpElem "name" xpText) (xpElem "description" xpText) (xpList xpScenario)
+
+xpAspectualUseCase :: PU XmlAspectualUseCase
+xpAspectualUseCase = 
+	xpElem "aspect"	$
+	xpWrap ( uncurry XmlAspectualUseCase, \ (XmlAspectualUseCase n a) -> (n,a) ) $
+	xpPair (xpElem "name" xpText) (xpList xpAdvice)	
+
+xpAdvice :: PU XmlAdvice
+xpAdvice = 
+	xpElem "advice" $
+	xpWrap ( uncurry3 XmlAdvice, \ (XmlAdvice t p a) -> (t, p, a) )	$
+	xpTriple (xpAttr "type" xpText) (xpElem "pointcut" xpText) (xpScenario)
 
 --
 -- In the current UseCase xml document, scenarios have no id.

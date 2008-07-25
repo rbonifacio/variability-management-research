@@ -37,11 +37,12 @@ main = do
 					, (a_trace, v_1)
 					, (a_remove_whitespace,v_1)
 					, (a_preserve_comment, v_0)
-					] "completo.xml" )
+					] "uc-aspect.xml" ) --"completo.xml" )
 	[y] <-  runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
 					, (a_trace, v_1)
 					, (a_remove_whitespace,v_1)
 					, (a_preserve_comment, v_0)
-					] "feature-model.xml" )				
-	print x
+					] "feature-model.xml" )	
+	let ucm = xmlUseCaseModel2UseCaseModel x							
+	print (ucm)
 	print y				
