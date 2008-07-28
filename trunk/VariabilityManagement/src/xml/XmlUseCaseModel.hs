@@ -24,12 +24,13 @@ data XmlUseCase = XmlUseCase Id Name Description XmlScenarioList
      deriving (Show)
      
 data XmlAspectualUseCase = XmlAspectualUseCase { 
+	xmlAspectId 	  :: Id, 
  	xmlAspectName :: Name,
  	xmlAdvices :: [XmlAdvice] 
  }     
  deriving (Show)
      
-data XmlScenario = XmlScenario Description XmlFromStep XmlToStep XmlStepList
+data XmlScenario = XmlScenario Id Description XmlFromStep XmlToStep XmlStepList
 	 deriving (Show)
 
 data XmlAdvice = XmlAdvice {
@@ -48,14 +49,14 @@ xmlUseCaseModel2UseCaseModel (XmlUCM name xmlUseCases xmlAspects) =
 	    [xmlUseCase2UseCase xmlUseCase | xmlUseCase <- xmlUseCases] 
 	    [xmlAspectualUseCase2AspectualUseCase xmlAspect | xmlAspect <- xmlAspects]
 
--- TODO: Note that all scenarios have the same id
 xmlUseCase2UseCase :: XmlUseCase -> UseCase
 xmlUseCase2UseCase (XmlUseCase i n d xmlScenarios) = 
- UseCase  i n  d [(xmlScenario2Scenario ("SC-") xmlScenario) | xmlScenario <- xmlScenarios] 
+ UseCase  i n  d [(xmlScenario2Scenario xmlScenario) | xmlScenario <- xmlScenarios] 
 
 xmlAspectualUseCase2AspectualUseCase :: XmlAspectualUseCase -> AspectualUseCase
 xmlAspectualUseCase2AspectualUseCase xmlAspect = 
  AspectualUseCase {
+ 	aspectId = (xmlAspectId xmlAspect),
  	aspectName = (xmlAspectName xmlAspect),
  	advices = [xmlAdvice2Advice xmlAdvice | xmlAdvice <- (xmlAdvices xmlAspect)]
  }
@@ -63,7 +64,7 @@ xmlAspectualUseCase2AspectualUseCase xmlAspect =
 xmlAdvice2Advice :: XmlAdvice -> Advice
 xmlAdvice2Advice xmlAdvice = 
  let 
- 	sc = xmlScenario2Scenario "" (xmlAdviceScenario xmlAdvice) -- TODO: what should be the id of an aspectual scenario?
+ 	sc = xmlScenario2Scenario (xmlAdviceScenario xmlAdvice) 
  	refs = xmlStepRefs2StepRefs (xmlPointcut xmlAdvice)
  	fn = case (xmlAdviceType xmlAdvice) of 
  			"before" -> BeforeAdvice 
@@ -74,10 +75,10 @@ xmlAdvice2Advice xmlAdvice =
 -- the string parameter was required because the UseCase xml document 
 -- has no element "id" for scenarios.
 -- 
-xmlScenario2Scenario :: String -> XmlScenario -> Scenario
-xmlScenario2Scenario s (XmlScenario description fromSteps toSteps steps) = 
+xmlScenario2Scenario :: XmlScenario -> Scenario
+xmlScenario2Scenario (XmlScenario sid description fromSteps toSteps steps) = 
  scenario where 
- scenario = Scenario s 
+ scenario = Scenario sid 
  			 		description 
  			 		(xmlStepRefs2StepRefs fromSteps) 
  			 		[xmlStep2Step scenario step | step <- steps] 

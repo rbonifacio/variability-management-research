@@ -46,8 +46,8 @@ xpUseCase =
 xpAspectualUseCase :: PU XmlAspectualUseCase
 xpAspectualUseCase = 
 	xpElem "aspect"	$
-	xpWrap ( uncurry XmlAspectualUseCase, \ (XmlAspectualUseCase n a) -> (n,a) ) $
-	xpPair (xpElem "name" xpText) (xpList xpAdvice)	
+	xpWrap ( uncurry3 XmlAspectualUseCase, \ (XmlAspectualUseCase i n a) -> (i, n,a) ) $
+	xpTriple (xpElem "id" xpText) (xpElem "name" xpText) (xpList xpAdvice)	
 
 xpAdvice :: PU XmlAdvice
 xpAdvice = 
@@ -62,8 +62,12 @@ xpAdvice =
 xpScenario :: PU XmlScenario
 xpScenario = 
 	xpElem "flow" $
-	xpWrap ( uncurry4 XmlScenario, \ (XmlScenario d f t s) -> (d, f, t, s) ) $
-	xp4Tuple (xpElem "description" xpText ) (xpElem "fromSteps" xpText) (xpElem "toSteps" xpText) (xpList xpStep) 
+	xpWrap ( uncurry5 XmlScenario, \ (XmlScenario i d f t s) -> (i, d, f, t, s) ) $
+	xp5Tuple (xpElem "id" xpText )
+			 (xpElem "description" xpText ) 
+			 (xpElem "fromSteps" xpText) 
+			 (xpElem "toSteps" xpText) 
+			 (xpList xpStep) 
 
 xpStep :: PU XmlStep 
 xpStep = 
