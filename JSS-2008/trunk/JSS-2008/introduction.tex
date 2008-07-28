@@ -9,27 +9,32 @@ Aspect-Oriented Programming (AOP)~\cite{kiczales-ecoop-1997} has
 been proposed as a technique for modularizing crosscutting concerns.
 Logging, distribution, tracing, security, and transactional
 management are accepted as examples of crosscutting concerns well
-addressed by AOP. Yet, AOP seems to produce modularity problems,
-because in order to reason about classes it is necessary to consider
-all aspects implementations.
+addressed by AOP. Yet, AOP seems to produce modularity problems. In
+this context, several authors argue that in order to reason about
+classes it is necessary to consider all aspects
+implementations~\cite{sullivan-sigsoft-2005, leavens-observers-2002,
+steiman-sigplan-2006}.
 
 In fact, by referring to classes implementation details in aspects,
-one can inhibit modular reasoning, requiring class modifications to
-be fully aware of the aspects affecting the class. Therefore,
-constructs aimed to support \emph{crosscutting modularity} might
-actually break \emph{class modularity}~\cite{ribeiro-sbes-07}. In
-the presence of aspects, class modularity is compromised because,
-when evolving a class, it might be necessary to analyze the
-implementation of existing aspects, instead of analyzing only the
-class and the interface of other referred classes.
+one can inhibit modular reasoning and compromise the changeability,
+requiring class modifications to be fully aware of the aspects
+affecting the class. Therefore, constructs aimed to support
+\emph{crosscutting modularity} might actually break \emph{class
+modularity}~\cite{ribeiro-sbes-07}. In the presence of aspects,
+class modularity is compromised because, when evolving a class, it
+might be necessary to analyze the implementation of existing
+aspects, instead of analyzing only the class and the interface of
+other referred classes.
 
 This weakness can be mitigated by using adequate Design Rules
-between classes and aspects, which are necessary to reduce such new
-dependencies in AO systems. Design rules are not just guidelines and
-recommendations: they generalize the notion of information hiding
-interfaces and must be rigorously obeyed.
+(Section~\ref{sec:software-modularity}) between classes and aspects,
+which are necessary to reduce such new dependencies in AO systems.
+Design rules are not just guidelines and recommendations: they
+generalize the notion of information hiding interfaces and must be
+rigorously obeyed.
 
-The use of Design Rules has been discussed in other works~\cite{}
+The use of Design Rules has been discussed in other
+works~\cite{sullivan-fse-2005, vlopes-aosd-2005, lopes-taosd-2006}
 but none of these works propose a final solution where they can be
 described in an unambiguous manner and utilized not only for
 checking but as a guideline for developers since the initial phases
@@ -37,12 +42,14 @@ of the development process.
 
 The main contribution of this paper is a Design Rule specification
 language (Section~\ref{sec:drlang}) that improves the modularity of
-AO systems. This language defines a more modular design to decouple
+AO systems. This language supports a more modular design to decouple
 classes and aspects through the establishment of the minimum
-requirements necessary to work in parallel. These requirements are
-checked statically. Beyond all the advantages cited so far, the
-usage of a specific language for this purpose brings the following
-advantages:
+requirements necessary to work in parallel. For instance, the
+language allows designers to write the (un)expected join points and
+to define the responsibilities of both class and aspect developers.
+These requirements are checked statically. Beyond all the advantages
+cited so far, the usage of a specific language for this purpose
+brings the following advantages:
 
 \begin{itemize}
 
