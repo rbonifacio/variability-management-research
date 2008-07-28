@@ -77,6 +77,7 @@ data StepRef = IdRef Id | AnnotationRef String
 	 deriving (Show)
 	 
 data AspectualUseCase = AspectualUseCase {
+		aspectId :: Id,
 		aspectName :: Name,
 		advices :: [Advice]
 	} 

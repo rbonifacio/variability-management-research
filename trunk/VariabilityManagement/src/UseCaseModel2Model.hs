@@ -17,10 +17,12 @@ addScenariosM2M ids spl productInstance =
  	outputUCM = instanceUseCaseModel productInstance
 	ins = ucmScenarios inputUCM
 	outUseCases = useCases outputUCM
-	name = ucmName outputUCM
+	rName = ucmName outputUCM
+	rUseCases = addUseCaseM2M inputUCM outputUCM  [s | s <- ins, exists (scenarioId s) ids]
+	rAspects = aspects outputUCM
    in 
     productInstance { 
-   	 instanceUseCaseModel = UCM name (addUseCaseM2M inputUCM outputUCM  [s | s <- ins, exists (scenarioId s) ids])
+   	 instanceUseCaseModel = UCM rName rUseCases rAspects
    	}
 
 bindParametersM2M :: Name -> Id -> ProductLine -> ProductInstance -> ProductInstance
@@ -28,14 +30,18 @@ bindParametersM2M pName feature  spl productInstance =
  let 
    fc = instanceConfiguration productInstance
    outputUCM = instanceUseCaseModel productInstance
-   ft = findFeatureFromConfiguration fc feature
-   name = ucmName outputUCM
+   ft = findFeatureFromConfiguration fc feature   
  in 
    if isNothing ft then error "..."
    else 
-    productInstance {
-   	 instanceUseCaseModel = UCM name (bindUseCasesParametersM2M pName (fromJust ft) [uc | uc <- useCases outputUCM])
-   	}
+   	let
+   	 rName = ucmName outputUCM 
+   	 rUseCases = bindUseCasesParametersM2M pName (fromJust ft) [uc | uc <- useCases outputUCM]
+   	 rAspects = aspects outputUCM 
+   	in 
+     productInstance { 
+   	  instanceUseCaseModel = UCM  rName rUseCases rAspects     	  	  
+   	 }
 
 -- TODO: devemos passar o nome do aspecto.
 -- dessa forma, eh necessario recuperar o aspecto 
@@ -45,10 +51,12 @@ evaluateAspectM2M aspect spl productInstance =
  let
    outputUCM = instanceUseCaseModel productInstance	
    adviceList = advices aspect
-   name = ucmName outputUCM
+   rName = ucmName outputUCM
+   rUseCases = evaluateAdvices outputUCM [advice | advice <- adviceList]
+   rAspects = aspects outputUCM
  in 
   productInstance {
-  	instanceUseCaseModel = UCM name (evaluateAdvices outputUCM [advice | advice <- adviceList])
+  	instanceUseCaseModel = UCM rName rUseCases rAspects
   }
  
 evaluateAdvices :: UseCaseModel -> [Advice] -> [UseCase] 
@@ -141,9 +149,10 @@ addOrUpdateUseCaseM2M uc ucm sc =
      oucId = ucId uc 
      oucName = ucName uc 
      oucDescription = ucDescription uc
+     
   in if (isNothing ouc) 
-   then UCM (ucmName ucm) (ucs ++ [UseCase oucId oucName oucDescription [sc]]) 
-   else UCM (ucmName ucm) ((delete (fromJust ouc) ucs) ++ [UseCase oucId oucName oucDescription (ucScenarios (fromJust ouc) ++ [sc])])
+   then UCM (ucmName ucm) (ucs ++ [UseCase oucId oucName oucDescription [sc]]) (aspects ucm) 
+   else UCM (ucmName ucm) ((delete (fromJust ouc) ucs) ++ [UseCase oucId oucName oucDescription (ucScenarios (fromJust ouc) ++ [sc])]) (aspects ucm)
    
    
    
