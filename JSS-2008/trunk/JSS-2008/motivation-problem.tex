@@ -355,27 +355,27 @@ the benefit of parallel development is frequently not considered, even after
 Parnas claimed that modularity is more than program structure. Actually,
 his view regarding modularity is related to the assignment of development
 activities, which, of course, may be reflected in the program
-structure~\cite{parnas-icse-03}.
+structure~\cite{parnas-icse-03}. A similar view of modularity was presented by Baldwin and
+Clark~\cite{clark-design-rules-book},  since they
+reported that a modular design reduces the communication paths among
+design decisions, in such a way that unities of work can be developed
+in parallel.
 
-\begin{quote}\emph{
-My early work clearly treated modularization as a design
-issue, not a language issue. A module was a work assignment,
-not a subroutine or other language element. Although
-some tools could make the job easier, no special tools were
-needed to use the principal, just discipline and skill.}
-(D. Parnas)
-\end{quote}
+% \begin{quote}\emph{
+% My early work clearly treated modularization as a design
+% issue, not a language issue. A module was a work assignment,
+% not a subroutine or other language element. Although
+% some tools could make the job easier, no special tools were
+% needed to use the principal, just discipline and skill.}
+% (D. Parnas)
+% \end{quote}
 
 
 % include the parnas review of modularity
 % read a bit more about the steimann discussion on AOP modularity
 % we need a clear interface for both aspect and base code....
 
-A similar view of modularity was presented by Baldwin and
-Clark~\cite{clark-design-rules-book},  since they
-reported that a modular design reduces the communication paths among
-design decisions, in such a way that unities of work can be developed
-in parallel.
+
 
 For instance, suppose that a team is responsible for developing
 the use cases related to the \emph{complaint management} concern (a core concern
@@ -424,75 +424,78 @@ implementation -- a clear example of non modular design.
 \label{dsm:hw01}
 \end{figure}
 
-Now, let's look at the source code of this example. Listing~\ref{lst:complaint-repository}
-illustrates the ComplaintRepository class. Suppose that the auditing concern must be
-triggered when inserting, removing, updating, or searching for a complaint.
+% Now, let's look at the source code of this example. Listing~\ref{lst:complaint-repository}
+% illustrates the ComplaintRepository class. Suppose that the auditing concern must be
+% triggered when inserting, removing, updating, or searching for a complaint.
+% 
+% \scriptsize
+% \begin{lstlisting}[frame=single, caption={Complaint Repository implementation.},label=lst:complaint-repository, language=Java]
+% public class ComplaintRepository implements IComplaintRepository {
+% 
+%     public int insert(Complaint c) throws RepositoryException,
+%             ObjectAlreadyInsertedException {
+% 
+%     }
+% 
+%     public void update(Complaint c) throws RepositoryException,
+%             ObjectNotFoundException {
+% 
+%     }
+% 
+%     public void remove(int id) throws RepositoryException,
+%             ObjectNotFoundException {
+% 
+%     }
+% 
+%     public Complaint search(int id) throws RepositoryException,
+%             ObjectNotFoundException {
+% 
+%     }
+% 
+% }
+% \end{lstlisting}
+% \normalsize
+% 
+% Remember that two teams are working in parallel without design rules: the first one
+% works on the base code (ComplaintRepository) and the second one
+% works on the auditing concern. Such a concern is implemented as an
+% aspect (Listing~\ref{lst:auditing-aspect}).
+% 
+% \scriptsize
+% \begin{lstlisting}[frame=single, caption={Auditing Aspect.},label=lst:auditing-aspect, language=Java]
+% public aspect AuditingAspect {
+% 
+%     pointcut auditWhen():
+%            execution(int ComplaintRepository.insert(Complaint)
+%         || execution(void ComplaintRepository.update(Complaint)
+%         || execution(void ComplaintRepository.remove(int)
+%         || execution(Complaint ComplaintRepository.search(int)
+% 
+%     after() returning(): auditWhen() {
+%         // audit code.
+%     }
+% 
+% }
+% \end{lstlisting}
+% \normalsize
+% 
+% In the meanwhile, when the teams are working on their
+% respective concerns, for some reason the team of the repository changed the following:
+% (i) the insert method now returns void instead of int; and (ii) the remove method
+% take as parameter a Complaint object instead of an id. Obviously, such changes might
+% break the aspects and the auditing concern will not work correctly.
 
-\scriptsize
-\begin{lstlisting}[frame=single, caption={Complaint Repository implementation.},label=lst:complaint-repository, language=Java]
-public class ComplaintRepository implements IComplaintRepository {
-
-    public int insert(Complaint c) throws RepositoryException,
-            ObjectAlreadyInsertedException {
-
-    }
-
-    public void update(Complaint c) throws RepositoryException,
-            ObjectNotFoundException {
-
-    }
-
-    public void remove(int id) throws RepositoryException,
-            ObjectNotFoundException {
-
-    }
-
-    public Complaint search(int id) throws RepositoryException,
-            ObjectNotFoundException {
-
-    }
-
-}
-\end{lstlisting}
-\normalsize
-
-Remember that two teams are working in parallel without design rules: the first one
-works on the base code (ComplaintRepository) and the second one
-works on the auditing concern. Such a concern is implemented as an
-aspect (Listing~\ref{lst:auditing-aspect}).
-
-\scriptsize
-\begin{lstlisting}[frame=single, caption={Auditing Aspect.},label=lst:auditing-aspect, language=Java]
-public aspect AuditingAspect {
-
-    pointcut auditWhen():
-           execution(int ComplaintRepository.insert(Complaint)
-        || execution(void ComplaintRepository.update(Complaint)
-        || execution(void ComplaintRepository.remove(int)
-        || execution(Complaint ComplaintRepository.search(int)
-
-    after() returning(): auditWhen() {
-        // audit code.
-    }
-
-}
-\end{lstlisting}
-\normalsize
-
-In the meanwhile, when the teams are working on their
-respective concerns, for some reason the team of the repository changed the following:
-(i) the insert method now returns void instead of int; and (ii) the remove method
-take as parameter a Complaint object instead of an id. Obviously, such changes might
-break the aspects and the auditing concern will not work correctly.
-
-This way, based on the information hiding principle, we should again encapsulate the
+Based on the information hiding principle, we should again encapsulate the
 dependencies between complaint and auditing concerns in a special kind
 of interface (a design rule).
 Applying design rules to this example, we improve the design structure
 by removing the cyclical dependencies between complaint and auditing concerns.
 The reviewed DSM is presented in Figure~\ref{dsm:hw02}. Notice that a new parameter
 (actually a design rule) was introduced (row 5) and all dependencies are bellow
-the main diagonal (there is no more cyclical dependencies).
+the main diagonal (there is no more cyclical dependencies). This design rule
+was proposed in order to improve the parallel development between class
+developers and aspect developers. Actually, it is responsible to
+establish contracts that define what is expected from both teams.
 
 \begin{figure}[htb]
 \centering
@@ -512,9 +515,7 @@ the main diagonal (there is no more cyclical dependencies).
 \label{dsm:hw02}
 \end{figure}
 
-In order to improve the parallel development between class developers and
-aspect developers, it would be necessary to establish contracts for defining what
-is expected from both teams. Existing works, such as \emph{Open Modules}~\cite{aldrich-ecoop-05},
+Existing works, such as \emph{Open Modules}~\cite{aldrich-ecoop-05},
 propose the use of interfaces for exposing \emph{joinpoints} in the base code, which, in fact,
 defines the responsibilities just for class developers, besides limiting the scope of advised code.
 Therefore, existing approaches do not offer mechanisms for describing the responsibilities of aspect developers.
@@ -525,28 +526,28 @@ of any behavior expected to be modularized as an aspect.
 % Acho que podemos tirar esse exemplo de jogos e colocar o código de auditing no exemplo acima
 % (ou seja, pegar o código da seção 5 e colocar aqui...)
 
-For instance, consider the implementation of a mobile
-game product line. Listing~\ref{lst:paint-method} presents part of
-a non-variant code responsible for painting graphical elements
-on the screen. Methods \emph{paintBeforeScrolling} and
-\emph{paintScolling} are introduced (by means of intertype declararions),
-and represent variation points that should be implemented as aspects for each
-target device. To our knowledge, there is no approach for specifying that such methods must be called
-within the \emph{paint} method and that they must be introduced by aspects.
-
-\scriptsize
-\begin{lstlisting}[frame=single, caption={Dependency of a base code to an aspect code.},label=lst:paint-method, numbers=left, language=Java]
- public void paint(Graphics g) {
-	Enemy myEnemy = null;
-	int i = 0;
-	int j = 0;
-	g.setClip(0, 0, Resources.CANVAS_WIDTH, Resources.CANVAS_HEIGHT);
-	paintBeforeScrolling(g);
-	if (this.scroll.isScrolling) {
-	 	paintScrolling(g);
-	} else if (!isGameOver){
-	 ...
-\end{lstlisting}
-
-\normalsize
+% For instance, consider the implementation of a mobile
+% game product line. Listing~\ref{lst:paint-method} presents part of
+% a non-variant code responsible for painting graphical elements
+% on the screen. Methods \emph{paintBeforeScrolling} and
+% \emph{paintScolling} are introduced (by means of intertype declararions),
+% and represent variation points that should be implemented as aspects for each
+% target device. To our knowledge, there is no approach for specifying that such methods must be called
+% within the \emph{paint} method and that they must be introduced by aspects.
+% 
+% \scriptsize
+% \begin{lstlisting}[frame=single, caption={Dependency of a base code to an aspect code.},label=lst:paint-method, numbers=left, language=Java]
+%  public void paint(Graphics g) {
+% 	Enemy myEnemy = null;
+% 	int i = 0;
+% 	int j = 0;
+% 	g.setClip(0, 0, Resources.CANVAS_WIDTH, Resources.CANVAS_HEIGHT);
+% 	paintBeforeScrolling(g);
+% 	if (this.scroll.isScrolling) {
+% 	 	paintScrolling(g);
+% 	} else if (!isGameOver){
+% 	 ...
+% \end{lstlisting}
+% 
+% \normalsize
 
