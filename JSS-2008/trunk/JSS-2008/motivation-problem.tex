@@ -135,8 +135,7 @@ AspectJ~\cite{kiczales-cacm-2001} like languages can produce high
 coupling between the base code and the aspects, which may compromise
 the aforementioned modular criteria. In this section, we illustrate
 this problem through some examples, which were primarily extracted from
-the Health Watcher system~\cite{soares-oopsla-02}, but also from a mobile
-game product line~\cite{a}.
+the Health Watcher system~\cite{soares-oopsla-02}.
 
 Health Watcher (HW) is a real web-based information system
 originally implemented in Java and restructured to use AspectJ
@@ -220,72 +219,75 @@ In this section, we present an example of unanticipated changes in the base code
 We aim at showing that, when unanticipated changes happens, the aspects might not
 work as presumed.
 
-Suppose the requirement of synchronizing (concurrency management) all methods of
-a class. Such a requirement consists of encompassing with synchronized blocks the
-method body of all of its methods. Listing~\ref{lst:ao-synchronizing} illustrates
-an implementation of this concern in AspectJ applied to the
-\emph{EmployeeRepository} class (implemented in the business layer of Health
-Watcher system, Figure~\ref{fig:hw-architecture}).
+Consider the transaction management concern, which requires that certain methods
+of the HW buisiness layer must deal with transactional behavior. The
+implementation of such a concern consists of encompassing these methods with
+transactional blocks. Listing~\ref{lst:ao-transaction} illustrates the source 
+code related to this concern in AspectJ.
 
 \scriptsize
-\begin{lstlisting}[frame=single, caption={Aspect responsible for implementing the concurrency concern.},label=lst:ao-synchronizing, language=Java]
-public aspect SynchronizationAspect {
+\begin{lstlisting}[frame=single, caption={Aspect responsible for implementing the transactional concern.},label=lst:ao-transaction, language=Java]
+public aspect TransactionAspect {
 
-    Object around(Object o): this(o)
-            && execution(* EmployeeRepository.*(..)) {
-        synchronized(o) {
-            return proceed(o);
-        }
-    }
-}
-\end{lstlisting}
-\normalsize
+    public pointcut transactionalMethods() : /* ... */
+ 
+	before() : transactionalMethods() {
+		persitentMechanism.beginTransaction();	    
+	}
 
-Now, suppose a new feature intended to count the number of employees
-registered in a given profile. Such a feature might be implemented as
-a new method in the \emph{EmployeeRepository} class
-(Listing~\ref{lst:new-method}).
+	after() : transactionalMethods() {
+		persistentMechanism.commitTransaction();
+	}
 
-\scriptsize
-\begin{lstlisting}[frame=single, caption={A new method for counting the number of Employees.},label=lst:new-method, language=Java]
-public class EmployeeRepository {
-
-    public void insertEmployee(Employee employee) { ... }
-
-    public void removeEmployee(Employee employee) { ... }
-
-    public int getNumberOfEmployees(Profile profile) {
-        // Business logic to count the number of Employees
-    }
+	after() throwing : transactionalMethods() {
+		persistentMechanism.rollBack();
+	}
 
 }
 \end{lstlisting}
+
 \normalsize
 
-If a class developer oblivious about the
-\emph{SynchronizationAspect} aspect decides to implement the
-\emph{getNumberOfEmployees} method, at least three problems can
-occur:
+% Now, suppose a new feature intended to count the number of employees
+% registered in a given profile. Such a feature might be implemented as
+% a new method in the \emph{EmployeeRepository} class
+% (Listing~\ref{lst:new-method}).
+% 
+% \scriptsize
+% \begin{lstlisting}[frame=single, caption={A new method for counting the number of Employees.},label=lst:new-method, language=Java]
+% public class EmployeeRepository {
+% 
+%     public void insertEmployee(Employee employee) { ... }
+% 
+%     public void removeEmployee(Employee employee) { ... }
+% 
+%     public int getNumberOfEmployees(Profile profile) {
+%         // Business logic to count the number of Employees
+%     }
+% 
+% }
+% \end{lstlisting}
+% \normalsize
+
+If a class developer {\bf is} oblivious about the
+\emph{TransactionAspect} aspect decides to implement a 
+new transactional method (\emph{newMethod()}), at least two 
+problems might occur:
 
 \begin{enumerate}
 
-    \item the \emph{getNumberOfEmployees} method created by the class
-    developer might not need concurrency management, but it will be
-    synchronized by the aspect;
+    \item if the method created by the class does not implement the
+    transactional block and does not expose the join point matched by the 
+    \emph{transactionalMethod()} pointcut, the method will not work 
+    as being a transactional behavior;
 
     \item if the class developer, oblivious about the aspect,
-    implements concurrency management in the \emph{getNumberOfEmployees} method,
-    such a method would be synchronized twice; and
-
-    \item depending on how the synchronization approaches are implemented
-    by the aspect and class developers, together they might lead the system
-    to a dealock or a livelock situation~\cite{lea-java-coop-1999}.
-
+    implements the transactional management concern in the
+    new method, and this method is matched by the \emph{transactionalMethod()}
+    pointcut, an expected behavior might occur, since two consecutive 
+    calls to \emph{beginTransaction()} are made. 
 \end{enumerate}
 
-In such cases, the expected behavior of the system could be
-compromised, since some additional synchronization would be created
-or, even worst, the system might reach a dealock or a livelock.
 
 The situation above exposes that problems of modularity have
 occurred: (1) the comprehensibility is compromised, since two
@@ -294,7 +296,7 @@ modules should be studied in order to understand the concern; and
 can implement unintended behavior into a module which, although it
 is not under his responsibility, might break the system.
 
-In summary, we conclude that any unanticipated change in the class
+Therefore, we conclude that any unanticipated change in the class
 may cause problems and the application might not behave as presumed.
 Notice that we have a cyclical dependency situation: the aspect
 depends on the class syntactically; and to change the class, the
@@ -310,8 +312,9 @@ play to remove the dependency between the aspect and class.
             \begin{scriptsize}
             \begin{tabular}{|l|l|l|l|} \hline
                   &                             & 1     & 2     \\ \hline
-                1 & SynchronizationAspect.aj    & \paintcell     & x     \\ \hline
-                2 & EmployeeRepository.java     & x     & \paintcell      \\ \hline
+                1 & TransactionAspect.aj    & \paintcell     & x     \\ \hline
+                2 & Business java classes     & x     & \paintcell      \\
+                \hline
             \end{tabular}
             \end{scriptsize}
             \label{dsm:concurrency}
@@ -321,15 +324,21 @@ play to remove the dependency between the aspect and class.
             \begin{tabular}{|l|l|l|l|l|} \hline
                   &                             & 1     & 2    & 3 \\ \hline
                 1 & Design Rules                &       &      &   \\ \hline
-                2 & SynchronizationAspect.aj    & x     &      &   \\ \hline
-                3 & EmployeeRepository.java     & x     &      &   \\ \hline
+                2 & TransactionAspect.aj    & x     &      &   \\ \hline
+                3 & Business java classes     & x     &      &   \\ \hline
             \end{tabular}
             \end{scriptsize}
             \label{dsm:concurrency-drs}
         }
-        \caption{Concurrency concern with/without Design Rules.}
+        \caption{Transaction concern with/without Design Rules.}
     \end{center}
 \end{figure}
+
+In summary, this problem reveals to us that we need interfaces (or design
+rules) that forbid calls to certain methods within the business class (eg.
+\emph{beginTransaction()}, \emph{commitTransaction()}, and \emph{rollBack()})
+and expose which are the expected signature of methods to be matched by 
+the \emph{transactionalMethods} pointcut.
 
 \subsection{Unsupported Parallel Development}
 
