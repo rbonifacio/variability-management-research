@@ -12,7 +12,6 @@
 
 \setbeamercovered{transparent}
 }
-
 \usepackage[english]{babel}
 \usepackage[latin1]{inputenc}
 
@@ -22,11 +21,13 @@
 \usepackage[scaled=.90]{helvet}
 \usepackage{courier} 
 
+\usepackage{graphicx}
 
 \usepackage[T1]{fontenc}
 
-
-\title{Separation of Concerns in Variability Management}
+ 
+\title{Scenario Variability Management}
+\subtitle{A Controlled Experiment}
 
 \subtitle{A Controlled Experiment}
 
@@ -116,7 +117,7 @@ variability management and scenario specifications.
 \end{block}
 
 \begin{block}{Focus}
-Particularly, this comparison is regarded to the following dimensions:
+Particularly, this comparison  is regarded to the following dimensions:
 \begin{itemize}
   \item Evolvability 
   \item Traceability
@@ -180,6 +181,187 @@ depends on the number of available students.
 \framesubtitle{Analysis procedure}
 
 \end{frame}
+
+\section{Introduction}
+
+\begin{frame}
+\frametitle{Software Product Line (SPL)}
+
+\begin{block}{Definition}
+\begin{itemize}
+  \item The SPL approach is a well known technique for implementing systematic
+  reuse in software engineering.
+  \item Based on this approach, products are customized (or generated) from a
+  set of reusable assets.
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Software Product Line (SPL)}
+
+\begin{block}{Technical point: variability management}
+\begin{itemize}
+  \item Reusable assets are extensible by means of variation points.
+  \item Different techniques might be used to solve these VPs.
+  \item Product decisions (capabilities) drive the generation process.
+\end{itemize}
+\end{block}
+
+\center{
+ \includegraphics[scale=0.25]{img/spl.eps}
+}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Problem Statement}
+
+\begin{block}{Field relevance}
+Variability management is a complex task, since certain features (product
+capabilities) require variation points to be spread in different artifacts of 
+the SPLs.
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Problem Statement}
+\begin{block}{Research problem}
+\begin{itemize}
+\item Different techniques for scenario variability management:
+\begin{itemize} 
+  \item  PLUC, PLUSS, Pauline, \ldots
+\end{itemize} 
+
+\item However, these techniques focus on the support for variation points.
+
+\item Other issues are not weel considered:  
+\begin{itemize}
+  \item Evolvability 
+  \item Traceability 
+  \item Composability
+\end{itemize}
+
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Problem statement}
+\begin{block}{Proposed solution}
+A new technique for representing scenario variability management. This
+technique (SVMC) extends the PLUSS notation with a better separation between 
+variability artifacts and scenario specifications.
+\end{block}
+
+Main contributions: 
+
+\begin{itemize}
+  \item A configuration model is used to decouple features and scenarios
+  \item New mechanisms for variability management
+	\begin{itemize}
+      \item aspectual use cases
+      \item from steps and to step clauses
+    \end{itemize}   
+  \item Composition processes formalized as crosscutting concerns
+\end{itemize} 
+
+\end{frame}
+ 
+\begin{frame}
+\frametitle{Experiment Objectives}
+
+Compare different scenario variability management techniques, in order to
+understand the benefits of a better separation of concerns between variability
+management and scenarios specifications.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Experiment Objectives}
+\framesubtitle{Goal, Question, Metrics}
+
+\begin{block}{Goal 1. Verify if SoC is effective to evolve SPLs} 
+
+Question: What is the effect of SoC in the effort needed to\ldots
+\small{
+\begin{itemize}
+  \item Q1.1. \ldots evolve the product line requirements?
+  \item Q1.2. \ldots introduce a new parameter value?
+  \item Q1.3. \ldots include alternative behavior?
+  \item Q1.4. \ldots include optional behavior?
+  \item Q1.5. \ldots change alternative behavior to optional?
+  \item Q1.6. \ldots 
+\end{itemize}
+}
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Experiment Objectives}
+\framesubtitle{Goal, Question, Metrics}
+
+\begin{block}{Goal 2. Verify if SoC is effective to traceability} 
+
+Questions:
+\small{
+\begin{itemize}
+  \item Q2.1 How many artifacts must be reviewed in order to trace features to scenarios?
+  \item Q2.2 \ldots
+\end{itemize}
+}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Experiment Objectives}
+\framesubtitle{Goal, Question, Metrics}
+
+\begin{block}{Goal 3. Verify if SoC is effective to product generation.} 
+
+Questions:
+\small{
+\begin{itemize}
+  \item Does SoC contribute to reduce the effort needed to specify product
+  instances?
+  \item Is it possible to generate all planed products using the evaluated techniques?
+  \item \ldots
+\end{itemize}
+}
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Experiment Objectives}
+\framesubtitle{Goal, Question, Metrics}
+
+\begin{block}{Additional goals}
+\begin{itemize}
+\item Goal 4. Relate the proposed metric suite to the previous results
+\item Goal 5. Relate DSM analysis to the previous results
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+ 
+\begin{frame}
+\frametitle{Context of the Experiment}
+
+\begin{itemize}
+  \item SPLs for interactive systems (use case centric)
+  \item SPLs' size: ---
+  \item Subject experience: graduate and undergraduate students
+  \item Treatments: PLUC, PLUSS, and SVMC
+  \item Tools: ---    
+\end{itemize}
+
+\end{frame}
+
 
 
 \section*{Summary}
