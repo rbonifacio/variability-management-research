@@ -1,12 +1,19 @@
-\section{Related work}
+\section[draft]{Related work}
 
-% Compare our work with relevant ones
-% - open modules
-% - XPIs
-% ..
-% We conclude that we should improve this section
+Modularity issues in aspect-oriented programming have been reported by
+different authors~\cite{sullivan-sigsoft-2005, leavens-observers-2002,
+steiman-sigplan-2006}. For instance, Clifton and Leavens argue that
+existing \emph{aspect-oriented} programming languages do not contribute to
+comprehensibility, since they require systems to be studied in their entirety.
+In order to improve comprehensibility of AOP systems, they propose a simple set
+of restrictions that minimizes this problem~\cite{leavens-observers-2002}.
 
-\subsubsection{Open Modules}
+Steiman\ldots, \ldots . Other authors foccus on the discussion on how to expose
+more stable aspect-oriented interfaces and how to compute module interfaces in
+AOP systems. Since these later works are more related to our proposal, in the
+remaining of this section we discuss them in more details\ldots
+
+\subsection{Open Modules}
 
 Open Modules is an approach for dealing with modularity issues in 
 AOP~\cite{aldrich-ecoop-05}. Besides exposing data structures and 
@@ -14,53 +21,50 @@ functions, Open Modules' interfaces can also expose pointcuts denoting
 internal semantic of events. Clients of these modules are able to advice 
 only exported pointcuts. Moreover, by exporting a pointcut, the module's 
 developer is compromised to maintain the semantics of that pointcuts, 
-which, in fact, mitigates the fragile pointcut problem. 
+which, in fact, mitigates the \emph{unantecipated changes} problem.
+However, differently of our proposed language, Open Modules does not offers
+mechanims for describing which are the responsabilities of aspect developers. As
+a consequence, module developers are still able to implement part of a concern
+assigned for a different team and they can not assume the existence of any
+behavior expected to be modularized as an aspect.
+ \subsection{Crosscut Programming Interfaces}
 
-\ldots
+The Crosscut Programming Interfaces (XPIs) is one attempt for defining design
+rules between aspects and advised
+code~\cite{sullivan-sigsoft-2005,sullivan-ieee-sw-2006}. Such interfaces specify
+which are the exposed join-points of a base code. Although just an abstract XPI
+representation was provided in~\cite{sullivan-sigsoft-2005}, Griswold et. al
+presented how to implement crosscutting interfaces as syntactic constructs of
+AspectJ~\citet{sullivan-ieee-sw-2006}. Based on this approach, design rules are
+documented using \emph{abstract pointcut descriptions} and constraints applied to
+the base code. These constraints might be written as \emph{declare warning} (or
+\emph{declare error}) constructs or just as comments in the source code (when a
+constraint can not be expressed as a \emph{declare warning} or \emph{declare
+error}). 
 
-TODO: Revisar o texto a seguir. A idehia eh simplificah-lo.
-
-The Crosscut Programming Interfaces (XPIs) is one attempt for defining design rules between aspects and 
-advised code~\cite{sullivan-sigsoft-2005,sullivan-ieee-sw-2006}. Such interfaces specify which are the exposed 
-join-points of a base code. Although an abstract XPI representation was provided in~\cite{sullivan-sigsoft-2005}, Griswold et. al  
-presented how to implement crosscutting interfaces as syntactic constructs of AspectJ~\citet{sullivan-ieee-sw-2006}. 
-Based on this approach, design rules are documented using \emph{abstract pointcut descriptions} and constraints 
-applied to the base code. These constraints might be written as \emph{declare warning} (or \emph{declare error}) constructs
-or just as comments in the source code (when a constraint can not be expressed as a \emph{declare warning} 
-or \emph{declare error}). 
-
-XPIs authors argue that an important characteristic of their approach is that it
-does not require any new construct in the AspectJ language and there is no
-restriction to the pointcut visibility. In fact, this characteristic encourage
-the use of XPIs in environments that are already using the AspectJ language.
+XPIs authors argue that the main advantages of their approach is that:
+(a) it does not require any new construct in the AspectJ language; and (b) there
+is no restriction to the pointcut visibility. In fact, this characteristic
+encourage the use of XPIs in sites that are already using the AspectJ language.
 However, most of the constraints required for defining the responsibilities of
 both class developers and aspect developers can not be checked using the proposed
-XPI language. Consequently, it is not possible to guarantee, at least
-automatically, if certain design rules are being obeyed. For instance, we can not
+XPI language (a deeper comparison of our approach against XPIs is presented in
+Section~\ref{sec:eval}). Consequently, it is not possible to guarantee, at least
+automatically, if certain design rules are being obeyed. 
+
+For instance, we can not
 express, using AspectJ constructs, that a call to a method \emph{must} occurs
-within the flow of another method. Actually, we can define such a pointcut, but
-if it does not exist,  no error is reported by the AspectJ compiler. Actually,
-pointcut constructs in AspectJ were proposed for specifying points of execution
-that should be augmented by advices. They were not proposed for specifying
-restrictions applied for base code developing.
-
-Aiming at specifying restrictions in base code using AspectJ like languages,
-developers are able to check if a {\bf non desirable} pointcut occurs in the
-source code (by means of \emph{declare error} or {declare warning} constructs).
-However, there is no construct which can be used for specifying that a specific
-pointcut {\bf must} occur in the source code. However, in order to improve
-modularity between crosscutting and base decisions, it is necessary to define
-what is expected from both teams (not only what aspect developers require, as
-supported by XPIs).
-
-Therefore, we propose a new design rule language that can be used for specifying
-interfaces between aspects and advised code. In what follows, we present the
-syntax and semantics of our proposed language. Then, in Section~\ref{}, we
-present an evaluation though different case studies.
-
-%However, Open Modules do not offers mechanims for describing which 
-%are the responsabilities of aspect developers. As a consequence, 
-%module developers are still able to implement part of a concern 
-%assigned for a different team and they can not assume the existence 
-%of any behavior expected to be modularized as an aspect. 
-
+within the control flow of another method. Actually, we can define such a
+pointcut, but if it does not exist,  no error is reported by the AspectJ
+compiler. Actually, pointcut constructs in AspectJ were proposed for specifying
+points of execution that should be augmented by advices. They were not proposed
+for specifying restrictions applied for base code developing.
+\subsection{Aspectaware Interfaces}
+% Aiming at specifying restrictions in base code using AspectJ like languages,
+% developers are able to check if a {\bf non desirable} pointcut occurs in the
+% source code (by means of \emph{declare error} or {declare warning} constructs).
+% However, there is no construct which can be used for specifying that a specific
+% pointcut {\bf must} occur in the source code. However, in order to improve
+% modularity between crosscutting and base decisions, it is necessary to define
+% what is expected from both teams (not only what aspect developers require, as
+% supported by XPIs).
