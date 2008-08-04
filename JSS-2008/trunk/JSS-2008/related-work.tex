@@ -6,7 +6,15 @@ steiman-sigplan-2006}. For instance, Clifton and Leavens argue that
 existing \emph{aspect-oriented} programming languages do not contribute to
 comprehensibility, since they require systems to be studied in their entirety.
 In order to improve comprehensibility of AOP systems, they propose a simple set
-of restrictions that minimizes this problem~\cite{leavens-observers-2002}.
+of restrictions that minimizes this problem~\cite{leavens-observers-2002}. In
+their proposed approach, aspects are cathegorized as \emph{observers} ---
+aspects that do not change the effective specifications of the modules, or as
+\emph{assistents} --- aspects that might change the modules' specifications.
+Observers preserve modular reasoning even in the cases that adviced modules do
+not make explicit references to them. On the other hand, Leavens and Clifton
+argue that, in order to preserve modular reasoning, modules that are adviced by
+assistents should make explicitly references for them.
+
 
 Steiman\ldots, \ldots . Other authors foccus on the discussion on how to expose
 more stable aspect-oriented interfaces and how to compute module interfaces in
