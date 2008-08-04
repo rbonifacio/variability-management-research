@@ -22,9 +22,11 @@ numberstyle=\tiny,numbersep=5pt,basicstyle=\scriptsize,aboveskip=10pt}
 
 \title{Towards a Crosscutting Approach for Variability Management}
 
+
 \author{Rodrigo Bonif\'{a}cio and Paulo Borba\\
 Informatics Center \\ Federal University of Pernambuco \\ Recife, Brazil \\
 \{rba2, phmb\}@cin.ufpe.br\\ }
+
 
 \maketitle
 \thispagestyle{empty}
@@ -38,7 +40,7 @@ implementation, and test). In this research, we are proposing a
 novel approach for variability management. The main goal is
 to improve the separation of concerns between languages used to manage
 variabilities and languages used to specify software engineering assets. 
-Initial results gave evidence that, by applying our prposed 
+Initial results gave evidence that, by applying our proposed 
 approach, both representations can be understood and evolved in
 a separated way.
 \end{abstract}
@@ -82,12 +84,10 @@ describing the contribution of relevant artifacts (such as feature models and
 configuration knowledge) in product generation.
 
 Our hypotheses is that a clear separation between variability management and
-common software engineering artifacts improves SPL evolvability, traceability,
-and product derivation. A clear separation means that each SPL model (feature
-model, configuration knowledge, SPL use case model, and so on) should focus on
-specific concerns. For instance, use case models should represent just the valid
-interactions with a software. They should not be enriched to describe variability
-space (as proposed in~\cite{Bertolino:2003aa}). The challenge is that, in order
+common software engineering artifacts reduces the effort for
+evolving a SPL and for reasoning about feature traceability. A
+clear separation means that each SPL model (feature model, configuration knowledge, SPL use case model, and so on) should focus on specific concerns. For instance, use case models should represent just the valid interactions between external actors and the system. They should not be enriched
+to describe variability space (as proposed in~\cite{Bertolino:2003aa}). The challenge is that, in order
 to generate specific products, the clear separation that we are proposing
 requires composition processes involving different SPL models. In this thesis,we define the semantics of composition processes as crosscutting mechanisms.The elegant notion of crosscutting mechanisms, formalized by Masuhara and
 Kiczales~\cite{Masuhara:2003aa}, is used as underlining support for presenting
@@ -488,8 +488,8 @@ new definitions of products do not require changes in the use case model.
 \label{dsm:cc}
 \end{figure}   
 
-We have applied DSMs to visualize design dependencies in two levels: the first
-one presents a high level view of dependencies between variability management
+We have applied DSMs to visualize design dependencies in two
+levels~\cite{Bonifacio:2008aa}: the first one presents a high level view of dependencies between variability management
 (feature model, SPL instances and configuration model) and use cases (as shown in
 Figure~\ref{dsm:pluc} and Figure~\ref{dsm:cc}); the second one presents how
 features are spread among use cases. Although we do not present any example of
@@ -663,6 +663,13 @@ are proposing a modeling framework that describes how \emph{variability
 artifacts} (feature models, product configuration, and configuration knowledge)
 crosscut to \emph{common software engineering artifacts} with respect to
 product line instances.
+
+\section*{Acknowledgements}
+
+We would like to thank the anonymous referees, the Software Productivity Group,
+and the Motorola Brazil Test Center Research Group for making several suggestions
+to improve this article. This work is partially supported by the Brazilian
+Research Agency, CNPq, grant CT-INFO 17/2007.
 
 %------------------------------------------------------------------------- 
 
