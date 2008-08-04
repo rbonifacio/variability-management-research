@@ -4,15 +4,14 @@ module FeatureExpressionParser where
 import Text.ParserCombinators.Parsec
 import qualified Text.ParserCombinators.Parsec.Token as P
 import Text.ParserCombinators.Parsec.Language( haskellStyle )
-import AbstractModel
 import UseCaseModel2Model
 import UseCaseModel
-
+import ProductLineModel
 import FeatureModel
 
 data ParseResult = 
  ParseExpressionResult { expression :: FeatureExpression } |
- ParseTransformationResult { transformations :: [Model2Model UseCaseModel] } | 
+ ParseTransformationResult { transformations :: [Model2Model] } | 
  ParseError  { parseErrorMessage :: String }
 
 charWithoutSpace :: Char -> Parser Char
@@ -86,16 +85,29 @@ parseExp =
 -- 	char '['; functions <- parseTransformations [];  char ']'; return functions
 -- }
 -- 
-parseTransformations ::  Parser [Model2Model UseCaseModel]
+parseTransformations ::  Parser [Model2Model]
 parseTransformations = 
  do { char '['; list <- sepBy1 parseTransformation separator; char ']'; return list}
  
 separator :: Parser ()
 separator = skipMany1 (space <|> char ',') 
  
-parseTransformation :: Parser (Model2Model UseCaseModel) 
+parseTransformation :: Parser (Model2Model) 
 parseTransformation = 
- do { try (string "addScenarios"); char '('; id1 <- identifier; char ')'; return (ConsM2MType1 (addScenariosM2M [id1]))}
+ do { try (string "addScenarios"); 
+ 	  char '('; 
+ 	  id1 <- identifier; 
+ 	  char ')'; 
+ 	  return (addScenariosM2M [id1])
+ } <|>
+ do { try (string "bindParameter"); 
+ 	  char '('; 
+ 	  id1 <- identifier; 
+ 	  char ','; 
+ 	  id2<-identifier ; 
+ 	  char ')'; 
+ 	  return (bindParametersM2M id1 id2)
+ }
 
 featureExpressionParser :: String -> ParseResult
 featureExpressionParser str = 
