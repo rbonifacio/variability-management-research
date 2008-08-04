@@ -19,11 +19,6 @@ import Prelude hiding ( (^) )
 import List 
 import Maybe
 import BasicTypes
-import AbstractModel
-
-
--- import FeatureModel
--- import Environment 
 
 type Action = String
 type State = String
