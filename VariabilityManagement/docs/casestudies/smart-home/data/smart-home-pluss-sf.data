@@ -1,0 +1,17 @@
+Scenario				nFeatures
+RegisterInhabitant			3
+DefineTheHomeState			2
+DefinePoliciesForSmartHome		2		
+DefinePoliciesForInhabitant		1
+RequestAccessToHome			4
+UnauthorisedAccessToSmartHome		8
+GuestRequestAcces			2
+UnauthorizedAccessToGuest		1
+ConfigureAccessToSpecificEnvironment	1
+InsufficientPrivilegesForConfiguring	1
+DetectAnAttemptOfIntrudeMF		4
+DetectAnAttemptOfIntrudeEmpty		3
+PresenceDetection			3
+FireDetection				4
+
+	
