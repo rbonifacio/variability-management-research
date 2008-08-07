@@ -1,6 +1,6 @@
 Feature 							nUseCase	nScenario
-FingerPrint							2			2
-Password							2			2
+FingerPrint							2			3
+Password							2			3
 HomeState							1			2
 RegisterInhabitant					1			2
 DefineTheHomeState					1			1
