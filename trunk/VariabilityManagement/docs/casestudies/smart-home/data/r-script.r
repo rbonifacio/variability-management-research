@@ -37,6 +37,19 @@ featureIndex <- function(inputData, feature) {
 	fIndex
 }
 
+stepsRelatedToFeature <- function(inputData, feature) {
+	nScenarios <- length(inputData)
+	fIndex <- featureIndex(inputData, feature)
+
+	# total number of steps related to a feature
+	stepsRelatedToFeature <- 0 
+	for( j in 2:(nScenarios) ) {
+		stepsRelatedToFeature <- stepsRelatedToFeature + inputData[fIndex, j]	
+	}
+
+	stepsRelatedToFeature
+}
+
 dedication <- function(inputData, feature, scenario) {
 	stepsOnScenario <- sum(inputData[scenario])
 	fIndex <- featureIndex(inputData, feature)
@@ -50,32 +63,37 @@ concentration <- function(inputData, feature, scenario) {
 	nScenarios <- length(inputData)
 	fIndex <- featureIndex(inputData, feature)
 	
-	stepsRelatedToFeature <- 0 
-	for( j in 2:nScenarios ) {
-		stepsRelatedToFeature <- stepsRelatedToFeature + inputData[fIndex, j]	}
+	stepsRelatedToFeature <- stepsRelatedToFeature(inputData, feature) 
+
 	stepsOnScenario <- inputData[scenario][fIndex,1]
 	result <- stepsOnScenario / stepsRelatedToFeature
 }
 
 degreeOfScattering <- function(inputData, feature) {
-	nFeatures <- length(inputData[[1]])
 	nScenarios <- length(inputData) - 1
 	fIndex <- featureIndex(inputData, feature)	
 	
 	# total number of steps related to a feature
-	stepsRelatedToFeature <- 0 
-	for( j in 2:(nScenarios + 1) ) {
-		stepsRelatedToFeature <- stepsRelatedToFeature + inputData[fIndex, j]	}
+	nSteps <- stepsRelatedToFeature(inputData, feature)
 	
 	#
-	sum <- 0
-	for ( k in 2:(nScenarios+1) ) {
-		concentration <- (inputData[fIndex, k] / stepsRelatedToFeature)
-		sum <- sum + sqr (concentration - (1/nScenarios))
+	sum <- 0.000
+	for ( k in 1:(nScenarios) ) {
+		c <- (inputData[fIndex, (k+1)] / nSteps)
+		sum <- sum + sqr (c - (1/nScenarios))
 	}
-	
-	1 - (nScenarios * sum / (nScenarios-1))
-	
+	1 - ((nScenarios * sum) / (nScenarios-1))	
+}
+
+totalDegreeOfScattering <- function(inputData) {
+	nFeatures <- length(inputData[[1]])
+	dos <- c(1:nFeatures)
+
+	for(i in 1:nFeatures) {
+		featureName <- inputData[i, 1]
+		dos[i] <- degreeOfScattering(inputData, featureName)
+	}   
+	dos
 }
 
 degreeOfFoccus <- function(inputData, scenario)  {
