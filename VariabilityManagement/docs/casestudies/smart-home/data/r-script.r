@@ -91,5 +91,29 @@ degreeOfFoccus <- function(inputData, scenario)  {
 	s * sum / (s-1)
 }
 
+avarageDegreeOfFocus <- function(inputData) {
+	numberOfScenarios <- length(inputData)
+	nameOfScenarios <- names(inputData)
+	sum <- 0
+	
+	for( i in 2:numberOfScenarios ) {
+		scenarioName <- nameOfScenarios[i]
+		sum <- sum + degreeOfFoccus(inputData, scenarioName)		
+	} 	
+	(sum / numberOfScenarios)
+}
+
+totalDegreeOfFocus <- function(inputData) {
+	numberOfScenarios <- length(inputData)
+	nameOfScenarios <- names(inputData)
+	dof <- c(1:(numberOfScenarios-1))
+	
+	for( i in 2:numberOfScenarios ) {
+		scenarioName <- nameOfScenarios[i]
+		dof[i-1] <- degreeOfFoccus(inputData, scenarioName)		
+	} 	
+	dof
+}
+
 
 
