@@ -18,16 +18,6 @@ pnormal <- function (n,s,y0)
  (y0-n)/s
  
 
-tanglingScenario <- function(inputData, scenario) {
- dist <- inputData[scenario]
- result <- 0
- for (i in 1:length(dist[[1]])) {
-    if( dist[i,1] > 0) result <- result + 1
- }
- result
-} 
-
-
 featureIndex <- function(inputData, feature) {
 	nFeatures <- length(inputData[[1]])
 	fIndex <- 0
@@ -36,6 +26,43 @@ featureIndex <- function(inputData, feature) {
 	}
 	fIndex
 }
+
+featureDiffusionOverScenario <- function(inputData, feature) {
+	fIndex <- featureIndex(inputData, feature)
+      nScenarios <- length(inputData)-1
+ 
+      result <- 0
+      for( i in 2:(nScenarios+1)) {
+          if( inputData[fIndex,i] > 0) result <- result + 1
+      } 
+ 
+      result
+}
+
+totalFeatureDiffusionOverScenario <- function(inputData) {
+	nFeatures <- length(inputData[[1]])
+	fds <- c(1:nFeatures)
+
+	for(i in 1:nFeatures) {
+		featureName <- inputData[i, 1]
+		fds[i] <- featureDiffusionOverScenario (inputData, featureName)
+	}   
+	fds
+}
+
+numberOfFeaturesPerScenario <- function(inputData, scenario) {
+ 	dist <- inputData[scenario]
+	 result <- 0
+	 for (i in 1:length(dist[[1]])) {
+    		if( dist[i,1] > 0) result <- result + 1
+	 }
+	 result
+} 
+
+totalNumberOfFeaturesPerScenarios <- function(inputData) {
+
+}
+
 
 stepsRelatedToFeature <- function(inputData, feature) {
 	nScenarios <- length(inputData)
