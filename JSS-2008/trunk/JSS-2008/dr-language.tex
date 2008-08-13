@@ -1,7 +1,6 @@
 \section{A language for specifying AO design rules}
 \label{sec:drlang}
 
-%XXX CRIAR FIGURA COM O META-MODELO SÓ COM O LADO ESQUERDO E COLOCAR NO DIRETORIO
 %XXX Incluir a nova BNF?
 %XXX Criterios de matching
 %XXX Implementacao atual usando ABC
@@ -41,10 +40,9 @@ components.
 In this section we present LSD main constructs, based on previous
 work... %~cite\{DoseaLAWASP}.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{LSD overview}
 \label{sec:lsdoverview}
-
-%---------------------------------------------
 
 Many Object-Oriented programming languages provide the concept of
 interface which specify a public set of methods and constants
@@ -71,7 +69,8 @@ methods and advices (only aspects).
 
 \begin{figure}[htp]
   \begin{center}
-  \includegraphics[width=1.0\textwidth]{images/meta-model.eps}\\
+%  \includegraphics[width=1.0\textwidth]{images/meta-model.eps}
+  \includegraphics[scale=0.5]{images/meta-model.eps}
   \caption{Design Rule Language and Configuration Module Meta-Models}
   \label{fig:meta-model}
   \end{center}
@@ -142,6 +141,7 @@ Listing~\ref{lst:dr1} within the \texttt{Component}
 an \texttt{attribute} int called \texttt{key}.
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Behavioral Rules}
 \label{sec:behavioralrules}
 
@@ -177,13 +177,13 @@ scopes.
       \hline
       \emph{xcall(method)} & It must have a call to the method passed as parameter exclusively in the defined scope.\\
       \hline
-      \emph{set(attribute)} & It must have an state change on the attribute passed as parameter within the defined scope.\\
-      \hline
-      \emph{xset(attribute)} & It must have an state change on the attribute passed as parameter exclusively within the defined scope.\\
-      \hline
       \emph{get(attribute)} & It must have an state access to the attribute passed as parameter within the defined scope.\\
       \hline
       \emph{xget(attribute)} & It must have an state access to the attribute passed as parameter exclusively within the defined scope.\\
+      \hline
+      \emph{set(attribute)} & It must have an state change on the attribute passed as parameter within the defined scope.\\
+      \hline
+      \emph{xset(attribute)} & It must have an state change on the attribute passed as parameter exclusively within the defined scope.\\
       \hline
     \end{tabular}
 \end{table}
@@ -243,29 +243,29 @@ they will be respected. For example, a class that implements no
 \emph{structural rules} defined by the \texttt{System}
 \emph{design rule} can call the method
 \texttt{Persistence.beginTransaction()}, even if in the
-architecture project this call should only occur within the aspect
-responsible for transaction management.
+architectural project this call should only occur within the
+aspect responsible for transaction management.
 
-%-------------------------------
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Explicit implementation of Design Rules}
 \label{sec:explicitimpldr}
 
 Trying to keep similarity with Java interfaces concept, and
-following the LSD principle of establish an interface between
+following the LSD principle of establishing an interface between
 classes and aspects, LSD requires that both class and aspect
-explicitly implements the design rules.
+explicitly implement the design rules.
 
 In order to developers being aware of the design rules they must
 respect, the components being developed must include the name of
 all design rules that it implements in the \emph{implements
 clause} like classes that implement ordinary interfaces.
-Additionally, for each implemented design rule, it must be provide
+Additionally, for each implemented design rule, it must provide
 the name of one or more the structural rules.
 
 Thus, if the class developer needs to make a change, it is easier
 to identify which design rules must be respected, facilitating
-evolution some jobs and preventing some errors. Besides, its use
+some evolution jobs and preventing some errors. Besides, its use
 enables automatic verification and separate compilation. The using
 of \emph{implements} obligates a class or aspect to follow all the
 rules defined by the corresponding \emph{structural rule}.
@@ -294,16 +294,41 @@ System(TransactionalManagement) {
 \end{lstlisting} \normalsize
 
 Listing~\ref{lst:comp1} shows examples of components that follows
-the \emph{design rule} \texttt{System}. For example, classes
-\texttt{UserRecord} (Lines 1-3), \texttt{User} (Lines 5-7) and
- \texttt{Persistence} (Lines 9-11) indicate the names of their corresponding \emph{structural rules},
-\texttt{ComponentRecord}, \texttt{Component} and
-\\texttt{Persistence}, respectively. In an identical form, aspect
-\texttt{TransactionalManagement} (Lines 13-16) implements
-\texttt{System} and the corresponding \emph{structural rule}
-\texttt{TransactionalManagement}.
+the \emph{design rule} \textbf{System}. For example, classes
+\textbf{UserRecord} (Lines 1-3), \textbf{User} (Lines 5-7) and
+ \textbf{Persistence} (Lines 9-11) indicate the names of their corresponding \emph{structural rules},
+\textbf{ComponentRecord}, \textbf{Component} and
+\textbf{Persistence}, respectively. In an identical form, aspect
+\textbf{TransactionalManagement} (Lines 13-16) implements
+\textbf{System} and the corresponding \emph{structural rule}
+\textbf{TransactionalManagement}.
 
 
+An alternative to explicit implementation of design rules in
+classes, aspects and interfaces is providing a \textbf{separated
+mapping} between them and the list of design rules implemented by
+them. Also, it would be necessary to inform the corresponding
+structural rules implemented by them. We did not choose this
+alternative because it introduces another element (mapping)
+besides the design rule itself. Moreover, its not clear to the
+developer which design rules are implemented by a certain type
+unless it inspect all existing mappings.
+
+Another alternative that is similar to explicit implementing the
+design rules is using \textbf{annotations} to provide the list of
+implemented design rules. This approach has the advantage of not
+requiring code preprocessing to collect the implemented design
+rules and remove the design rules from the implements clause. In
+addition, the list of implemented design rules can be preserved in
+bytecode (even in runtime). The downside of this approach is
+requiring the distribution of a default \emph{Annotation Type}
+that is referred by classes, interfaces and aspects. Compared to
+the chosen approach (explicit implementation) it is very similar
+because in both of them the information of which design rules are
+implemented is contained in classes, interfaces and aspects.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Additional constraints}
 \label{sec:additionalconstraints}
 
@@ -312,6 +337,7 @@ section we present more language constructs that provide ways of
 expressing additional constraints.
 
 \subsubsection{Modifiers}
+\label{sec:modifiers}
 
 The first one of them is related to components modifiers. It might
 be necessary that a certain class, for example, have public and
@@ -352,6 +378,7 @@ refer to private parts of classes. If this dependency is defined
 in a design rule, it is possible to explicitly express it.
 
 \subsubsection{Implements/Extends}
+\label{sec:implements-extends}
 
 Another interesting type of constraint is to require that the
 class implementing a certain \emph{structural rule} implements or
@@ -362,11 +389,11 @@ Listing~\ref{lst:drimpext}. Classes that implement the structural
 rule \texttt{ComponentRecord} must explicitly implement the
 interface \texttt{BaseRecord}. Following, the structural rule
 \texttt{Component} must extend directly class
-\texttt{BaseComponent}.
-
-% BaseRecord é uma interface real? Está definida na Design Rule?
-% Implements em Interfaces para declarar que implementa uma DR?
-% Discutir melhor as opções de implements nas classes, módulo com mapeamento e anotações
+\texttt{BaseComponent}. Both \texttt{BaseRecord} and
+\texttt{BaseComponent} can be existing interface and class, but
+could be structural rules if they were defined in the design rule
+\texttt{System}. This introduces flexibility to map design rule
+elements to different classes.
 
 \scriptsize
 \begin{lstlisting}[frame=single, caption={Implements/Extends constraints.},
@@ -384,8 +411,9 @@ dr System {
 }
 \end{lstlisting} \normalsize
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Inter-type declarations}
+\label{sec:itd}
 
 Inter-type declarations enable aspects to introduce attributes and
 methods in classes. At the same time that it is an interesting
@@ -402,7 +430,8 @@ Listing~\ref{lst:dritd} shows a design rule
 must provide two inter-type declarations of fields \texttt{WIDTH}
 and \texttt{HEIGHT} in the class that implement the structural
 rule \texttt{MainScreen}. As a consequence, the class developer
-can be sure that these two attributes will exist and can use it.
+can be sure that these two attributes will exist (introduced by
+some aspect) and can use it.
 
 \scriptsize
 \begin{lstlisting}[frame=single, caption={Implements/Extends constraints.},
@@ -419,51 +448,250 @@ dr ScreenAttributes {
 }
 \end{lstlisting} \normalsize
 
-\subsection{Summary of constraints}
-\label{sec:summaryofconstraints}
+Another kind of inter-type declaration available is declaring that
+a certain type (or a set of types) implements additional
+interfaces or extends a different type (that must be a subtype of
+its original supertype). In AspectJ, this feature is implemented
+by the \textbf{declare parents} construct. Although it respects
+the \emph{Substitution Principle}~\cite{WattOrOther}, other
+classes and aspects can assume that the class has a new supertype
+whenever the aspect containing the declare parents is present.
+This can introduce an error if the aspect is not present anymore.
+LSD provides a way of expressing that the \textbf{declare parents}
+is required and the involved classes.
 
-%-------------------------------
-\subsubsection{Covered constraint types}
+Similarly, LSD provides a way of requiring that aspects
+implementing a DR include a \textbf{declare soft}. We consider
+this important because it enables to explicitly declare this kind
+of dependency with respect to aspects.
 
-Covered Constraint Types
+% Verificar se seria legal colocar um exemplo
 
-Required/Prohibited
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Exceptions}
+\label{sec:exceptions}
 
-Classes, Interfaces, Aspects
+Exception handling is considered an important concern. AspectJ
+provides forms of intercepting method executions and calls to
+methods that declare to throw exceptions. It is possible to write
+pointcuts to explicitly choose which methods executions/calls will
+be captured. This mechanism associated to the \textbf{declare
+soft} enables the handling of exceptions within aspects advices,
+localizing exception handling in a single unit.
 
-Fields, Methods, ITD, Advices, Pointcuts
+In an Object-Oriented program changes to throws clause usually can
+affect callers. For example, in Listing~\ref{lst:ooexceptions} if
+the throws clause of the method \emph{exec} of class
+\textbf{Server} is changed, the following effects can be observed:
 
-Inheritance / Interface implementation
+\begin{enumerate}
+    \item If method \textbf{exec} does not declare to throw E anymore, an error in
+    class Client will be reported during compilation (\emph{unreachable catch
+    block}). This occurs because class Client calls exec from a block try/catch that is prepared to handle
+    exception. As the exception will not be raised anymore, the handler becomes useless.
+    \item If method \textbf{exec} declares to throw an additional exception
+    E2, an error in class Client will also be reported during compilation (\emph{unhandled exception
+    type}). This occurs because the Client class does not expect
+    that type of exception.
+\end{enumerate}
 
-Method Calls
 
-Attribute Get / Set
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Exceptions in Object-Oriented Programs.},label=lst:ooexceptions,
+                numbers=left,
+                language=Java,
+                morekeywords={dr, aspect, pointcut}]
+class Server {
+   void exec() throws E {}
+}
+
+class Client {
+   void m(Server s) {
+      try { s.exec(); }
+      catch(E ex) {…}
+   }
+}
+
+\end{lstlisting}
+\normalsize
+
+On the other hand, in Aspect-Oriented programs there is a
+different type of dependency between aspects and methods with
+throws clause. In AspectJ it is possible to write pointcuts that
+refer to method execution/calls based on its throws clause.
+Changes to throws clause can create unexpected or missing join
+points.
+
+Considering the example in Listing~\ref{lst:aoexceptions}, if the
+throws clause of the method \emph{exec} of class \textbf{Server}
+is changed, the following effects can be observed:
+
+\begin{enumerate}
+    \item If method \textbf{exec} is changed to not declare to throw E
+    anymore:
+    \begin{itemize}
+        \item No Error in class Client will be reported because
+        of the \emph{declare soft} included in the aspect ExceptionHandler,
+        which is responsible for handling the exception E that could be
+        thrown when calling exec (Line 8).
+        \item Aspect ExceptionHandler points a warning only if no other method declares to
+        throw E (no calls are captured).
+    \end{itemize}
+    \item If method \textbf{exec} is changed and declares to throw an additional exception E2
+    \begin{itemize}
+        \item Error in class Client (unhandled exception type) because
+        it is not prepared to handle E2.
+        \item Aspect ExceptionHandler still capturing the same join
+        point set because \textbf{exec} continues to include E in its throws clause.
+    \end{itemize}
+\end{enumerate}
 
 
-\subsubsection{Uncovered but planned constraint types}
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Exceptions in Aspect-Oriented Programs.},label=lst:aoexceptions,
+                numbers=left,
+                language=Java,
+                morekeywords={dr, aspect, pointcut}]
 
-Exceptions
+class Server {
+   void exec() throws E {}
+}
 
-Member Expressions
+class Client {
+   void m(Server s) {
+      s.exec();
+   }
+}
 
-Class/Interface/Aspect Expressions
+aspect ExceptionHandler {
+   declare soft: E : call(* *.*() throws E);
+   pointcut pc() : call(* *.*() throws E);
+   before() : pc() {…}
+}
+
+\end{lstlisting}
+\normalsize
+
+
+LSD, besides the \textbf{declare soft} construct discussed in
+section~\ref{sec:itd}, allows the inclusion of \textbf{throws}
+clause in methods of structural rules. The idea is forcing
+developers of classes, interfaces or aspects that implement a
+certain structural rule, to follow constraints related to
+exceptions that must be included or not in method declarations.
+
+Listing~\ref{lst:drexceptions} shows the design rule
+\emph{Exceptions} which declares a class Server with a method
+exec. This method must declare to throw E. if a class implementing
+the structural rule Server changes removes E from throws clause,
+an error will be reported, avoiding some of the errors discussed
+above.
+
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Design Rule with throws clause.},label=lst:drexceptions,
+                numbers=left,
+                language=Java,
+                morekeywords={dr, aspect, pointcut}]
+dr Exceptions {
+   class Server {
+      void exec() throws E {}
+   }
+}
+\end{lstlisting}
+\normalsize
+
+%
+%Exceptions and Interfaces OO
+%
+%Interface methods can throw more general exceptions (superclasses)
+%than classes that implement them
+%
+%For each exception listed in an interface method
+%
+%- It can exists a corresponding exception (or subclass) in classes
+%that implement the interface
+%
+%
+%
+%Exceptions and Interfaces (AO)
+%
+%Throws declaration can be used as a matching criteria
+%
+%- declare soft (pointcut part)
+%
+%- pointcuts/advices
+
+
+% Procurar um exemplo do HW e colocar aqui
+% Discutir mais as vantagens da construção
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Member Expressions}
+\label{sec:member-expr}
+
+Aiming to improve the expressivity of the language, LSD enables
+the using of expressions involving structural rule members. This
+language feature enables, for example, to include in a structural
+rule a constraint that requires a method called \emph{m1} or a
+method called \emph{m2} (or). The class implementing this
+structural rule will be correct if it provides at least one of
+them. It is also possible to require that a method \emph{m1} exist
+and other \emph{m2} does not exist (not). Requiring two or more
+members to exist at the same time (and) is also possible and is
+actually the default behavior when written in a structural rule.
+The combination of this operators is allowed, providing more
+flexibility.
+
+Listing~\ref{lst:exprdrmembers} shows the structural rule \emph{C}
+that requires a method \emph{m} or a method \emph{n} without a
+method \emph{o}.
+
+\scriptsize
+\begin{lstlisting}[frame=single, caption={Expression involving Structural Rule members.},label=lst:exprdrmembers,
+                numbers=left,
+                language=Java,
+                morekeywords={dr, aspect, pointcut}]
+
+dr D {
+  class C {
+    public void m() {}
+    ||
+    protected void n() {}
+    &&
+    !(public void o() {});
+  }
+}
+
+Although this is not shown in Listing~\ref{lst:exprdrmembers} it
+is possible to write expressions involving different types of
+elements, like methods and fields.
+
+\end{lstlisting}
+\normalsize
 
 \subsection{LSD implementation}
 
-LSD has an initial implementation using the ABC extensible
-compiler for AspectJ~\ref{ABC}.
+LSD has an initial implementation~\cite{TGRoberta} using the
+AspectBench Compiler for AspectJ(ABC)~\cite{ABC}. It uses the new
+frontend of the ABC, based on the aspect-oriented meta-compiler
+JastAdd~\cite{JastAdd}. The original frontend was purely
+object-oriented, and we began the implementation of LSD based on
+this version. But considering the advantages of JastAdd with
+respect to implementation size, better concern localization and
+extensions composability, we decided to rewrite it. Currently, the
+LSD compiler implements only part of the language constructs, but
+we are working on a complete implementation of the language.
 
-Descrever o ABC.
-
-Descrever como o ABC foi estendido
-
-Mostrar uma figura com o funcionamento logico do verificador.
-
-Descrever alguma experiencia sobre a facilidade de extensao (ou
-nao) do abc.
-
-%XXX Implementacao atual usando
-
+%Descrever o ABC.
+%
+%Descrever como o ABC foi estendido
+%
+%Mostrar uma figura com o funcionamento logico do verificador.
+%
+%Descrever alguma experiencia sobre a facilidade de extensao (ou
+%nao) do abc.
+%
 
 %---------------------------------------------
 % PARTE DE ARTIGO ANTIGO
