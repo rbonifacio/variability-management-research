@@ -10,7 +10,7 @@ import ProductLineModel
 import List
 
 
-addScenariosM2M :: [Id] -> ProductLine -> ProductInstance -> ProductInstance
+addScenariosM2M :: [Id] -> SPL -> ProductInstance -> ProductInstance
 addScenariosM2M ids spl productInstance = 
  let 
  	inputUCM = splUseCaseModel spl
@@ -25,7 +25,7 @@ addScenariosM2M ids spl productInstance =
    	 instanceUseCaseModel = UCM rName rUseCases rAspects
    	}
 
-bindParametersM2M :: Name -> Id -> ProductLine -> ProductInstance -> ProductInstance
+bindParametersM2M :: Name -> Id -> SPL -> ProductInstance -> ProductInstance
 bindParametersM2M pName feature  spl productInstance = 
  let 
    fc = instanceConfiguration productInstance
@@ -46,7 +46,7 @@ bindParametersM2M pName feature  spl productInstance =
 -- TODO: devemos passar o nome do aspecto.
 -- dessa forma, eh necessario recuperar o aspecto 
 -- no modelo de caso de uso da linha de produto 
-evaluateAspectM2M :: AspectualUseCase -> ProductLine -> ProductInstance -> ProductInstance
+evaluateAspectM2M :: AspectualUseCase -> SPL -> ProductInstance -> ProductInstance
 evaluateAspectM2M aspect spl productInstance = 
  let
    outputUCM = instanceUseCaseModel productInstance	

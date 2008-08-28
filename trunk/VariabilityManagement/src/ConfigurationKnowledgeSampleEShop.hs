@@ -3,7 +3,7 @@ module ConfigurationKnowledgeSampleEShop where
 import ConfigurationKnowledge
 import FeatureModel
 import UseCaseModel
-import AspectualUseCaseModel
+import ProductLineModel
 import UseCaseModel2Model
 import FeatureSampleEShop
 import UseCaseSampleEShop
@@ -25,7 +25,8 @@ conf2 = Configuration exp3 [(evaluateAspectM2M aucBasicFlow)]
 conf3 = Configuration exp2 [(evaluateAspectM2M aucUpdatePreferences)]
 conf4 = Configuration exp5 [(bindParametersM2M "ShipMethod" (fId shipMethod))]
 
-ck01 = [conf0,conf1, conf2, conf3, conf4]
+-- ck01 = [conf0,conf1, conf2, conf3, conf4]
+ck01 = [conf0,conf4]
 
 
 eShop1 = Feature "FEA-01" "eShop Instance" mandatory basicFeature [register01, searchOptions01, paymentType01, shipMethod01] []
@@ -47,3 +48,5 @@ shipMethod02 = Feature "FEA-16" "Shipping method" mandatory orFeature [economica
 --
 fc01 = FeatureConfiguration eShop1
 fc02 = FeatureConfiguration eShop2
+
+spl01 = SPL fm01 ucm01

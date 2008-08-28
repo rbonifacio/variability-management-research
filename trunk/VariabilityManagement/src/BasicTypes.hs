@@ -103,3 +103,7 @@ concatValueList (x:xs) =
  if (length xs > 0)
   then x ++ " or " ++ concatValueList xs 
   else x  
+  
+stepRefinement :: [(t -> t)] -> t -> t
+stepRefinement [] a = a
+stepRefinement (x:xs) a = stepRefinement (xs) (x a)    

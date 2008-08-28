@@ -2,21 +2,20 @@ module UseCaseSampleEShop where
 
 
 import UseCaseModel
-import AspectualUseCaseModel
 
 -- **********************************************************
 -- Some instances of UseCase model are created here.
 -- **********************************************************
 
 --ucmEshop = UCM "eShop use cases" [ucIddle,ucBuyProduct]
-ucm01 = UCM "eShop use cases" [ucIddle, ucBuyProduct]
+ucm01 = UCM "eShop use cases" [ucIddle, ucBuyProduct] []
 
 -- ucBuyProduct = UseCase "UC01" "Buy products use case" "This use case allows the user to buy producuts" [scBuyProductBasic, scBuyProductCommon] 
 ucBuyProduct = UseCase "UC01" "Buy products use case" "This use case allows the user to buy producuts" [scBuyProductCommon] 
 
-aucBasicFlow = AspectualUseCase "Buy product - basic flow" [(BeforeAdvice [(IdRef "3M")] scBuyProductBasic)]
-aucShoppingCart = AspectualUseCase "Buy products with shopping cart" [(BeforeAdvice [(IdRef "3M")] scShoppingCart)]
-aucUpdatePreferences = AspectualUseCase "Update user preferences" [(AfterAdvice [(AnnotationRef "UpdatePreferences")] scUpdatePreferences)]
+aucBasicFlow = AspectualUseCase "A01" "Buy product - basic flow" [(BeforeAdvice [(IdRef "3M")] scBuyProductBasic)]
+aucShoppingCart = AspectualUseCase "A02" "Buy products with shopping cart" [(BeforeAdvice [(IdRef "3M")] scShoppingCart)]
+aucUpdatePreferences = AspectualUseCase "A03" "Update user preferences" [(AfterAdvice [(AnnotationRef "UpdatePreferences")] scUpdatePreferences)]
 
 scBuyProductCommon = Scenario "1" "Common" [IdRef "2M", IdRef "V2"] [step3M, step4M, step5M] [IdRef "end"]
 scBuyProductBasic = Scenario "2" "Main flow" [IdRef "start"] [step1M, step2M] [IdRef "3M"]
