@@ -367,15 +367,20 @@ Questions:
 \begin{frame}
 \frametitle{Experimental unities}
 
-Three different SPL (or SPL specifications):
+We are going to use two different sets of specifications. They should be
+selected from available SPL specifications. 
+
+{\bf Question:} both sets from the same SPL?
 
 \begin{itemize}
   \item Home automation
   \item eCommerce
+  \item Multimedia message
   \item Cyber chair
+  \item \ldots
 \end{itemize}
 
-Groups of three students randomly selected.
+Groups of two students randomly selected.
 
 \end{frame}
 
@@ -383,14 +388,15 @@ Groups of three students randomly selected.
 \begin{frame}
 \frametitle{Experimental unities}
 
-\alert{Block factors:} SPLs and students.
+\alert{Block factors:} SPLs and students. It is desirable to eliminate both
+student-to-student and spl-to-spl differences.
 
-We are going to use a \alert{3x3} Latin Square design. 
+{\bf Design:} \alert{2x2} Latin Square design. 
 
 \begin{itemize}
-  \item Groups of \alert{three students} (randomly selected)
-  \item \alert{Three SPLs} used in the experiment
-  \item Three techiniques (or treatments) to be compared
+  \item Groups of \alert{two students} (randomly selected)
+  \item \alert{two sets of SPL specifications} used in the experiment
+  \item two techiniques (or treatments) to be compared
 \end{itemize}
 
 \end{frame}
@@ -399,8 +405,8 @@ We are going to use a \alert{3x3} Latin Square design.
 \frametitle{Experimental unities}
 
 Each student (disposed in the rows of the squares) will be responsible for
-restructuring each SPL (disposed in the columns of the squares) using one
-specific technique. Example:
+restructuring and evolving each set of SPL specifications (disposed in the
+columns of the squares) using one specific technique. Example:
 
 \begin{center}
 \small{
@@ -424,6 +430,19 @@ only once in each row and column.
 \alert{Replications:} In the latin square layout, the number of squares (or
 groups) correspond to the number of replications --- in this experiment, this number
 depends on the number of available students.
+
+\begin{block}{Additive model}
+\center{$Y_{ijt} = \eta + \beta_i + \gamma_j + \tau_t + \epsilon_{ijt} $} 
+\begin{scriptsize}
+\begin{itemize}
+  \item $\eta$ is the mean
+  \item $\beta_i$ are the $i = 1 .. k$ row effects
+  \item $\gamma_j$ are the $j = 1 .. k$ column effects
+  \item $\tau_t$ are the $t = 1 .. k$ treatment effects
+  \item assumption: the errors $\epsilon_{ijt}$ are $IIDN(0,\sigma^2)$
+\end{itemize}
+\end{scriptsize}
+\end{block}
 
 \end{frame}
 
