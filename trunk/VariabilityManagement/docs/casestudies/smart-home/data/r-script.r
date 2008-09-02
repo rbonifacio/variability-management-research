@@ -60,7 +60,15 @@ numberOfFeaturesPerScenario <- function(inputData, scenario) {
 } 
 
 totalNumberOfFeaturesPerScenarios <- function(inputData) {
-
+	numberOfScenarios <- length(inputData)-1
+	nameOfScenarios <- names(inputData)
+	nfs <- c(1:(numberOfScenarios))
+	
+	for( i in 2:(numberOfScenarios+1) ) {
+		scenarioName <- nameOfScenarios[i]
+		nfs[i-1] <- numberOfFeaturesPerScenario(inputData, scenarioName)		
+	} 	
+	nfs
 }
 
 
@@ -149,11 +157,11 @@ avarageDegreeOfFocus <- function(inputData) {
 }
 
 totalDegreeOfFocus <- function(inputData) {
-	numberOfScenarios <- length(inputData)
+	numberOfScenarios <- length(inputData)-1
 	nameOfScenarios <- names(inputData)
-	dof <- c(1:(numberOfScenarios-1))
+	dof <- c(1:(numberOfScenarios))
 	
-	for( i in 2:numberOfScenarios ) {
+	for( i in 2:(numberOfScenarios+1) ) {
 		scenarioName <- nameOfScenarios[i]
 		dof[i-1] <- degreeOfFoccus(inputData, scenarioName)		
 	} 	
