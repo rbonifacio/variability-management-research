@@ -27,6 +27,29 @@ featureIndex <- function(inputData, feature) {
 	fIndex
 }
 
+featureDiffusionOverStep <- function(inputData, feature) {
+	fIndex <- featureIndex(inputData, feature)
+    nScenarios <- length(inputData)-1
+ 
+    result <- 0
+    
+    for( i in 2:(nScenarios+1)) {
+    	result <- result + inputData[fIndex,i]
+    } 
+ 	result
+}
+
+totalFeatureDiffusionOverStep <- function(inputData) {
+	nFeatures <- length(inputData[[1]])
+	fds <- c(1:nFeatures)
+
+	for(i in 1:nFeatures) {
+		featureName <- inputData[i, 1]
+		fds[i] <- featureDiffusionOverStep (inputData, featureName)
+	}   
+	fds
+}
+
 featureDiffusionOverScenario <- function(inputData, feature) {
 	fIndex <- featureIndex(inputData, feature)
       nScenarios <- length(inputData)-1
