@@ -56,63 +56,88 @@ Software}
 
 \keywords{Software product line, variability management, requirement models}
 
-%
 \section{Introduction}
-%
-The support for variation points enables product
-customization from a set of reusable
-assets~\cite{phol-spl-book}. However, variability management, due to
-its inherent crosscutting nature, is a common challenge in software
-product line (SPL) adoption~\cite{northrop-spl-book,phol-spl-book}.
-Such crosscutting characteristic is materialized whenever a feature
-requires variation points to be spread in different SPL artifacts. Actually, 
-the representation of a variant feature is often spread not only 
-in several artifacts, but also at the different product line views (requirements, 
-design, implementation, and test). So, variability management, in 
-the same way as the feature model and the architecture, represents a central concern in the SPL 
-development and should not be tangled with existing artifacts~\cite{phol-spl-book}.   
+The support for variation points enables product customization from a set of
+reusable assets~\cite{Pohl:2005aa}. However, variability management, due to its
+inherent crosscutting nature, is a common challenge in software product line
+(SPL) adoption~\cite{Clements:2001aa,Pohl:2005aa}. Such crosscutting
+characteristic is materialized whenever a feature requires variation points to be
+spread in different SPL artifacts. Actually, the representation of a variant
+feature is often spread not only in several artifacts, but also at the different
+product line views (requirements, design, implementation, and test). So,
+variability management, in the same way as the feature model and the
+architecture, represents a central concern in the SPL development and should not
+be tangled with existing artifacts~\cite{Pohl:2005aa}.
  
-Several authors have proposed the use of \emph{aspect-oriented} mechanisms in order to better modularize the composition of common and variant assets of a product line~\cite{sousa:aosd-ea04, moreira-re07, eriksson-splc-2005, pohl-caise-2005, alves-gpce-06, apel-icse2006}. 
-However, here we go beyond this composition issue. We mainly consider a more encompassing notion of variability management, including artifacts such as feature 
-models~\cite{gheyi-alloy-06,czarnecki-book} and configuration knowledge~ \cite{czarnecki-book, phol-spl-book}, and explain it  as a crosscutting phenomenon.
+Several authors have proposed the use of \emph{aspect-oriented} mechanisms in
+order to better modularize the composition of common and variant assets of a
+product line~\cite{sousa:aosd-ea04, moreira-re07, eriksson-splc-2005,
+pohl-caise-2005, alves-gpce-06, apel-icse2006}. However, here we go beyond this
+composition issue. We mainly consider a more encompassing notion of variability
+management, including artifacts such as feature
+models~\cite{gheyi-alloy-06,Czarnecki:2000aa} and configuration knowledge~
+\cite{Czarnecki:2000aa,Pohl:2005aa}, and explain it  as a crosscutting
+phenomenon.
 
-In this paper, we apply this view of \emph{variability management as crosscutting} for modularizing SPL use case scenarios. Current techniques for scenario variability management~\cite{favaro-icsr-98,bertolino-esec-2003,eriksson-splc-2005} do 
-not present a clear separation between variability management and scenario specification. For instance, supposing that details about product variants are tangled with  use case scenarios, if one variant is removed from the product line, it is necessary to change all related scenarios. In summary, it is difficult to evolve both representations. 
-Another problem is the lack of a formal representation for the derivation of product specific scenarios. This is not suitable for current SPL generative 
-practices~\cite{krueger-cacm-200712}; following the aforementioned works, it is difficult to automatically derive 
-the requirements of a specific SPL member and to check if the specified compositions 
-between common and variant flows are correct.  Although  the semantic composition of PLUC (Product 
-Line Use Case)~\cite{bertolino-esec-2003} is defined in~\cite{fantechi-splc-2004}, such approach 
-does not separate scenario specification from variability management, as presented in Section~\ref{sec:example}.  
+In this paper, we apply this view of \emph{variability management as
+crosscutting} for modularizing SPL use case scenarios. Current techniques for
+scenario variability
+management~\cite{favaro-icsr-98,Bertolino:2003aa,Eriksson:2005aa} do not
+present a clear separation between variability management and scenario
+specification. For instance, supposing that details about product variants are
+tangled with  use case scenarios, if one variant is removed from the product
+line, it is necessary to change all related scenarios. In summary, it is
+difficult to evolve both representations. Another problem is the lack of a formal
+representation for the derivation of product specific scenarios. This is not
+suitable for current SPL generative practices~\cite{krueger-cacm-200712};
+following the aforementioned works, it is difficult to automatically derive the
+requirements of a specific SPL member and to check if the specified compositions
+between common and variant flows are correct.  Although  the semantic composition
+of PLUC (Product Line Use Case)~\cite{Bertolino:2003aa} is defined
+in~\cite{fantechi-splc-2004}, such approach does not separate scenario
+specification from variability management, as presented in
+Section~\ref{sec:example}.
 
-In order to formalize our approach, we describe 
-a framework for modeling the composition process of scenario variabilities with feature models, product configuration, and configuration knowledge (Section~\ref{sec:models}). 
-Such framework aims to: (1) represent a clear separation between variability management 
-and scenario specification; and (2) specify how to weave these representations in order to generate
-specific scenarios for a SPL member. Therefore, the main contributions of this work are
+In order to formalize our approach, we describe a framework for modeling the
+composition process of scenario variabilities with feature models, product
+configuration, and configuration knowledge (Section~\ref{sec:models}). Such
+framework aims to: (1) represent a clear separation between variability
+management and scenario specification; and (2) specify how to weave these
+representations in order to generate specific scenarios for a SPL member.
+Therefore, the main contributions of this work are
 
 \begin{itemize}
 
-\item Characterize the broader notation of variability management as a crosscutting concern and, in this way, propose an approach where it is  represented as an independent view of the SPL. Although this work focus on requirement artifacts, 
-more specifically use case scenarios, we argue that such separation is also valid for other SPL views. Actually,
-it has already been claimed for source code~\cite{alves-gpce-06, apel-icse2006}, without considering the importance of variability artifacts.  
+\item Characterize the broader notation of variability management as a
+crosscutting concern and, in this way, propose an approach where it is 
+represented as an independent view of the SPL. Although this work focus on
+requirement artifacts, more specifically use case scenarios, we argue that such
+separation is also valid for other SPL views. Actually, it has already been
+claimed for source code~\cite{Alves:2006aa,Apel:2006aa}, without considering
+the importance of variability artifacts.
   
-\item A framework for modeling the composition process of scenario variability mechanisms. 
-This framework gives a basis for describing variability mechanisms (such as parameterization), 
-allowing a better understanding of each mechanism. In this work, such framework is used for modeling 
-the semantics of scenario variability mechanisms, but it might be customized for other SPL views.
+\item A framework for modeling the composition process of scenario variability
+mechanisms. This framework gives a basis for describing variability mechanisms
+(such as parameterization), allowing a better understanding of each mechanism. In
+this work, such framework is used for modeling the semantics of scenario
+variability mechanisms, but it might be customized for other SPL views.
 
-\item Describe three scenario variability mechanisms (selection of optional scenarios, scenario composition, scenario parameterization) 
-using the modeling framework. Such descriptions present
-a more formal representation when compared to existing works; this is an
-important property for supporting the automatic derivation of product
-specific artifacts.
+\item Describe three scenario variability mechanisms (selection of optional
+scenarios, scenario composition, scenario parameterization) using the modeling
+framework. Such descriptions present a more formal representation when compared
+to existing works; this is an important property for supporting the automatic
+derivation of product specific artifacts.
 
 \end{itemize}
 
-Since our concept of crosscutting mechanism is based on Masuhara and Kiczales work~\cite{kiczales-ecoop-2003}, another 
-contribution of this paper is that we apply their ideas to the languages of variability management,  reinforcing the generality of their model, which was originally instantiated only for mechanisms of aspect-oriented programming languages. Based on their view of crosscutting, we can reason about variability management as a crosscutting concern that involves different input specifications that contribute to derive a specific member of a 
-given SPL. 
+Since our concept of crosscutting mechanism is based on Masuhara and Kiczales
+work~\cite{Masuhara:2003aa}, another contribution of this paper is that we apply
+their ideas to the languages of variability management,  reinforcing the
+generality of their model, which was originally instantiated only for mechanisms
+of aspect-oriented programming languages. Based on their view of crosscutting, we
+can reason about variability management as a crosscutting concern that involves
+different input specifications that contribute to derive a specific member of a
+given SPL.
 
 Finally, we evaluate our approach (Section~\ref{sec:evaluation}) by comparing it 
 to existing works on different product lines.  We 
@@ -129,7 +154,7 @@ In order to customize specific products, by selecting a valid feature
 configuration, variation points must be represented in the product line
 artifacts. Several notations for representing variation points in use case
 scenarios have been proposed, such as Product Line Use Cases
-(PLUC)~\cite{bertolino-esec-2003} and Product Line Use Case Modeling for Systems
+(PLUC)~\cite{Bertolino:2003aa} and Product Line Use Case Modeling for Systems
 and Software Engineering (PLUSS)~\cite{eriksson-splc-2005}. However, in spite of
 the benefits for variability representation, existing works do not present a
 clear separation between variability management and scenario specifications. In this
@@ -143,7 +168,7 @@ corresponding to a family composed by 72 valid configurations~\cite{eshop-url}.
 In this paper we consider additional features, such as \emph{Update User
 Preferences}, which updates the user's preferences based on her
 historical data of searches and purchases. Figure~\ref{fig:eshop-fm} presents part of the
-EPL feature model~\cite{gheyi-alloy-06,czarnecki-book}.
+EPL feature model~\cite{gheyi-alloy-06,Czarnecki:2000aa}.
 
 A feature model is used for representing the common and variable features of a
 SPL and the dependencies between them. A feature model might be represented as a tree
@@ -308,9 +333,9 @@ values based on product definition. In this sense, according to the terminology
 presented in~\cite{}, they can be classified as \emph{annotated techniques},
 which are not suitable for modularizing the crosscutting nature of certain
 features, have poor legibility, and lead to lower
-maintainability~\cite{alves-gpce-06}. For this reason, Pohl et al.
+maintainability~\cite{Alves:2006aa}. For this reason, Pohl et al.
 argued that the variability management concern should be separated from the other
-SPL assets~\cite{phol-spl-book}. However, besides the use of independent models
+SPL assets~\cite{Pohl:2005aa}. However, besides the use of independent models
 for representing the variability concern, it is also necessary concrete
 descriptions of the composition processes used to generate specific products.
 
@@ -340,29 +365,40 @@ knowledge) is also applied to other SPL views.
 \section{Variability as crosscutting mechanisms}
 \label{sec:models}
 
-Aiming at representing a clear separation between variability management and scenario specification, and also 
-to describe the weaving processes required to compose these views, we propose a modeling framework, that slightly generalizes Masuhara and Kiczales (MK) framework~\cite{kiczales-ecoop-2003}, and instantiate it for the use case and product line context. The goal of MK framework is to
-explain how different \emph{aspect-oriented} technologies support crosscutting modularity. Each technology is modeled 
-as a three-part description: the related weaving processes take two programs as input, which crosscut each other with respect 
-to the resulting program or computation~\cite{kiczales-ecoop-2003}. 
+In the previous Section, we discussed about several issues related to the lack of
+separation between the \emph{problem space} and the \emph{solution space}, which
+is present in current techniques for managing variabilities in use case
+scenarios. In order to improve such a separation of concerns, we are
+proposing a novel approach for modeling variabilities in use case scenarios.
+In this Section we describe the semantics of this approach using the Masuhara and Kiczales (MK) framework, 
+customized to the use case and product line context. The goal of MK framework is to explain how 
+different \emph{aspect-oriented} technologies support crosscutting modularity.
+In their modeling framework, each technology is modeled as a three-part
+description: the related weaving processes take two programs as input, which crosscut each other with respect to the
+resulting program or computation~\cite{Masuhara:2003aa}. 
 
-Similarly to the MK framework, we represent the semantics of \textbf{scenario variability management} as a weaver that takes as input four specifications
-(\emph{product line use case model}, \emph{feature model}, \emph{product configuration}, and \emph{configuration knowledge}) that 
-crosscut each other with respect to the resulting product specific use case model (Figure~\ref{fig:weave-process}). Combining these input languages, 
-it is possible to represent the kinds of variability that we are interested in: \emph{optional use cases and scenarios}, \emph{quantified changed scenarios}, 
-and \emph{parameterized} scenarios. 
+Similarly to the MK framework, we represent the semantics of \textbf{scenario
+variability management} as a weaving process that takes as input four
+specifications (\emph{product line use case model}, \emph{feature model}, \emph{product
+configuration}, and \emph{configuration knowledge}). These
+specifications crosscut each other with respect to the resulting product
+specific use case model (Figure~\ref{fig:weave-process}). 
+Combining these input languages, it is possible
+to represent the sources of variability that we are interested in:
+\emph{variation in function}, \emph{variation in data}, and
+\emph{variation in control flow}~\cite{Bachmann:2001aa}.
 
-A running example of our approach is presented in Section~\ref{sub:running}. After that, we describe the semantics of our weaving process. For 
-simplicity, it was decomposed in three parts --- one weaver process for each kind of variability.  The semantics of those 
-weavers (and the meta-model of the input and output languages) are described using the Haskell programming language~\cite{haskell-report}. 
-This leads to concise weaving processes descriptions (the related source code is available at a web site~\cite{spg-url}) and keeps our model close to MK work, where weaving processes are specified in the Scheme programming language. The choice for Haskell was motivated by several factors, such as the existence of mature verification tools (QuickCheck and HUnit), readability, and our previous background in the language. 
+A running example of our approach is presented in Section~\ref{sub:running}.
+After that, we describe the semantics of our weaving process. For simplicity, it
+was decomposed in three parts --- one weaver for each source of variability.  The
+semantics of those weavers (and the meta-model of the input and output languages)
+are described using the Haskell programming language~\cite{haskell-report}. This
+leads to concise descriptions and keeps our model close to the MK
+work, where their weaving processes are specified in the Scheme programming
+language. The choice for Haskell was motivated by several factors, such as readability and 
+our background in the language. The related source code is available at a web
+site~\cite{spg-url}.
  
-%\begin{figure}[h]
-% \epsfig{file=img/weave-process2.eps,scale=0.3}
-% \caption{Overview of the modeling framework.}
-% \label{fig:weave-process}
-%\end{figure}
-
 \begin{figure}[h]
  \begin{center}
   \includegraphics[scale=0.30]{img/weave-process2.eps}
@@ -1122,8 +1158,14 @@ For now, let us reproduce the DSMs to understand the benefits of SoC in variabil
 \label{dsm:pluc}
 \end{figure}
 
-Our approach reduces the dependences between variability management and scenario specifications 
-(Figure~\ref{dsm:cc}). For instance, changes in feature model or new definitions of products do not require changes in the use case model. This clear separation is also necessary in source code, as claimed in~\cite{alves-gpce-06, apel-icse2006}, and might be required in other artifacts too. Notice that the proposed mapping artifact, used to relate use cases parameters and features (Section~\ref{sub:bind-weaver}), can be considered as a design rule, since it primarily aims at decoupling use cases and features.  
+Our approach reduces the dependences between variability management and scenario
+specifications (Figure~\ref{dsm:cc}). For instance, changes in feature model or
+new definitions of products do not require changes in the use case model. This
+clear separation is also necessary in source code, as claimed
+in~\cite{Alves:2006aa,Apel:2006aa}, and might be required in other artifacts
+too. Notice that the proposed mapping artifact, used to relate use cases
+parameters and features (Section~\ref{sub:bind-weaver}), can be considered as a
+design rule, since it primarily aims at decoupling use cases and features.
 
 \begin{figure}[h]
 \centering
@@ -1143,8 +1185,10 @@ Our approach reduces the dependences between variability management and scenario
 
 \subsection{Quantitative Analysis}
 
-For confirming the observations derived from the DSM analysis, we applied the metric suite for 
-the \emph{MMS} and \emph{Pedagogical} product lines. We compared our specification of \emph{MMS} product line to the specifications we wrote for both PLUC and PLUSS techniques~\cite{spg-url}.  
+For confirming the observations derived from the DSM analysis, we applied the
+metric suite for the \emph{MMS} and \emph{Pedagogical} product lines. We compared
+our specification of \emph{MMS} product line to the specifications we wrote for
+both PLUC and PLUSS techniques~\cite{spg-url}.
 
 In a similar way, we compared our specification of the \emph{Pedagogical} product line 
 to a specification that was sent to us by the authors of the PLUSS approach. 
@@ -1349,6 +1393,6 @@ is straightforward.
 %
 
 \bibliographystyle{abbrv}
-\bibliography{rbonifacioAOSD}
+\bibliography{../references/phd-references}
 
 \end{document}
