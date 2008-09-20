@@ -5,6 +5,9 @@
 \usepackage{epsfig}
 \usepackage[all]{xy}
 
+%include lhs2tex.fmt
+%include lhs2tex.sty
+
 \begin{document}
 \lstset{language=Haskell, numbers=left,
 numberstyle=\tiny,numbersep=5pt,basicstyle=\scriptsize,aboveskip=20pt}
@@ -224,7 +227,7 @@ describes several configurations.
 \begin{center}
 \begin{scriptsize}
   \texttt{
-  \begin{tabular}{|p{0.2in}|p{1.3in}|p{1.3in}|}
+  \begin{tabular}{||p{0.2in}||p{1.3in}||p{1.3in}||}
    \hline
 	Id    & User Action & System Response \\ \hline \hline    
        1(a) &Select the checkout option. \mbox{[ShoppingCart]}& Present the
@@ -274,7 +277,7 @@ which product is being configured. For each \emph{alternative} or
 \begin{center}
 \begin{scriptsize}
   \texttt{
-  \begin{tabular}{{|p{0.05in}p{3in}|}}
+  \begin{tabular}{{||p{0.05in}p{3in}||}}
   \hline
   & {\bf Buy Products Scenario} \\
   & {\bf Main Flow} \\
@@ -359,23 +362,26 @@ management (using feature models, product configurations, and configuration
 knowledge) is also applied to other SPL views.
 
 
-%-------------------------------------------------------------------------
+% -------------------------------------------------------------------------
 % Section: Modeling the Variability Mechanisms
-%------------------------------------------------------------------------
+% ------------------------------------------------------------------------
 \section{Variability as crosscutting mechanisms}
 \label{sec:models}
 
 In the previous Section, we discussed about several issues related to the lack of
 separation between the \emph{problem space} and the \emph{solution space}, which
-is present in current techniques for managing variabilities in use case
-scenarios. In order to improve such a separation of concerns, we are
-proposing a novel approach for modeling variabilities in use case scenarios.
-In this Section we describe the semantics of this approach using the Masuhara and Kiczales (MK) framework, 
-customized to the use case and product line context. The goal of MK framework is to explain how 
-different \emph{aspect-oriented} technologies support crosscutting modularity.
-In their modeling framework, each technology is modeled as a three-part
-description: the related weaving processes take two programs as input, which crosscut each other with respect to the
-resulting program or computation~\cite{Masuhara:2003aa}. 
+can be observed in current techniques for managing variabilities in use case
+scenarios. In order to improve such a separation of concerns, we are proposing a
+novel approach for modeling variabilities in use case scenarios. In this Section
+we describe the semantics of our approach using the \emph{Crosscutting Modeling
+Framework}, proposed by Masuhara and Kiczales (MK
+framework)~\cite{Masuhara:2003aa}. Actually, in this paper we present a slight
+customization of the MK framework, which is suitable to the use case and product
+line context. The goal of MK framework is to explain how different
+\emph{aspect-oriented} technologies support crosscutting modularity. In their
+modeling framework, each technology is modeled as a three-part description: the
+related weaving processes take two programs as input, which crosscut each other
+with respect to the resulting program or computation~\cite{Masuhara:2003aa}.
 
 Similarly to the MK framework, we represent the semantics of \textbf{scenario
 variability management} as a weaving process that takes as input four
@@ -389,15 +395,16 @@ to represent the sources of variability that we are interested in:
 \emph{variation in control flow}~\cite{Bachmann:2001aa}.
 
 A running example of our approach is presented in Section~\ref{sub:running}.
-After that, we describe the semantics of our weaving process. For simplicity, it
-was decomposed in three parts --- one weaver for each source of variability.  The
-semantics of those weavers (and the meta-model of the input and output languages)
-are described using the Haskell programming language~\cite{haskell-report}. This
-leads to concise descriptions and keeps our model close to the MK
-work, where their weaving processes are specified in the Scheme programming
-language. The choice for Haskell was motivated by several factors, such as readability and 
-our background in the language. The related source code is available at a web
-site~\cite{spg-url}.
+After that, we describe the semantics of our weaving process. For simplicity,
+this description is explained in three different sections (\ref{sub:pd-weaver}
+--- \ref{sub:bind-weaver}); one weaver description for each source of
+variability. The semantics of those weavers (and the meta-model of the input and
+output languages) are described using the Haskell programming
+language~\cite{Jones:2002aa}. This led to concise descriptions and kept our model
+close to the MK work, where their weaving processes are specified in the Scheme
+programming language. The choice for Haskell was motivated by several factors,
+such as improved readability and our background in the language. The resulting
+source code is available at a web site~\cite{spg-url}.
  
 \begin{figure}[h]
  \begin{center}
@@ -406,6 +413,37 @@ site~\cite{spg-url}.
   \label{fig:weave-process}
   \end{center}
 \end{figure}
+
+Although the semantics of each variability mechanism, expressed as weavers in
+our modeling framework, are described in next sections, here we discuss the
+semantics of the \emph{weaving process}~\ref{fig:weave-process}. The weving
+process is responsible for generating a use case model that is specific to the 
+product configuration. Therefore, the process takes into accout a selection of
+features, which characterizes specific instances of a product line. In this
+process, the contribution of the configuration knowledge is fundamental, since
+it is responsible for relating feature expressions (writeen in propositional
+logic) to individual weavers. 
+
+\begin{code}
+type ConfigurationKnowledge = [Configuration]
+ 
+data Configuration  = Configuration {
+ exp :: FeatureExpression,
+ weavers :: [Weaver] 	 
+}
+
+type Weaver = (SPL -> SPLMember) -> SPLMember
+
+weavingProcess spl fm pc ck = 
+ stepRefinement [(w spl) | w <- ws] product
+ where 
+  ws = concat [weavers c| c <- ck, eval pc (exp c)]
+  product = (emptyInstance spl fc)
+  stepRefinement l m = ...   	
+\end{code}
+
+Each weaver is a function that has the signature
+SPL Product Instance ProductInstance. 
 
 \subsection{Running Example}
 \label{sub:running}
@@ -434,7 +472,7 @@ of pairs \emph{User Action} x \emph{System Response}).  A use case defines a set
      To step: P1
    \end{tabular}  
   \begin{center} 
-  \begin{tabular}{|p{0.1in}|p{1.4in}|p{1.4in}|}
+  \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
    \hline
        Id    & User Action  & System Response \\ \hline \hline
        B1 & Select the buy product option.  & Present the selected product. The user can change the quantity of items he wants to buy. Calculate and show the amount to be paid. \\  \hline
@@ -460,7 +498,7 @@ of pairs \emph{User Action} x \emph{System Response}).  A use case defines a set
      To step: P1
    \end{tabular}  
   \begin{center} 
-   \begin{tabular}{|p{0.1in}|p{1.4in}|p{1.4in}|}
+   \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
    \hline
        Id & User Action & System Response \\ \hline \hline
        V1 & Select the checkout option.  & Present the items in the shopping cart and the amount to be paid. The user can remove items from the shopping cart. \\  \hline
@@ -486,7 +524,7 @@ for different kinds of \emph{ship method} configurations.
      To step: END
    \end{tabular}  
   \begin{center} 
-  \begin{tabular}{|p{0.1in}|p{1.4in}|p{1.4in}|}
+  \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
    \hline
        Id    & User Action  & System Response \\ \hline \hline
        P1 & Fill in the requested information and select the proceed option.  & Request the shipping method and address.\\  \hline
@@ -513,7 +551,7 @@ for different kinds of \emph{ship method} configurations.
      To step: END
    \end{tabular}  
   \begin{center} 
-   \begin{tabular}{|p{0.1in}|p{1.4in}|p{1.4in}|}
+   \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
    \hline
        Id & User Action &  System Response \\ \hline \hline
        \ldots & \ldots  & \ldots \\  \hline
@@ -539,7 +577,7 @@ that are configured with the \emph{Update User Preferences} feature.
      To step: END
    \end{tabular}  
   \begin{center} 
-   \begin{tabular}{|p{0.1in}|p{1.4in}|p{1.4in}|}
+   \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
    \hline
        Id & User Action &  System Response \\ \hline \hline
        R1 & - &  Update the preferences based on the search results or purchased items. \\  \hline
@@ -684,24 +722,24 @@ The complete path is a high level representation, which uses the same constructi
 
 %========================
  
-\begin{figure}[bth]
-\begin{center}
-\begin{tiny}
-\begin{xy}
-\xymatrix@R=10pt{
-& *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{B1} \ar[d]	& *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{V1} \ar[d] 		\\
-& *++[o][F-]{S1} \ar[d]  & *++[o][F-]{B2} \ar[d]           & *++[o][F-]{S1} \ar[d]  & *++[o][F-]{V2} \ar[d] 			\\
-& *++[o][F-]{S2} \ar[d]  & *++[o][F-]{P1} \ar[d]           & *++[o][F-]{S2} \ar[d]  & *++[o][F-]{P1} \ar[d]			\\
-& *++[o][F-]{S3} \ar[d]  & *++[o][F-]{P2} \ar[d]           & *++[o][F-]{S3} \ar[d]  & *++[o][F-]{P2} \ar[d] 			\\
-& *++[o][F-]{end} & *++[o][F-]{P3} \ar[l]                     & *++[o][F-]{R1} \ar[d] & *++[o][F-]{P3} \ar[l]   			\\
-&                         &                                                    &   *++[o][F-]{end}       &
-}
-\end{xy}
-\end{tiny}
-\caption{Complete paths represented  as a graph}
-\label{fig:complete-paths}
-\end{center}
-\end{figure}
+% \begin{figure}[bth]
+% \begin{center}
+% \begin{tiny}
+% \begin{xy}
+% \xymatrix@R=10pt{
+% & *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{B1} \ar[d]	& *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{V1} \ar[d] 		\\
+% & *++[o][F-]{S1} \ar[d]  & *++[o][F-]{B2} \ar[d]           & *++[o][F-]{S1} \ar[d]  & *++[o][F-]{V2} \ar[d] 			\\
+% & *++[o][F-]{S2} \ar[d]  & *++[o][F-]{P1} \ar[d]           & *++[o][F-]{S2} \ar[d]  & *++[o][F-]{P1} \ar[d]			\\
+% & *++[o][F-]{S3} \ar[d]  & *++[o][F-]{P2} \ar[d]           & *++[o][F-]{S3} \ar[d]  & *++[o][F-]{P2} \ar[d] 			\\
+% & *++[o][F-]{end} & *++[o][F-]{P3} \ar[l]                     & *++[o][F-]{R1} \ar[d] & *++[o][F-]{P3} \ar[l]   			\\
+% &                         &                                                    &   *++[o][F-]{end}       &
+% }
+% \end{xy}
+% \end{tiny}
+% \caption{Complete paths represented  as a graph}
+% \label{fig:complete-paths}
+% \end{center}
+% \end{figure}
 
 {\bf Binding parameters activity:}  This activity weaves scenarios and product configurations in order to resolve all scenario parameters. 
 For example, step P2 in Figure~\ref{fig:proceed-to-checkout} has a reference 
@@ -741,7 +779,7 @@ W = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\},
 \begin{table}[h]
 \begin{center}
 \caption{Modeling framework elements.} \label{tab:tup-01}
-\begin{tabular}{|p{0.6in}|p{2.4in}|}
+\begin{tabular}{||p{0.6in}||p{2.4in}||}
   \hline
   {\bf Element} & {\bf Description} \\ 
    \hline
@@ -895,19 +933,19 @@ clauses.
 %(a semantic reference). The ``+++'' operator denotes distributed
 %list concatenation.
 
-\begin{figure*}
-\begin{lstlisting}[belowskip=10pt,frame=tb,caption={Scenario composition weaver function},label=lst:trace]
-scWeaver :: ScenarioList -> [StepList]
-scWeaver scenarioList = [completePaths scenarioList s | s <- scenarioList]
- 
-completePaths :: ScenarioList -> Scenario -> [StepList]
-completePaths ucm scn =
- (fromList ucm (match ucm (fromSteps scn)) +++ [stepsOf scn]) +++  (toList ucm (match ucm (toSteps scn)))
-
-traceModel [] = [[]]
-traceModel (x:xs) = [] : (x) ^ (traceModel (xs))
-\end{lstlisting}
-\end{figure*}
+% \begin{figure*}
+% \begin{lstlisting}[belowskip=10pt,frame=tb,caption={Scenario composition weaver function},label=lst:trace]
+% scWeaver :: ScenarioList -> [StepList]
+% scWeaver scenarioList = [completePaths scenarioList s | s <- scenarioList]
+%  
+% completePaths :: ScenarioList -> Scenario -> [StepList]
+% completePaths ucm scn =
+%  (fromList ucm (match ucm (fromSteps scn)) +++ [stepsOf scn]) +++  (toList ucm (match ucm (toSteps scn)))
+% 
+% traceModel [] = [[]]
+% traceModel (x:xs) = [] : (x) ^ (traceModel (xs))
+% \end{lstlisting}
+% \end{figure*}
 
 The model of this weaver is in Table~\ref{tab:sc-weaver}. The output ($o$ element of our modeling framework) is the complete paths of the product specific scenarios, computed directly from \emph{scWeaver} function. Therefore, the input language (L) corresponds to the product specific scenarios, related to the \emph{scWeaver} 
  parameters. 
@@ -1055,11 +1093,11 @@ a \emph{refine} function (Listing~\ref{lst:traceRefinement}),
 which checks if all sequences of traces in the \emph{model under test} (mut) are 
 present in the expected results --- named here as reference model. 
 
-\begin{lstlisting}[belowskip=10pt,frame=tb,caption={The \emph{traceRefinement} function},label=lst:traceRefinement]
-refine :: TraceModel -> TraceModel -> Bool
-refine referenceModel mut = 
- and [exists (x referenceModel) | x <- mut]
-\end{lstlisting}
+% \begin{lstlisting}[belowskip=10pt,frame=tb,caption={The \emph{traceRefinement} function},label=lst:traceRefinement]
+% refine :: TraceModel -> TraceModel -> Bool
+% refine referenceModel mut = 
+%  and [exists (x referenceModel) | x <- mut]
+% \end{lstlisting}
 
 Then, we defined expected traces (such as \emph{data01} and 
 \emph{data02} in Listing~\ref{lst:unitTest}) for both configurations 
@@ -1292,26 +1330,26 @@ SS 					& 44		& 38		& 32		\\	\hline
 
 Still in this context, our approach also achieves some improvements in the resulting specifications. The main factor for these improvements in the \emph{Pedagogical} product line was the error handling modularization. By applying our approach, all behavior related to the \emph{error handling} concern is specified in a single use case. The composition of \emph{error handling} with the basic scenarios was done by means of annotations attributed to the corresponding steps. For instance, Figure~\ref{fig:error-handle} depicts just one scenario for error handling: raising  an error when there is no space available. 
 
-\begin{figure}[h]
-\begin{scriptsize}
-  \texttt{
-   \begin{tabular}{l}
-     Description: There is no available space in file system.\\
-     From step: [CatchFileException] \\
-     To step: END
-   \end{tabular}  
-  \begin{center} 
-   \begin{tabular}{|p{0.1in}|p{0.6in}|p{1.0in}|p{1.0in}|}
-   \hline
-       Id & User Action & System State & System Response \\ \hline \hline
-       E1 & & There is not enough space to save the file. &  Raise the Disk is Full exception. The arcade game application is finished. \\  \hline
-  \end{tabular}
-  \end{center}
-  } 
-\end{scriptsize}
-\caption{Scenario of error handle use case.}
-\label{fig:error-handle}
-\end{figure}
+% \begin{figure}[h]
+% \begin{scriptsize}
+%   \texttt{
+%    \begin{tabular}{l}
+%      Description: There is no available space in file system.\\
+%      From step: [CatchFileException] \\
+%      To step: END
+%    \end{tabular}  
+%   \begin{center} 
+%    \begin{tabular}{|p{0.1in}|p{0.6in}|p{1.0in}|p{1.0in}|}
+%    \hline
+%        Id & User Action & System State & System Response \\ \hline \hline
+%        E1 & & There is not enough space to save the file. &  Raise the Disk is Full exception. The arcade game application is finished. \\  \hline
+%   \end{tabular}
+%   \end{center}
+%   } 
+% \end{scriptsize}
+% \caption{Scenario of error handle use case.}
+% \label{fig:error-handle}
+% \end{figure}
     
 Notice that this scenario can be started from any step that has been marked with the \emph{CatchFileException} annotation (see the \emph{From step} clause). Several features of the PPL need to save information in the file system. Therefore, both in the SEI and PLUSS specifications of the \emph{Pedagogical} product line, several use cases were specified with scenarios for handling this kind of exception.
 
