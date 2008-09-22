@@ -416,14 +416,15 @@ source code is available at a web site~\cite{spg-url}.
 
 Although the semantics of each variability mechanism, expressed as weavers in
 our modeling framework, are described in next sections, here we discuss the
-semantics of the \emph{weaving process}~\ref{fig:weave-process}. The weving
+semantics of the \emph{weaving process}~\ref{fig:weave-process}. The weaving
 process is responsible for generating a use case model that is specific to the 
-product configuration. Therefore, the process takes into accout a selection of
+product configuration. Therefore, the process takes into account a selection of
 features, which characterizes specific instances of a product line. In this
 process, the contribution of the configuration knowledge is fundamental, since
 it is responsible for relating feature expressions (writeen in propositional
 logic) to individual weavers. 
 
+\begin{figure}[ht]
 \begin{code}
 type ConfigurationKnowledge = [Configuration]
  
@@ -435,15 +436,37 @@ data Configuration  = Configuration {
 type Weaver = (SPL -> SPLMember) -> SPLMember
 
 weavingProcess spl fm pc ck = 
- stepRefinement [(w spl) | w <- ws] product
+ stepRefinement [(w spl) | w <- ws] p
  where 
   ws = concat [weavers c| c <- ck, eval pc (exp c)]
-  product = (emptyInstance spl fc)
+  p = (emptyInstance spl fc)
   stepRefinement l m = ...   	
 \end{code}
+\caption{Weaving Process' interpreter}
+\label{fig:wp-semantics}
+\end{figure}
 
-Each weaver is a function that has the signature
-SPL Product Instance ProductInstance. 
+Figure ~\ref{fig:wp-semantics} shows our proposed configuration knowledge,
+represented as a sequence of the algebraic data type $(exp,\ weavers)$, and a valid
+interpreter for the weaving process. Basically, 
+the interpreter evaluates a list of weavers ($ws$) that should be applied for
+the specific product configuration. In order to filter the list of weavers, it
+is necessary to verify  ($eval\ pc\ (exp\ c)$) which expressions ($exp\ c$)
+are valid for a specific product configuration ($pc$).
+
+Each weaver is a function that takes as input a SPL model
+($spl$) and a SPL member ($p$); and returns a refined  
+version of the SPL member. At the begining, the SPL member is empty. 
+The $stepRefinement$ function composes the sequence of weavers that should
+be apploed. Therefore, supposing $ws = [h,g,f]$, the semantics of
+the final product would be given by:
+
+\begin{center}
+$ p\ =\ f \bullet g \bullet h (emptyProduct)  $
+\end{center}
+
+
+
 
 \subsection{Running Example}
 \label{sub:running}
