@@ -23,13 +23,13 @@ Rodrigo Bonif\'{a}cio\\
        \affaddr{Informatics Center}\\
        \affaddr{Federal University of Pernambuco}\\
        \affaddr{Recife, Brazil}\\
-       \email{rba2@cin.ufpe.br}
+       \email{rba2@@cin.ufpe.br}
 \alignauthor
 Paulo Borba\\
        \affaddr{Informatics Center}\\
        \affaddr{Federal University of Pernambuco}\\
        \affaddr{Recife, Brazil}\\
-       \email{phmb@cin.ufpe.br}
+       \email{phmb@@cin.ufpe.br}
 }
 
 \maketitle              
@@ -416,8 +416,8 @@ source code is available at a web site~\cite{spg-url}.
 
 Although the semantics of each variability mechanism, expressed as weavers in
 our modeling framework, are described in next sections, here we discuss the
-semantics of the \emph{weaving process}~\ref{fig:weave-process}. The weaving
-process is responsible for generating a use case model that is specific to the 
+semantics of the \emph{weaving process} (Figure~\ref{fig:weave-process}). The
+weaving process is responsible for generating a use case model that is specific to the 
 product configuration. Therefore, the process takes into account a selection of
 features, which characterizes specific instances of a product line. In this
 process, the contribution of the configuration knowledge is fundamental, since
@@ -436,120 +436,82 @@ data Configuration  = Configuration {
 type Weaver = (SPL -> SPLMember) -> SPLMember
 
 weavingProcess spl fm pc ck = 
- stepRefinement [(w spl) | w <- ws] p
- where 
-  ws = concat [weavers c| c <- ck, eval pc (exp c)]
-  p = (emptyInstance spl fc)
-  stepRefinement l m = ...   	
+   stepRefinement [(w spl) | w <- ws] p
+   where 
+    ws = concat [weavers c| c <- ck, eval pc (exp c)]
+    p = (emptyInstance spl fc)
+    stepRefinement l m = ...   	
 \end{code}
 \caption{Weaving Process' interpreter}
 \label{fig:wp-semantics}
 \end{figure}
 
 Figure ~\ref{fig:wp-semantics} shows our proposed configuration knowledge,
-represented as a sequence of the algebraic data type $(exp,\ weavers)$, and a valid
+represented as a list of the algebraic data type $(exp,\ weavers)$, and a valid
 interpreter for the weaving process. Basically, 
-the interpreter evaluates a list of weavers ($ws$) that should be applied for
+the interpreter evaluates a list of weavers ($ws$) that must be applied for
 the specific product configuration. In order to filter the list of weavers, it
-is necessary to verify  ($eval\ pc\ (exp\ c)$) which expressions ($exp\ c$)
-are valid for a specific product configuration ($pc$).
+is necessary to verify  ($eval\ pc\ (exp\ c)$) which expressions ($exp\ c$) in
+the configuration knowledge are valid for a specific product configuration
+($pc$).
 
 Each weaver is a function that takes as input a SPL model
 ($spl$) and a SPL member ($p$); and returns a refined  
 version of the SPL member. At the begining, the SPL member is empty. 
-The $stepRefinement$ function composes the sequence of weavers that should
-be apploed. Therefore, supposing $ws = [h,g,f]$, the semantics of
-the final product would be given by:
+The $stepRefinement$ function composes the sequence of weavers that must
+be applied. Therefore, supposing $ws = [h,g,f]$, the semantics of
+this hypothetical product would be given by:
 
 \begin{center}
-$ p\ =\ f \bullet g \bullet h (emptyProduct)  $
+$ p\ =\ f\ (spl,\ g\ (spl,\ h\ (spl,\ emptyProduct)))  $
 \end{center}
 
-
+The next Section presents examples of each input model. All examples were
+extracted from the \emph{eShop} Product Line (briefly introduced in
+Section~\ref{sec:example}). 
 
 
 \subsection{Running Example}
 \label{sub:running}
 
-In order to explain how the input languages crosscut each other and produce a product specific use case model, here we present a 
-running example of our approach based on the eShop Product Line (briefly introduced in Section~\ref{sec:example}). For this, several artifacts of each 
-input language are described. Then, we present the role of each input language in respect of the weaving process.
+In order to explain how the input models (Figure~\ref{fig:weave-process})
+crosscut each other with respect to the final product, in this section we
+present a running example of our approach. Several artifacts of each input model
+are shown; as well the contribution of these models regarded to the weaving
+process.
 
 
 \subsubsection{SPL use case model}
 
-This artifact defines a set of scenarios that might be used to describe possible products of the SPL. Although not being directly concerned 
-with variability management, some scenarios might be optional, 
-might have parameters, or might change the behavior of other 
-scenarios. Moreover, a use case scenario corresponds to a sequence of
-of pairs \emph{User Action} x \emph{System Response}).  A use case defines a set of scenarios; and a use case model defines a set of use cases. In this running example, we consider the following scenarios:
+This artifact defines a set of scenarios that is used to describe the expected
+behavior of the SPL's members. Scenarios might be optional, might have
+parameters, or might change (advice) the behavior of other scenarios. A use case model is
+composed by \emph{use cases} and \emph{aspectual use cases}. A use case has a
+name, a description and a list of scenarios (pairs of \emph{User action x System
+response}). An aspectual use case has a name and a list of advices, which can be
+use to extend the behavior of existing scenarios.
 
-{\bf Buy a Product:} this optional scenario (Figure~\ref{fig:buy-product-scenario}) enables a customer to buy specific goods from an online shopping. It is only available at instances of the product line that are not configured with the \emph{Shopping Cart} and \emph{Bonus} features. This scenarios starts from the IDLE special state  (does not extend the behavior of an existing scenario) and finishes at the Step 1M of the \emph{Proceed to Purchase} scenario (which is described a bit later). The clauses \emph{From step} and \emph{To step} are used for describing the possible starting and ending points of execution. 
+In this running example, we consider the following scenarios and advices:
+
+{\bf Proceed to Purchase:} this mandatory scenario
+(Figure~\ref{fig:proceed-to-checkout}) specifies the common behavior that is
+required for confirming a purchase. Instances of the product line must be
+configured with this scenario. Notice that a parameter
+\emph{ShipMethod} is referenced in Step P2 of
+Figure~\ref{fig:proceed-to-checkout}. This parameter (notation
+also supported in PLUSS and PLUC) allows the reuse of the \emph{Proceed do
+Purchase} scenario for different configurations of \emph{shiping method}.
 
 \begin{figure}[h]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
-     Description: Buy a specific product\\
-     From step: IDLE \\
-     To step: P1
+     {\bf Description:} Proceed to purchase\\
    \end{tabular}  
   \begin{center} 
   \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
    \hline
-       Id    & User Action  & System Response \\ \hline \hline
-       B1 & Select the buy product option.  & Present the selected product. The user can change the quantity of items he wants to buy. Calculate and show the amount to be paid. \\  \hline
-       B2 & Select the confirm option. &  Request payment information. \\  \hline
-    \end{tabular}
-  \end{center}
-  } 
-\end{scriptsize}
-\caption{Buy product scenario.}
-\label{fig:buy-product-scenario}
-\end{figure}
-
-
-{\bf Buy Products with Shopping Cart and Bonus:} this optional scenario (Figure~\ref{fig:buy-product-changing-flow}) allows the purchasing of products that have been previously added to a customer shopping cart. It changes the behavior of the \emph{Buy a Product} scenario by replacing its first two steps and by introducing the specific behavior required by the \emph{Shopping Cart} and 
-\emph{Bonus} features. This scenario also starts from the IDLE state (\emph{From step} clause) and finishes at Step 1M of \emph{Proceed to Purchase} (\emph{To step} clause). This behavior is required for products that are configured with \emph{Shopping Cart} and \emph{Bonus} features.
-
-\begin{figure}[h]
-\begin{scriptsize}
-  \texttt{
-   \begin{tabular}{l}
-     Description: Buy products using a shopping-cart\\
-     From step: IDLE \\
-     To step: P1
-   \end{tabular}  
-  \begin{center} 
-   \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
-   \hline
-       Id & User Action & System Response \\ \hline \hline
-       V1 & Select the checkout option.  & Present the items in the shopping cart and the amount to be paid. The user can remove items from the shopping cart. \\  \hline
-       V2 & Select the confirm option. & Request bonus and payment information. \\  \hline
-  \end{tabular}
-  \end{center}
-  } 
-\end{scriptsize}
-\caption{Buy products with shopping cart scenario.}
-\label{fig:buy-product-changing-flow}
-\end{figure}
-
-{\bf Proceed to Purchase:} this mandatory scenario (Figure~\ref{fig:proceed-to-checkout}) specifies the common behavior that is required for confirming a purchase. Instances of the product line must be configured with this scenario. Although It can be started  either after Step B2 (from \emph{Buy a Product} scenario) or after Step V2 (from \emph{Buy Products Using Shopping Cart} scenario), just one of the paths can be available at a specific product. 
-It is important to notice that the \emph{From step} and \emph{To step} clauses are used for composing, in a quantified way, different scenario configurations without specifying all possible variants in a single artifact (as suggested in the PLUSS notation). Moreover, notice that a parameter \emph{ShipMethod} is referenced in Step 4M of Figure~\ref{fig:proceed-to-checkout}. The use of this parameter (notation also supported in PLUSS and PLUC) allows the reuse of this specification 
-for different kinds of \emph{ship method} configurations. 
-
-\begin{figure}[h]
-\begin{scriptsize}
-  \texttt{
-   \begin{tabular}{l}
-     Description: Proceed to purchase\\
-     From step: B2, V2 \\
-     To step: END
-   \end{tabular}  
-  \begin{center} 
-  \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
-   \hline
-       Id    & User Action  & System Response \\ \hline \hline
+       Id & User Action  & System Response \\ \hline \hline
        P1 & Fill in the requested information and select the proceed option.  & Request the shipping method and address.\\  \hline
        P2 & Select one of the available ship methods (\mbox{<ShipMethod>}), fill in the destination address and proceed. & Calculate the shipping costs. \\  \hline
        P3 & Confirm the purchase. & Execute the order and send a request to the Delivery System to dispatch the products. 
@@ -562,16 +524,80 @@ for different kinds of \emph{ship method} configurations.
 \label{fig:proceed-to-checkout}
 \end{figure}
 
- 
-{\bf Search for Products:} this mandatory scenario allows the user to search for products. In order to save space, we are only presenting Step S3, which performs a search based on the input criteria (Figure~\ref{fig:search-products-flow}). This step is annotated with the mark \mbox{{\bf [RegisterPreference]}}, exposing it as a possible extension point for the behavior of \emph{Register User Preferences}. The same annotation was used in the Step P3 of \emph{Proceed to Purchase} (Figure~\ref{fig:proceed-to-checkout}). Such annotations can be referenced in the \emph{from step} and \emph{to step} clauses, reducing problems that might occur by changing step ids.
+{\bf Buy Product:} this advice (Figure~\ref{fig:buy-product-scenario}) enables
+a customer to buy specific goods from an online shopping store. It is only
+available in the product line members that are {\bf not} configured with
+the \emph{Shopping Cart} and \emph{Bonus} features. 
+This advice introduces an optional behavior {\bf before} the join points
+identified in its \emph{pointcut} clause. In this case, the Step P1 defined in
+the \emph{Proceed to Purchase} scenario. 
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+     {\bf Description:} Buy a specific product\\
+     {\bf before:}  P1     
+   \end{tabular}  
+  \begin{center} 
+  \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
+   \hline
+       Id & User Action  & System Response \\ \hline \hline
+       B1 & Select the buy product option.  & Present the selected product. The user can change the quantity of items he wants to buy. Calculate and show the amount to be paid. \\  \hline
+       B2 & Select the confirm option. &  Request payment information. \\  \hline
+    \end{tabular}
+  \end{center}
+  } 
+\end{scriptsize}
+\caption{Buy product advice.}
+\label{fig:buy-product-scenario}
+\end{figure}
+
+
+{\bf Buy Products with Shopping Cart and Bonus:} this advice
+(Figure~\ref{fig:buy-product-changing-flow}) allows the purchasing of products
+that have been previously added to a customer shopping cart. It extends the
+behavior of \emph{Proceed to Purchase} scenario by introducing the specific 
+behavior required by the \emph{Shopping Cart} and
+\emph{Bonus} features. Therefore, this advice is required by products that
+are configured with both \emph{Shopping Cart} and \emph{Bonus} features.
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+     {\bf Description:} Buy products using a shopping-cart\\
+     {\bf before:} P1
+   \end{tabular}  
+  \begin{center} 
+   \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
+   \hline
+       Id & User Action & System Response \\ \hline \hline
+       C1 & Select the checkout option.  & Present the items in the shopping cart and the amount to be paid. The user can remove items from the shopping cart. \\  \hline
+       C2 & Select the confirm option. & Request bonus and payment information. \\  \hline
+  \end{tabular}
+  \end{center}
+  } 
+\end{scriptsize}
+\caption{Buy products with shopping cart scenario.}
+\label{fig:buy-product-changing-flow}
+\end{figure}
+
+{\bf Search for Products:} this mandatory scenario allows the user to search for
+products. In order to save space, we are only presenting Step S3, which performs
+a search based on the input criteria (Figure~\ref{fig:search-products-flow}).
+This step is annotated with the mark \mbox{{\bf [RegisterPreference]}}, exposing
+it as a possible extension point for the behavior of \emph{Register User
+Preferences} (Figure~\ref{fig:register-preferences-flow}). The same annotation
+was assigned to the Step P3 of \emph{Proceed to Purchase}
+(Figure~\ref{fig:proceed-to-checkout}). Such annotations can be referenced by advices, reducing problems
+that might occur after changing the step ids.
 
 \begin{figure}[ht]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
-     Description: Search for Products scenario\\
-     From step: IDLE \\
-     To step: END
+     {\bf Description:} Search for products. \\     
    \end{tabular}  
   \begin{center} 
    \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
@@ -587,17 +613,18 @@ for different kinds of \emph{ship method} configurations.
 \label{fig:search-products-flow}
 \end{figure}
 
-{\bf Register User Preferences:} this optional scenario updates the user preferences based on the buy and search products use cases. Its behavior can be 
-started at each step that is marked with the {\bf [RegisterPreference]} (see the \emph{from step} clause) annotation and is available in products 
-that are configured with the \emph{Update User Preferences} feature. 
+{\bf Register User Preferences:} this advice updates the user preferences based
+on the user's history of searches and purchases. Its behavior can be started {\bf
+after} any step assigned to the {\bf [RegisterPreference]} (see the
+\emph{pointcut} clause) annotation and is available in products that are
+configured with the \emph{Update User Preferences} feature.
 
 \begin{figure}[h]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
-     Description: Register user preferences.\\
-     From step: [RegisterPreference] \\
-     To step: END
+     {\bf Description:} Register user preferences.\\
+     {\bf After}: [RegisterPreference] \\
    \end{tabular}  
   \begin{center} 
    \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
@@ -612,12 +639,20 @@ that are configured with the \emph{Update User Preferences} feature.
 \label{fig:register-preferences-flow}
 \end{figure}
 
-In this running example, we described several scenarios as being optional or mandatory. It is important to observe that, in our approach, this kind of information is not specified in scenario documents. Actually, it is necessary to consider the relationships between scenarios and features in order to realize which configurations require a specific scenario. As we said at the beginning of this section, each artifact (feature model, product configuration, configuration knowledge, and use case model) provides a specific contribution to the definition of a SPL member. 
+In this running example, we described several scenarios as being optional or
+mandatory. It is important to observe that, in our approach, this kind of
+information is not specified in scenario documents. Actually, it is necessary to
+consider the relationships between scenarios and features in order to realize
+which configurations require a specific scenario. As we explained at the
+beginning of this section, each artifact (feature model, product configuration,
+configuration knowledge, and use case model) provides a specific contribution to
+the definition of a SPL's member.
 
 \subsubsection{Feature model}
 
-We have introduced part of this artifact for the eShop product line in Section~\ref{sec:example}. However, here we 
-present only the features required  (Figure~\ref{fig:eshop-fm-re}) for understanding the running example. 
+We have introduced part of this artifact for the \emph{eShop} product line in
+Section~\ref{sec:example}. However, here we present only the features required 
+(Figure~\ref{fig:eshop-fm-re}) for understanding the running example.
 
  \begin{figure}[h]
  \begin{center}
@@ -627,28 +662,49 @@ present only the features required  (Figure~\ref{fig:eshop-fm-re}) for understan
   \end{center}
 \end{figure}
 
-Based on the feature model of Figure~\ref{fig:eshop-fm-re}, the \emph{Shopping 
-Cart}, \emph{Bonus} and \emph{Update User Preferences} features are not required; on the other hand, the \emph{Ship Method} feature is mandatory and all products have to be configured with at least one of its child.  
+Based on the feature model of Figure~\ref{fig:eshop-fm-re}, the \emph{Shopping
+Cart}, \emph{Bonus} and \emph{Update User Preferences} features are optional;
+on the other hand, the \emph{Ship Method} feature is mandatory and all products
+have to be configured with at least one of its child. A short review about the
+feature model notation was presented in Section~\ref{sec:example}. More details
+can be found elsewhere~\cite{gheyi-alloy-06,Czarnecki:2000aa}.
 
-\subsubsection{Product configuration}
+\subsubsection{Product configuration}\label{subsub:pc}
 
-This artifact is used for identifying which features were selected in order to compose a specific member of a product line. Each product configuration should conform to a feature model (the selected features should obey the feature model relationships and constraints). Two possible configurations are presented in Figure~\ref{fig:product-config-01-02}.  
+This artifact is used for identifying which features were selected in order to
+compose a specific member of a product line. Each product configuration should
+conform to a feature model (the selected features should obey the feature model
+relationships and constraints). Two possible configurations are presented in
+Figure~\ref{fig:product-config-01-02}. We represent these configurations as a
+tree, highlighting which features were selected. Such a representation was
+created using the \emph{Feature Modeling Plugin}~\cite{czarnecki-eclipse-2004}
 
-\begin{figure}[htb]
-  \centerline{
-    \mbox{\includegraphics[scale=0.4]{img/pc-01.eps}}
-    \mbox{\includegraphics[scale=0.4]{img/pc-02.eps}}
-  }
-  \caption{Examples of product configurations.}
+ \begin{figure}[h]
+ \begin{center}
+  \includegraphics[scale=0.40]{img/pc-03.eps}
+   \caption{Examples of product configurations.}
   \label{fig:product-config-01-02}
-  \end{figure}
+  \end{center}
+\end{figure}
+
+% \begin{figure}[htb] \centerline{
+% \mbox{\includegraphics[scale=0.4]{img/pc-01.eps}}
+% \mbox{\includegraphics[scale=0.4]{img/pc-02.eps}} } \nocaptionrule
+% \caption{Examples of product configurations.} \label{fig:product-config-01-02}
+% \end{figure}
   
-The first configuration (on the left side of the Figure~\ref{fig:product-config-01-02}) defines a product that has no support for shopping cart, bonus and preferences update. Additionally, it supports only the economical and fast ship methods. The second configuration selects all possible features. 
-In order to select the required assets (scenarios, classes and aspects, test cases) for a specific product configuration, it is necessary to relate features to them. This is the role of the configuration knowledge as an input artifact of our weaving process.  
+The first configuration (on the left side of the
+Figure~\ref{fig:product-config-01-02}) defines a product that has no support for
+\emph{shopping cart}, \emph{bonus} and \emph{preferences update}. Additionally,
+it supports only the economical and fast ship methods. The second configuration
+selects all possible features. 
 
 \subsubsection{Configuration knowledge}
 
-This artifact is used for relating feature expressions to assets that must be assembled in a given product. Such artifacts allow, during product engineering, the automatic selection of assets that are required for a specific product configuration. 
+This artifact is used for relating feature expressions to assets that must be
+assembled in a given product. Such artifacts allow, during product engineering,
+the automatic selection of assets that are required for a specific product
+configuration.
 
 Table~\ref{tab:ck-running-example} presents a configuration knowledge 
 for the running example, enforcing that the \emph{Proceed to Purchase} and 
