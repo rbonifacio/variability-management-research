@@ -715,7 +715,7 @@ configuration of an instance's assets.
 
 \begin{figure*}[hbt] 
  \begin{code}
-  (|->) :: a -> b -> (a,b) -- just a syntactic function to build pairs
+  (|->) :: a -> b -> (a,b) -- just a 'syntactic sugar' to build pairs
   l |-> r = (l,r)
   
   conf1 = Configuration (``eShop'' |-> selectScenarios[``SC01'', ``SC02''])
@@ -731,25 +731,86 @@ configuration of an instance's assets.
 \label{fig:ck-running-example}
 \end{figure*}
 
-Figure~\ref{fig:ck-running-example} presents a configuration knowledge for the
-running example, enforcing that the \emph{Proceed to Purchase} and \emph{Search
-for Products} are mandatory scenarios, since they are related to the root feature
-of \emph{eShop} product line; the \emph{Buy a Product} advice is used in the
-composition of products that do not have been configured with both \emph{Shopping
-Cart} and \emph{Bonus} features --- if both features were selected for a product,
-it will be configured with the \emph{Buy Product with Cart} advice; and
-finally, Figure~\ref{fig:ck-running-example} states that \emph{Register User
-Preference} advice is not used in composition unless the \emph{Update
-User Preferences } feature has been selected. 
+Figure~\ref{fig:ck-running-example} presents the configuration knowledge
+($ck$) for the running example, enforcing that:
+
+\begin{itemize}  
+\item Both \emph{Proceed to Purchase} (SC01) and \emph{Search for Products}
+(SC02) scenarios are mandatory, since their selection is related to the
+(mandatory) root feature of \emph{eShop} product line;
+
+\item The \emph{Buy Product} advice (ADV01) is used in the composition of
+products that do not have been configured with both \emph{Shopping Cart} and \emph{Bonus}
+features --- if both features were selected for a product, it would be configured
+with the \emph{Buy Product with Cart} advice (ADV02);
+
+\item The \emph{Register User Preferences} advice (ADV03) is not used in a
+product composition unless the \emph{Update User Preferences} feature has been
+selected; and
+ 
+\item References to the ``ShipMethod'' parameter are bound to the
+selected alternatives of \emph{Ship Method} feature.
+
+\end{itemize}  
 
 Three different weavers are used in the configuration knowledge shown in
 Figure~\ref{fig:ck-running-example}: \emph{selectScenarios},
 \emph{evaluateAdvice}, and \emph{bindParameter}. Using the terminology
-proposed by Baachmann et al.~\cite{Bachmann:2001aa}, the first weave deals with
+proposed by Bachmann et al.~\cite{Bachmann:2001aa}, the first weaver deals with
 the source of variability named as \emph{variation in function}; the second one
 deals with \emph{variation in control flow}; and the last one deals with
-\emph{variation in data}. The next section describes the semantics of these
-weavers as crosscutting mechanisms.
+\emph{variation in data}. We can reason about the effect of the weaver process
+by means of trace models. 
+
+\newdef A trace model is the set of valid sequences of events, labeled by the
+scenario ids\ldots.
+
+For instance, since the product is empty at the begining of the weaving
+process, its trace model is an set with just the empty sequence. Thus:
+
+\begin{center}
+$Traces_{p} = {<>}$
+\end{center}
+
+Then, after evaluating the first configuration for the second product of
+Figure, the trace model will be:
+
+\begin{center}
+$Traces_{p} = {<>, <P1>, <P1,P2>, <P1, P2, P3>, <S1>,<S1,S2>, <S1,S2,S3>}$
+\end{center}
+
+The second configuration is not evaluated as $True$ for the second product of
+Figure\ldots Therefore, no changes occurs in the product bein configured. On the
+other hand, after evaluating the third configuration for the second product
+of\ldots
+
+\begin{center}
+$Traces_{p} = {<>, <C1>, <C1, C2>, <C1,C2,P1>, <C1, C2,P1,P2>, <C1,C2P1, P2,
+P3>, <S1>,<S1,S2>, <S1,S2,S3>}$
+\end{center}
+% 
+% Next, after evaluating the fourth configuration, the result will be \ldots:
+% 
+% \begin{center}
+% $Traces_{p} = {<>, <C1>, <C1, C2>, <C1,C2,P1>, <C1, C2,P1,P2>, <C1,C2P1, P2,
+% P3>, <C1,C2P1, P2,P3,R1>, <S1>,<S1,S2>, <S1,S2,S3>, <S1,S2,S3,R1>}$
+% \end{center}
+% 
+% 
+% Finally\ldots.
+% 
+% \begin{center}
+% $Traces_{p} = {<>, <C1>, <C1, C2>, <C1,C2,P1>, <C1, C2,P1,P2>, 
+% <C1,C2P1, P2,P3>, <C1,C2P1, P2,P3,R1>, <S1>,<S1,S2>, <S1,S2,S3>, 
+% <S1,S2,S3,R1>}$
+% \end{center}
+
+
+
+
+The next section describes the semantics of these
+weavers as crosscutting mechanisms. 
+
 
 % In what follows, we describe a high level view of the weaving process that
 % combines the input languages in order to manage scenario variability.  Then, in
@@ -1168,102 +1229,102 @@ other contributions come from the configuration knowledge (CK), in the sense tha
 of a parameter is defined ($CK_{EFF}$) in the product specific features; and from the mapping ($m$ parameter of the \emph{bind} function) that is used for relating parameters to features. 
 In what follows, we discuss about some verifications applied to the weaving processes just presented. Such verifications were conduced by applying both \emph{random} and \emph{guided} test cases.
 
-\subsection{Model Verification}\label{sub:model-verification}
-
-The specifications presented in the 
-previous section allow us to verify if the composition 
-processes have desired properties or behavior. 
-Aiming at doing that, we applied two techniques for testing 
-Haskell programs: unit tests; and 
-formal specifications for checking properties of our modeling 
-framework. 
-
-Unit tests were developed using the HUnit library~\cite{hunit-tutorial}. 
-Similar to other \emph{xUnit} tools, it requires well defined input data and 
-expected results. After that, it is possible to check if 
-a call to a \emph{function under test}, sending the previous defined input data as 
-argument, yields a value equal to the expected results. 
-For instance, we applied unit tests for checking if the composition process 
-for the product configurations depicted in Figure~\ref{fig:product-config-01-02} 
-yields expected traces. Therefore, the trace model notation discussed in 
-a previous section plays an important role in our verification process. 
-In order to perform such kind of checking, we first implemented 
-a \emph{refine} function (Listing~\ref{lst:traceRefinement}), 
-which checks if all sequences of traces in the \emph{model under test} (mut) are 
-present in the expected results --- named here as reference model. 
-
-% \begin{lstlisting}[belowskip=10pt,frame=tb,caption={The \emph{traceRefinement} function},label=lst:traceRefinement]
-% refine :: TraceModel -> TraceModel -> Bool
-% refine referenceModel mut = 
-%  and [exists (x referenceModel) | x <- mut]
+% \subsection{Model Verification}\label{sub:model-verification}
+% 
+% The specifications presented in the 
+% previous section allow us to verify if the composition 
+% processes have desired properties or behavior. 
+% Aiming at doing that, we applied two techniques for testing 
+% Haskell programs: unit tests; and 
+% formal specifications for checking properties of our modeling 
+% framework. 
+% 
+% Unit tests were developed using the HUnit library~\cite{hunit-tutorial}. 
+% Similar to other \emph{xUnit} tools, it requires well defined input data and 
+% expected results. After that, it is possible to check if 
+% a call to a \emph{function under test}, sending the previous defined input data as 
+% argument, yields a value equal to the expected results. 
+% For instance, we applied unit tests for checking if the composition process 
+% for the product configurations depicted in Figure~\ref{fig:product-config-01-02} 
+% yields expected traces. Therefore, the trace model notation discussed in 
+% a previous section plays an important role in our verification process. 
+% In order to perform such kind of checking, we first implemented 
+% a \emph{refine} function (Listing~\ref{lst:traceRefinement}), 
+% which checks if all sequences of traces in the \emph{model under test} (mut) are 
+% present in the expected results --- named here as reference model. 
+% 
+% % \begin{lstlisting}[belowskip=10pt,frame=tb,caption={The \emph{traceRefinement} function},label=lst:traceRefinement]
+% % refine :: TraceModel -> TraceModel -> Bool
+% % refine referenceModel mut = 
+% %  and [exists (x referenceModel) | x <- mut]
+% % \end{lstlisting}
+% 
+% Then, we defined expected traces (such as \emph{data01} and 
+% \emph{data02} in Listing~\ref{lst:unitTest}) for both configurations 
+% of Figure~\ref{fig:product-config-01-02}, considering the complete paths 
+% showed in Figure~\ref{fig:complete-paths}. Additionally, two trace models
+% (\emph{tm01} and \emph{tm02}), computed by the composition process, were defined 
+% as input data. Notice that the input trace models were computed varying just the 
+% products configurations (\emph{pc01} and \emph{pc02}). 
+% Finally, test cases (such as tc01 and tc04) were developed 
+% for verifying expected and non-expected traces in the resulting composed models. 
+% 
+% \begin{lstlisting}[belowskip=10pt,frame=tb,caption={Unit test for composition process},label=lst:unitTest]
+% data01 = [[], [idle], [idle, 1M], ...
+%  [idle,1M, 2M, 3M, 4M, 5M, end]]
+% 
+% data02 = [[],[idle], [idle, V1], ...
+%  [idle, V1, V2, 3M, 4M, 5M, end]]
+% 
+% tm01 = computeTraces (fm01 pc01 ck01 ucm01)
+% tm02 = computeTraces (fm01 pc02 ck01 ucm01)
+% -- expected traces for configuration 01
+% tc01 = 
+%  TestCase (assertBool (refine tm01 data01 tm01))
+% 
+% -- non-expected traces for configuration 02
+% tc04 = 
+%  TestCase (assertBool (not (refine data01 tm02)))
 % \end{lstlisting}
-
-Then, we defined expected traces (such as \emph{data01} and 
-\emph{data02} in Listing~\ref{lst:unitTest}) for both configurations 
-of Figure~\ref{fig:product-config-01-02}, considering the complete paths 
-showed in Figure~\ref{fig:complete-paths}. Additionally, two trace models
-(\emph{tm01} and \emph{tm02}), computed by the composition process, were defined 
-as input data. Notice that the input trace models were computed varying just the 
-products configurations (\emph{pc01} and \emph{pc02}). 
-Finally, test cases (such as tc01 and tc04) were developed 
-for verifying expected and non-expected traces in the resulting composed models. 
-
-\begin{lstlisting}[belowskip=10pt,frame=tb,caption={Unit test for composition process},label=lst:unitTest]
-data01 = [[], [idle], [idle, 1M], ...
- [idle,1M, 2M, 3M, 4M, 5M, end]]
-
-data02 = [[],[idle], [idle, V1], ...
- [idle, V1, V2, 3M, 4M, 5M, end]]
-
-tm01 = computeTraces (fm01 pc01 ck01 ucm01)
-tm02 = computeTraces (fm01 pc02 ck01 ucm01)
--- expected traces for configuration 01
-tc01 = 
- TestCase (assertBool (refine tm01 data01 tm01))
-
--- non-expected traces for configuration 02
-tc04 = 
- TestCase (assertBool (not (refine data01 tm02)))
-\end{lstlisting}
-
-Based on the examples just presented, unit tests are useful for 
-verifying the presence of errors under well defined test cases 
-(described by the input data and expected results). A complementary 
-approach consists in checking function properties based on formal 
-specifications. In order to perform this kind of verification, we use 
-the \emph{QuickCheck} library~\cite{claessen00-icfp-2000}, which provides 
-an \emph{embedded specific language} that is used to specify 
-properties of Haskell programs; and several functions for checking 
-formal properties and for randomly generating input data. 
-This second verification approach is also suitable in our context since 
-several properties related to each input model (or to the compositions between them) 
-should be obeyed. Applying just unit tests for checking these properties may 
-require a huge effort for designing and implementing input data and expected results 
-for each interesting test scenario. On the other hand, this formal technique 
-requires the specification of properties that a \emph{function under test} 
-should hold. These properties are then checked against randomly input data. 
-
-%It is important 
-%to notice that functions for generating input data can be overloaded in the \emph{QuickCheck} 
-%library, which means that we can define the generation of data based on occurrence probabilities.
-
-We applied this verification technique for checking several properties of feature modeling (briefly introduced in Section~\ref{sec:example}). For example, an alternative feature requires exactly one sub feature to be selected in a product configuration. Using the \emph{QuickCheck} library, this property can be expressed as the function \emph{prop\_ExactlyOneSelected} in Listing~\ref{lst:quick-check}. 
-It takes two feature as parameters and returns a property to be checked. The first parameter (fm) should be an alternative feature (from a feature model). The second one (fc), instead, is a corresponding feature from the product configuration. If the number of children of \emph{fc} is different than one (the expression before the implies symbol), it is expected that a call to the \emph{existError} function will return \emph{True}. After specifying this kind of property, it is possible to verify if they hold for different input data.  
-
-\begin{figure*}
- \begin{lstlisting}[belowskip=10pt,frame=tb,caption={Example of QuickCheck property},label=lst:quick-check]
-prop_ExactlyOneSelected :: Feature -> Feature -> QuickCheck.Property 
-prop_ExactlyOneSelected fm fc = (not (length (children fc) == 1)) => 
- existError (checkAlternativeFeature fm fc) 
-\end{lstlisting}
-\end{figure*}
-
-We also performed this kind of verification for checking properties related to the weaving process. For instance, we defined properties for checking if all scenario parameters are related exclusively to \emph{alternativeFeatures} or \emph{orFeatures}. Such constraint was discussed in the previous section.  
-
-Both verification approaches were important to improve the confidence of our models. Actually, several unit tests and properties revealed to us interesting case; we were not initially concerned with some of them. To our knowledge, no existing work for representing variability management in scenarios apply these level of verifications.
-
-In the next section we present an evaluation of our approach based on the 
-specification of SPLs in different domains. 
+% 
+% Based on the examples just presented, unit tests are useful for 
+% verifying the presence of errors under well defined test cases 
+% (described by the input data and expected results). A complementary 
+% approach consists in checking function properties based on formal 
+% specifications. In order to perform this kind of verification, we use 
+% the \emph{QuickCheck} library~\cite{claessen00-icfp-2000}, which provides 
+% an \emph{embedded specific language} that is used to specify 
+% properties of Haskell programs; and several functions for checking 
+% formal properties and for randomly generating input data. 
+% This second verification approach is also suitable in our context since 
+% several properties related to each input model (or to the compositions between them) 
+% should be obeyed. Applying just unit tests for checking these properties may 
+% require a huge effort for designing and implementing input data and expected results 
+% for each interesting test scenario. On the other hand, this formal technique 
+% requires the specification of properties that a \emph{function under test} 
+% should hold. These properties are then checked against randomly input data. 
+% 
+% %It is important 
+% %to notice that functions for generating input data can be overloaded in the \emph{QuickCheck} 
+% %library, which means that we can define the generation of data based on occurrence probabilities.
+% 
+% We applied this verification technique for checking several properties of feature modeling (briefly introduced in Section~\ref{sec:example}). For example, an alternative feature requires exactly one sub feature to be selected in a product configuration. Using the \emph{QuickCheck} library, this property can be expressed as the function \emph{prop\_ExactlyOneSelected} in Listing~\ref{lst:quick-check}. 
+% It takes two feature as parameters and returns a property to be checked. The first parameter (fm) should be an alternative feature (from a feature model). The second one (fc), instead, is a corresponding feature from the product configuration. If the number of children of \emph{fc} is different than one (the expression before the implies symbol), it is expected that a call to the \emph{existError} function will return \emph{True}. After specifying this kind of property, it is possible to verify if they hold for different input data.  
+% 
+% \begin{figure*}
+%  \begin{lstlisting}[belowskip=10pt,frame=tb,caption={Example of QuickCheck property},label=lst:quick-check]
+% prop_ExactlyOneSelected :: Feature -> Feature -> QuickCheck.Property 
+% prop_ExactlyOneSelected fm fc = (not (length (children fc) == 1)) => 
+%  existError (checkAlternativeFeature fm fc) 
+% \end{lstlisting}
+% \end{figure*}
+% 
+% We also performed this kind of verification for checking properties related to the weaving process. For instance, we defined properties for checking if all scenario parameters are related exclusively to \emph{alternativeFeatures} or \emph{orFeatures}. Such constraint was discussed in the previous section.  
+% 
+% Both verification approaches were important to improve the confidence of our models. Actually, several unit tests and properties revealed to us interesting case; we were not initially concerned with some of them. To our knowledge, no existing work for representing variability management in scenarios apply these level of verifications.
+% 
+% In the next section we present an evaluation of our approach based on the 
+% specification of SPLs in different domains. 
 
 %=============================
 % Evaluation
