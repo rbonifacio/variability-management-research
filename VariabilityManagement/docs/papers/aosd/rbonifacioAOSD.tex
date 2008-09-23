@@ -8,6 +8,8 @@
 %include lhs2tex.fmt
 %include lhs2tex.sty
 
+%format |->           = "\longmapsto"
+
 \begin{document}
 \lstset{language=Haskell, numbers=left,
 numberstyle=\tiny,numbersep=5pt,basicstyle=\scriptsize,aboveskip=20pt}
@@ -506,6 +508,7 @@ Purchase} scenario for different configurations of \emph{shiping method}.
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
+   	 {\bf Id: SC01} 	\\
      {\bf Description:} Proceed to purchase\\
    \end{tabular}  
   \begin{center} 
@@ -536,6 +539,7 @@ the \emph{Proceed to Purchase} scenario.
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
+   	 {\bf Id: ADV01} 	\\
      {\bf Description:} Buy a specific product\\
      {\bf before:}  P1     
    \end{tabular}  
@@ -566,6 +570,7 @@ are configured with both \emph{Shopping Cart} and \emph{Bonus} features.
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
+   	 {\bf Id: ADV02} 	\\
      {\bf Description:} Buy products using a shopping-cart\\
      {\bf before:} P1
    \end{tabular}  
@@ -597,6 +602,7 @@ that might occur after changing the step ids.
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
+   	 {\bf Id: SC02} 						\\
      {\bf Description:} Search for products. \\     
    \end{tabular}  
   \begin{center} 
@@ -623,6 +629,7 @@ configured with the \emph{Update User Preferences} feature.
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
+   	 {\bf Id: ADV03} 	\\
      {\bf Description:} Register user preferences.\\
      {\bf After}: [RegisterPreference] \\
    \end{tabular}  
@@ -671,10 +678,9 @@ can be found elsewhere~\cite{gheyi-alloy-06,Czarnecki:2000aa}.
 
 \subsubsection{Product configuration}\label{subsub:pc}
 
-This artifact is used for identifying which features were selected in order to
-compose a specific member of a product line. Each product configuration should
-conform to a feature model (the selected features should obey the feature model
-relationships and constraints). Two possible configurations are presented in
+This artifact identifies a SPL member, which is characterized by a valid
+configuration of features. Each product configuration should conform to a
+feature model (the selected features should obey the feature model relationships and constraints). Two possible configurations are presented in
 Figure~\ref{fig:product-config-01-02}. We represent these configurations as a
 tree, highlighting which features were selected. Such a representation was
 created using the \emph{Feature Modeling Plugin}~\cite{czarnecki-eclipse-2004}
@@ -701,143 +707,157 @@ selects all possible features.
 
 \subsubsection{Configuration knowledge}
 
-This artifact is used for relating feature expressions to assets that must be
-assembled in a given product. Such artifacts allow, during product engineering,
-the automatic selection of assets that are required for a specific product
-configuration.
+This artifact corresponds to a list of configuration items, which relates
+feature expressions to weavers (Figure~\ref{fig:wp-semantics}). These weavers
+are responsible for generating specific instances of a SPL. Therefore, the
+configuration knowledge allows, during product engineering, the automatic
+configuration of an instance's assets.
 
-Table~\ref{tab:ck-running-example} presents a configuration knowledge 
-for the running example, enforcing that the \emph{Proceed to Purchase} and 
-\emph{Search for Products} are mandatory scenarios, since they are related 
-to the root feature of eShop product line;  
-the \emph{Buy a Product} scenario is used in the composition of products that do not have been configured with both \emph{Shopping Cart} and \emph{Bonus} features --- if both features were selected for a product, it will be configured with the \emph{Buy Product with Cart} scenario; and finally, Table~\ref{tab:ck-running-example} states that \emph{Register User Preference} scenario is not used in composition unless the \emph{Update Preference feature} is selected.
+\begin{figure*}[hbt] 
+ \begin{code}
+  (|->) :: a -> b -> (a,b) -- just a syntactic function to build pairs
+  l |-> r = (l,r)
+  
+  conf1 = Configuration (``eShop'' |-> selectScenarios[``SC01'', ``SC02''])
+  conf2 = Configuration ('Not' (``ShoppingCart'' 'And' ``Bonus'') |-> evaluateAdvice[``ADV01''])
+  conf3 = Configuration (``ShoppingCart'' 'And' ``Bonus'' |-> evaluateAdvice[``ADV02''])
+  conf4 = Configuration (``UpdateUserPreferences'' |-> evaluateAdvice[``ADV03''])
+  conf5 = Configuration (``ShipMethod'' |-> bindParameter(``ShipMethod'', `ShipMethod'')) 
+  ...
+  
+  ck = [conf1, conf2, conf3, conf4, conf5]
+ \end{code}
+\caption{eShop configuration knowledge} 
+\label{fig:ck-running-example}
+\end{figure*}
 
+Figure~\ref{fig:ck-running-example} presents a configuration knowledge for the
+running example, enforcing that the \emph{Proceed to Purchase} and \emph{Search
+for Products} are mandatory scenarios, since they are related to the root feature
+of \emph{eShop} product line; the \emph{Buy a Product} advice is used in the
+composition of products that do not have been configured with both \emph{Shopping
+Cart} and \emph{Bonus} features --- if both features were selected for a product,
+it will be configured with the \emph{Buy Product with Cart} advice; and
+finally, Figure~\ref{fig:ck-running-example} states that \emph{Register User
+Preference} advice is not used in composition unless the \emph{Update
+User Preferences } feature has been selected. 
 
-\begin{table}[th]
-\begin{center}
-\caption{eShop configuration knowledge} \label{tab:ck-running-example}
-\begin{tabular}{ll}
-   \hline\noalign{\smallskip}
-  {\bf Expression} & {\bf Required Artifacts} \\
-   \noalign{\smallskip}
-   \hline
-   \noalign{\smallskip}
-    eShop & Proceed to Purchase \\
-               & Search for Products \\
-               & \ldots \\ 
-    {\bf not} (Cart {\bf and} Bonus)\hspace{2pt} & Buy a Product \\ 
-    Cart {\bf and} Bonus & Buy Products with Cart \\ 
-    Update Preferences & Register user Preferences	 \\  
-    \ldots & \ldots \\ 
-  \hline
-\end{tabular}
-\end{center}
-\end{table}
+Three different weavers are used in the configuration knowledge shown in
+Figure~\ref{fig:ck-running-example}: \emph{selectScenarios},
+\emph{evaluateAdvice}, and \emph{bindParameter}. Using the terminology
+proposed by Baachmann et al.~\cite{Bachmann:2001aa}, the first weave deals with
+the source of variability named as \emph{variation in function}; the second one
+deals with \emph{variation in control flow}; and the last one deals with
+\emph{variation in data}. The next section describes the semantics of these
+weavers as crosscutting mechanisms.
 
-In what follows, we describe a high level view of the weaving process that combines the input languages in order to manage scenario variability.  Then, in Section~\ref{sub:modeling-framework} we formally present its semantics in terms of our modeling framework. 
+% In what follows, we describe a high level view of the weaving process that
+% combines the input languages in order to manage scenario variability.  Then, in
+% Section~\ref{sub:modeling-framework} we formally present its semantics in terms
+% of our modeling framework.
 
-\subsubsection{Weaving process}
-
-The weaving process represented in Figure~\ref{fig:weave-process} is responsible for performing the following activities: 
-
-{\bf Validation activity:} This activity is responsible for checking if a product configuration is a valid instance of the feature model. If the product configuration is 
-valid (it conforms to the relationship cardinalities and constraints of the feature model), the process might proceed. 
-
-{\bf Product derivation activity:} This activity takes as input a (valid) product configuration and a configuration knowledge. 
-Each feature expression of the configuration knowledge is checked against the product configuration. If the expression 
-is satisfied, the related scenarios are assembled as the result of this activity. For the running example, 
-Table~\ref{tab:assembled-scenarios} shows the assembled scenarios for the configurations depicted in Figure~\ref{fig:product-config-01-02}.
-
-\begin{table}[h]
-\begin{center}
-\caption{Assembled scenarios} \label{tab:assembled-scenarios}
-\begin{tabular}{ll}
-   \hline\noalign{\smallskip}
-  {\bf Configuration} & {\bf Assembled scenarios} \\
-   \noalign{\smallskip}
-   \hline
-   \noalign{\smallskip}
-    Configuration 1\hspace{15pt} & Proceed to Purchase \\
-                                                   & Search for Products \\
-                                                   & Buy a Product \\
-                             			  & \ldots \\
-   Configuration 2                        & Proceed to Purchase \\
-                             			  & Search for Products	 \\
-			                           & Buy Products with Cart \\
-                                                   & Register User Preferences \\
-                             & \ldots       \\
-  \hline
-\end{tabular}
-\end{center}
-\end{table}
- 
- {\bf Scenario composition activity:} This activity is responsible for composing the scenarios assembled for a specific product configuration. 
-Therefore, the resulting scenarios of the previous activity, which crosscut each other based on the \emph{From step} and \emph{To step clauses}, are woven. The 
- result is a use case model with complete paths (all \emph{From step} and \emph{To step} clauses are resolved).
- 
-%  or a trace model (a set of all valid sequences of events extracted from the complete paths). 
- 
-The complete path is a high level representation, which uses the same constructions of the use case model (scenarios), and is illustrated here as a graph, where each node is labeled with a step id. For example, Figure~\ref{fig:complete-paths} depicts the complete paths for the first and second configurations of our running example. In the left side of the figure,  the composition of \emph{Buy a Product} with \emph{Proceed to Purchase} (branch labeled as B1, B2, P1, P2, P3) and \emph{Search for Product} (branch labeled as S1, S2, S3) scenarios are presented. Contrasting, on the right side of the figure, the results of this activity is presented for the second configuration. In this case, steps B1 and B2 have been replaced by steps V1 and V2 (because \emph{Shopping Cart} and \emph{Bonus} features are selected) and the step  R1 is introduced after steps P3 and S3 (because \emph{Update User Preferences} is selected in this configuration).
- 
-%=====================
-% Trace model discussion
-%===================== 
- 
-%Instead, the trace model can be seen as a low level representation of the use case model. Such notation has a well defined semantic and might 
-%be used for model checking and test case generation. Such applications of the trace model are beyond the scope of this paper. More information 
-%can be found elsewhere\cite{csp-hoare,csp-roscoe,cfeitosa-sbmf-2006}. Here, the trace model is useful for implementing the last activity of our weave process, binding parameters, and 
-%represents all possible sequences of events in a specific product configuration. 
-
-%For instance, the trace model for the first configuration is the set of sequences:
-
-%\begin{small}
-%\begin{tabular}{rlc}
-%$Trace_{C1}$ = & \{<>, <idle>, <idle, 1S>, <idle, 1S, 2S>, \\ 
-%                    & <idle, 1S, 2S, 3S>,  <idle, 1S, 2S, 3S, end>, \\ 
-%                    & <idle, 1M>, <idle, 1M, 2M>, \ldots, \\ 
-%                    & <idle, 1M, 2M, 3M, 4M.ShipMethod, 5M, end> \}
-%\end{tabular}
-%\end{small}
-
-%========================
- 
-% \begin{figure}[bth]
-% \begin{center}
-% \begin{tiny}
-% \begin{xy}
-% \xymatrix@R=10pt{
-% & *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{B1} \ar[d]	& *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{V1} \ar[d] 		\\
-% & *++[o][F-]{S1} \ar[d]  & *++[o][F-]{B2} \ar[d]           & *++[o][F-]{S1} \ar[d]  & *++[o][F-]{V2} \ar[d] 			\\
-% & *++[o][F-]{S2} \ar[d]  & *++[o][F-]{P1} \ar[d]           & *++[o][F-]{S2} \ar[d]  & *++[o][F-]{P1} \ar[d]			\\
-% & *++[o][F-]{S3} \ar[d]  & *++[o][F-]{P2} \ar[d]           & *++[o][F-]{S3} \ar[d]  & *++[o][F-]{P2} \ar[d] 			\\
-% & *++[o][F-]{end} & *++[o][F-]{P3} \ar[l]                     & *++[o][F-]{R1} \ar[d] & *++[o][F-]{P3} \ar[l]   			\\
-% &                         &                                                    &   *++[o][F-]{end}       &
-% }
-% \end{xy}
-% \end{tiny}
-% \caption{Complete paths represented  as a graph}
-% \label{fig:complete-paths}
-% \end{center}
-% \end{figure}
-
-{\bf Binding parameters activity:}  This activity weaves scenarios and product configurations in order to resolve all scenario parameters. 
-For example, step P2 in Figure~\ref{fig:proceed-to-checkout} has a reference 
- to the \emph{ShipMethod} parameter, whose domain values are defined in the product configuration. For instance, in the first configuration depicted in Figure~\ref{fig:product-config-01-02}, the parameter \emph{ShipMethod} might assume the values \emph{Economical} or \emph{Fast}. 
-In order to reduce the coupling between scenario specifications and feature model, a mapping is used for relating scenario parameters to features. In fact, this mapping is another input artifact of our modeling framework; but it was not represented in Figure because it was just introduced for avoiding explicit dependences between feature and use case models.  
-Next, we introduce the modeling framework used to formally describe the weaving processes just presented. 
-%===================
-% Trace model discussion
-%===================
-
-%For each trace that contains a parameterized event (or step), this activity creates a new trace for all of the possible parameter values. Consequently, resolving parameters for the trace $<idle,1M,2M,3M,4M.ShipMethod>$ results in the following sequences:
+% \subsubsection{Weaving process}
 % 
-%\begin{center} 
-%\begin{small}
-%\begin{tabular}{c}
-%<idle,1M,2M,3M,4M.Economical>, \\ <idle,1M,2M,3M,4M.Fast>, \\
-%\end{tabular}
-%\end{small}
-%\end{center}
+% The weaving process represented in Figure~\ref{fig:weave-process} is responsible for performing the following activities: 
+% 
+% {\bf Validation activity:} This activity is responsible for checking if a product configuration is a valid instance of the feature model. If the product configuration is 
+% valid (it conforms to the relationship cardinalities and constraints of the feature model), the process might proceed. 
+% 
+% {\bf Product derivation activity:} This activity takes as input a (valid) product configuration and a configuration knowledge. 
+% Each feature expression of the configuration knowledge is checked against the product configuration. If the expression 
+% is satisfied, the related scenarios are assembled as the result of this activity. For the running example, 
+% Table~\ref{tab:assembled-scenarios} shows the assembled scenarios for the configurations depicted in Figure~\ref{fig:product-config-01-02}.
+% 
+% \begin{table}[h]
+% \begin{center}
+% \caption{Assembled scenarios} \label{tab:assembled-scenarios}
+% \begin{tabular}{ll}
+%    \hline\noalign{\smallskip}
+%   {\bf Configuration} & {\bf Assembled scenarios} \\
+%    \noalign{\smallskip}
+%    \hline
+%    \noalign{\smallskip}
+%     Configuration 1\hspace{15pt} & Proceed to Purchase \\
+%                                                    & Search for Products \\
+%                                                    & Buy a Product \\
+%                              			  & \ldots \\
+%    Configuration 2                        & Proceed to Purchase \\
+%                              			  & Search for Products	 \\
+% 			                           & Buy Products with Cart \\
+%                                                    & Register User Preferences \\
+%                              & \ldots       \\
+%   \hline
+% \end{tabular}
+% \end{center}
+% \end{table}
+%  
+%  {\bf Scenario composition activity:} This activity is responsible for composing the scenarios assembled for a specific product configuration. 
+% Therefore, the resulting scenarios of the previous activity, which crosscut each other based on the \emph{From step} and \emph{To step clauses}, are woven. The 
+%  result is a use case model with complete paths (all \emph{From step} and \emph{To step} clauses are resolved).
+%  
+% %  or a trace model (a set of all valid sequences of events extracted from the complete paths). 
+%  
+% The complete path is a high level representation, which uses the same constructions of the use case model (scenarios), and is illustrated here as a graph, where each node is labeled with a step id. For example, Figure~\ref{fig:complete-paths} depicts the complete paths for the first and second configurations of our running example. In the left side of the figure,  the composition of \emph{Buy a Product} with \emph{Proceed to Purchase} (branch labeled as B1, B2, P1, P2, P3) and \emph{Search for Product} (branch labeled as S1, S2, S3) scenarios are presented. Contrasting, on the right side of the figure, the results of this activity is presented for the second configuration. In this case, steps B1 and B2 have been replaced by steps V1 and V2 (because \emph{Shopping Cart} and \emph{Bonus} features are selected) and the step  R1 is introduced after steps P3 and S3 (because \emph{Update User Preferences} is selected in this configuration).
+%  
+% %=====================
+% % Trace model discussion
+% %===================== 
+%  
+% %Instead, the trace model can be seen as a low level representation of the use case model. Such notation has a well defined semantic and might 
+% %be used for model checking and test case generation. Such applications of the trace model are beyond the scope of this paper. More information 
+% %can be found elsewhere\cite{csp-hoare,csp-roscoe,cfeitosa-sbmf-2006}. Here, the trace model is useful for implementing the last activity of our weave process, binding parameters, and 
+% %represents all possible sequences of events in a specific product configuration. 
+% 
+% %For instance, the trace model for the first configuration is the set of sequences:
+% 
+% %\begin{small}
+% %\begin{tabular}{rlc}
+% %$Trace_{C1}$ = & \{<>, <idle>, <idle, 1S>, <idle, 1S, 2S>, \\ 
+% %                    & <idle, 1S, 2S, 3S>,  <idle, 1S, 2S, 3S, end>, \\ 
+% %                    & <idle, 1M>, <idle, 1M, 2M>, \ldots, \\ 
+% %                    & <idle, 1M, 2M, 3M, 4M.ShipMethod, 5M, end> \}
+% %\end{tabular}
+% %\end{small}
+% 
+% %========================
+%  
+% % \begin{figure}[bth]
+% % \begin{center}
+% % \begin{tiny}
+% % \begin{xy}
+% % \xymatrix@R=10pt{
+% % & *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{B1} \ar[d]	& *++[o][F-]{idle} \ar[r]\ar[d] & *++[o][F-]{V1} \ar[d] 		\\
+% % & *++[o][F-]{S1} \ar[d]  & *++[o][F-]{B2} \ar[d]           & *++[o][F-]{S1} \ar[d]  & *++[o][F-]{V2} \ar[d] 			\\
+% % & *++[o][F-]{S2} \ar[d]  & *++[o][F-]{P1} \ar[d]           & *++[o][F-]{S2} \ar[d]  & *++[o][F-]{P1} \ar[d]			\\
+% % & *++[o][F-]{S3} \ar[d]  & *++[o][F-]{P2} \ar[d]           & *++[o][F-]{S3} \ar[d]  & *++[o][F-]{P2} \ar[d] 			\\
+% % & *++[o][F-]{end} & *++[o][F-]{P3} \ar[l]                     & *++[o][F-]{R1} \ar[d] & *++[o][F-]{P3} \ar[l]   			\\
+% % &                         &                                                    &   *++[o][F-]{end}       &
+% % }
+% % \end{xy}
+% % \end{tiny}
+% % \caption{Complete paths represented  as a graph}
+% % \label{fig:complete-paths}
+% % \end{center}
+% % \end{figure}
+% 
+% {\bf Binding parameters activity:}  This activity weaves scenarios and product configurations in order to resolve all scenario parameters. 
+% For example, step P2 in Figure~\ref{fig:proceed-to-checkout} has a reference 
+%  to the \emph{ShipMethod} parameter, whose domain values are defined in the product configuration. For instance, in the first configuration depicted in Figure~\ref{fig:product-config-01-02}, the parameter \emph{ShipMethod} might assume the values \emph{Economical} or \emph{Fast}. 
+% In order to reduce the coupling between scenario specifications and feature model, a mapping is used for relating scenario parameters to features. In fact, this mapping is another input artifact of our modeling framework; but it was not represented in Figure because it was just introduced for avoiding explicit dependences between feature and use case models.  
+% Next, we introduce the modeling framework used to formally describe the weaving processes just presented. 
+% %===================
+% % Trace model discussion
+% %===================
+% 
+% %For each trace that contains a parameterized event (or step), this activity creates a new trace for all of the possible parameter values. Consequently, resolving parameters for the trace $<idle,1M,2M,3M,4M.ShipMethod>$ results in the following sequences:
+% % 
+% %\begin{center} 
+% %\begin{small}
+% %\begin{tabular}{c}
+% %<idle,1M,2M,3M,4M.Economical>, \\ <idle,1M,2M,3M,4M.Fast>, \\
+% %\end{tabular}
+% %\end{small}
+% %\end{center}
 
 
 
@@ -989,7 +1009,7 @@ product specification.
 %data Scenario = Scenario id FromStep StepList ToStep
 %data Step = Step Id Action Response Annotations
 %\end{lstlisting}
-\newpage
+
 The \emph{Scenario Composition Weaver} is implemented by the \emph{scWeaver} function (Listing~\ref{lst:trace}), which takes 
 as input the product specific use case model (a list of scenarios computed by the previous weaver).  
 The \emph{scWeaver} function computes the complete paths of each  
