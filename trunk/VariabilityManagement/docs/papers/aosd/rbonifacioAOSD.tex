@@ -42,17 +42,20 @@ Paulo Borba\\
 \begin{abstract}
 Variability management is a common challenge for Software Product
 Line (SPL) adoption, since developers need suitable
-mechanisms for describing or implementing different kinds of variability
-that might occur at different SPL views (requirements, design,
-implementation, and test). In this paper, we present an approach for
+mechanisms for describing or implementing variability
+that might occur at different SPL models (requirements, design,
+implementation, and test). In this paper, we present a novel approach for
 use case scenario variability management, enabling a better
 separation of concerns between languages used to manage
 variabilities and languages used to specify use case scenarios. The
 result is that both representations can be understood and evolved in
-a separated way. We achieve such goal by modeling variability management
+a separated way. We achieve such a goal by modeling variability management
 as a crosscutting phenomenon, for the reason that artifacts such as feature models, 
 product configurations, and configuration knowledge crosscut each 
-other with respect to a SPL specific member. 
+other with respect to a SPL specific member. After applying our approach in
+different case studies, we achieved a reduction in the size of specifications,
+and a better modularization of feature specifications--- quantified
+by feature's degree of scattering and scenario's degree of focus.
 \end{abstract}
 
 \category{D.2.1}{Software Engineering}{Requirements}[Languages,
@@ -492,9 +495,9 @@ This artifact defines a set of scenarios that is used to describe the expected
 behavior of the SPL's members. Scenarios might be optional, might have
 parameters, or might change (advice) the behavior of other scenarios. A use case model is
 composed by \emph{use cases} and \emph{aspectual use cases}. A use case has a
-name, a description and a list of scenarios (pairs of \emph{User action x System
-response}). An aspectual use case has a name and a list of advices, which can be
-use to extend the behavior of existing scenarios.
+name, a description and a list of scenarios, which consist of a sequence of
+steps (pairs of \emph{User action x System response}). An aspectual use case has a name and a list of advices, which can be
+used to extend the behavior of existing scenarios.
 
 In this running example, we consider the following scenarios and advices:
 
@@ -587,7 +590,7 @@ are configured with both \emph{Shopping Cart} and \emph{Bonus} features.
   \end{center}
   } 
 \end{scriptsize}
-\caption{Buy products with shopping cart scenario.}
+\caption{Buy products with shopping cart advice.}
 \label{fig:buy-product-changing-flow}
 \end{figure}
 
@@ -690,7 +693,7 @@ created using the \emph{Feature Modeling Plugin}~\cite{czarnecki-eclipse-2004}
 
  \begin{figure}[h]
  \begin{center}
-  \includegraphics[scale=0.40]{img/pc-03.eps}
+  \includegraphics[scale=0.33]{img/pc-04.eps}
    \caption{Examples of product configurations.}
   \label{fig:product-config-01-02}
   \end{center}
@@ -706,7 +709,8 @@ The first configuration (on the left side of the
 Figure~\ref{fig:product-config-01-02}) defines a product that has no support for
 \emph{shopping cart}, \emph{bonus} and \emph{preferences update}. Additionally,
 it supports only the economical and fast ship methods. The second configuration
-selects all possible features. 
+is more complete, being configured with the features \emph{shopping cart},
+\emph{bonus}, and \emph{update user preferences}.
 
 \subsubsection{Configuration knowledge}
 
@@ -1314,6 +1318,9 @@ other contributions come from the configuration knowledge (CK), in the sense tha
 of a parameter is defined ($CK_{EFF}$) in the product specific features; and from the mapping ($m$ parameter of the \emph{bind} function) that is used for relating parameters to features. 
 In what follows, we discuss about some verifications applied to the weaving processes just presented. Such verifications were conduced by applying both \emph{random} and \emph{guided} test cases.
 
+In the next section we present an evaluation of our approach based on the
+specification of SPLs in different domains.
+
 % \subsection{Model Verification}\label{sub:model-verification}
 % 
 % The specifications presented in the 
@@ -1408,8 +1415,7 @@ In what follows, we discuss about some verifications applied to the weaving proc
 % 
 % Both verification approaches were important to improve the confidence of our models. Actually, several unit tests and properties revealed to us interesting case; we were not initially concerned with some of them. To our knowledge, no existing work for representing variability management in scenarios apply these level of verifications.
 % 
-% In the next section we present an evaluation of our approach based on the 
-% specification of SPLs in different domains. 
+
 
 %=============================
 % Evaluation
@@ -1417,54 +1423,197 @@ In what follows, we discuss about some verifications applied to the weaving proc
 \section{Evaluation}
 \label{sec:evaluation}
 
-We have applied our approach to three SPLs: the eShop Product Line, introduced in Section~\ref{sec:example}; the  
-{\bf Pedagogical Product Line (PPL)}~\cite{ppl-url}, which was proposed for learning about and experimenting with software product lines and focus on the arcade game domain; and the 
-{\bf Multimedia Message Product Line (MMS-PL)}, which allows the assembling of specific products for creating, sending, and receiving multimedia messages (MMS) in mobile phones.
+We have applied our approach to four SPLs: the eShop Product Line, introduced in
+Section~\ref{sec:example}; the {\bf Pedagogical Product Line
+(PPL)}~\cite{ppl-url}, which was proposed for learning about and experimenting
+with software product lines and focus on the arcade game domain; the {\bf Smart
+Home Product Line}, whose specification was besed from different
+works~\cite{Pohl:2005aa}, and the {\bf Multimedia Message Product Line (MMS-PL)},
+a case study conduced with one of our industrial patterns. The MMS-PL allows the
+assembling of specific products for creating, sending, and receiving multimedia
+messages (MMS) in mobile phones~\cite{Bonifacio:2008aa}.
 
-Based on the last application of our approach, we noticed the benefits of a clear separation between variability management and scenario specification~\cite{rbonifacio-ea-2008}, compared our approach with the PLUC and PLUSS techniques. This comparison uses Design Structure Matrices (DSMs), a suite of metrics for quantifying modularity and complexity of specifications, and observations of the effort required to introduce SPL increments (such as new variants or products). It is important to note that we did not formalize variability management as crosscutting in our previous work~\cite{rbonifacio-ea-2008}; we just report on the benefits related to the \emph{separation of concerns} (SoC) claimed in this paper.
+Based on this last case study, we noticed the benefits of a clear separation
+between variability management and scenario
+specification~\cite{Bonifacio:2008aa}. In this previous work, we compared our
+approach with the PLUC and PLUSS techniques. Such a comparison considered
+different evaluation tools: Design Structure Matrices (DSMs), a suite of metrics
+for quantifying modularity and complexity of specifications, and observations of
+the effort required to introduce SPL increments (e.g. introducing new variants or
+products). It is important to note that we did not formalize variability
+management as crosscutting in our previous work~\cite{Bonifacio:2008aa}; we just
+report on the benefits related to the \emph{separation of concerns} (SoC) claimed
+in this paper.
 
-\subsection{DSM Analysis}
-For now, let us reproduce the DSMs to understand the benefits of SoC in variability management. DSMs is an interesting and simple tool for visualizing dependences between design decisions~\cite{clark-design-rules-book}. Such decisions appear in the rows and columns of a matrix. We can identify a dependency by observing the columns in a given row~\cite{clark-design-rules-book}. For example, the first row in Figure~\ref{dsm:pluc} indicates that the task of creating the feature model depends on the task of creating the use case model. The first can not be independently performed after the second. As presented in Section~\ref{sec:example}, the PLUC approach describes product instances and variability space at specific sections of use cases. Therefore, it is not possible to evolve variability management (introducing new features, products, or relations between features and artifacts) without reviewing the use case model.  This is expressed in the non modular DSM of Figure~\ref{dsm:pluc}, which depicts cyclical dependences between use cases and variability management artifacts. 
+In the remaining of this section we first present a new suite of metrics,
+proposed to mitigate some problems identified in previous evaluations of our
+work. Then we describe the assessment procedure followed during the Smart Home
+case study. Finally, we present the results of the Smart Home case study and
+identified threats to our conclusions. 
 
-\begin{figure}[htb]
+\subsection{Metric suite}
+
+In a previus work, we evaluated the benefits of a clear SoC between variability
+assets and common software engineering models. In order to do that, we first
+customized a suite of metrics, applied in several empirical
+studies~\cite{Garcia:2005aa,Greenwood:2007aa,Figueiredo:2008ab,Figueiredo:2008ab}
+related to AOP, and quantified feature scattering and scenario cohesion. Three
+metrics were applied in order to reason about modularity: \emph{feature diffusion
+over scenarios}, \emph{feature diffusion over steps}, and \emph{number of
+features} related to each scenario.
+
+However, using these metrics we were not able to understand the degree of
+scattering (or degree of tangling) of a feature, which difficults the comparison
+between different specifications. Therefore, in order to mitigate this problem,
+in this paper we are addapting the metric suite proposed by Eaddy et
+al.~\cite{Eaddy:2007aa}. This suite considers the degree of scattering of
+features (concerns in the original paper) and degree of focus of scenarios (componentes
+in the original paper). Additionally,
+Eaddy et al.~\cite{Eaddy:2007aa} proposed a \emph{prune dependency analysis} to
+assign concerns to lines of source code. In a similar way, we define a
+\emph{configuration dependency analysis} to assign features to steps of
+scenarios.
+
+\begin{definition}
+The \emph{configuration dependency analysis} is used as a guideline to assign
+features to steps of scenarios. If the configuration of a feature $f$
+affects the selection or the configuration of a step $s$, we assume that this step has a
+dependency with the feature $f$. 
+\end{definition}
+
+Thus, we can adapt both metrics (degree of scattering and degree of fucus) to
+our context. First, the \emph{degree of scattering} of a feature $f$ is
+calculated by normalizing its concentration regarded to each scenario $s \in
+S$ (the set of all scenarios). 
+
+\begin{center}
+$DOS(f) = 1 - \frac{S \sum_{s}^{S}(CONC(f,s)-\frac{1}{S})^2}{S-1}$, where:
+
+$CONC(f,s) = \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\
+of\ steps\ assigned\ to\ f}$
+\end{center}
+
+Likewise, we can calculate the \emph{degree of focus} of a scenario $s$ by
+normalizing its dedication regarded to each feature $f \in F$ (the set of
+all features). 
+
+\begin{center}
+$DOF(s) = \frac{F \sum_{f}^{F}(DEDI(s,f)-\frac{1}{F})^2}{F-1}$, where:
+
+$DEDI(s,f) = \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\
+of\ steps\ in\ s}$
+\end{center}
+
+These metrics inherit the same properties of the original
+ones~\cite{Eaddy:2007aa}. It is important to enforce that (a) \emph{degree
+of scattering} is normalized between 0 (completely localized) and 1 (completely
+delocalized); and (b) degree of focus is also normalized between 0 (completely
+unfocused) and 1 (completely focued). 
+
+The next section describes the workflow followed during the Smart Home
+case study, which was evaluated using the metrics described in this section.
+
+\subsection{Smart Home settings}
+
+This study was divided in four major phases: (1) the specification of the input
+data --- three different configurations of a Smart Home were specified without
+PL support; (2) the presentation of preparatory classes to the subjects
+(graduate students with similar skills in the area); (3) the activity of
+restructuring the input specifications using both PLUSS and the Crosscutting
+technique; and (4) the assesment of the resulting specifications.
+
+In the first phase we specified three different configurations of a Smart
+Home. These specifications included feature models and use case
+scenarios written without product line support. Additionaly, they were build
+upon the documentation available from~\cite{Pohl:2005aa,Mauricio,AMPLE}. Some
+figures of this input data are present in Table~\ref{}.
+
+\begin{table}[htb]
 \centering
+\caption{Input data characteristics}
+\label{tab:sh-input}
 \begin{small}
-\begin{tabular}{llllll} \hline
-&  & 1 & 2 & 3 & 4 \\ \hline
-1 & Feature model 			& 	& x	& 	&   	\\ 
-2 & Use case model 		& x 	&  	&  x	&  x  \\ 
-3 & Product configurations	& x 	& x	& 	&    	\\
-4 & Configuration knowledge 	& x 	& x 	& 	&    	\\ \hline
+\begin{tabular}{llll} \hline
+	Features	& x mandatory features 		&  	&\\
+			    & y optional features  		&  	&\\
+			    & z alternative features 	&	& \\ \hline
+			    & First spec & Second spec 	& Third spec  	\\
+ 	Use cases	& 6			 &				&				\\
+	Scenarios   & 15		 &				&				\\
+	Steps		& 65		 &				&	 		    \\ \hline
 \end{tabular}
 \end{small}
-\caption{DSM Analysis of PLUC}
-\label{dsm:pluc}
-\end{figure}
+\end{table}
 
-Our approach reduces the dependences between variability management and scenario
-specifications (Figure~\ref{dsm:cc}). For instance, changes in feature model or
-new definitions of products do not require changes in the use case model. This
-clear separation is also necessary in source code, as claimed
-in~\cite{Alves:2006aa,Apel:2006aa}, and might be required in other artifacts
-too. Notice that the proposed mapping artifact, used to relate use cases
-parameters and features (Section~\ref{sub:bind-weaver}), can be considered as a
-design rule, since it primarily aims at decoupling use cases and features.
+In the second phase, introductory classes and bibliographic references were
+offered to post-graduate students. At that period, none of these students had
+previous knowledge in the field of scenario variability management. A total of six
+students were involved in this case study. Then, the students were organized in
+groups and assigned to restructure the input specifications using PLUSS and
+Crosscutting techniques. Additionally, they were asked to keep information about
+the effort required to peform the following activities:
 
-\begin{figure}[h]
-\centering
-\begin{small}
-\begin{tabular}{lllllll} \hline
-& & 1 & 2 & 3 & 4 & 5 \\ \hline
-1 & Feature model 		& 	& 	&      &  	&  	\\ 
-2 & Mapping	 		& x	&	&	&	&  	\\
-3 & Use case model 	&  	&  x	&  	&  	& 	\\
-4 & SPL instances 		& x 	& 	& 	&   	& 	\\
-5 & Configuration model 	& x 	&  	&  x	&  	& 	\\  \hline
-\end{tabular}
-\end{small}
-\caption{DSM Analysis of the proposed approach}
-\label{dsm:cc}
-\end{figure}   
+
+
+% \subsection{DSM Analysis}
+% For now, let us reproduce the DSMs to understand the benefits of SoC in
+% variability management. DSMs is an interesting and simple tool for visualizing
+% dependences between design decisions~\cite{clark-design-rules-book}. Such
+% decisions appear in the rows and columns of a matrix. We can identify a
+% dependency by observing the columns in a given
+% row~\cite{clark-design-rules-book}. For example, the first row in
+% Figure~\ref{dsm:pluc} indicates that the task of creating the feature model
+% depends on the task of creating the use case model. The first can not be
+% independently performed after the second. As presented in
+% Section~\ref{sec:example}, the PLUC approach describes product instances and
+% variability space at specific sections of use cases. Therefore, it is not
+% possible to evolve variability management (introducing new features, products, or
+% relations between features and artifacts) without reviewing the use case model. 
+% This is expressed in the non modular DSM of Figure~\ref{dsm:pluc}, which depicts
+% cyclical dependences between use cases and variability management artifacts.
+% 
+% \begin{figure}[htb]
+% \centering
+% \begin{small}
+% \begin{tabular}{llllll} \hline
+% &  & 1 & 2 & 3 & 4 \\ \hline
+% 1 & Feature model 			& 	& x	& 	&   	\\ 
+% 2 & Use case model 		& x 	&  	&  x	&  x  \\ 
+% 3 & Product configurations	& x 	& x	& 	&    	\\
+% 4 & Configuration knowledge 	& x 	& x 	& 	&    	\\ \hline
+% \end{tabular}
+% \end{small}
+% \caption{DSM Analysis of PLUC}
+% \label{dsm:pluc}
+% \end{figure}
+% 
+% Our approach reduces the dependences between variability management and scenario
+% specifications (Figure~\ref{dsm:cc}). For instance, changes in feature model or
+% new definitions of products do not require changes in the use case model. This
+% clear separation is also necessary in source code, as claimed
+% in~\cite{Alves:2006aa,Apel:2006aa}, and might be required in other artifacts
+% too. Notice that the proposed mapping artifact, used to relate use cases
+% parameters and features (Section~\ref{sub:bind-weaver}), can be considered as a
+% design rule, since it primarily aims at decoupling use cases and features.
+% 
+% \begin{figure}[h]
+% \centering
+% \begin{small}
+% \begin{tabular}{lllllll} \hline
+% & & 1 & 2 & 3 & 4 & 5 \\ \hline
+% 1 & Feature model 		& 	& 	&      &  	&  	\\ 
+% 2 & Mapping	 		& x	&	&	&	&  	\\
+% 3 & Use case model 	&  	&  x	&  	&  	& 	\\
+% 4 & SPL instances 		& x 	& 	& 	&   	& 	\\
+% 5 & Configuration model 	& x 	&  	&  x	&  	& 	\\  \hline
+% \end{tabular}
+% \end{small}
+% \caption{DSM Analysis of the proposed approach}
+% \label{dsm:cc}
+% \end{figure}   
+
+
+
 
 \subsection{Quantitative Analysis}
 
