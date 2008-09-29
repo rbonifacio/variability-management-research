@@ -1530,8 +1530,8 @@ figures of this input data are present in Table~\ref{}.
 
 \begin{table}[htb]
 \centering
-\caption{Input data characteristics}
-\label{tab:sh-input}
+\caption{Degree of scattering}
+\label{tab:sh-dos}
 \begin{small}
 \begin{tabular}{llll} \hline
 	Features	& x mandatory features 		&  	&\\
@@ -1553,6 +1553,59 @@ groups and assigned to restructure the input specifications using PLUSS and
 Crosscutting techniques. Additionally, they were asked to keep information about
 the effort required to peform the following activities:
 
+\subsection{Smart Home assesment}
+
+Table~\ref{tab:sh-dof} sumarizes the resulting \emph{degree of scattering} of
+Smart Home features, computed for both PLUSS and Crosscutting approaches. Althoug the
+Crosscutting approach achieved a concentration of DoS more close to zero, we can
+not realize any significant improvement in this metric. Actually, for some
+features, the DoS for the Crosscutting approach presented a greater value than
+the corresponding one for PLUSS. 
+
+For instance, the feature \emph{Request Access to Home} in the Crosscutting
+approach has a DoS equals to $0.82$. Instead, the same feature in PLUSS has a
+DoS equals to $0.53$. The behavior of this feature is influenced by different
+options, such as the security mechanism ($Password$ or $Finger Print$).
+In the Crosscutting approach, modularizing the varying behavior in 
+aspectual use cases increased the DoS of this feature. 
+
+On the other hand, the feature \emph{Turn On Internal and External Lights}
+presents a lower DoS in the Crosscutting approach (0.00) when compared to the
+PLUSS (0.54) notation. This feature requires a behavior that crosscuts, in a
+homogenous way, the different scenarios related to the Intrusion Detection use
+case. 
+
+\begin{table}[htb]
+\centering
+\caption{Degree of focus}
+\label{tab:sh-dof}
+\begin{small}
+\begin{tabular}{llllll} \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline
+	PLUSS			& 0.00  & 0.26   	& 0.28  & 0.70 	& 0.08 			\\
+	Crosscutting	& 0.00  & 0.00  	& 0.26 	& 0.824 & 0.10  		\\ \hline	
+\end{tabular}
+\end{small}
+\end{table}
+
+Considering the degree of focus (data sumarized in Table~\ref{tab:sh-dof}), we
+can realize a significant improvement of the Crosscutting approach ($p-value=0.06$). First of
+all, the concentration of DoF in the Crosscutting approach (&0.82&) is closer to one than
+the corresponding value ($0.63$) in the PLUSS notation. 
+  
+\begin{table}[htb]
+\centering
+\caption{Degree os scattering}
+\label{tab:sh-input}
+\begin{small}
+\begin{tabular}{llllll} \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline
+	PLUSS			& 0.33  & 0.63   	& 0.68  & 1.00 	& 0.07 			\\
+	Crosscutting	& 0.35  & 1.00   	& 0.82 	& 1.00 	& 0.05			\\ \hline	
+\end{tabular}
+\end{small}
+\end{table}
+ 
 
 
 % \subsection{DSM Analysis}
