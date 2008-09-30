@@ -107,7 +107,7 @@ between common and variant flows are correct.  Although  the semantic compositio
 of PLUC (Product Line Use Case)~\cite{Bertolino:2003aa} is defined
 in~\cite{fantechi-splc-2004}, such approach does not separate scenario
 specification from variability management, as presented in
-Section~\ref{sec:example}.
+Section~\ref{sec:problem}.
 
 In order to formalize our approach, we describe a framework for modeling the
 composition process of scenario variabilities with feature models, product
@@ -159,7 +159,7 @@ our concluding remarks in Section~\ref{sec:conclusions}.
 % Subsection: Motivating example
 %-----------------------------------------------------------------------
 \section{Motivating Example}
-\label{sec:example}
+\label{sec:problem}
 
 In order to customize specific products, by selecting a valid feature
 configuration, variation points must be represented in the product line
@@ -476,7 +476,7 @@ $ p\ =\ f\ (spl,\ g\ (spl,\ h\ (spl,\ emptyProduct)))  $
 
 The next Section presents examples of each input model. All examples were
 extracted from the \emph{eShop} Product Line (briefly introduced in
-Section~\ref{sec:example}). 
+Section~\ref{sec:problem}). 
 
 
 \subsection{Running Example}
@@ -664,7 +664,7 @@ the definition of a SPL's member.
 \subsubsection{Feature model}
 
 We have introduced part of this artifact for the \emph{eShop} product line in
-Section~\ref{sec:example}. However, here we present only the features required 
+Section~\ref{sec:problem}. However, here we present only the features required 
 (Figure~\ref{fig:eshop-fm-re}) for understanding the running example.
 
  \begin{figure}[h]
@@ -679,7 +679,7 @@ Based on the feature model of Figure~\ref{fig:eshop-fm-re}, the \emph{Shopping
 Cart}, \emph{Bonus} and \emph{Update User Preferences} features are optional;
 on the other hand, the \emph{Ship Method} feature is mandatory and all products
 have to be configured with at least one of its child. A short review about the
-feature model notation was presented in Section~\ref{sec:example}. More details
+feature model notation was presented in Section~\ref{sec:problem}. More details
 can be found elsewhere~\cite{gheyi-alloy-06,Czarnecki:2000aa}.
 
 \subsubsection{Product configuration}\label{subsub:pc}
@@ -1400,7 +1400,7 @@ specification of SPLs in different domains.
 % %to notice that functions for generating input data can be overloaded in the \emph{QuickCheck} 
 % %library, which means that we can define the generation of data based on occurrence probabilities.
 % 
-% We applied this verification technique for checking several properties of feature modeling (briefly introduced in Section~\ref{sec:example}). For example, an alternative feature requires exactly one sub feature to be selected in a product configuration. Using the \emph{QuickCheck} library, this property can be expressed as the function \emph{prop\_ExactlyOneSelected} in Listing~\ref{lst:quick-check}. 
+% We applied this verification technique for checking several properties of feature modeling (briefly introduced in Section~\ref{sec:problem}). For example, an alternative feature requires exactly one sub feature to be selected in a product configuration. Using the \emph{QuickCheck} library, this property can be expressed as the function \emph{prop\_ExactlyOneSelected} in Listing~\ref{lst:quick-check}. 
 % It takes two feature as parameters and returns a property to be checked. The first parameter (fm) should be an alternative feature (from a feature model). The second one (fc), instead, is a corresponding feature from the product configuration. If the number of children of \emph{fc} is different than one (the expression before the implies symbol), it is expected that a call to the \emph{existError} function will return \emph{True}. After specifying this kind of property, it is possible to verify if they hold for different input data.  
 % 
 % \begin{figure*}
@@ -1424,11 +1424,11 @@ specification of SPLs in different domains.
 \label{sec:evaluation}
 
 We have applied our approach to four SPLs: the eShop Product Line, introduced in
-Section~\ref{sec:example}; the {\bf Pedagogical Product Line
+Section~\ref{sec:problem}; the {\bf Pedagogical Product Line
 (PPL)}~\cite{ppl-url}, which was proposed for learning about and experimenting
 with software product lines and focus on the arcade game domain; the {\bf Smart
 Home Product Line}, whose specification was besed from different
-works~\cite{Pohl:2005aa}, and the {\bf Multimedia Message Product Line (MMS-PL)},
+works~\cite{Pohl:2005aa}, and the {\bf Multimedia Message Product Line (MMS)},
 a case study conduced with one of our industrial patterns. The MMS-PL allows the
 assembling of specific products for creating, sending, and receiving multimedia
 messages (MMS) in mobile phones~\cite{Bonifacio:2008aa}.
@@ -1440,18 +1440,18 @@ approach with the PLUC and PLUSS techniques. Such a comparison considered
 different evaluation tools: Design Structure Matrices (DSMs), a suite of metrics
 for quantifying modularity and complexity of specifications, and observations of
 the effort required to introduce SPL increments (e.g. introducing new variants or
-products). It is important to note that we did not formalize variability
-management as crosscutting in our previous work~\cite{Bonifacio:2008aa}; we just
+products). It is important to note that we didn't formalize \emph{variability
+management as crosscutting} in our previous work~\cite{Bonifacio:2008aa}; we just
 report on the benefits related to the \emph{separation of concerns} (SoC) claimed
 in this paper.
 
 In the remaining of this section we first present a new suite of metrics,
 proposed to mitigate some problems identified in previous evaluations of our
 work. Then we describe the assessment procedure followed during the Smart Home
-case study. Finally, we present the results of the Smart Home case study and
-identified threats to our conclusions. 
+MMS, and PPL case studies. Finally, we present some conclusions acquired from
+these different product lines.
 
-\subsection{Metric suite}
+\subsection{Metric suite}\label{sub:metric-suite}
 
 In a previus work, we evaluated the benefits of a clear SoC between variability
 assets and common software engineering models. In order to do that, we first
@@ -1465,12 +1465,12 @@ features} related to each scenario.
 However, using these metrics we were not able to understand the degree of
 scattering (or degree of tangling) of a feature, which difficults the comparison
 between different specifications. Therefore, in order to mitigate this problem,
-in this paper we are addapting the metric suite proposed by Eaddy et
+in this paper we are adapting the metric suite proposed by Eaddy et
 al.~\cite{Eaddy:2007aa}. This suite considers the degree of scattering of
-features (concerns in the original paper) and degree of focus of scenarios (componentes
-in the original paper). Additionally,
-Eaddy et al.~\cite{Eaddy:2007aa} proposed a \emph{prune dependency analysis} to
-assign concerns to lines of source code. In a similar way, we define a
+features (concerns in the original paper) and degree of focus of scenarios
+(componentes in the original paper). Additionally, Eaddy et
+al.~\cite{Eaddy:2007aa} proposed a \emph{prune dependency analysis} to assign
+concerns to lines of source code. In a similar way, we define a
 \emph{configuration dependency analysis} to assign features to steps of
 scenarios.
 
@@ -1481,8 +1481,8 @@ affects the selection or the configuration of a step $s$, we assume that this st
 dependency with the feature $f$. 
 \end{definition}
 
-Thus, we can adapt both metrics (degree of scattering and degree of fucus) to
-our context. First, the \emph{degree of scattering} of a feature $f$ is
+Thus, we can customize both metrics (degree of scattering and degree of fucus)
+to our context. First, the \emph{degree of scattering} of a feature $f$ is
 calculated by normalizing its concentration regarded to each scenario $s \in
 S$ (the set of all scenarios). 
 
@@ -1505,10 +1505,10 @@ of\ steps\ in\ s}$
 \end{center}
 
 These metrics inherit the same properties of the original
-ones~\cite{Eaddy:2007aa}. It is important to enforce that (a) \emph{degree
-of scattering} is normalized between 0 (completely localized) and 1 (completely
+ones~\cite{Eaddy:2007aa}. However, it is important to enforce that (a)
+\emph{degree of scattering} is normalized between 0 (completely localized) and 1 (completely
 delocalized); and (b) degree of focus is also normalized between 0 (completely
-unfocused) and 1 (completely focued). 
+unfocused) and 1 (completely focused). 
 
 The next section describes the workflow followed during the Smart Home
 case study, which was evaluated using the metrics described in this section.
@@ -1557,54 +1557,73 @@ the effort required to peform the following activities:
 
 Table~\ref{tab:sh-dof} sumarizes the resulting \emph{degree of scattering} of
 Smart Home features, computed for both PLUSS and Crosscutting approaches. Althoug the
-Crosscutting approach achieved a concentration of DoS more close to zero, we can
-not realize any significant improvement in this metric. Actually, for some
+Crosscutting approach achieved a central tendency (median) of DoS closer to
+zero, we can not realize any significant improvement in this metric. Actually, for some
 features, the DoS for the Crosscutting approach presented a greater value than
 the corresponding one for PLUSS. 
+
+\begin{table}[htb]
+\centering
+\caption{Summary of DoS for the Smart Home case study}
+\label{tab:sh-dos}
+\begin{small}
+\begin{tabular}{llllll} \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+	PLUSS			& 0.00  & 0.26   	& 0.28  & 0.70 	& 0.08 			\\
+	Crosscutting	& 0.00  & 0.00  	& 0.26 	& 0.82 & 0.10  		\\ \hline	
+\end{tabular}
+\end{small}
+\end{table}
 
 For instance, the feature \emph{Request Access to Home} in the Crosscutting
 approach has a DoS equals to $0.82$. Instead, the same feature in PLUSS has a
 DoS equals to $0.53$. The behavior of this feature is influenced by different
 options, such as the security mechanism ($Password$ or $Finger Print$).
 In the Crosscutting approach, modularizing the varying behavior in 
-aspectual use cases increased the DoS of this feature. 
-
+aspectual scenarios increased the DoS of this feature. 
 On the other hand, the feature \emph{Turn On Internal and External Lights}
 presents a lower DoS in the Crosscutting approach (0.00) when compared to the
 PLUSS (0.54) notation. This feature requires a behavior that crosscuts, in a
-homogenous way, the different scenarios related to the Intrusion Detection use
+homogenous way, the different scenarios related to the $Intrusion Detection$ use
 case. 
 
-\begin{table}[htb]
-\centering
-\caption{Degree of focus}
+Considering the degree of focus (data sumarized in Table~\ref{tab:sh-dof}), we
+can realize a significant improvement of the Crosscutting approach
+($p-value=0.06$). Notice that the central tendency (median) of DoF in the
+Crosscutting approach ($1.00$) is closer to one than the corresponding value
+($0.63$) in the PLUSS notation.
+  
+\begin{table}[htb] \centering
+\caption{Summary of DoF for the Smart Home case study}
 \label{tab:sh-dof}
 \begin{small}
 \begin{tabular}{llllll} \hline
-					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline
-	PLUSS			& 0.00  & 0.26   	& 0.28  & 0.70 	& 0.08 			\\
-	Crosscutting	& 0.00  & 0.00  	& 0.26 	& 0.824 & 0.10  		\\ \hline	
-\end{tabular}
-\end{small}
-\end{table}
-
-Considering the degree of focus (data sumarized in Table~\ref{tab:sh-dof}), we
-can realize a significant improvement of the Crosscutting approach ($p-value=0.06$). First of
-all, the concentration of DoF in the Crosscutting approach (&0.82&) is closer to one than
-the corresponding value ($0.63$) in the PLUSS notation. 
-  
-\begin{table}[htb]
-\centering
-\caption{Degree os scattering}
-\label{tab:sh-input}
-\begin{small}
-\begin{tabular}{llllll} \hline
-					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
 	PLUSS			& 0.33  & 0.63   	& 0.68  & 1.00 	& 0.07 			\\
 	Crosscutting	& 0.35  & 1.00   	& 0.82 	& 1.00 	& 0.05			\\ \hline	
 \end{tabular}
 \end{small}
 \end{table}
+
+Describing all variants of a behavior in a single asset
+(Section~\ref{sec:problem}) is the main reason for the lack of focus in scenarios
+written in the PLUSS approach. On the other hand, the Crosscutting approach
+allows the modularization of varying behavior in aspectual scenarios. The result
+is a better separation between common and optional steps of a scenario. 
+
+In summary, the Smart Home case study revealed to us that removing tangling by
+means of aspectual scenarios improves the \emph{degree of focus}. Moreover, if
+the varying steps of a scenario corresponds to a homogeneous crosscuting
+behavior, modularizing it as an aspectual scenario also improves the DoS. On the
+other hand, modularizing features affected by heterogeneous crosscutting
+behavior increases the DoS.
+
+The next sections present the evaluation of the Pedagogical Product Line (PPL)
+and Multimedia Message Product Line (MMS). We compared our specification of
+\emph{MMS} product line to the specifications we had written for both PLUC and
+PLUSS techniques. Similarly, we compared our specification
+of the PPL to a specification that had been sent to us by
+the authors of the PLUSS approach. 
  
 
 
@@ -1618,7 +1637,7 @@ the corresponding value ($0.63$) in the PLUSS notation.
 % Figure~\ref{dsm:pluc} indicates that the task of creating the feature model
 % depends on the task of creating the use case model. The first can not be
 % independently performed after the second. As presented in
-% Section~\ref{sec:example}, the PLUC approach describes product instances and
+% Section~\ref{sec:problem}, the PLUC approach describes product instances and
 % variability space at specific sections of use cases. Therefore, it is not
 % possible to evolve variability management (introducing new features, products, or
 % relations between features and artifacts) without reviewing the use case model. 
@@ -1668,94 +1687,155 @@ the corresponding value ($0.63$) in the PLUSS notation.
 
 
 
-\subsection{Quantitative Analysis}
+% \subsection{Quantitative Analysis}
+% 
+% For confirming the observations derived from the DSM analysis, we applied the
+% metric suite for the \emph{MMS} and \emph{Pedagogical} product lines. 
+% 
+% The metric suite, used in what follows, was adapted from~\cite{garcia-taosd-2005} for both product line 
+% and use cases contexts. It quantifies 
+% feature modularity and use case complexity. The proposed modularity 
+% metrics quantify three types of relations involving features and use cases.
+% First, \emph{Feature Diffusion over Use Cases} (FDU) is used for
+% quantifying how many use cases are affected by a specific
+% feature. On the other hand, \emph{Number of Features per Use Case} (NFU) is used for quantifying
+% how many features are tangled within a specific use
+% case. We assume that each use case should focus in
+% its primary goal, although several features might be related
+% to the primary goal of a use case. Finally, we applied
+% the metric \emph{Feature Diffusion over Scenarios} (FDS) in order
+% to quantify how many internal use case members (scenarios)
+% are necessary for the materialization of a specific feature.
+%  
+% Moreover, we used three metrics related to complexity.
+% The first one, \emph{Vocabulary Size}, quantifies the number of use
+% cases (VSU) and scenarios (VSS) required by each of the evaluated
+% approaches. The second one, \emph{Steps of Specification}
+% (SS), is related to the size of each scenario and identifies
+% how many pairs \emph{User action} x \emph{System response} compose a
+% specific scenario. Additionally, we also relate modularity to
+% complexity by applying \emph{Features and Steps of Specification}
+% (FSS), which counts the number of steps of specification
+% whose main purpose is to describe the behavior of a feature. 
+% A complete description of these metrics can be found elsewhere~\cite{rbonifacio-ea-2008}. Next we 
+% present the quantitative analysis of the \emph{MMS} and \emph{Pedagogical} product lines using these metrics.
 
-For confirming the observations derived from the DSM analysis, we applied the
-metric suite for the \emph{MMS} and \emph{Pedagogical} product lines. We compared
-our specification of \emph{MMS} product line to the specifications we wrote for
-both PLUC and PLUSS techniques~\cite{spg-url}.
+\subsection{MMS Product Line}
 
-In a similar way, we compared our specification of the \emph{Pedagogical} product line 
-to a specification that was sent to us by the authors of the PLUSS approach. 
+As explained earlier, the MMS product line, which was adapted from an industrial
+pattern, enables the customization of multimedia message applications. The
+primary goal of each one of these applications is to create and send messages
+with embedded multimedia content (image, audio, video)~\cite{Bonifacio:2008aa}.
+We have specified the MMS product line using both Crosscutting and PLUSS
+techiniques. After that, we evaluated these specifications observing the metric
+suite presented in Section~\ref{}. The results of this evaluation are summarized
+in Table~\ref{tab:mms-dos} and in Table~\ref{tab:mms-dof}.
 
-The metric suite, used in what follows, was adapted from~\cite{garcia-taosd-2005} for both product line 
-and use cases contexts. It quantifies 
-feature modularity and use case complexity. The proposed modularity 
-metrics quantify three types of relations involving features and use cases.
-First, \emph{Feature Diffusion over Use Cases} (FDU) is used for
-quantifying how many use cases are affected by a specific
-feature. On the other hand, \emph{Number of Features per Use Case} (NFU) is used for quantifying
-how many features are tangled within a specific use
-case. We assume that each use case should focus in
-its primary goal, although several features might be related
-to the primary goal of a use case. Finally, we applied
-the metric \emph{Feature Diffusion over Scenarios} (FDS) in order
-to quantify how many internal use case members (scenarios)
-are necessary for the materialization of a specific feature.
- 
-Moreover, we used three metrics related to complexity.
-The first one, \emph{Vocabulary Size}, quantifies the number of use
-cases (VSU) and scenarios (VSS) required by each of the evaluated
-approaches. The second one, \emph{Steps of Specification}
-(SS), is related to the size of each scenario and identifies
-how many pairs \emph{User action} x \emph{System response} compose a
-specific scenario. Additionally, we also relate modularity to
-complexity by applying \emph{Features and Steps of Specification}
-(FSS), which counts the number of steps of specification
-whose main purpose is to describe the behavior of a feature. 
-A complete description of these metrics can be found elsewhere~\cite{rbonifacio-ea-2008}. Next we 
-present the quantitative analysis of the \emph{MMS} and \emph{Pedagogical} product lines using these metrics.
-
-\subsubsection{MMS Product Line}
-
-As explained earlier, the MMS product line, which is a real case study from Motorola phones, enables the customization of 
-multimedia message applications. The primary goal of each one of these applications is to create and 
-send messages with embedded multimedia content (image, audio, video)~\cite{rbonifacio-ea-2008}. 
-We have specified the MMS product line using three techniques: our notation, PLUC, and PLUSS approaches. After that, we evaluated these specifications observing the metric suite just presented. The results of this evaluation are summarized in Table~\ref{tab:metrics}. 
-
-\begin{table}[htb]
-\centering
-\caption{MMS quantitative evaluation}
-\label{tab:metrics}
+\begin{table}[htb] \centering
+\caption{Summary of DoS for the MMS case study}
+\label{tab:mms-dos}
 \begin{small}
-\begin{tabular}{lccc} \hline
-					& PLUC 	& PLUSS 	& Crosscutting	\\ \hline
-Mean value of FDU 		& 3.5	& 3.5	& 2		\\
-Mean value of FDS 		& 6.25	& 5		& 4.25	\\
-Mean value of NFU 		& 2		& 2		& 1		\\
-Mean value of FSS 		&12		& 11		& 10.25	\\ 
-VSU 					& 5		& 5		& 7		\\
-VSS 					& 27		& 24		& 23		\\
-SS 					& 75		& 64		& 56		\\	\hline
+\begin{tabular}{llllll} \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+	PLUSS			& 0.00  & 0.60   	& 0.46  & 0.80 	& 0.11 			\\
+	Crosscutting	& 0.00  & 0.41   	& 0.34 	& 0.79 	& 0.10			\\ \hline	
 \end{tabular}
 \end{small}
 \end{table}
 
-Since PLUC and PLUSS do not allow a
-scenario to crosscut other scenarios in different use cases, it
-is difficult to modularize features. The
-result is that, when comparing to the crosscutting approach,
-features, on the average,  are more 
-diffused (FDU, FDS, and FSS metrics) and use cases are
-less concise (NFU) in these approaches (Table~\ref{tab:metrics}). The crosscutting
-approach, in contrast, allows the composition of scenarios
-through \emph{from steps} and \emph{to steps} clauses. 
+This case study, differently from the Smart Home, revealed improvements of the
+Crossucutting approach with respect to the feature's \emph{degree of scattering}
+($p-value=0.01$). This result was mainly achieved because some of the features of
+the MMS product line require an homegeneous crosscutting behavior. For example,
+there are some policies related to DRM\footnote{Digital Rights Management}
+content that crosscutt, in a similar way, the behavior related to \emph{sending}
+and \emph{forwarding} messages.
 
-The lack of crosscutting mechanisms for composing scenarios of different use cases also results in greater complexity, when observing the \emph{Steps of Specification} metric. Although our approach resulted in a greater number of use cases, we improve the specification reuse, since scenarios that crosscut different use cases can be specified without duplication. For instance, consider the \emph{Structure Data Operation} feature which presents this crosscutting nature. As we can realize observing Figure~\ref{fig:fds-mms}, by applying our approach we can reduce the diffusion over scenario of such features.
 
- \begin{figure}[htb]
- \begin{center}
-  \includegraphics[scale=0.42]{img/fds-mms.eps}
-  \caption{Relative FDS for evaluated techniques}
-  \label{fig:fds-mms}
-  \end{center}
-\end{figure}
+On the other hand, the MMS case study didn't reveal significant
+improvements with respect to the \emph{degree of focus
+metric}(Table~\ref{tab:mms-dof}).
 
-\subsubsection{Pedagogical Product Line}
+\begin{table}[htb] \centering
+\caption{Summary of DoF for MMS case study}
+\label{tab:mms-dos}
+\begin{small}
+\begin{tabular}{llllll} \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+	PLUSS			& 0.34	& 0.59		& 0.70	& 1.00	& 0.07			\\
+	Crosscutting	& 0.46  & 0.59   	& 0.71 	& 1.00 	& 0.06			\\ \hline	
+\end{tabular}
+\end{small}
+\end{table}
 
-We compared our approach against two specifications of the Pedagogical Product Line (PPL): the original one~\cite{ppl-url}, proposed by the Software Engineering Institute, and a specification that was sent to us by the authors of the PLUSS technique. 
 
-The original specification of PPL is already well modularized, since its features, in general, are not crosscutting among different use cases (see modularity metrics in Table~\ref{tab:ppl-metrics}). Moreover, another characteristic of PPL is that several features are related to qualities that do not cause effect into use case specifications. 
+The main characteristic of the MMS productline, which leads to
+this results, is
+
+The main reason for the difference of this results is
+that several scenarios of the smart home specification are affected by
+alternative features. On the other hand, just a few scenarios of the MMS
+product line are affected by alternative features. Thus, there is no
+significant improvements in the degree of focus.  
+
+
+% \begin{table}[htb]
+% \centering
+% \caption{MMS quantitative evaluation}
+% \label{tab:mms}
+% \begin{small}
+% \begin{tabular}{lccc} \hline
+% 					& PLUC 	& PLUSS 	& Crosscutting	\\ \hline
+% Mean value of FDU 		& 3.5	& 3.5	& 2		\\
+% Mean value of FDS 		& 6.25	& 5		& 4.25	\\
+% Mean value of NFU 		& 2		& 2		& 1		\\
+% Mean value of FSS 		&12		& 11		& 10.25	\\ 
+% VSU 					& 5		& 5		& 7		\\
+% VSS 					& 27		& 24		& 23		\\
+% SS 						& 75		& 64		& 56		\\	\hline
+% \end{tabular}
+% \end{small}
+% \end{table}
+% 
+% Since PLUC and PLUSS do not allow a
+% scenario to crosscut other scenarios in different use cases, it
+% is difficult to modularize features. The
+% result is that, when comparing to the crosscutting approach,
+% features, on the average,  are more 
+% diffused (FDU, FDS, and FSS metrics) and use cases are
+% less concise (NFU) in these approaches (Table~\ref{tab:metrics}). The crosscutting
+% approach, in contrast, allows the composition of scenarios
+% through \emph{from steps} and \emph{to steps} clauses. 
+% 
+% The lack of crosscutting mechanisms for composing scenarios of different use
+% cases also results in greater complexity, when observing the \emph{Steps of
+% Specification} metric. Although our approach resulted in a greater number of use
+% cases, we improve the specification reuse, since scenarios that crosscut
+% different use cases can be specified without duplication. For instance, consider
+% the \emph{Structure Data Operation} feature which presents this crosscutting
+% nature. As we can realize observing Figure~\ref{fig:fds-mms}, by applying our
+% approach we can reduce the diffusion over scenario of such features.
+% 
+%  \begin{figure}[htb]
+%  \begin{center}
+%   \includegraphics[scale=0.42]{img/fds-mms.eps}
+%   \caption{Relative FDS for evaluated techniques}
+%   \label{fig:fds-mms}
+%   \end{center}
+% \end{figure}
+
+\subsection{Pedagogical Product Line}
+
+We compared our approach against two specifications of the Pedagogical Product
+Line (PPL): the original one~\cite{ppl-url}, proposed by the Software Engineering
+Institute, and a specification that was sent to us by the authors of the PLUSS
+technique.
+
+The original specification of PPL is already well modularized, since its
+features, in general, are not crosscutting among different use cases (see
+modularity metrics in Table~\ref{tab:ppl-metrics}). Moreover, another
+characteristic of PPL is that several features are related to qualities that do
+not cause effect into use case specifications.
 
 \begin{table}[hb]
 \centering
@@ -1775,34 +1855,45 @@ SS 					& 44		& 38		& 32		\\	\hline
 \end{small}
 \end{table}
 
-Still in this context, our approach also achieves some improvements in the resulting specifications. The main factor for these improvements in the \emph{Pedagogical} product line was the error handling modularization. By applying our approach, all behavior related to the \emph{error handling} concern is specified in a single use case. The composition of \emph{error handling} with the basic scenarios was done by means of annotations attributed to the corresponding steps. For instance, Figure~\ref{fig:error-handle} depicts just one scenario for error handling: raising  an error when there is no space available. 
+Still in this context, our approach also achieves some improvements in the
+resulting specifications. The main factor for these improvements in the
+\emph{Pedagogical} product line was the error handling modularization. By
+applying our approach, all behavior related to the \emph{error handling} concern
+is specified in a single use case. The composition of \emph{error handling} with
+the basic scenarios was done by means of annotations attributed to the
+corresponding steps. For instance, Figure~\ref{fig:error-handle} depicts just one
+scenario for error handling: raising  an error when there is no space available.
 
-% \begin{figure}[h]
-% \begin{scriptsize}
-%   \texttt{
-%    \begin{tabular}{l}
+% \begin{figure}[h] \begin{scriptsize} \texttt{ \begin{tabular}{l}
 %      Description: There is no available space in file system.\\
 %      From step: [CatchFileException] \\
-%      To step: END
-%    \end{tabular}  
-%   \begin{center} 
-%    \begin{tabular}{|p{0.1in}|p{0.6in}|p{1.0in}|p{1.0in}|}
-%    \hline
-%        Id & User Action & System State & System Response \\ \hline \hline
-%        E1 & & There is not enough space to save the file. &  Raise the Disk is Full exception. The arcade game application is finished. \\  \hline
-%   \end{tabular}
-%   \end{center}
-%   } 
-% \end{scriptsize}
-% \caption{Scenario of error handle use case.}
-% \label{fig:error-handle}
-% \end{figure}
+% To step: END \end{tabular} \begin{center}
+% \begin{tabular}{|p{0.1in}|p{0.6in}|p{1.0in}|p{1.0in}|} \hline Id & User Action
+% & System State & System Response \\ \hline \hline E1 & & There is not enough
+% space to save the file. &  Raise the Disk is Full exception. The arcade game
+% application is finished. \\  \hline \end{tabular} \end{center} }
+% \end{scriptsize} \caption{Scenario of error handle use case.}
+% \label{fig:error-handle} \end{figure}
     
-Notice that this scenario can be started from any step that has been marked with the \emph{CatchFileException} annotation (see the \emph{From step} clause). Several features of the PPL need to save information in the file system. Therefore, both in the SEI and PLUSS specifications of the \emph{Pedagogical} product line, several use cases were specified with scenarios for handling this kind of exception.
+Notice that this scenario can be started from any step that has been marked with
+the \emph{CatchFileException} annotation (see the \emph{From step} clause).
+Several features of the PPL need to save information in the file system.
+Therefore, both in the SEI and PLUSS specifications of the \emph{Pedagogical}
+product line, several use cases were specified with scenarios for handling this
+kind of exception.
 
-As a consequence, we achieve a reduction (almost 20\%) in the number of specification steps (SS in Table~\ref{tab:ppl-metrics}) when comparing to the PLUSS approach. It is important to notice that this reduction of size does not compromise the requirement coverage; but actually it represents an improvement in the specification reuse.
+As a consequence, we achieve a reduction (almost 20\%) in the number of
+specification steps (SS in Table~\ref{tab:ppl-metrics}) when comparing to the
+PLUSS approach. It is important to notice that this reduction of size does not
+compromise the requirement coverage; but actually it represents an improvement in
+the specification reuse.
 
-For concluding our Pedagogical product line analysis, we can realize, based on Table~\ref{tab:ppl-metrics}, that our approach achieved real benefits only in the complexity metrics. This result comes from the non crosscutting nature of PPL features. Comparing to the MMS product line results, we argue that the benefits of applying our approach should be greater in contexts where features can not be well modularized using existing techniques. 
+For concluding our Pedagogical product line analysis, we can realize, based on
+Table~\ref{tab:ppl-metrics}, that our approach achieved real benefits only in the
+complexity metrics. This result comes from the non crosscutting nature of PPL
+features. Comparing to the MMS product line results, we argue that the benefits
+of applying our approach should be greater in contexts where features can not be
+well modularized using existing techniques.
    
 \section{Related Work}
 \label{sec:related}
