@@ -71,78 +71,59 @@ Software}
 The support for variation points enables product customization from a set of
 reusable assets~\cite{Pohl:2005aa}. However, variability management, due to its
 inherent crosscutting nature, is a common challenge in software product line
-(SPL) adoption~\cite{Clements:2001aa,Pohl:2005aa}. Such crosscutting
-characteristic is materialized whenever a feature requires variation points to be
-spread in different SPL artifacts. Actually, the representation of a variant
-feature is often spread not only in several artifacts, but also at the different
-product line views (requirements, design, implementation, and test). So,
-variability management, in the same way as the feature model and the
-architecture, represents a central concern in the SPL development and should not
-be tangled with existing artifacts~\cite{Pohl:2005aa}.
- 
-Several authors have proposed the use of \emph{aspect-oriented} mechanisms in
-order to better modularize the composition of common and variant assets of a
-product line~\cite{sousa:aosd-ea04, moreira-re07, eriksson-splc-2005,
-pohl-caise-2005, alves-gpce-06, apel-icse2006}. However, here we go beyond this
-composition issue. We mainly consider a more encompassing notion of variability
-management, including artifacts such as feature
-models~\cite{gheyi-alloy-06,Czarnecki:2000aa} and configuration knowledge~
-\cite{Czarnecki:2000aa,Pohl:2005aa}, and explain it  as a crosscutting
-phenomenon.
+(SPL) adoption~\cite{Clements:2001aa,Pohl:2005aa}. First, nontrivial features
+often require associated variation points to be scattered through SPL artifacts.
+Second, some approaches include product variant and configuration information
+inside artifacts.
 
-In this paper, we apply this view of \emph{variability management as
-crosscutting} for modularizing SPL use case scenarios. Current techniques for
-scenario variability
-management~\cite{favaro-icsr-98,Bertolino:2003aa,Eriksson:2005aa} do not
-present a clear separation between variability management and scenario
-specification. For instance, supposing that details about product variants are
-tangled with  use case scenarios, if one variant is removed from the product
-line, it is necessary to change all related scenarios. In summary, it is
-difficult to evolve both representations. Another problem is the lack of a formal
-representation for the derivation of product specific scenarios. This is not
-suitable for current SPL generative practices~\cite{krueger-cacm-200712};
-following the aforementioned works, it is difficult to automatically derive the
-requirements of a specific SPL member and to check if the specified compositions
-between common and variant flows are correct.  Although  the semantic composition
-of PLUC (Product Line Use Case)~\cite{Bertolino:2003aa} is defined
-in~\cite{fantechi-splc-2004}, such approach does not separate scenario
-specification from variability management, as presented in
-Section~\ref{sec:problem}.
+Both problems can be observed for use case scenario specifications. To minimize
+the first problem, several authors have proposed the use of
+\emph{aspect-oriented} mechanisms to better modularize the composition of common
+and variant scenarios~\cite{moreira-re07,eriksson-splc-2005,pohl-caise-2005},
+similar to what has been proposed to source code~\cite{alves-gpce-06,
+apel-icse2006}. With respect to the second problem, current
+approaches~\cite{favaro-icsr-98,Bertolino:2003aa,Eriksson:2005aa} do not offer a
+clear separation between variability management and scenario specification. As a
+consequence, in the case where details about product variants are tangled with
+use case scenarios, the removal of one variant from the product line requires
+changes to all related scenarios. In summary, it is difficult to evolve both
+representations.
 
-In order to formalize our approach, we describe a framework for modeling the
-composition process of scenario variabilities with feature models, product
-configuration, and configuration knowledge (Section~\ref{sec:models}). Such
-framework aims to: (1) represent a clear separation between variability
-management and scenario specification; and (2) specify how to weave these
+So in this paper we go beyond the common-variant scenario composition issues and
+consider a more encompassing notion of variability management, including
+artifacts such as feature models~\cite{gheyi-alloy-06,Czarnecki:2000aa} and
+configuration knowledge~\cite{Czarnecki:2000aa,Pohl:2005aa}. We explain this as a
+crosscutting phenomenon, using Masuhara and Kiczales work~\cite{Masuhara:2003aa},
+and apply this view of \emph{variability management as crosscutting} for
+modularizing SPL use case scenarios, providing the necessary separation between
+variability and scenario specification concerns. We also formalize the derivation
+of product specific scenarios in our approach, as demanded by current SPL
+generative practices~\cite{krueger-cacm-200712}. This formalization is based on
+our framework for modeling the composition process of scenario variabilities with
+feature models, product configuration, and configuration knowledge
+(Section~\ref{sec:models}). Besides supporting the mentioned separation of
+concerns, this framework helps to precisely specify how to weave the different
 representations in order to generate specific scenarios for a SPL member.
-Therefore, the main contributions of this work are
+Therefore, the main contributions of this work are the following:
 
 \begin{itemize}
+\item Characterization of the languages of variability management as a crosscutting concern and, in this way, proposing an approach where variability concerns are separated from other concerns. Although this work focus on requirement artifacts, more specifically use case scenarios, we argue that such separation is also valid for other SPL artifacts. Actually, it has already been claimed for source code~\cite{Alves:2006aa,Apel:2006aa}, without considering the importance of variability artifacts.
 
-\item Characterize the broader notation of variability management as a
-crosscutting concern and, in this way, propose an approach where it is 
-represented as an independent view of the SPL. Although this work focus on
-requirement artifacts, more specifically use case scenarios, we argue that such
-separation is also valid for other SPL views. Actually, it has already been
-claimed for source code~\cite{Alves:2006aa,Apel:2006aa}, without considering
-the importance of variability artifacts.
-  
 \item A framework for modeling the composition process of scenario variability
-mechanisms. This framework gives a basis for describing variability mechanisms
-(such as parameterization), allowing a better understanding of each mechanism. In
-this work, such framework is used for modeling the semantics of scenario
-variability mechanisms, but it might be customized for other SPL views.
+mechanisms. This framework gives a basis for describing variability mechanisms,
+allowing a better understanding of each mechanism. In this work, such framework
+is used for modeling the semantics of some scenario variability mechanisms, but
+it could be customized for other mechanisms and SPL artifacts.
 
-\item Describe three scenario variability mechanisms (selection of optional
-scenarios, scenario composition, scenario parameterization) using the modeling
-framework. Such descriptions present a more formal representation when compared
-to existing works; this is an important property for supporting the automatic
-derivation of product specific artifacts.
-
+\item Specification of three scenario variability mechanisms (selection of
+optional scenarios, scenario composition, scenario parameterization) using the
+modeling framework. Such specification provides a more formal semantic
+representation when compared to existing works; this is an important property for
+supporting the automatic derivation of product specific artifacts.
 \end{itemize}
 
 Since our concept of crosscutting mechanism is based on Masuhara and Kiczales
-work~\cite{Masuhara:2003aa}, another contribution of this paper is that we apply
+work~\cite{Masuhara:2003aa}, a smaller contribution of this paper is to apply
 their ideas to the languages of variability management,  reinforcing the
 generality of their model, which was originally instantiated only for mechanisms
 of aspect-oriented programming languages. Based on their view of crosscutting, we
@@ -150,10 +131,10 @@ can reason about variability management as a crosscutting concern that involves
 different input specifications that contribute to derive a specific member of a
 given SPL.
 
-Finally, we evaluate our approach (Section~\ref{sec:evaluation}) by comparing it 
-to existing works on different product lines.  We 
-also relate our work with other research topics (Section~\ref{sec:related}) and present 
-our concluding remarks in Section~\ref{sec:conclusions}.
+Finally, we evaluate our approach (Section~\ref{sec:evaluation}) by comparing it
+to alternative approaches using different product lines. We also relate our work
+with other research topics (Section~\ref{sec:related}) and present our concluding
+remarks in Section~\ref{sec:conclusions}.
 
 %-----------------------------------------------------------------------
 % Subsection: Motivating example
@@ -1513,54 +1494,33 @@ unfocused) and 1 (completely focused).
 The next section describes the workflow followed during the Smart Home
 case study, which was evaluated using the metrics described in this section.
 
-\subsection{Smart Home settings}
+\subsection{Smart Home assesment}
 
 This study was divided in four major phases: (1) the specification of the input
-data --- three different configurations of a Smart Home were specified without
-PL support; (2) the presentation of preparatory classes to the subjects
+data --- three different configurations of the security module of a smart home
+were specified without PL support; (2) the presentation of preparatory classes to the subjects
 (graduate students with similar skills in the area); (3) the activity of
 restructuring the input specifications using both PLUSS and the Crosscutting
 technique; and (4) the assesment of the resulting specifications.
 
-In the first phase we specified three different configurations of a Smart
-Home. These specifications included feature models and use case
-scenarios written without product line support. Additionaly, they were build
-upon the documentation available from~\cite{Pohl:2005aa,Mauricio,AMPLE}. Some
-figures of this input data are present in Table~\ref{}.
-
-\begin{table}[htb]
-\centering
-\caption{Degree of scattering}
-\label{tab:sh-dos}
-\begin{small}
-\begin{tabular}{llll} \hline
-	Features	& x mandatory features 		&  	&\\
-			    & y optional features  		&  	&\\
-			    & z alternative features 	&	& \\ \hline
-			    & First spec & Second spec 	& Third spec  	\\
- 	Use cases	& 6			 &				&				\\
-	Scenarios   & 15		 &				&				\\
-	Steps		& 65		 &				&	 		    \\ \hline
-\end{tabular}
-\end{small}
-\end{table}
+In the first phase we have specified three different configurations of the
+security module of a Smart Home. These specifications included feature models and
+use case scenarios written without product line support. Additionaly, they were
+build upon the documentation available from~\cite{Pohl:2005aa,AMPLE}.
 
 In the second phase, introductory classes and bibliographic references were
 offered to post-graduate students. At that period, none of these students had
-previous knowledge in the field of scenario variability management. A total of six
+had previous knowledge in the field of scenario variability management. A total of six
 students were involved in this case study. Then, the students were organized in
 groups and assigned to restructure the input specifications using PLUSS and
-Crosscutting techniques. Additionally, they were asked to keep information about
-the effort required to peform the following activities:
-
-\subsection{Smart Home assesment}
+Crosscutting techniques. 
 
 Table~\ref{tab:sh-dof} sumarizes the resulting \emph{degree of scattering} of
 Smart Home features, computed for both PLUSS and Crosscutting approaches. Althoug the
 Crosscutting approach achieved a central tendency (median) of DoS closer to
 zero, we can not realize any significant improvement in this metric. Actually, for some
 features, the DoS for the Crosscutting approach presented a greater value than
-the corresponding one for PLUSS. 
+the corresponding one in the PLUSS. 
 
 \begin{table}[htb]
 \centering
@@ -1584,8 +1544,8 @@ aspectual scenarios increased the DoS of this feature.
 On the other hand, the feature \emph{Turn On Internal and External Lights}
 presents a lower DoS in the Crosscutting approach (0.00) when compared to the
 PLUSS (0.54) notation. This feature requires a behavior that crosscuts, in a
-homogenous way, the different scenarios related to the $Intrusion Detection$ use
-case. 
+homogenous way, the different scenarios related to the $Intrusion\ Detection$
+use case. 
 
 Considering the degree of focus (data sumarized in Table~\ref{tab:sh-dof}), we
 can realize a significant improvement of the Crosscutting approach
@@ -1616,7 +1576,7 @@ means of aspectual scenarios improves the \emph{degree of focus}. Moreover, if
 the varying steps of a scenario corresponds to a homogeneous crosscuting
 behavior, modularizing it as an aspectual scenario also improves the DoS. On the
 other hand, modularizing features affected by heterogeneous crosscutting
-behavior increases the DoS.
+behavior increases the corresponding \emph{degree of scattering}.
 
 The next sections present the evaluation of the Pedagogical Product Line (PPL)
 and Multimedia Message Product Line (MMS). We compared our specification of
@@ -1625,101 +1585,6 @@ PLUSS techniques. Similarly, we compared our specification
 of the PPL to a specification that had been sent to us by
 the authors of the PLUSS approach. 
  
-
-
-% \subsection{DSM Analysis}
-% For now, let us reproduce the DSMs to understand the benefits of SoC in
-% variability management. DSMs is an interesting and simple tool for visualizing
-% dependences between design decisions~\cite{clark-design-rules-book}. Such
-% decisions appear in the rows and columns of a matrix. We can identify a
-% dependency by observing the columns in a given
-% row~\cite{clark-design-rules-book}. For example, the first row in
-% Figure~\ref{dsm:pluc} indicates that the task of creating the feature model
-% depends on the task of creating the use case model. The first can not be
-% independently performed after the second. As presented in
-% Section~\ref{sec:problem}, the PLUC approach describes product instances and
-% variability space at specific sections of use cases. Therefore, it is not
-% possible to evolve variability management (introducing new features, products, or
-% relations between features and artifacts) without reviewing the use case model. 
-% This is expressed in the non modular DSM of Figure~\ref{dsm:pluc}, which depicts
-% cyclical dependences between use cases and variability management artifacts.
-% 
-% \begin{figure}[htb]
-% \centering
-% \begin{small}
-% \begin{tabular}{llllll} \hline
-% &  & 1 & 2 & 3 & 4 \\ \hline
-% 1 & Feature model 			& 	& x	& 	&   	\\ 
-% 2 & Use case model 		& x 	&  	&  x	&  x  \\ 
-% 3 & Product configurations	& x 	& x	& 	&    	\\
-% 4 & Configuration knowledge 	& x 	& x 	& 	&    	\\ \hline
-% \end{tabular}
-% \end{small}
-% \caption{DSM Analysis of PLUC}
-% \label{dsm:pluc}
-% \end{figure}
-% 
-% Our approach reduces the dependences between variability management and scenario
-% specifications (Figure~\ref{dsm:cc}). For instance, changes in feature model or
-% new definitions of products do not require changes in the use case model. This
-% clear separation is also necessary in source code, as claimed
-% in~\cite{Alves:2006aa,Apel:2006aa}, and might be required in other artifacts
-% too. Notice that the proposed mapping artifact, used to relate use cases
-% parameters and features (Section~\ref{sub:bind-weaver}), can be considered as a
-% design rule, since it primarily aims at decoupling use cases and features.
-% 
-% \begin{figure}[h]
-% \centering
-% \begin{small}
-% \begin{tabular}{lllllll} \hline
-% & & 1 & 2 & 3 & 4 & 5 \\ \hline
-% 1 & Feature model 		& 	& 	&      &  	&  	\\ 
-% 2 & Mapping	 		& x	&	&	&	&  	\\
-% 3 & Use case model 	&  	&  x	&  	&  	& 	\\
-% 4 & SPL instances 		& x 	& 	& 	&   	& 	\\
-% 5 & Configuration model 	& x 	&  	&  x	&  	& 	\\  \hline
-% \end{tabular}
-% \end{small}
-% \caption{DSM Analysis of the proposed approach}
-% \label{dsm:cc}
-% \end{figure}   
-
-
-
-
-% \subsection{Quantitative Analysis}
-% 
-% For confirming the observations derived from the DSM analysis, we applied the
-% metric suite for the \emph{MMS} and \emph{Pedagogical} product lines. 
-% 
-% The metric suite, used in what follows, was adapted from~\cite{garcia-taosd-2005} for both product line 
-% and use cases contexts. It quantifies 
-% feature modularity and use case complexity. The proposed modularity 
-% metrics quantify three types of relations involving features and use cases.
-% First, \emph{Feature Diffusion over Use Cases} (FDU) is used for
-% quantifying how many use cases are affected by a specific
-% feature. On the other hand, \emph{Number of Features per Use Case} (NFU) is used for quantifying
-% how many features are tangled within a specific use
-% case. We assume that each use case should focus in
-% its primary goal, although several features might be related
-% to the primary goal of a use case. Finally, we applied
-% the metric \emph{Feature Diffusion over Scenarios} (FDS) in order
-% to quantify how many internal use case members (scenarios)
-% are necessary for the materialization of a specific feature.
-%  
-% Moreover, we used three metrics related to complexity.
-% The first one, \emph{Vocabulary Size}, quantifies the number of use
-% cases (VSU) and scenarios (VSS) required by each of the evaluated
-% approaches. The second one, \emph{Steps of Specification}
-% (SS), is related to the size of each scenario and identifies
-% how many pairs \emph{User action} x \emph{System response} compose a
-% specific scenario. Additionally, we also relate modularity to
-% complexity by applying \emph{Features and Steps of Specification}
-% (FSS), which counts the number of steps of specification
-% whose main purpose is to describe the behavior of a feature. 
-% A complete description of these metrics can be found elsewhere~\cite{rbonifacio-ea-2008}. Next we 
-% present the quantitative analysis of the \emph{MMS} and \emph{Pedagogical} product lines using these metrics.
-
 \subsection{MMS Product Line}
 
 As explained earlier, the MMS product line, which was adapted from an industrial
@@ -1748,13 +1613,18 @@ Crossucutting approach with respect to the feature's \emph{degree of scattering}
 ($p-value=0.01$). This result was mainly achieved because some of the features of
 the MMS product line require an homegeneous crosscutting behavior. For example,
 there are some policies related to DRM\footnote{Digital Rights Management}
-content that crosscutt, in a similar way, the behavior related to \emph{sending}
-and \emph{forwarding} messages.
+content that crosscutt, in a uniform manner, the behavior related to
+\emph{sending} and \emph{forwarding} messages.
 
 
-On the other hand, the MMS case study didn't reveal significant
-improvements with respect to the \emph{degree of focus
-metric}(Table~\ref{tab:mms-dof}).
+On the other hand, the MMS case study didn't reveal significant improvements with
+respect to the \emph{degree of focus} metric(Table~\ref{tab:mms-dof}). This
+result is also different from the corresponding one observed in the Smart Home
+case study. The main reason for such a difference is that several scenarios of
+the Smart Home specification are affected by alternative features. On the other
+hand, just a few scenarios of the MMS case study are affected by alternative
+features. Thus, the benefits achieved from extracting varying behavior to
+aspectual scenarios were minimized in this case study.
 
 \begin{table}[htb] \centering
 \caption{Summary of DoF for MMS case study}
@@ -1768,61 +1638,8 @@ metric}(Table~\ref{tab:mms-dof}).
 \end{small}
 \end{table}
 
-
-The main characteristic of the MMS productline, which leads to
-this results, is
-
-The main reason for the difference of this results is
-that several scenarios of the smart home specification are affected by
-alternative features. On the other hand, just a few scenarios of the MMS
-product line are affected by alternative features. Thus, there is no
-significant improvements in the degree of focus.  
-
-
-% \begin{table}[htb]
-% \centering
-% \caption{MMS quantitative evaluation}
-% \label{tab:mms}
-% \begin{small}
-% \begin{tabular}{lccc} \hline
-% 					& PLUC 	& PLUSS 	& Crosscutting	\\ \hline
-% Mean value of FDU 		& 3.5	& 3.5	& 2		\\
-% Mean value of FDS 		& 6.25	& 5		& 4.25	\\
-% Mean value of NFU 		& 2		& 2		& 1		\\
-% Mean value of FSS 		&12		& 11		& 10.25	\\ 
-% VSU 					& 5		& 5		& 7		\\
-% VSS 					& 27		& 24		& 23		\\
-% SS 						& 75		& 64		& 56		\\	\hline
-% \end{tabular}
-% \end{small}
-% \end{table}
-% 
-% Since PLUC and PLUSS do not allow a
-% scenario to crosscut other scenarios in different use cases, it
-% is difficult to modularize features. The
-% result is that, when comparing to the crosscutting approach,
-% features, on the average,  are more 
-% diffused (FDU, FDS, and FSS metrics) and use cases are
-% less concise (NFU) in these approaches (Table~\ref{tab:metrics}). The crosscutting
-% approach, in contrast, allows the composition of scenarios
-% through \emph{from steps} and \emph{to steps} clauses. 
-% 
-% The lack of crosscutting mechanisms for composing scenarios of different use
-% cases also results in greater complexity, when observing the \emph{Steps of
-% Specification} metric. Although our approach resulted in a greater number of use
-% cases, we improve the specification reuse, since scenarios that crosscut
-% different use cases can be specified without duplication. For instance, consider
-% the \emph{Structure Data Operation} feature which presents this crosscutting
-% nature. As we can realize observing Figure~\ref{fig:fds-mms}, by applying our
-% approach we can reduce the diffusion over scenario of such features.
-% 
-%  \begin{figure}[htb]
-%  \begin{center}
-%   \includegraphics[scale=0.42]{img/fds-mms.eps}
-%   \caption{Relative FDS for evaluated techniques}
-%   \label{fig:fds-mms}
-%   \end{center}
-% \end{figure}
+The next section presents the final case study. Similarly to the Smart Home
+product line, the PPL have been used in several case studies \ldots
 
 \subsection{Pedagogical Product Line}
 
