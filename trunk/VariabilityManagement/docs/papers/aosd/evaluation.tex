@@ -1,18 +1,16 @@
-%=============================
-% Evaluation
-% ============================
+% ============================= Evaluation ============================
 \section{Evaluation}
 \label{sec:evaluation}
 
 We have applied our approach to four SPLs: the eShop Product Line, introduced in
 Section~\ref{sec:problem}; the {\bf Pedagogical Product Line
-(PPL)}~\cite{ppl-url}, which was proposed for learning about and experimenting
+(PPL)}~\cite{PPL:2008}, which was proposed for learning about and experimenting
 with software product lines and focus on the arcade game domain; the {\bf Smart
-Home Product Line}, whose specification was besed from different
-works~\cite{Pohl:2005aa}, and the {\bf Multimedia Message Product Line (MMS)},
-a case study conduced with one of our industrial patterns. The MMS-PL allows the
-assembling of specific products for creating, sending, and receiving multimedia
-messages (MMS) in mobile phones~\cite{Bonifacio:2008aa}.
+Home Product Line}, whose specification was based from different
+works~\cite{Pohl:2005aa,Alferez:2008aa}, and the {\bf Multimedia Message Product
+Line (MMS)}, a case study conduced with one of our industrial patterns. The
+MMS-PL allows the assembling of specific products for creating, sending, and
+receiving multimedia messages (MMS) in mobile phones~\cite{Bonifacio:2008aa}.
 
 Based on this last case study, we noticed the benefits of a clear separation
 between variability management and scenario
@@ -28,13 +26,13 @@ in this paper.
 
 In the remaining of this section we first present a new suite of metrics,
 proposed to mitigate some problems identified in previous evaluations of our
-work. Then we describe the assessment procedure followed during the Smart Home
+work. Then we describe the assessment of Smart Home,
 MMS, and PPL case studies. Finally, we present some conclusions acquired from
-these different product lines.
+the analysis of these different product lines.
 
 \subsection{Metric suite}\label{sub:metric-suite}
 
-In a previus work, we evaluated the benefits of a clear SoC between variability
+In a previous work, we evaluated the benefits of a clear SoC between variability
 assets and common software engineering models. In order to do that, we first
 customized a suite of metrics, applied in several empirical
 studies~\cite{Garcia:2005aa,Greenwood:2007aa,Figueiredo:2008ab,Figueiredo:2008ab}
@@ -44,12 +42,12 @@ over scenarios}, \emph{feature diffusion over steps}, and \emph{number of
 features} related to each scenario.
 
 However, using these metrics we were not able to understand the degree of
-scattering (or degree of tangling) of a feature, which difficults the comparison
+scattering (or degree of tangling) of a feature, which difficulties the comparison
 between different specifications. Therefore, in order to mitigate this problem,
 in this paper we are adapting the metric suite proposed by Eaddy et
 al.~\cite{Eaddy:2007aa}. This suite considers the degree of scattering of
 features (concerns in the original paper) and degree of focus of scenarios
-(componentes in the original paper). Additionally, Eaddy et
+(components in the original paper). Additionally, Eaddy et
 al.~\cite{Eaddy:2007aa} proposed a \emph{prune dependency analysis} to assign
 concerns to lines of source code. In a similar way, we define a
 \emph{configuration dependency analysis} to assign features to steps of
@@ -62,7 +60,7 @@ affects the selection or the configuration of a step $s$, we assume that this st
 dependency with the feature $f$.
 \end{definition}
 
-Thus, we can customize both metrics (degree of scattering and degree of fucus)
+Thus, we can customize both metrics (degree of scattering and degree of focus)
 to our context. First, the \emph{degree of scattering} of a feature $f$ is
 calculated by normalizing its concentration regarded to each scenario $s \in
 S$ (the set of all scenarios).
@@ -87,40 +85,41 @@ of\ steps\ in\ s}$
 
 These metrics inherit the same properties of the original
 ones~\cite{Eaddy:2007aa}. However, it is important to enforce that (a)
-\emph{degree of scattering} is normalized between 0 (completely localized) and 1 (completely
-delocalized); and (b) degree of focus is also normalized between 0 (completely
-unfocused) and 1 (completely focused).
+\emph{degree of scattering} (DoS) is normalized between 0 (completely localized)
+and 1 (completely unlocalized); and (b) \emph{degree of focus} (DoF) is also
+normalized between 0 (completely unfocused) and 1 (completely focused).
 
-The next section describes the workflow followed during the Smart Home
-case study, which was evaluated using the metrics described in this section.
+The next sections describe the assessment of the different case studies that we
+have applied our approach. These assessments consider the metric suite just
+presented.
 
-\subsection{Smart Home assesment}
+\subsection{Smart Home assessment}
 
 This study was divided in four major phases: (1) the specification of the input
 data --- three different configurations of the security module of a smart home
 were specified without PL support; (2) the presentation of preparatory classes to the subjects
 (graduate students with similar skills in the area); (3) the activity of
 restructuring the input specifications using both PLUSS and the Crosscutting
-technique; and (4) the assesment of the resulting specifications.
+technique; and (4) the assessment of the resulting specifications.
 
 In the first phase we have specified three different configurations of the
 security module of a Smart Home. These specifications included feature models and
-use case scenarios written without product line support. Additionaly, they were
+use case scenarios written without product line support. Additionally, they were
 build upon the documentation available from~\cite{Pohl:2005aa,AMPLE}.
 
 In the second phase, introductory classes and bibliographic references were
-offered to post-graduate students. At that period, none of these students had
-had previous knowledge in the field of scenario variability management. A total of six
-students were involved in this case study. Then, the students were organized in
-groups and assigned to restructure the input specifications using PLUSS and
-Crosscutting techniques.
+offered to post-graduate students. At that period, none of these students had had
+previous knowledge in the field of scenario variability management. A total of
+six students were involved in this case study. Then, the students were organized
+in groups and assigned to restructure the input specifications using PLUSS and
+Crosscutting techniques.
 
-Table~\ref{tab:sh-dof} sumarizes the resulting \emph{degree of scattering} of
-Smart Home features, computed for both PLUSS and Crosscutting approaches. Althoug the
+Table~\ref{tab:sh-dof} summarizes the resulting \emph{degree of scattering} of
+Smart Home features, computed for both PLUSS and Crosscutting approaches. Although the
 Crosscutting approach achieved a central tendency (median) of DoS closer to
 zero, we can not realize any significant improvement in this metric. Actually, for some
 features, the DoS for the Crosscutting approach presented a greater value than
-the corresponding one in the PLUSS.
+the corresponding ones in PLUSS.
 
 \begin{table}[htb]
 \centering
@@ -144,10 +143,10 @@ aspectual scenarios increased the DoS of this feature.
 On the other hand, the feature \emph{Turn On Internal and External Lights}
 presents a lower DoS in the Crosscutting approach (0.00) when compared to the
 PLUSS (0.54) notation. This feature requires a behavior that crosscuts, in a
-homogenous way, the different scenarios related to the $Intrusion\ Detection$
+homogeneous way, the different scenarios related to the $Intrusion\ Detection$
 use case.
 
-Considering the degree of focus (data sumarized in Table~\ref{tab:sh-dof}), we
+Considering the degree of focus (data summarized in Table~\ref{tab:sh-dof}), we
 can realize a significant improvement of the Crosscutting approach
 ($p-value=0.06$). Notice that the central tendency (median) of DoF in the
 Crosscutting approach ($1.00$) is closer to one than the corresponding value
@@ -166,35 +165,35 @@ Crosscutting approach ($1.00$) is closer to one than the corresponding value
 \end{table}
 
 Describing all variants of a behavior in a single asset
-(Section~\ref{sec:problem}) is the main reason for the lack of focus in scenarios
-written in the PLUSS approach. On the other hand, the Crosscutting approach
+(as exemplified in Section~\ref{sec:problem}) is the main reason for the lack of
+focus in scenarios written in the PLUSS approach. On the other hand, the Crosscutting approach
 allows the modularization of varying behavior in aspectual scenarios. The result
 is a better separation between common and optional steps of a scenario.
 
 In summary, the Smart Home case study revealed to us that removing tangling by
 means of aspectual scenarios improves the \emph{degree of focus}. Moreover, if
-the varying steps of a scenario corresponds to a homogeneous crosscuting
+the varying steps of a scenario corresponds to a homogeneous crosscutting
 behavior, modularizing it as an aspectual scenario also improves the DoS. On the
 other hand, modularizing features affected by heterogeneous crosscutting
 behavior increases the corresponding \emph{degree of scattering}.
 
 The next sections present the evaluation of the Pedagogical Product Line (PPL)
-and Multimedia Message Product Line (MMS). We compared our specification of
-\emph{MMS} product line to the specifications we had written for both PLUC and
-PLUSS techniques. Similarly, we compared our specification
+and Multimedia Message Product Line (MMS). We have compared our specification of
+\emph{MMS} product line to the specifications we had written for the
+PLUSS technique. Similarly, we have compared our specification
 of the PPL to a specification that had been sent to us by
 the authors of the PLUSS approach.
 
-\subsection{MMS Product Line}
+\subsection{MMS assessment}
 
 As explained earlier, the MMS product line, which was adapted from an industrial
 pattern, enables the customization of multimedia message applications. The
 primary goal of each one of these applications is to create and send messages
 with embedded multimedia content (image, audio, video)~\cite{Bonifacio:2008aa}.
 We have specified the MMS product line using both Crosscutting and PLUSS
-techiniques. After that, we evaluated these specifications observing the metric
-suite presented in Section~\ref{}. The results of this evaluation are summarized
-in Table~\ref{tab:mms-dos} and in Table~\ref{tab:mms-dof}.
+techniques. After that, we evaluated these specifications observing the metric
+suite presented in Section~\ref{sub:metric-suite}. The results of this evaluation are
+summarized in Table~\ref{tab:mms-dos} and Table~\ref{tab:mms-dof}.
 
 \begin{table}[htb] \centering
 \caption{Summary of DoS for the MMS case study}
@@ -209,15 +208,15 @@ in Table~\ref{tab:mms-dos} and in Table~\ref{tab:mms-dof}.
 \end{table}
 
 This case study, differently from the Smart Home, revealed improvements of the
-Crossucutting approach with respect to the feature's \emph{degree of scattering}
+Crosscutting approach with respect to the feature's \emph{degree of scattering}
 ($p-value=0.01$). This result was mainly achieved because some of the features of
-the MMS product line require an homegeneous crosscutting behavior. For example,
+the MMS product line require an homogeneous crosscutting behavior. For example,
 there are some policies related to DRM\footnote{Digital Rights Management}
-content that crosscutt, in a uniform manner, the behavior related to
+content that crosscut, in a uniform manner, the behavior related to
 \emph{sending} and \emph{forwarding} messages.
 
 On the other hand, the MMS case study didn't reveal significant improvements with
-respect to the \emph{degree of focus} metric(Table~\ref{tab:mms-dof}). This
+respect to the \emph{degree of focus} metric (Table~\ref{tab:mms-dof}). This
 result is also different from the corresponding one observed in the Smart Home
 case study. The main reason for such a difference is that several scenarios of
 the Smart Home specification are affected by alternative features. On the other
@@ -237,12 +236,20 @@ aspectual scenarios were minimized in this case study.
 \end{small}
 \end{table}
 
-The next section presents the final case study. Similarly to the Smart Home
-product line, the PPL have been used in several case studies \ldots
+The next section presents the third case study described in this paper.
+Similarly to the Smart Home product line, the PPL has been used in several case
+studies~\cite{Conejero:2008aa,Morin:2008aa} in the SPL field.
 
-\subsection{Pedagogical Product Line}
+\subsection{PPL assessment}
 
-We compared our approach against a PPL specification that was sent to us by the authors of the PLUSS technique. The original specification of PPL is already well modularized, since its features, in general, are not crosscutting among different use cases. Moreover, another characteristic of the PPL is that several features are related to qualities that do not cause effect into use case specifications. Still in this context, our approach also achieves some improvements in the resulting specifications (Table~\ref{tab:ppl-dos} and Table~\ref{tab:ppl-dof}). For almost all features we were able to improve the DoS ($p-value=0.008$).  
+We compared our approach to a PPL specification that was sent to us by the
+authors of the PLUSS technique. The original specification of PPL is already well
+modularized, since its features, in general, are not crosscutting among different
+use cases. Moreover, another characteristic of the PPL is that several features
+are related to qualities that do not cause effect into use case specifications.
+Even in this context, our approach also achieved some improvements in the
+resulting \emph{degree of scattering} (Table~\ref{tab:ppl-dos}). For instance, 
+in almost all features we were able to improve the DoS ($p-value=0.008$). 
 
 \begin{table}[htb] \centering
 \caption{Summary of DoS for PPL case study}
@@ -257,40 +264,64 @@ We compared our approach against a PPL specification that was sent to us by the 
 \end{table}
 
 
-Modularizing the error handling feature was the main reason for the aforementioned improvements. By
-applying our approach, all behavior related to the \emph{error handling} concern
-was specified in a single scenario. The composition of \emph{error handling} with
-the basic scenarios was done by means of annotations attributed to the
-corresponding steps. For instance, Figure~\ref{fig:error-handle} depicts just one
-scenario for error handling: raising  an error when there is no space available.
+Modularizing the error handling feature was the main reason for the
+aforementioned improvement. By applying our approach, all behavior related to
+the \emph{error handling} concern was modularized in a single scenario. The
+composition of \emph{error handling} with the basic scenarios was done by means
+of annotations attributed to the corresponding steps. For instance,
+Figure~\ref{fig:error-handle} depicts just one scenario for error handling:
+raising  an error when there is no space available.
 
-% \begin{figure}[h] \begin{scriptsize} \texttt{ \begin{tabular}{l}
-%      Description: There is no available space in file system.\\
-%      From step: [CatchFileException] \\
-% To step: END \end{tabular} \begin{center}
-% \begin{tabular}{|p{0.1in}|p{0.6in}|p{1.0in}|p{1.0in}|} \hline Id & User Action
-% & System State & System Response \\ \hline \hline E1 & & There is not enough
-% space to save the file. &  Raise the Disk is Full exception. The arcade game
-% application is finished. \\  \hline \end{tabular} \end{center} }
-% \end{scriptsize} \caption{Scenario of error handle use case.}
-% \label{fig:error-handle} \end{figure}
+\begin{figure}[h] 
+\begin{scriptsize} 
+\texttt{ 
+\begin{tabular}{l}
+     Description: There is no available space in file system.\\
+     After: [CatchFileException] \\ 
+\end{tabular} 
+\begin{center}
+\begin{tabular}{||p{0.1in}||p{0.6in}||p{1.0in}||p{1.0in}||} \hline 
+Id & User Action & System State & System Response \\ \hline \hline 
+E1 & & There is not enough space to save the file. &  Raise the Disk is Full exception. The arcade game application is finished. \\  \hline \end{tabular} \end{center} }
+\end{scriptsize} 
+\caption{Error handling scenario.}
+\label{fig:error-handle} 
+\end{figure}
 
 Notice that this scenario can be started from any step that has been marked with
 the \emph{CatchFileException} annotation.
 Several features of the PPL need to save information in the file system.
 Therefore, in the PLUSS specifications of the \emph{Pedagogical}
-product line, several use cases were specified with scenarios for handling this
-kind of exception.
+Product Line, several use cases have to deal with this kind of exception.
 
-As a consequence, we achieve a reduction (almost 20\%) in the number of
-specification steps (SS in Table~\ref{tab:ppl-metrics}) when comparing to the
-PLUSS approach. It is important to notice that this reduction of size does not
-compromise the requirement coverage; but actually it represents an improvement in
-the specification reuse.
+As a consequence, we achieve a reduction (almost 20\%) in the number of scenario
+steps when comparing to the PLUSS approach. It is important to notice that this
+reduction of size didn't compromise the requirement coverage; but actually it
+represents an improvement in the specification reuse.
+On the other hand, we
+didn't get improvements in the \emph{degree of focus} metric
+(Table~\ref{tab:ppl-dof}). Again, this result is primarily motivated by the
+reason that just a few scenarios of PPL are affected by alternative features.
 
-For concluding our Pedagogical product line analysis, we can realize, based on
-Table~\ref{tab:ppl-metrics}, that our approach achieved real benefits only in the
-complexity metrics. This result comes from the non crosscutting nature of PPL
-features. Comparing to the MMS product line results, we argue that the benefits
-of applying our approach should be greater in contexts where features can not be
-well modularized using existing techniques. 
+\begin{table}[htb] \centering
+\caption{Summary of DoF for PPL case study}
+\label{tab:ppl-dof}
+\begin{small}
+\begin{tabular}{llllll} \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+	PLUSS			& 0.44	& 1.00		& 0.78	& 1.00	& 0.07			\\
+	Crosscutting	& 0.44  & 1.00   	& 0.83 	& 1.00 	& 0.07			\\ \hline	
+\end{tabular}
+\end{small}
+\end{table}
+
+To sum up, regarded to the modularization of
+varying behavior of a feature in aspectual scenarios, we have some evidences
+that our approach presents substantial improvements in the DoS when the
+modularized behavior corresponds to an \emph{homogeneous crosscutting} feature. Additionally,
+our approach also improves the degree of focus of scenarios that are affected
+by alternative features. 
+
+
+
+
