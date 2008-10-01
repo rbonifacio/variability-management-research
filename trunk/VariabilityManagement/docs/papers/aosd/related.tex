@@ -1,0 +1,37 @@
+%===========================
+% Related work
+%===========================
+\section{Related Work}
+\label{sec:related}
+
+Our work is linked to the body of research related to SPL
+variability management, crosscutting modeling, and use case scenario
+composition. This section details some of these approaches, relating
+them to the proposed solution.
+
+Pohl et al. argue that variability management should not be
+integrated into existing models~\cite{phol-spl-book}. Their proposed
+Orthogonal Variability Model (OVM) describes traceability links
+between variation points and the conceptual models of a SPL. Our
+approach can be applied in conjunction with OVM, since it also
+decouple variability representation and offers a crosscutting
+mechanism for specific product requirement derivation.
+
+As result of the convergence between model driven development (MDD)
+and aspect oriented software development (AOSD), several works were
+proposed in order to represent weaving mechanisms using abstract
+state machine and activity
+diagrams~\cite{noda-aom-2006,thomas-aom-2006}. Our work, on the
+other hand, describes weaving mechanisms for scenario specification
+using a functional notation. First of all, we believe that the
+textual language is the preferred representation for scenario
+specification. Second, the use of a functional notation resulted in
+a more concise model of the weaving mechanisms.
+
+In order to avoid the problem of \emph{fragile point-cuts}, Rashid
+et al. proposed a semantic approach for scenario
+composition~\cite{rashid-aosd-2007}. Such approach is based on
+natural language processing. Using our scenario composition weaver
+(Section~\ref{sub:sc-weaver}), a scenario composition can be
+represented using references to \emph{step ids} or \emph{step annotations},
+which also reduce the problem of \emph{fragile point-cut}.
