@@ -1,6 +1,7 @@
 \documentclass{acm_proc_article-sp}
 %\usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{color}
 \usepackage{listings}
 \usepackage{epsfig}
 \usepackage[all]{xy}
@@ -42,20 +43,19 @@ Paulo Borba\\
 \begin{abstract}
 Variability management is a common challenge for Software Product
 Line (SPL) adoption, since developers need suitable
-mechanisms for describing or implementing variability
-that might occur at different SPL models (requirements, design,
+mechanisms for specifying and implementing variability
+that occurs at different SPL artifacts (requirements, design,
 implementation, and test). In this paper, we present a novel approach for
 use case scenario variability management, enabling a better
 separation of concerns between languages used to manage
 variabilities and languages used to specify use case scenarios. The
 result is that both representations can be understood and evolved in
-a separated way. We achieve such a goal by modeling variability management
+a separate way. We achieve such a goal by modeling variability management
 as a crosscutting phenomenon, for the reason that artifacts such as feature models,
 product configurations, and configuration knowledge crosscut each
-other with respect to a SPL specific member. After applying our approach in
-different case studies, we achieved a reduction in the size of specifications,
-and a better modularization of feature specifications--- quantified
-by feature's degree of scattering and scenario's degree of focus.
+other with respect to each specific SPL member. After applying our approach to
+different case studies, we achieved a reduction in the size of specifications
+and a better variability modularity.
 \end{abstract}
 
 \category{D.2.1}{Software Engineering}{Requirements}[Languages,
@@ -65,7 +65,7 @@ Software}
 
 \terms{Design, Documentation}
 
-\keywords{Software product line, variability management, requirement models}
+\keywords{Software product line, variability management, requirements models}
 
 %include introduction.tex
 %include motivating-example.tex
