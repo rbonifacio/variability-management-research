@@ -6,11 +6,16 @@
 \usepackage{epsfig}
 \usepackage[all]{xy}
 
-%include lhs2tex.fmt
+%include polycode.fmt
 %include lhs2tex.sty
 
 %format |->           = "\longmapsto"
 %format ^			  = "\otimes"
+%format in			  = "\in"
+%format id			  = "id"
+%separation 2
+%latency 1
+
 
 
 
@@ -67,9 +72,12 @@ Software}
 
 \keywords{Software product line, variability management, requirements models}
 
+\newdef{definition}{Definition}
+
 %include introduction.tex
 %include motivating-example.tex
 %include variability-as-crosscutting.tex
+%include modeling-framework.tex
 %include evaluation.tex
 %include related.tex
 %include conclusions.tex

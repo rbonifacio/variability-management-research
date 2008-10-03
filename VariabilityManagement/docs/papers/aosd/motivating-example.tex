@@ -57,7 +57,7 @@ behavior, and configuration information (feature selection inside square
 brackets). For example, steps 1(a) and 1(b) are never performed together. They
 are alternative steps: Step 1(a) will be present only if the \emph{Shopping
 Cart} feature is selected, otherwise Step 1(b) will be present. In a similar
-way, we have to choose between options (a) and (b) for Step 2 (depending wether
+way, we have to choose between options (a) and (b) for Step 2 (depending whether
 the \emph{Bonus} feature is selected or not). Finally, Step 6 is optional and
 would be present only if the feature \emph{Update User Preference} was selected.
 
@@ -95,7 +95,7 @@ and each scenario describes several configurations.
        option. \mbox{[not ShoppingCart]} & Present the selected product. The
        user can change the quantity of items that he wants to buy. Calculate
        and show the amount to be paid. \\  \hline 2(a) & Select the confirm option. [Bonus]& Request bonus and payment information. \\  \hline 2(b) & Select the confirm option. [not Bonus]& Request payment
-       information. \\  \hline 3     & Fill in the requested information and select the proceed option. & Request the shipping method and address.\\  \hline 4     & Select the \$ShipMethod\$, fill in the destination address and select the proceed option. & Calculate the shipping costs. \\  \hline
+       information. \\  \hline 3     & Fill in the requested information and select the proceed option. & Request the shipping method and address.\\  \hline 4     & Select the \$ShippingMethod\$, fill in the destination address and select the proceed option. & Calculate the shipping costs. \\  \hline
        5     & Confirm the purchase. & Execute the order and send a request to the Delivery System in order to dispatch the products. \\  \hline
        (6)     & Select the close session option. \mbox{[Update User
        Preferences]} & Register the user preferences.\\  \hline
@@ -169,7 +169,7 @@ which product is being configured. For each \emph{alternative} or
 \end{figure}
 
 Another kind of tangling occurs in this case. the specification of common and
-variant behavior are separate, but both are tangled to the variantion points. 
+variant behavior are separate, but both are tangled to the variation points. 
 Additionally, SPL members are also described using the same tag notation (see the
 \emph{Products Definition} section in Figure~\ref{fig:pluc-01}). There is no
 explicit relationship between product configurations and feature models. In the
@@ -189,7 +189,7 @@ requires the replication of such definitions in different SPL views --- when the
 SPL evolves, changes are propagated throughout many artifacts.
 
 In conclusion, both PLUSS and PLUC do not present a clear separation between
-variability assets and scenario specifications, which compromizes the
+variability assets and scenario specifications, which compromises the
 evolution of a SPL. Besides that, both approaches rely on simple
 variability techniques: filtering optional steps in scenarios, or syntactic
 changes of tag values based on product definition. In this sense, according to the terminology

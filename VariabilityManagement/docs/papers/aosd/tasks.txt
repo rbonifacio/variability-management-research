@@ -10,3 +10,6 @@ anotados com as features.
 No paragrafo que se inicia com To sum up, incluir outras referencias que 
 discutem o uso de compilação condicional para representar variações em 
 linhas de produtos.
+
+Na seção de motivação, tentar apresentar números sobre quantas features 
+são scattering, tangling, etc.

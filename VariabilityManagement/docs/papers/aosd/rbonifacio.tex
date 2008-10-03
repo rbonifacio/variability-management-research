@@ -97,6 +97,174 @@
 \EndFmtInput
 \makeatother
 %
+%
+%
+%
+%
+%
+% This package provides two environments suitable to take the place
+% of hscode, called "plainhscode" and "arrayhscode". 
+%
+% The plain environment surrounds each code block by vertical space,
+% and it uses \abovedisplayskip and \belowdisplayskip to get spacing
+% similar to formulas. Note that if these dimensions are changed,
+% the spacing around displayed math formulas changes as well.
+% All code is indented using \leftskip.
+%
+% Changed 19.08.2004 to reflect changes in colorcode. Should work with
+% CodeGroup.sty.
+%
+\ReadOnlyOnce{polycode.fmt}%
+\makeatletter
+
+\newcommand{\hsnewpar}[1]%
+  {{\parskip=0pt\parindent=0pt\par\vskip #1\noindent}}
+
+% can be used, for instance, to redefine the code size, by setting the
+% command to \small or something alike
+\newcommand{\hscodestyle}{}
+
+% The command \sethscode can be used to switch the code formatting
+% behaviour by mapping the hscode environment in the subst directive
+% to a new LaTeX environment.
+
+\newcommand{\sethscode}[1]%
+  {\expandafter\let\expandafter\hscode\csname #1\endcsname
+   \expandafter\let\expandafter\endhscode\csname end#1\endcsname}
+
+% "compatibility" mode restores the non-polycode.fmt layout.
+
+\newenvironment{compathscode}%
+  {\par\noindent
+   \advance\leftskip\mathindent
+   \hscodestyle
+   \let\\=\@normalcr
+   \(\pboxed}%
+  {\endpboxed\)%
+   \par\noindent
+   \ignorespacesafterend}
+
+\newcommand{\compaths}{\sethscode{compathscode}}
+
+% "plain" mode is the proposed default.
+% It should now work with \centering.
+% This required some changes. The old version
+% is still available for reference as oldplainhscode.
+
+\newenvironment{plainhscode}%
+  {\hsnewpar\abovedisplayskip
+   \advance\leftskip\mathindent
+   \hscodestyle
+   \let\hspre\(\let\hspost\)%
+   \pboxed}%
+  {\endpboxed%
+   \hsnewpar\belowdisplayskip
+   \ignorespacesafterend}
+
+\newenvironment{oldplainhscode}%
+  {\hsnewpar\abovedisplayskip
+   \advance\leftskip\mathindent
+   \hscodestyle
+   \let\\=\@normalcr
+   \(\pboxed}%
+  {\endpboxed\)%
+   \hsnewpar\belowdisplayskip
+   \ignorespacesafterend}
+
+% Here, we make plainhscode the default environment.
+
+\newcommand{\plainhs}{\sethscode{plainhscode}}
+\newcommand{\oldplainhs}{\sethscode{oldplainhscode}}
+\plainhs
+
+% The arrayhscode is like plain, but makes use of polytable's
+% parray environment which disallows page breaks in code blocks.
+
+\newenvironment{arrayhscode}%
+  {\hsnewpar\abovedisplayskip
+   \advance\leftskip\mathindent
+   \hscodestyle
+   \let\\=\@normalcr
+   \(\parray}%
+  {\endparray\)%
+   \hsnewpar\belowdisplayskip
+   \ignorespacesafterend}
+
+\newcommand{\arrayhs}{\sethscode{arrayhscode}}
+
+% The mathhscode environment also makes use of polytable's parray 
+% environment. It is supposed to be used only inside math mode 
+% (I used it to typeset the type rules in my thesis).
+
+\newenvironment{mathhscode}%
+  {\parray}{\endparray}
+
+\newcommand{\mathhs}{\sethscode{mathhscode}}
+
+% texths is similar to mathhs, but works in text mode.
+
+\newenvironment{texthscode}%
+  {\(\parray}{\endparray\)}
+
+\newcommand{\texths}{\sethscode{texthscode}}
+
+% The framed environment places code in a framed box.
+
+\def\codeframewidth{\arrayrulewidth}
+\RequirePackage{calc}
+
+\newenvironment{framedhscode}%
+  {\parskip=\abovedisplayskip\par\noindent
+   \hscodestyle
+   \arrayrulewidth=\codeframewidth
+   \tabular{@{}|p{\linewidth-2\arraycolsep-2\arrayrulewidth-2pt}|@{}}%
+   \hline\framedhslinecorrect\\{-1.5ex}%
+   \let\endoflinesave=\\
+   \let\\=\@normalcr
+   \(\pboxed}%
+  {\endpboxed\)%
+   \framedhslinecorrect\endoflinesave{.5ex}\hline
+   \endtabular
+   \parskip=\belowdisplayskip\par\noindent
+   \ignorespacesafterend}
+
+\newcommand{\framedhslinecorrect}[2]%
+  {#1[#2]}
+
+\newcommand{\framedhs}{\sethscode{framedhscode}}
+
+% The inlinehscode environment is an experimental environment
+% that can be used to typeset displayed code inline.
+
+\newenvironment{inlinehscode}%
+  {\(\def\column##1##2{}%
+   \let\>\undefined\let\<\undefined\let\\\undefined
+   \newcommand\>[1][]{}\newcommand\<[1][]{}\newcommand\\[1][]{}%
+   \def\fromto##1##2##3{##3}%
+   \def\nextline{}}{\) }%
+
+\newcommand{\inlinehs}{\sethscode{inlinehscode}}
+
+% The joincode environment is a separate environment that
+% can be used to surround and thereby connect multiple code
+% blocks.
+
+\newenvironment{joincode}%
+  {\let\orighscode=\hscode
+   \let\origendhscode=\endhscode
+   \def\endhscode{\def\hscode{\endgroup\def\@currenvir{hscode}\\}\begingroup}
+   %\let\SaveRestoreHook=\empty
+   %\let\ColumnHook=\empty
+   %\let\resethooks=\empty
+   \orighscode\def\hscode{\endgroup\def\@currenvir{hscode}}}%
+  {\origendhscode
+   \global\let\hscode=\orighscode
+   \global\let\endhscode=\origendhscode}%
+
+\makeatother
+\EndFmtInput
+%
+
 
 
 
@@ -153,6 +321,8 @@ Software}
 \terms{Design, Documentation}
 
 \keywords{Software product line, variability management, requirements models}
+
+\newdef{definition}{Definition}
 
 \section{Introduction}
 The support for variation points enables product customization from a set of
@@ -281,7 +451,7 @@ behavior, and configuration information (feature selection inside square
 brackets). For example, steps 1(a) and 1(b) are never performed together. They
 are alternative steps: Step 1(a) will be present only if the \emph{Shopping
 Cart} feature is selected, otherwise Step 1(b) will be present. In a similar
-way, we have to choose between options (a) and (b) for Step 2 (depending wether
+way, we have to choose between options (a) and (b) for Step 2 (depending whether
 the \emph{Bonus} feature is selected or not). Finally, Step 6 is optional and
 would be present only if the feature \emph{Update User Preference} was selected.
 
@@ -319,7 +489,7 @@ and each scenario describes several configurations.
        option. \mbox{[not ShoppingCart]} & Present the selected product. The
        user can change the quantity of items that he wants to buy. Calculate
        and show the amount to be paid. \\  \hline 2(a) & Select the confirm option. [Bonus]& Request bonus and payment information. \\  \hline 2(b) & Select the confirm option. [not Bonus]& Request payment
-       information. \\  \hline 3     & Fill in the requested information and select the proceed option. & Request the shipping method and address.\\  \hline 4     & Select the \$ShipMethod\$, fill in the destination address and select the proceed option. & Calculate the shipping costs. \\  \hline
+       information. \\  \hline 3     & Fill in the requested information and select the proceed option. & Request the shipping method and address.\\  \hline 4     & Select the \$ShippingMethod\$, fill in the destination address and select the proceed option. & Calculate the shipping costs. \\  \hline
        5     & Confirm the purchase. & Execute the order and send a request to the Delivery System in order to dispatch the products. \\  \hline
        (6)     & Select the close session option. \mbox{[Update User
        Preferences]} & Register the user preferences.\\  \hline
@@ -393,7 +563,7 @@ which product is being configured. For each \emph{alternative} or
 \end{figure}
 
 Another kind of tangling occurs in this case. the specification of common and
-variant behavior are separate, but both are tangled to the variantion points. 
+variant behavior are separate, but both are tangled to the variation points. 
 Additionally, SPL members are also described using the same tag notation (see the
 \emph{Products Definition} section in Figure~\ref{fig:pluc-01}). There is no
 explicit relationship between product configurations and feature models. In the
@@ -413,7 +583,7 @@ requires the replication of such definitions in different SPL views --- when the
 SPL evolves, changes are propagated throughout many artifacts.
 
 In conclusion, both PLUSS and PLUC do not present a clear separation between
-variability assets and scenario specifications, which compromizes the
+variability assets and scenario specifications, which compromises the
 evolution of a SPL. Besides that, both approaches rely on simple
 variability techniques: filtering optional steps in scenarios, or syntactic
 changes of tag values based on product definition. In this sense, according to the terminology
@@ -451,10 +621,6 @@ maintainability~\cite{Alves:2006aa}.
 % case scenarios, the idea of separating product line artifacts from variability
 % management (using feature models, product configurations, and configuration
 % knowledge) is also applied to other SPL views.
-
-
-
-
 % -------------------------------------------------------------------------
 % Section: Modeling the Variability Mechanisms
 % ------------------------------------------------------------------------
@@ -482,6 +648,14 @@ can be used to specify the motivating example...
 after that we describe the semantics of our approach using a slight
 customization of the MK...
 }
+
+\begin{figure}[htb]
+ \begin{center}
+  \includegraphics[scale=0.30]{img/weave-process2.eps}
+  \caption{Overview of our weaving process.}
+  \label{fig:weave-process}
+  \end{center}
+\end{figure}
 
 \subsection{SVCM example}
 \label{sub:running}
@@ -549,7 +723,7 @@ Purchase} scenario for different configurations of \emph{shipping method}.
    \hline
        Id & User Action  & System Response \\ \hline \hline
        P1 & Fill in the requested information and select the proceed option.  & Request the shipping method and address.\\  \hline
-       P2 & Select one of the available ship methods (\mbox{<ShippingMethod>}),
+       P2 & Select one of the available ship methods (\mbox{<SM>}),
        fill in the destination address and proceed. & Calculate the shipping costs. \\  \hline P3 & Confirm the purchase. & Execute the order and send a request to the Delivery System to dispatch the products.
        \mbox{[RegisterPreference]} \\  \hline
   \end{tabular}
@@ -561,7 +735,7 @@ Purchase} scenario for different configurations of \emph{shipping method}.
 \end{figure}
 
 {\bf Buy Product:} this advice (Figure~\ref{fig:buy-product-scenario}) enables a
-customer to buy specific goods from an online shopping store. It is only
+customer to buy specific goods from an on-line shopping store. It is only
 available in the product line members that are {\bf not} configured with the
 \emph{Shopping Cart} and \emph{Bonus} features. Differently from the PLUSS
 approach, which directly relates alternative and optional steps to features, in
@@ -627,19 +801,20 @@ able to separate the common behavior required to confirm a purchase (the base
 scenario \emph{Proceed to Purchase}) from its variants, specified in the
 \emph{Buy Product} and \emph{Buy Product with Shopping Cart} advices. This allows
 our specifications to evolve according to the \emph{Open-Closed}
-principle~\cite{Meyer:2000aa}. In our approach, introducing new product
-variants require more extensions than changes to the base scenarios.
-
-
-{\bf Search for Products:} this mandatory scenario allows the user to search for
-products. In order to save space, we are only presenting Step S3, which performs
-a search based on the input criteria (Figure~\ref{fig:search-products-flow}).
-This step is annotated with the mark \mbox{{\bf [RegisterPreference]}}, exposing
-it as a possible extension point for the behavior of \emph{Register User
-Preferences} (Figure~\ref{fig:register-preferences-flow}). The same annotation
-was assigned to the Step P3 of \emph{Proceed to Purchase}
-(Figure~\ref{fig:proceed-to-checkout}). Such annotations can be referenced by advices, reducing problems
-that might occur after changing the step ids.
+principle~\cite{Meyer:2000aa}. In our approach, introducing new product variants
+require more extensions than changes to the base scenarios. {\bf Search for
+Products:} this mandatory scenario (Figure~\ref{fig:search-products-flow}) allows
+the user to search for products. In order to save space, we only present Step S3,
+which performs a search based on the input criteria. This step is annotated with
+the mark \mbox{{\bf [RegisterPreference]}}, exposing it as a possible extension
+point for the behavior of \emph{Register User Preferences}
+(Figure~\ref{fig:register-preferences-flow}). The same annotation was assigned to
+the Step P3 of \emph{Proceed to Purchase} (Figure~\ref{fig:proceed-to-checkout}).
+Such annotations can be referenced by advices, and were proposed as an attempt to
+reduce the problem of fragile pointcuts. \textcolor{red}{We believe that,
+similarly to the use of annotations, introducing semantic based mechanisms to
+compose scenarios~\cite{Chitchyan:2007aa} does not require significant changes to
+the SVMC weaving process.}
 
 \begin{figure}[ht]
 \begin{scriptsize}
@@ -689,7 +864,7 @@ configured with the \emph{Update User Preferences} feature.
 \label{fig:register-preferences-flow}
 \end{figure}
 
-In this running example, we described several scenarios as being optional or
+In this example, we described several scenarios as being optional or
 mandatory. It is important to observe that, in our approach, this kind of
 information is not specified in scenario documents. Actually, it is necessary to
 consider the relationships between scenarios and features in order to realize
@@ -699,15 +874,15 @@ configuration knowledge, and use case model) provides a specific contribution to
 the definition of a SPL's member.
 
 
-
 \subsubsection{Product configuration}\label{subsub:pc}
 
-This artifact identifies a SPL member, which is characterized by a valid
-configuration of features. Each product configuration should conform to a
-feature model (the selected features should obey the feature model relationships and constraints). Two possible configurations are presented in
-Figure~\ref{fig:product-config-01-02}. We represent these configurations as a
+This artifact identifies a specific SPL member, which is characterized by a valid
+configuration of features. Each product configuration should conform to a feature
+model (the selected features should obey the feature model relationships and
+constraints). For the \emph{eShop} example, two possible configurations are
+presented in Figure~\ref{fig:product-config-01-02}. We represent these configurations as a
 tree, highlighting which features were selected. Such a representation was
-created using the \emph{Feature Modeling Plugin}~\cite{czarnecki-eclipse-2004}
+created using the \emph{Feature Modeling Plug-in}~\cite{Czarnecki:2004aa}
 
  \begin{figure}[h]
  \begin{center}
@@ -725,222 +900,221 @@ created using the \emph{Feature Modeling Plugin}~\cite{czarnecki-eclipse-2004}
 
 The first configuration (on the left side of the
 Figure~\ref{fig:product-config-01-02}) defines a product that has no support for
-\emph{shopping cart}, \emph{bonus} and \emph{preferences update}. Additionally,
-it supports only the economical and fast ship methods. The second configuration
-is more complete, being configured with the features \emph{shopping cart},
-\emph{bonus}, and \emph{update user preferences}.
+\emph{Shopping Cart}, \emph{Bonus} and \emph{Update User Preferences}.
+Additionally, it supports only the economical and fast shipping methods. The
+second configuration is more complete, being configured with the features
+\emph{Shopping Cart}, \emph{Bonus}, and \emph{Update User Preferences}.
+
+In PLUC, product configurations are scattered through existing scenarios, and
+are not explicitly related to features. As discussed in
+Section~\ref{sec:problem}, even simple changes in the configuration model might
+require a deep review of existing scenarios. 
+
+The set of features selected to a specific product (represented as a product
+configuration) identifies which actions must be performed to
+generate the corresponding SPL member. In order to do that, the configuration
+knowledge (exemplified in what follows) relates feature expressions to such
+actions. 
 
 \subsubsection{Configuration knowledge}
 
 This artifact is represented as a list of configuration items, which relates
-feature expressions to weavers (Figure~\ref{fig:wp-semantics}). Since these
-weavers are responsible for generating specific instances of a SPL,
-the configuration knowledge allows, during product engineering, the automatic
-configuration of SPL assets. Figure~\ref{fig:ck-running-example} presents the
-configuration knowledge ($ck$) for the running example, enforcing that:
+feature expressions (written in propositional logic) to the actions used for
+generating specific product. Therefore, the configuration knowledge allows,
+during product engineering, the automatic configuration of SPL assets.
+Table~\ref{tab:eshop-ck} presents the configuration
+knowledge for the running example, enforcing that
 
 \begin{itemize}
 \item Both \emph{Proceed to Purchase} (SC01) and \emph{Search for Products}
 (SC02) scenarios are mandatory, since their selection is related to the
-(mandatory) root feature of \emph{eShop} product line;
+(mandatory) root feature of the \emph{eShop} product line;
 
 \item The \emph{Buy Product} advice (ADV01) is used in the composition of
 products that do not have been configured with both \emph{Shopping Cart} and \emph{Bonus}
-features --- if both features were selected for a product, it would be configured
-with the \emph{Buy Product with Cart} advice (ADV02);
+features--- if both features were selected for a product, it would be configured
+with the \emph{Buy Product with Cart} advice (ADV02). Remember that there is a
+mutual dependency between \emph{Shopping Cart} and \emph{Bonus} features. As a
+consequence, no product can be configured with just one of them;
 
 \item The \emph{Register User Preferences} advice (ADV03) is not used in a
 product composition unless the \emph{Update User Preferences} feature has been
 selected; and
 
-\item References to the ``ShipMethod'' parameter are bound to the
-selected alternatives of \emph{Ship Method} feature.
+\item References to the ``SM'' parameter are bound to the
+selected alternatives of the \emph{Shipping Method} feature.
 
 \end{itemize}
 
-\begin{figure*}[hbt]
- \begingroup\par\noindent\advance\leftskip\mathindent\(
-\begin{pboxed}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{3}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[3]{}(\longmapsto)\mathbin{::}\Varid{a}\to \Varid{b}\to (\Varid{a},\Varid{b})\mbox{\onelinecomment  just a 'syntactic sugar' to build pairs}{}\<[E]%
-\\
-\>[3]{}\Varid{l}\longmapsto\Varid{r}\mathrel{=}(\Varid{l},\Varid{r}){}\<[E]%
-\\[\blanklineskip]%
-\>[3]{}\Varid{conf1}\mathrel{=}\Conid{Configuration}\;(``\Varid{eShop''}\longmapsto\Varid{selectScenarios}\;[\mskip1.5mu ``\Conid{SC01''},``\Conid{SC02''}\mskip1.5mu]){}\<[E]%
-\\
-\>[3]{}\Varid{conf2}\mathrel{=}\Conid{Configuration}\;(\text{\tt 'Not'}\;(``\Conid{ShoppingCart''}\;\text{\tt 'And'}``\Conid{Bonus''})\longmapsto\Varid{evaluateAdvice}\;[\mskip1.5mu ``\Conid{ADV01''}\mskip1.5mu]){}\<[E]%
-\\
-\>[3]{}\Varid{conf3}\mathrel{=}\Conid{Configuration}\;(``\Conid{ShoppingCart''}\;\text{\tt 'And'}``\Conid{Bonus''}\longmapsto\Varid{evaluateAdvice}\;[\mskip1.5mu ``\Conid{ADV02''}\mskip1.5mu]){}\<[E]%
-\\
-\>[3]{}\Varid{conf4}\mathrel{=}\Conid{Configuration}\;(``\Conid{UpdateUserPreferences''}\longmapsto\Varid{evaluateAdvice}\;[\mskip1.5mu ``\Conid{ADV03''}\mskip1.5mu]){}\<[E]%
-\\
-\>[3]{}\Varid{conf5}\mathrel{=}\Conid{Configuration}\;(``\Conid{ShipMethod''}\longmapsto\Varid{bindParameter}\;(``\Conid{ShipMethod''},`\Conid{ShipMethod''})){}\<[E]%
-\\
-\>[3]{}\mathbin{...}{}\<[E]%
-\\[\blanklineskip]%
-\>[3]{}\Varid{ck}\mathrel{=}[\mskip1.5mu \Varid{conf1},\Varid{conf2},\Varid{conf3},\Varid{conf4},\Varid{conf5}\mskip1.5mu]{}\<[E]%
-\ColumnHook
-\end{pboxed}
-\)\par\noindent\endgroup\resethooks
-\caption{eShop configuration knowledge}
-\label{fig:ck-running-example}
-\end{figure*}
 
-We can reason about the effect of evaluating a configuration knowledge
-by means of trace models, defined to our context as:
+\begin{table}[htb]
+\begin{small}
+\begin{tabular}{|lp{1.4in}|}
+\hline
+Feature Expression  						& Actions					 \\ \hline
 
-\newdef{definition}{Definition}
-
-\begin{definition}
-A trace model is the set of valid sequences of events
-computed from the product scenarios. Events are labeled as the step ids of a
-scenario. The trace model for a scenario $s$ is given by:.
-\end{definition}
-
-\begingroup\par\noindent\advance\leftskip\mathindent\(
-\begin{pboxed}\SaveRestoreHook
-\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{3}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{traceModel}\;\Varid{s}\mathrel{=}\Varid{traces}\;(\Varid{steps}\;\Varid{s}){}\<[E]%
-\\
-\>[B]{}\mathbf{where}{}\<[E]%
-\\
-\>[B]{}\hsindent{3}{}\<[3]%
-\>[3]{}\Varid{traces}\;[\mskip1.5mu \mskip1.5mu]\mathrel{=}[\mskip1.5mu [\mskip1.5mu \mskip1.5mu]\mskip1.5mu]{}\<[E]%
-\\
-\>[B]{}\hsindent{3}{}\<[3]%
-\>[3]{}\Varid{traces}\;(\Varid{x}\mathbin{:}\Varid{xs})\mathrel{=}[\mskip1.5mu \mskip1.5mu]\mathbin{:}(\Varid{stepId}\;\Varid{x})\otimes(\Varid{traces}\;(\Varid{xs})){}\<[E]%
-\\[\blanklineskip]%
-\>[B]{}(\otimes)\mathbin{::}(\Varid{a}\to [\mskip1.5mu [\mskip1.5mu \Varid{a}\mskip1.5mu]\mskip1.5mu])\to [\mskip1.5mu [\mskip1.5mu \Varid{a}\mskip1.5mu]\mskip1.5mu]{}\<[E]%
-\\
-\>[B]{}\Varid{x}\otimes\Varid{y}\mathrel{=}[\mskip1.5mu \Varid{x}\mathbin{:}\Varid{e}\mid \Varid{e}\leftarrow \Varid{y}\mskip1.5mu]{}\<[E]%
-\ColumnHook
-\end{pboxed}
-\)\par\noindent\endgroup\resethooks
-
-For instance, Table~\ref{tab:ck-evaluation} presents the resulting trace models,
-after evaluating each configuration item of Figure~\ref{fig:ck-running-example}
-and considering the second product represented in
-Figure~\ref{fig:product-config-01-02}. Notice that the trace model of an empty
-product is the set with just one element: the empty sequence of events (not
-represented in Table~\ref{tab:ck-evaluation}).
-
-\begin{table}[hbt]
-  \begin{tabular}{{|m{0.3in} m{0.1in} p{0.05in} l|}}
-  	\hline
- 	Config 		  & Eval		 & & Trace Model  \\  \hline 	
- 	
- 	$conf1$		  & True	     & & \parbox[t]{2.4in} {
- 									 \raggedright
- 									 <>, <P1>, <P1,P2.sm>, <P1,P2.sm,P3>,
- 									 <S1>, <S1,S2>, <S1,S2,S3> \\
- 								    } 									
-    								\\ \hline
-    $conf2$		  & False	   & & \parbox[t]{2.4in} {
- 								   \raggedright
- 									 <>, <P1>, <P1,P2.sm>, <P1,P2.sm,P3>,
- 									 <S1>, <S1,S2>, <S1,S2,S3> \\
- 								  }
- 								 \\ \hline 										
-	$conf3$		  & True	   & & \parbox[t]{2.4in} {
- 								   \raggedright
- 									 <>, <C1>, <C1,C2>, <C1,C2,P1>,
-							         <C1,C2,P1,P2.sm>, <C1,C2,P1,P2.sm,P3>,
- 								     <S1>, <S1,S2>, <S1,S2,S3> \\
- 								   } 								
- 								 \\ \hline
-	$conf4$		  & True	   & & \parbox[t]{2.4in} {
- 								   \raggedright
-	                                <>, <C1>, <C1,C2>, <C1,C2,P1>,
-							        <C1,C2,P1,P2.sm>, <C1,C2,P1,P2.sm,P3>,
-							        <C1,C2,P1,P2.sm,P3,R1>,
- 								    <S1>, <S1,S2>, <S1,S2,S3>,
- 								    <S1,S2,S3,R1> \\
- 								   }   	
- 								 \\ \hline
-	$conf5$		  & True	   & & \parbox[t]{2.4in} {
- 								   \raggedright
-									<>, <C1>, <C1,C2>, <C1,C2,P1>,
-							     <C1,C2,P1,P2.(Economical,Fast)>,
-							     <C1,C2,P1,P2.(Economical,Fast),P3>,
-							     <C1,C2,P1,P2.(Economical,Fast),P3,R1>
- 								 <S1>, <S1,S2>, <S1,S2,S3>,
- 								 <S1,S2,S3,R1> \\   	 							
- 								 }
- 								 \\ \hline	 						  	
- 				
-   \end{tabular}
-\caption{The effect of evaluating configuration items}
-\label{tab:ck-evaluation}
+eShop										& select scenario {\bf SC01} \\
+											& select scenario {\bf SC02} \\	\hline 
+{\bf not} (Shopping Cart {\bf and} Bonus) 	& evaluate advice {\bf ADV01} \\
+\hline (Shopping Cart {\bf and} Bonus) 		& evaluate advice {\bf ADV02} 	\\
+\hline Update User Preferences 				& evaluate advice {\bf ADV03} \\ \hline
+Shipping Method								& bind parameter {\bf SM}\\ \hline
+								
+\end{tabular}
+\end{small}
+\caption{Example of configuration knowledge}
+\label{tab:eshop-ck}
 \end{table}
 
-
-
-
-% \begin{small}
-% \begin{tabular}{rlc}
-% $Trace_{P}$ = & \{<>\}
-% \end{tabular}
-% \end{small}
-%
-%
-% Then, after evaluating the first configuration item (Figure~\ref{fig:ck-running-example}) for
-% the second product of Figure~\ref{fig:product-config-01-02}, the trace model will be applied to
-% scenarios SC01 and SC02:
-%
-% \begin{small}
-% \begin{tabular}{rlc}
-% $Trace_{P}$ = & \{<>, <P1>, <P1,P2.sm>, \\
-% 			  & \ <P1, P2.sm, P3>, <S1>, \\
-% 			  & \ <S1,S2>, <S1,S2,S3> \}
-% \end{tabular}
-% \end{small}
-%
-% The second configuration item (Figure~\ref{fig:ck-running-example}) is not
-% evaluated as $True$ for the second product of
-% Figure~\ref{fig:product-config-01-02}, since this product is configured with
-% both \emph{Shopping Cart} and \emph{Bonus} features. Therefore, no changes occurs in
-% the product being configured. On the other hand, after evaluating the third
-% configuration (Figure~\ref{fig:ck-running-example}) for the second product of
-% Figure~\ref{fig:product-config-01-02}, the resulting trace model will be
-% computed taking into account the advice ADV02:
-%
-% \begin{small}
-% \begin{tabular}{rlc}
-% $Trace_{P}$ = & \{<>, <C1>, <C1, C2>, \\
-% 			  & \ <C1,C2,P1>, <C1,C2,P1,P2.sm>, \\
-% 			  & \ <C1,C2,P1,P2.sm,P3>, <S1>, \\
-% 			  & \ <S1,S2>, <S1,S2,S3> \}
-% \end{tabular}
-% \end{small}
-%
-% Finally, after evalating the remaining configuration items of
-% Figure~\ref{fig:ck-running-example} for the second product of
-% Figure~\ref{fig:ck-running-example}, the trace model also considers the effect
-% of advice ADV03 and the bind parameters\ldots. As a consequence, the resulting
-% trace model is:
-%
-% \begin{small}
-% \begin{tabular}{rlc}
-% $Trace_{P}$ = & \{<>, <C1>, <C1, C2>, \\
-% 			  & \ \ldots \\
-% 			  & \ <C1,C2,P1,P2.(Economical, Fast, \ldots),P3,R1>,  \\
-% 			  & \ <S1,S2>, <S1,S2,S3, R1> \}
-% \end{tabular}
-% \end{small}
-
-
-Three different weavers are used in the configuration knowledge shown in
-Figure~\ref{fig:ck-running-example}: \emph{selectScenarios},
-\emph{evaluateAdvice}, and \emph{bindParameter}. Using the terminology
+Three different actions are used in the configuration knowledge shown in
+Figure~\ref{tab:eshop-ck}: \emph{select scenario},
+\emph{evaluate advice}, and \emph{bind parameter}. Using the terminology
 proposed by Bachmann et al.~\cite{Bachmann:2001aa}, the first weaver deals with
 the source of variability named as \emph{variation in function}; the second one
 deals with \emph{variation in control flow}; and the last one deals with
-\emph{variation in data}. The next section describes the semantics of these
-weavers as crosscutting mechanisms.
+\emph{variation in data}. The next section describes a modeling framework 
+for representing the semantics of these weavers as crosscutting mechanisms.
+
+Figure~\ref{fig:resulting-purchase} depicts the resulting scenario related to
+the purchasing behavior, after evaluating the configuration knowledge of
+Table~\ref{tab:eshop-ck}, and considering the second product of
+figure~\ref{fig:product-config-01-02}.
+
+\begin{figure}[h]
+\begin{scriptsize}
+   \texttt{
+   \begin{center}
+    \begin{tabular}{|p{1.45in}|p{1.45in}|} \hline
+       User Action  & System Response \\ \hline \hline
+       Select the checkout option.  & Present the items in the shopping
+       cart and the amount to be paid. The user can remove items from the
+       shopping cart. \\ \hline
+       Select the confirm option. & Request bonus and payment information. \\ \hline
+       Fill in the requested information and
+       select the proceed option.  & Request the shipping method and address.\\ \hline
+       Select one of the available ship methods {\bf (Economical, Fast)}, fill
+       in the destination address and proceed. & Calculate the shipping
+       costs.\\ \hline
+       Confirm the purchase. & Execute the order and send a
+       request to the Delivery System to dispatch the products. \\ \hline
+ 	   - &  Update the preferences based on the search results or purchased
+ 	   items. \\ \hline
+    \end{tabular}
+   \end{center}
+   }
+\end{scriptsize}
+\caption{Register user preferences.}
+\label{fig:resulting-purchase}
+\end{figure}		
+
+There is no artifact similar to our configuration knowledge in
+PLUSS and PLUC approaches. As a consequence, introducing new variants of existing 
+features in these techniques usually propagates changes throughout many
+scenarios. Actually, this artifact is responsible for enforcing a clear
+separation between variability management and scenario specifications.
+
+%=================================================================
+% Semantica do configuration knowledge
+%=================================================================
+% \begin{figure*}[hbt]
+%  \begin{code}
+%   (|->) :: a -> b -> (a,b) -- just a 'syntactic sugar' to build pairs
+%   l |-> r = (l,r)
+% 
+%   conf1 = Configuration (``eShop'' |-> selectScenarios[``SC01'', ``SC02''])
+%   conf2 = Configuration ('Not' (``ShoppingCart'' 'And' ``Bonus'') |-> evaluateAdvice[``ADV01''])
+%   conf3 = Configuration (``ShoppingCart'' 'And' ``Bonus'' |-> evaluateAdvice[``ADV02''])
+%   conf4 = Configuration (``UpdateUserPreferences'' |-> evaluateAdvice[``ADV03''])
+%   conf5 = Configuration (``ShipMethod'' |-> bindParameter(``ShipMethod'', `ShipMethod''))
+%   ...
+% 
+%   ck = [conf1, conf2, conf3, conf4, conf5]
+%  \end{code}
+% \caption{eShop configuration knowledge}
+% \label{fig:ck-running-example}
+% \end{figure*}
+% 
+% We can reason about the effect of evaluating a configuration knowledge
+% by means of trace models, defined to our context as:
+% 
+
+% 
+% \begin{definition}
+% A trace model is the set of valid sequences of events
+% computed from the product scenarios. Events are labeled as the step ids of a
+% scenario. The trace model for a scenario $s$ is given by:.
+% \end{definition}
+% 
+% \begin{code}
+% traceModel s = traces (steps s)
+% where
+%   traces [] = [[]]
+%   traces (x:xs) = [] : (stepId x) ^ (traces (xs))
+% 
+% (^) :: (a -> [[a]]) -> [[a]]
+% x ^ y = [ x:e | e <- y ]
+% \end{code}
+% 
+% For instance, Table~\ref{tab:ck-evaluation} presents the resulting trace models,
+% after evaluating each configuration item of Figure~\ref{fig:ck-running-example}
+% and considering the second product represented in
+% Figure~\ref{fig:product-config-01-02}. Notice that the trace model of an empty
+% product is the set with just one element: the empty sequence of events (not
+% represented in Table~\ref{tab:ck-evaluation}).
+% 
+% \begin{table}[hbt]
+%   \begin{tabular}{{||m{0.3in} m{0.1in} p{0.05in} l||}}
+%   	\hline
+%  	Config 		  & Eval		 & & Trace Model  \\  \hline 	
+%  	
+%  	$conf1$		  & True	     & & \parbox[t]{2.4in} {
+%  									 \raggedright
+%  									 <>, <P1>, <P1,P2.sm>, <P1,P2.sm,P3>,
+%  									 <S1>, <S1,S2>, <S1,S2,S3> \\
+%  								    } 									
+%     								\\ \hline
+%     $conf2$		  & False	   & & \parbox[t]{2.4in} {
+%  								   \raggedright
+%  									 <>, <P1>, <P1,P2.sm>, <P1,P2.sm,P3>,
+%  									 <S1>, <S1,S2>, <S1,S2,S3> \\
+%  								  }
+%  								 \\ \hline 										
+% 	$conf3$		  & True	   & & \parbox[t]{2.4in} {
+%  								   \raggedright
+%  									 <>, <C1>, <C1,C2>, <C1,C2,P1>,
+% 							         <C1,C2,P1,P2.sm>, <C1,C2,P1,P2.sm,P3>,
+%  								     <S1>, <S1,S2>, <S1,S2,S3> \\
+%  								   } 								
+%  								 \\ \hline
+% 	$conf4$		  & True	   & & \parbox[t]{2.4in} {
+%  								   \raggedright
+% 	                                <>, <C1>, <C1,C2>, <C1,C2,P1>,
+% 							        <C1,C2,P1,P2.sm>, <C1,C2,P1,P2.sm,P3>,
+% 							        <C1,C2,P1,P2.sm,P3,R1>,
+%  								    <S1>, <S1,S2>, <S1,S2,S3>,
+%  								    <S1,S2,S3,R1> \\
+%  								   }   	
+%  								 \\ \hline
+% 	$conf5$		  & True	   & & \parbox[t]{2.4in} {
+%  								   \raggedright
+% 									<>, <C1>, <C1,C2>, <C1,C2,P1>,
+% 							     <C1,C2,P1,P2.(Economical,Fast)>,
+% 							     <C1,C2,P1,P2.(Economical,Fast),P3>,
+% 							     <C1,C2,P1,P2.(Economical,Fast),P3,R1>
+%  								 <S1>, <S1,S2>, <S1,S2,S3>,
+%  								 <S1,S2,S3,R1> \\   	 							
+%  								 }
+%  								 \\ \hline	 						  	
+%  				
+%    \end{tabular}
+% \caption{The effect of evaluating configuration items}
+% \label{tab:ck-evaluation}
+% \end{table}
+
+%=================================================================
+%=================================================================
+
+
 
 
 % In what follows, we describe a high level view of the weaving process that
@@ -1052,46 +1226,295 @@ weavers as crosscutting mechanisms.
 % %\end{center}
 
 
-
+% ================================= Modeling Framework
+% =================================
 
 \subsection{Modeling Framework}\label{sub:modeling-framework}
 
+In this Section we describe the notation proposed to represent variability
+management as crosscutting mechanisms. Actually, our notatin is a slight
+customization of the \emph{Crosscutting Modeling Framework}, proposed by Masuhara
+and Kiczales (the MK framework)~\cite{Masuhara:2003aa}. The goal of the MK
+framework is to explain how different \emph{aspect-oriented} mechanisms support
+crosscutting modularity. In order to do that, each mechanism is represented as a
+three-part description: the related weaving processes take two programs as input,
+which crosscut each other with respect to the resulting program or
+computation~\cite{Masuhara:2003aa}.
+
+Their requirement for characterizing a mechanism as crosscutting is fulfilled by
+our approach, in the sense that different specifications contribute to the
+definition of a specific SPL member, as ilustrated in the previous section. As a
+consequence, due to its crosscutting nature, the modeling framework proposed
+in~\cite{Masuhara:2003aa} is suitable for formalizing variability management
+compositions.
+
+As a slight customization of MK work, our modeling framework represents each
+weaver as an 6-tuple (Eq.~\ref{eq:tuple} and Table~\ref{tab:tup-01}),
+highlighting the contribution of each input language in the composition
+processes. We represent each weaver by filling in the six parameters of our
+6-tuple representation, by providing a reference implementation for each weaver,
+and by stating how elements of the weaver implementation correspond to elements
+of the model.
+
+In our modeling framework, the concrete semantics of those weavers (and the
+meta-model of the input and output languages) are described using the Haskell
+programming language~\cite{Jones:2002aa}. This led to concise descriptions and
+kept our model close to the MK work, where their weaving processes are specified
+in the Scheme programming language. The choice for Haskell was motivated by
+several factors, such as improved readability and our background in the language.
+The resulting source code is available at a web site~\cite{SPG:site}.
+
+\begin{equation}
+W = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\},
+\label{eq:tuple}
+\end{equation}
+
+\begin{table}[h]
+\begin{center}
+\caption{Modeling framework elements.} \label{tab:tup-01}
+\begin{tabular}{|p{0.6in}|p{2.4in}|}
+  \hline
+  {\bf Element} & {\bf Description} \\
+   \hline
+  $o$              & Output language used for describing the results of the weaving process \\ \hline
+  $o_{jp}$       & Set of join points in the output language \\ \hline
+  $L$              & Set of languages used for describing the input specifications \\ \hline
+  $L_{ID}(l)$      & Set of constructions in each input language $l$, used for identifying the output join points \\ \hline
+  $L_{EFF}(l)$   & For each input language $l$, this element represent the effect of its constructions in the weaving process \\ \hline
+  $L_{MOD}(l)$  & Set of modular unities of each input language $l$\\ \hline
+  \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+In the next sections we describe the semantics of
+our weaving process. For simplicity, this description is explained in three
+different parts (\ref{sub:pd-weaver}-- \ref{sub:bind-weaver}); one weaver
+description for each source of variability. 
+
+\subsection{Variability in function}\label{sub:pd-weaver}
+
+Variability in function occurs when a particular function might exist in some
+products and not in others~\cite{Bachmann:2001aa}. For this source of
+variability, a corresponding weaver is responsible for selecting scenarios based
+on specific product configurations. Although in this paper we focus only in the
+selection of scenarios that should be assembled in specific instances of the SPL,
+this weaver can be easily extended for managing variabilities in other kinds of
+assets (aiming at selecting design elements, source code, and test cases). 
+
+This weaver is implemented by the function \emph{selectScenarios}
+(Figure~\ref{fig:interpreter-vf}). It takes as input the list of \emph{scenario
+ids} that should be selected for a specific feature expression,  the \emph{SPL
+use case model} (spl), and the $product$ being generated. Then, this function
+returns a new configuration of the product, which is refined by each scenario $s$
+in the SPL use case model that satisfies the condition $(id\ s) \in\ ids$. In
+this case, the configuration knowledge (CK) and the SPL use case model
+(UCM) crosscut each other with respect to the list of scenarios added to the
+specific SPL member.
+
+\begin{figure}[ht]
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{3}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{5}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{selectScenarios}\;\Varid{ids}\;\Varid{spl}\;\Varid{product}\mathrel{=}{}\<[E]%
+\\
+\>[B]{}\hsindent{3}{}\<[3]%
+\>[3]{}\Varid{addScenarios}\;(\Varid{product},\Varid{scenarios}){}\<[E]%
+\\
+\>[B]{}\hsindent{3}{}\<[3]%
+\>[3]{}\mathbf{where}{}\<[E]%
+\\
+\>[3]{}\hsindent{2}{}\<[5]%
+\>[5]{}\Varid{scenarios}\mathrel{=}[\mskip1.5mu \Varid{s}\mid \Varid{s}\leftarrow (\Varid{splScenarios}\;\Varid{spl}),(id\;\Varid{s})\;\in\;\Varid{ids}\mskip1.5mu]{}\<[E]%
+\\
+\>[3]{}\hsindent{2}{}\<[5]%
+\>[5]{}\Varid{addScenarios}\mathbin{...}{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+\caption{Interpreter for variability in function}
+\label{fig:interpreter-vf}
+\end{figure}
+Figure~\ref{fig:ci-vf} shows the concrete instantiation of the first line of the
+\emph{eShop} configuration knowledge (Table~\ref{tab:eshop-ck}), which deals with this
+source of variability. Notice that the configuration knowledge
+binds the first parameter of \emph{selectScenario} function. Therefore, 
+particularly to this weaver, the configuration knowledge contributes to 
+the identification of the scenarios that must be added to a specific product.
+\begin{figure}[hbt]
+\begin{small}
+ \begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{c1}\mathrel{=}\Conid{Config}\;(``\Varid{eShop''},\Varid{selectScenarios}\;[\mskip1.5mu ``\Conid{SC01''},``\Conid{SC02''}\mskip1.5mu]){}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+\end{small}
+\caption{Configuration item for variability in function}
+\label{fig:ci-vf}
+\end{figure}
+
+The model of the \emph{Variability in Function Weaver}, in terms of the
+framework, is shown in Table~\ref{tab:vf-weaver}. The \emph{selectScenarios}
+function is used to argue that the model is realizable and
+appropriate~\cite{Masuhara:2003aa}. 
+We achieve this by matching the model elements to
+corresponding parameters and auxiliary functions in the implementation code. 
+
+The input languages
+\emph{configuration knowledge} and \emph{SPL use case model} contributes to the
+binding of \emph{selectScenarios} parameters. An instance of the SPL use
+case model corresponds to the specification of all SPL scenarios. 
+Instead, the identification of wich scenarios must be added to a specific
+feature expression are documented in the configuration knowledge. Finally, the
+\emph{product configuration} specifies which features were selected for a
+specific product.
+
+\begin{table}[htb]
+\begin{center}
+\caption{Model of Product Derivation} \label{tab:vf-weaver}
+\begin{tabular}{p{0.6in}p{2.4in}}
+   \hline\noalign{\smallskip}
+  {\bf Element} & {\bf Description} \\
+   \noalign{\smallskip}
+   \hline
+   \noalign{\smallskip}
+   $o$              & Product specific scenarios (list of scenarios) \\
+   $o_{jp}$        	& Scenario declarations \\
+   $L$              & \{UCM, CK, PC\} \\
+   $UCM_{ID}$ 		& SPL scenarios \\
+   $CK_{ID}$    	& Feature expressions and scenario IDs\\
+   $PC_{ID}$    	& Product specific feature selection \\
+   $UCM_{EFF}$ 		& Provides declaration of scenarios \\
+   $CK_{EFF}$    	& Identifies actions to be peformed  \\
+   $PC_{EFF}$    	& Triggers scenario selection \\
+   $UCM_{MOD}$ 		& Scenario \\
+   $CK_{MOD}$    	& Each pair $(feature\ expression, actions)$  \\
+   $PC_{MOD}$    	& Feature \\
+  \hline
+  \end{tabular}
+\end{center}
+\end{table}
+
+The UCM has a greater importance over the other input languages ($UCM_{EFF}$),
+since it declares the parts that compose the product specific scenarios (the
+output of this weaver process generated by the \emph{selectScenarios} function).
+\subsection{Variability in data}\label{sub:bind-weaver}
+
+This kind of variability occurs whenever two or more scenarios share the same
+behavior (the sequence of steps) and differ in relation only to values of a same
+concept. For instance, Figure~\ref{fig:proceed-to-checkout} depicts the
+\emph{Proceed to Purchase} scenario, which can be reused for different kinds of
+shipping method. Without this parameterized specification, and aiming, for
+example, at automatically generating a test case suite with a good coverage, it
+would be necessary to create a scenario for each kind of shipping method. 
+
+%  This weaver takes into consideration \emph{scenario specifications} and
+% \emph{product configurations}, which defines the domain values of a parameter.
+% Thus, in order to reduce the coupling between scenarios and features, we
+% propose a mapping that relate them. A constraint must be obeyed in this
+% mapping: features related to parameters must be either an {\bf alternative
+% feature} or an {\bf or
+% feature}~\cite{gheyi-alloy-06,czarnecki-wsfactory-2005,czarnecki-book}.
+
+Figure~\ref{fig:ri-vd} presents the reference implementation that solves this
+kind of variability. The function \emph{bindParameter} takes as input the
+identifier of a parameter ($pId$); the identifier of a feature ($fId$); the
+product configuration (\emph{pc}), which defines the domain values of
+parameters (expressed as a feature selection); the SPL use case model ($spl$);
+and the $product$ being generated. Then, it replaces all references to
+pId in the $product$ by a suitable representation for the correspondingconfiguration. 
+
+For example, if a product is configured with either \emph{Economical} and
+\emph{Fast} shipping methods, the result of applying this weaver for
+the \emph{Proceed to Purchase} scenario will result in the
+representation (\emph{Economical, Fast}) in each place that the parameter
+\emph{ShippingMethod} is referred.
+
+\begin{figure}
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{3}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{5}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{bindParameter}\;\Varid{pId}\;\Varid{fId}\;\Varid{pc}\;\Varid{spl}\;\Varid{product}\mathrel{=}{}\<[E]%
+\\
+\>[B]{}\hsindent{3}{}\<[3]%
+\>[3]{}\Varid{bindParameter'}\;\Varid{product}\;\Varid{steps}\;\Varid{options}{}\<[E]%
+\\
+\>[B]{}\hsindent{3}{}\<[3]%
+\>[3]{}\mathbf{where}{}\<[E]%
+\\
+\>[3]{}\hsindent{2}{}\<[5]%
+\>[5]{}\Varid{steps}\mathrel{=}[\mskip1.5mu \Varid{s}\mid (\Varid{steps}\;\Varid{spl}),(\Varid{s}\;\text{\tt 'refers'}\;\Varid{pId})\mskip1.5mu]{}\<[E]%
+\\
+\>[3]{}\hsindent{2}{}\<[5]%
+\>[5]{}\Varid{options}\mathrel{=}\Varid{selectedOptions}\;(\Varid{pc},\Varid{fId}){}\<[E]%
+\\
+\>[3]{}\hsindent{2}{}\<[5]%
+\>[5]{}\Varid{bindParameter'}\mathbin{...}{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+\caption{Reference implementation for variability in data}
+\label{fig:ri-vd} 
+\end{figure}
+
+Table~\ref{tab:bp-weaver} describes the Bind Parameters model. This weaver just
+resolves parameters in scenario specifications. Therefore, its output language is
+also a list of scenarios; but with resolved parameters (the join points).
+
+\begin{table}[th]
+\begin{center}
+\caption{Model of Bind Parameters Weaver} \label{tab:bp-weaver}
+\begin{tabular}{p{0.7in}p{2.3in}}
+   \hline\noalign{\smallskip}
+  {\bf Element} & {\bf Description} \\
+   \noalign{\smallskip}
+   \hline
+   \noalign{\smallskip}
+   $o$               & List of scenarios with resolved parameters  \\
+   $o_{jp}$        & Each resolved parameter \\
+   $L$               & \{UCM, PC, Mapping\} \\
+   $UCM_{ID}$ & Parameterized steps \\
+   $PC_{ID}$    & Selected features related to parameters \\
+   $Mapping_{ID}$ & Key entries (parameter name) of the mapping\\
+   $UCM_{EFF}$ & Declares parameterized scenarios \\
+   $PC_{EFF}$    & Defines the domain value of parameters \\
+   $Mapping_{EFF}$ & Relates parameters to features \\
+   $UCM_{MOD}$ & Use case scenarios \\
+   $PC_{MOD}$    & Selected features \\
+   $Mapping_{EFF}$ & Each entry in the mapping \\
+  \hline
+  \end{tabular}
+\end{center}
+\end{table}
+
+The use case model (UCM) defines the list of scenarios that might be
+parameterized ($UCM_{EFF}$). Each step of a scenario ($UCM_{ID}$), indeed,
+contributes to the definition of one join point in this weaver. The other
+contributions come from the configuration knowledge (CK), in the sense that the
+domain values of a parameter is defined ($CK_{EFF}$) in the product specific
+features; and from the mapping ($m$ parameter of the \emph{bind} function) that
+is used for relating parameters to features. In what follows, we discuss about
+some verifications applied to the weaving processes just presented. Such
+verifications were conduced by applying both \emph{random} and \emph{guided} test
+cases.
+
+In the next section we present an evaluation of our approach based on the
+specification of SPLs in different domains.
+
+% In order to identify which scenarios are required for a specific product, the
+% \emph{configure} function ($CK_{EFF}$) checks the feature expression ($CK_{ID}$)
+% against the product specific features ($PC_{ID}$). The effect of FM in this
+% weaver ($FM_{EFF}$) is to check if the PC is well formed. Such evaluation is
+% implemented by the \emph{validInstance} function and considers the PC feature
+% selection ($PC_{EFF}$).
 %==============================================================
 % Esse bloco comentado foi movido da secao de motivating
 % example
 %==============================================================
-
-% In this Section
-% we describe the semantics of our approach using the \emph{Crosscutting Modeling
-% Framework}, proposed by Masuhara and Kiczales (MK
-% framework)~\cite{Masuhara:2003aa}. Actually, in this paper we present a slight
-% customization of the MK framework, which is suitable to the use case and product
-% line context. The goal of MK framework is to explain how different
-% \emph{aspect-oriented} technologies support crosscutting modularity. In their
-% modeling framework, each technology is modeled as a three-part description: the
-% related weaving processes take two programs as input, which crosscut each other
-% with respect to the resulting program or computation~\cite{Masuhara:2003aa}.
-% 
-% 
-% A running example of our approach is presented in Section~\ref{sub:running}.
-% After that, we describe the semantics of our weaving process. For simplicity,
-% this description is explained in three different sections (\ref{sub:pd-weaver}
-% --- \ref{sub:bind-weaver}); one weaver description for each source of
-% variability. The semantics of those weavers (and the meta-model of the input and
-% output languages) are described using the Haskell programming
-% language~\cite{Jones:2002aa}. This led to concise descriptions and kept our model
-% close to the MK work, where their weaving processes are specified in the Scheme
-% programming language. The choice for Haskell was motivated by several factors,
-% such as improved readability and our background in the language. The resulting
-% source code is available at a web site~\cite{spg-url}.
-% 
-% \begin{figure}[h]
-%  \begin{center}
-%   \includegraphics[scale=0.30]{img/weave-process2.eps}
-%   \caption{Overview of our weaving process.}
-%   \label{fig:weave-process}
-%   \end{center}
-% \end{figure}
+ 
 % 
 % Although the semantics of each variability mechanism, expressed as weavers in
 % our modeling framework, are described in next sections, here we discuss the
@@ -1152,114 +1575,9 @@ weavers as crosscutting mechanisms.
 %==============================================================
 %==============================================================
 
-As mentioned before, the semantic of crosscutting, used for representing our variability management weaving process, is based on the Masuhara and Kiczales work~\cite{kiczales-ecoop-2003}.
-
-First of all, their requirement for characterizing a mechanism as crosscutting is fulfilled by our approach, since different specifications contribute to the definition of a specific SPL member. As a consequence, due to its crosscutting nature, the modeling framework proposed in~\cite{kiczales-ecoop-2003}  is suitable for formalizing variability management compositions.
-
-For simplicity, our weaving process is formally described as being composed by three major weavers: \emph{product derivation weaver}, \emph{scenario composition weaver}, and \emph{bind parameters weaver}. As a customization of MK work, our modeling framework represents each weaver as an 6-tuple (Eq.~\ref{eq:tuple} and Table~\ref{tab:tup-01}), highlighting the contribution of each input language in the composition processes.
-
-\begin{equation}
-W = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\},
-\label{eq:tuple}
-\end{equation}
-
-\begin{table}[h]
-\begin{center}
-\caption{Modeling framework elements.} \label{tab:tup-01}
-\begin{tabular}{|p{0.6in}|p{2.4in}|}
-  \hline
-  {\bf Element} & {\bf Description} \\
-   \hline
-  $o$              & Output language used for describing the results of the weaving process \\ \hline
-  $o_{jp}$       & Set of join points in the output language \\ \hline
-  $L$              & Set of languages used for describing the input specifications \\ \hline
-  $L_{ID}(l)$      & Set of constructions in each input language $l$, used for identifying the output join points \\ \hline
-  $L_{EFF}(l)$   & For each input language $l$, this element represent the effect of its constructions in the weaving process \\ \hline
-  $L_{MOD}(l)$  & Set of modular unities of each input language $l$\\ \hline
-  \hline
-\end{tabular}
-\end{center}
-\end{table}
-
-We represent each weaver by
-filling in the seven parameters of our 6-tuple representation, and by stating
-how elements of the weaver implementation correspond to elements of the model.
-
 % ---
 % Product derivation weaver
 % ---
-\subsubsection{Product derivation weaver}\label{sub:pd-weaver}
-
-This weaver is responsible for selecting artifacts based on specific product configurations.
-As a consequence, it implements the first two activities of our variability management approach:
-validating a product configuration against  a feature model and selecting a subset of the SPL assets.
-Although in this paper we are focusing only in the selection of scenarios that should be assembled in specific instances
-of the SPL, this weaver can be easily extended for managing variabilities in other kinds of assets (aiming at selecting design elements, source components, and test cases).
-
-For instance, applying this weaver for combining the eShop use case model, feature model , and configuration knowledge with the configuration depicted in right side of Figure~\ref{fig:product-config-01-02} will result in the selection of  \emph{Buy Products with Cart}, \emph{Proceed to Purchase}, \emph{Search for Products}, ann \emph{Register User Preferences} scenarios.
- This weaver is implemented by the function \emph{pdWeaver} (Listing~\ref{lst:configure}) and takes as input
-a \emph{SPL use case model} (UCM), a \emph{feature model} (FM), a \emph{product configuration} (PC), and a \emph{configuration knowledge} (CK).
-
-Initially, this function verifies if the product configuration is a well formed instance of the feature model (\emph{validInstance} function) --- if it is not the case,  an \emph{InvalidProduct} error is thrown. Then, the IDs of selected scenarios are computed by the \emph{configure} function. This is done by evaluating which feature expressions, defined in the list elements (x:xs) of configuration knowledge, are valid for the specific product instance (\emph{eval} function). Finally, given the resulting list of scenario IDs, the function \emph{retrieveArtifacts} returns the product specific scenarios.
-As a consequence, we can realize two levels of crosscutting in this weaver. First, the feature model, the product configuration, and the configuration knowledge crosscut each other in order to contribute to the list of valid scenario IDs composition. Then, the resulting list of scenario IDs crosscuts with the use case model for selecting the product specific scenarios.
-
-\begin{lstlisting}[belowskip=20pt,frame=tb,caption={Product derivation weaver function},label=lst:configure]
-pdWeaver :: UCM -> FM -> PC -> CK -> ScenarioList
-pdWeaver ucm fm pc ck =
- if not (validInstance fm pc)
- then error InvalidProduct
- else retrieveScenarios ucm (configure pc ck)
-
-configure :: PC -> CK -> ListOfScenarioId
-configure pc (CK []) = []
-configure pc (CK (x:xs)) =
- if (eval pc (expression x))
-  then (artifacts x) ++ (configure pc (CK xs))
-  else configure pc (CK xs)
-\end{lstlisting}
-
-The model of the \emph{Product Derivation Waver},
-in terms of the framework, is showed in Table~\ref{tab:pd-weaver}. The \emph{pdWeaver} function is used to argue that the model is realizable and appropriate~\cite{kiczales-ecoop-2003}. We achieve this by matching the model elements
-to corresponding parameters and auxiliary functions in the implementation code. Therefore, the input languages UCM, FM, CK, and PC are represented as different parameters
-of the \emph{pdWeaver} function. An instance of the UCM corresponds to the specification of all
-SPL scenarios. A FM instance is only responsible for declaring the SPL features and the relationships between
-them; as a consequence, there is no coupling between FMs and UCMs. Instead, relationships between features and artifacts are documented in the configuration knowledge. Finally, the PC specifies which features were selected
-for a specific product.
-
-\begin{table}[htb]
-\begin{center}
-\caption{Model of Product Derivation} \label{tab:pd-weaver}
-\begin{tabular}{p{0.6in}p{2.4in}}
-   \hline\noalign{\smallskip}
-  {\bf Element} & {\bf Description} \\
-   \noalign{\smallskip}
-   \hline
-   \noalign{\smallskip}
-   $o$               & Product specific scenarios (list of scenarios) \\
-   $o_{jp}$        & Scenario declarations \\
-   $L$               & \{UCM, FM, CK, PC\} \\
-   $UCM_{ID}$ & SPL scenarios \\
-   $FM_{ID}$    & SPL features \\
-   $CK_{ID}$    & Feature expressions and scenario IDs\\
-   $PC_{ID}$    & Product specific feature selection \\
-   $UCM_{EFF}$ & Provides declaration of scenarios \\
-   $FM_{EFF}$    & Checks if a SPL instance is well formed \\
-   $CK_{EFF}$    & Identifies selected artifacts  \\
-   $PC_{EFF}$    &Triggers scenario selection \\
-   $UCM_{MOD}$ & Scenario \\
-   $FM_{MOD}$   & Feature \\
-   $CK_{MOD}$    & Each pair $(feature\ expression, artifact\ list)$  \\
-   $PC_{MOD}$    & Feature \\
-  \hline
-  \end{tabular}
-\end{center}
-\end{table}
-
-The UCM has a greater importance over the other input languages ($UCM_{EFF}$), since it declares the parts that compose the product specific scenarios (the
-output of this weaver process generated by the \emph{pdWeaver} function). These scenarios ($UCM_{ID}$) are used in the \emph{retriveScenarios} function in order to identify which artifacts will be assembled in the final product.
-
-In order to identify which artifacts are required for a specific product, the \emph{configure} function ($CK_{EFF}$) checks the feature expression ($CK_{ID}$) against the product specific features ($PC_{ID}$). The effect of FM in this weaver ($FM_{EFF}$) is to check if the PC is well formed. Such evaluation is implemented by the \emph{validInstance} function and considers the PC feature selection ($PC_{EFF}$).
-
 
 % ---
 % Scenario composition weaver
