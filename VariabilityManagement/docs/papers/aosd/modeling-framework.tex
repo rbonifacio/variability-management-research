@@ -252,13 +252,11 @@ points).
 The use case model (UCM) defines the list of scenarios that might be
 parameterized ($UCM_{EFF}$). Each step of a scenario ($UCM_{ID}$), indeed,
 contributes to the definition of one join point in this weaver. The other
-contributions come from the configuration knowledge (CK), in the sense that the
-domain values of a parameter is defined ($CK_{EFF}$) in the product specific
-features; and from the mapping ($m$ parameter of the \emph{bind} function) that
-is used for relating parameters to features. 
+contributions come from the product configuration (PC), in the sense that the
+domain values of a parameter is defined ($PC_{EFF}$) in the product specific
+features; and from the configuration knowledge (CK), which is used for relating
+parameters to features ($CK_{EFF}$).
 
-In the next section we present an evaluation of our approach based on the
-specification of SPLs in different domains.
 
 % In order to identify which scenarios are required for a specific product, the
 % \emph{configure} function ($CK_{EFF}$) checks the feature expression ($CK_{ID}$)
@@ -449,89 +447,9 @@ $Trace_{C1}$ = & \{<>, <idle>, <idle, S1>, <idle, S1, S2>, \\
 \end{small}
 
 
-% ---
-% Bind parameters weaver
-% ---
-
-\subsubsection{Bind parameters weaver}\label{sub:bind-weaver}
-
-This weaver is responsible for the third activity of our variability
-management process. Parameters are used in scenario specifications
-in order to create reusable requirements. This kind of variability can be applied
-whenever two or more scenarios share the same behavior (the sequence
-of actions) and differ in relation only to values of a same concept.
-For instance, Figure~\ref{fig:proceed-to-checkout} depicts the \emph{Proceed to Purchase}
-scenario that can be reused for different \emph{ship methods}. Without this
-parameterized specification, and aiming, for example, at automatically generating a test case suite
-with a good coverage, it would be necessary to create a specification for each kind of ship method.
-
-This weaver takes into consideration \emph{scenario specifications} and
-\emph{product configurations}, which defines the domain values of a
-parameter. Thus, in order to reduce the coupling between scenarios and features,
-we propose a mapping that relate them. A constraint must be obeyed in this mapping: features related to parameters must be either an {\bf alternative feature} or an {\bf or feature}~\cite{gheyi-alloy-06,czarnecki-wsfactory-2005,czarnecki-book}.
-
-The implementation of this weaver consists of calls to
-the \emph{bpWeaver} function (Listing~\ref{lst:bind}) for each step
-available in the product specific scenarios or complete paths. This
-function (lines 1-5 of Listing~\ref{lst:bind}) takes as
-input a mapping (\emph{m}), which relates a scenario parameter to a
-feature; a product configuration (\emph{pc}), which defines
-the domain values of parameters (expressed as the feature selection); and a step (\emph{s}) that may be parameterized. Then, it replaces all parameters
-from \emph{s}, returning it as a suitable representation with the
-corresponding parameter values. Each text between the symbols ``$<$'' and ``$>$''
-(defined in the user action or system response of a
-step) is treated as a parameter and must be defined in the
-mapping.
-
-For example, if a product is configured with either \emph{Economical} and
-\emph{Fast} ship methods, the result of applying this weaver for
-the Step P2 of the \emph{Proceed to Purchase} scenario will result in the
-representation (\emph{Economical or Fast}) in each place that the parameter \emph{ShipMethod} is referred.
-
-Table~\ref{tab:bp-weaver} describes the Bind Parameters model. This weaver just resolves parameters in scenario specifications. Therefore, its output language is also a list of scenarios; but with resolved parameters (the join points).
-
-\begin{lstlisting}[belowskip=10pt,frame=tb,caption={Bind parameter weaver function},label=lst:bind]
-bpWeaver :: Mapping -> PC -> Step -> Step
-bpWeaver m pc s =
- if (length (extractParameters (s)) == 0)
-  then s
-  else replaceParameterValues m pc s
-\end{lstlisting}
-
-
-\begin{table}[th]
-\begin{center}
-\caption{Model of Bind Parameters Weaver} \label{tab:bp-weaver}
-\begin{tabular}{p{0.7in}p{2.3in}}
-   \hline\noalign{\smallskip}
-  {\bf Element} & {\bf Description} \\
-   \noalign{\smallskip}
-   \hline
-   \noalign{\smallskip}
-   $o$               & List of scenarios with resolved parameters  \\
-   $o_{jp}$        & Each resolved parameter \\
-   $L$               & \{UCM, PC, Mapping\} \\
-   $UCM_{ID}$ & Parameterized steps \\
-   $PC_{ID}$    & Selected features related to parameters \\
-   $Mapping_{ID}$ & Key entries (parameter name) of the mapping\\
-   $UCM_{EFF}$ & Declares parameterized scenarios \\
-   $PC_{EFF}$    & Defines the domain value of parameters \\
-   $Mapping_{EFF}$ & Relates parameters to features \\
-   $UCM_{MOD}$ & Use case scenarios \\
-   $PC_{MOD}$    & Selected features \\
-   $Mapping_{EFF}$ & Each entry in the mapping \\
-  \hline
-  \end{tabular}
-\end{center}
-\end{table}
-
-The use case model (UCM) defines the list of scenarios that might be parameterized ($UCM_{EFF}$). Each step of a scenario ($UCM_{ID}$), indeed, contributes to the definition of one join point in this weaver. The
-other contributions come from the configuration knowledge (CK), in the sense that the domain values
-of a parameter is defined ($CK_{EFF}$) in the product specific features; and from the mapping ($m$ parameter of the \emph{bind} function) that is used for relating parameters to features.
-In what follows, we discuss about some verifications applied to the weaving processes just presented. Such verifications were conduced by applying both \emph{random} and \emph{guided} test cases.
-
 In the next section we present an evaluation of our approach based on the
 specification of SPLs in different domains.
+
 
 % \subsection{Model Verification}\label{sub:model-verification}
 %
