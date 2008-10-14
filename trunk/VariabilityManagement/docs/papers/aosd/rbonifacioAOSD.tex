@@ -5,6 +5,7 @@
 \usepackage{listings}
 \usepackage{epsfig}
 \usepackage[all]{xy}
+\usepackage{multirow}
 
 %include polycode.fmt
 %include lhs2tex.sty
@@ -13,6 +14,7 @@
 %format ^			  = "\otimes"
 %format in			  = "\in"
 %format id			  = "id"
+%format ==            = "=="
 %separation 2
 %latency 1
 
@@ -60,7 +62,7 @@ as a crosscutting phenomenon, for the reason that artifacts such as feature mode
 product configurations, and configuration knowledge crosscut each
 other with respect to each specific SPL member. After applying our approach to
 different case studies, we achieved a reduction in the size of specifications
-and a better variability modularity.
+and a better feature modularity.
 \end{abstract}
 
 \category{D.2.1}{Software Engineering}{Requirements}[Languages,
@@ -88,5 +90,6 @@ Software}
 
 \bibliographystyle{abbrv}
 \bibliography{../references/phd-references}
+%include apendix.tex
 
 \end{document}

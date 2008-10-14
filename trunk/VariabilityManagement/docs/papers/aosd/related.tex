@@ -4,34 +4,38 @@
 \section{Related Work}
 \label{sec:related}
 
-Our work is linked to the body of research related to SPL
-variability management, crosscutting modeling, and use case scenario
-composition. This section details some of these approaches, relating
-them to the proposed solution.
+Several approaches have been proposed for representing
+scenario variability~\cite{Jacobson:1997aa,Griss:1998aa, Eriksson:2005aa,Bertolino:2003aa}. However, in this paper
+we only compare our crosscutting approach with PLUC and
+PLUSS techniques because they encompass a broad range
+of SoC between variability management and scenario specifications.
+PLUC presents the lowest level of modularity, since
+almost all information related to variability is tangled within
+use cases. Although PLUSS partially reduces such a tangling,
+by considering the importance of feature modeling, some
+dependencies from scenarios to features are still present.
 
-Pohl et al. argue that variability management should not be
-integrated into existing models~\cite{phol-spl-book}. Their proposed
-Orthogonal Variability Model (OVM) describes traceability links
-between variation points and the conceptual models of a SPL. Our
-approach can be applied in conjunction with OVM, since it also
-decouple variability representation and offers a crosscutting
-mechanism for specific product requirement derivation.
+Regarding to the early representation of aspects,
+there are works proposed to represent weaving mechanisms for textual requirements. Our work also supports the composition of aspects and scenarios specifications. However, differently from the previous works, our mechanisms were proposed for variability management, and considers the effect of different languages used in the SPL domain (such as feature models, configuration knowledge, and product configurations). 
+Other works were proposed in order to represent weaving mechanisms using abstract state machines and activity diagrams~\cite{Noda:2006aa,Cottenier:2006aa,Alferez:2008aa}. Our decision for using textual scenario specifications was motivated because this notation is still predominant for documenting requirements--- at least in the Brazilian industry. Additionally, our industrial pattern uses textual scenarios as input for generating test artifacts.
 
-As result of the convergence between model driven development (MDD)
-and aspect oriented software development (AOSD), several works were
-proposed in order to represent weaving mechanisms using abstract
-state machine and activity
-diagrams~\cite{noda-aom-2006,thomas-aom-2006}. Our work, on the
-other hand, describes weaving mechanisms for scenario specification
-using a functional notation. First of all, we believe that the
-textual language is the preferred representation for scenario
-specification. Second, the use of a functional notation resulted in
-a more concise model of the weaving mechanisms.
+Another difference of our work, comparing it with existing proposals for the early specification of crosscutting concerns, is that the semantics of our weavers are expressed using a well defined notion of crosscutting mechanisms.
 
-In order to avoid the problem of \emph{fragile point-cuts}, Rashid
+In order to avoid the problem of \emph{fragile pointcuts}, Chitchyan
 et al. proposed a semantic approach for scenario
-composition~\cite{rashid-aosd-2007}. Such approach is based on
-natural language processing. Using our scenario composition weaver
-(Section~\ref{sub:sc-weaver}), a scenario composition can be
-represented using references to \emph{step ids} or \emph{step annotations},
-which also reduce the problem of \emph{fragile point-cut}.
+composition~\cite{Chitchyan:2007aa}. Such an approach is based on
+natural language processing. Using our \emph{evaluateAspect} weaver
+(Section~\ref{sub:sc-weaver}), \emph{pointcuts} can be
+defined using either references to \emph{step ids} or references to \emph{step annotations};
+which, although being more invasive, also reduces the problem of \emph{fragile pointcut}. However, this is an orthogonal problem. We are able to introduce semantic based compositions by implementing the corresponding algorithm in the \emph{match} function, which is used in the reference implementation of  discussed in Section~\ref{sub:sc-weaver}).
+
+Metrics for quantifying scattering and tangling~\cite{Eaddy:2007aa,Figueiredo:2008aa} and
+Design Structure Matrices (DSMs)~\cite{Sullivan:2005aa,Lopes:2006aa}
+have been applied for assessing modularity in aspect-oriented
+systems. In this work, we applied
+DSMs in the context of scenario variability management.
+Moreover, we customized a suite of metrics for quantifying
+the degree of scattering of features and the degree of focus of scenarios.
+To our knowledge, our work is unique in applying both DSMs and crosscutting metrics for evaluating SoC in scenario variability.
+
+
