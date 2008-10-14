@@ -2,14 +2,14 @@
 % Section: Modeling the Variability Mechanisms
 % ------------------------------------------------------------------------
 \section{SVCM Approach}
-\label{sec:models}
+\label{sec:svmc}
 
 To solve the problems mentioned in the previous section, we introduce now our
 approach for modeling variabilities in use case scenarios, which was named as
 \emph{Scenario Variability as Crosscutting Mechanisms} (SVCM). It improves the
 separation of concerns between variability management and scenario specifications, dealing with scenario variability as a composition of the
 following artifacts: SPL use case model, feature model, product configuration,
-and configuration knowledge. 
+and configuration knowledge.
 
 Motivated by the Masuhara and Kiczales
 framework~\cite{Masuhara:2003aa}, our approach for \textbf{scenario variability
@@ -18,13 +18,12 @@ specifications, which crosscut each other with respect to the resulting product
 specific use case model (Figure~\ref{fig:weave-process}). Combining these input
 languages, it is possible to represent the sources of variability that we are
 interested in: \emph{variation in function}, \emph{variation in data}, and
-\emph{variation in control flow}~\cite{Bachmann:2001aa}.
-\textcolor{red}{
-We detail our approach showing how it
-can be used to specify the motivating example... 
-after that we describe the semantics of our approach using a slight
-customization of the MK...
-}
+\emph{variation in control flow}~\cite{Bachmann:2001aa}. A reference implementation of the weaving process (Figure~\ref{fig:weave-process}) is provided in the appendix.
+
+In what follows we detail our approach showing how it
+can be used to specify the motivating example. Several artifacts of each input model
+are shown; mentioning the contribution of these models to the whole weaving
+process. After that, in Section~\ref{sec:modeling-framework} we describe the semantics of our approach using a slight customization of the MK framework.
 
 \begin{figure}[htb]
  \begin{center}
@@ -34,51 +33,37 @@ customization of the MK...
   \end{center}
 \end{figure}
 
-\subsection{SVCM example}
-\label{sub:running}
-
-In order to explain how the input models (Figure~\ref{fig:weave-process})
-crosscut each other with respect to the final product, in this section we
-present a running example of our approach. Several artifacts of each input model
-are shown; mentioning the contribution of these models to the whole weaving
-process.
-
-\subsubsection{Feature model}
+\subsection{Feature model}
 
 Feature models have an important contribution to our
 weaving process, since they are used for checking if a product
 configuration is a valid member of the product line. It is important to note
 that we are not proposing a new notation for feature modeling. Here we
-only present the features required (Figure~\ref{fig:eshop-fm-re}) for
+only present the features required (Figure~\ref{fig:eshop-fm}) for
 understanding the SVCM example.
 
-\begin{figure}[h]
- \begin{center}
-  \includegraphics[scale=0.40]{img/eShop-FM2.eps}
-   \caption{Subset of eShop feature model.}
-  \label{fig:eshop-fm-re}
-  \end{center}
-\end{figure}
-
-Based on the feature model of Figure~\ref{fig:eshop-fm-re}, the \emph{Shopping
+Based on the feature model of Figure~\ref{fig:eshop-fm}, the \emph{Shopping
 Cart}, \emph{Bonus} and \emph{Update User Preferences} features are optional; on
 the other hand, the \emph{Shipping Method} feature is mandatory and all products
 have to be configured with at least one of its child. Additionally, the
 restriction $Shopping\ Cart\ \Leftrightarrow\ Bonus$ states that all
 products configured with the shopping cart feature must also be configured with
 the bonus feature. More details about feature modeling can be found
-elsewhere~\cite{Gheyi:2006aa,Czarnecki:2000aa}.
+elsewhere~\cite{Gheyi:2006aa,Czarnecki:2000aa}.
 
-\subsubsection{SPL use case model}
+
+\subsection{SPL use case model}
 
 This artifact defines scenarios that describe the expected behavior of the SPL's
 members. Scenarios might be optional, have parameters, and change (advice) the
 behavior of other scenarios. A use case model is composed by \emph{use cases} and
 \emph{aspectual use cases}. A use case has a name, a description and a list of
 scenarios, which consist of a sequence of steps (pairs of \emph{User action x
-System response}). An aspectual use case has a name and a list of advice, which
-can be used to extend the behavior of existing scenarios. Differently fromPLUSS and PLUC, our proposed scenarios are not enriched with alternative steps,product definition, and information related to configurability.  
-In this SVMC example, we consider the following scenarios and advices:
+System response}). An aspectual use case has a name and a list of advices, which
+can be used to extend the behavior of existing scenarios. Differently from
+PLUSS and PLUC, our proposed scenarios are not enriched with alternative steps,
+product definition, and information related to configurability.
+In this SVCM example, we consider the following scenarios and advices:
 
 {\bf Proceed to Purchase:} this mandatory scenario
 (Figure~\ref{fig:proceed-to-checkout}) specifies the common behavior that is
@@ -86,7 +71,7 @@ required for confirming a purchase. Instances of the product line must be
 configured with this scenario. Notice that a parameter
 \emph{ShippingMethod} is referenced in Step P2. This parameter (notation
 also supported in PLUSS and PLUC) allows the reuse of the \emph{Proceed to
-Purchase} scenario for different configurations of \emph{shipping method}. 
+Purchase} scenario for different configurations of \emph{Shipping Method}.
 
 \begin{figure}[h]
 \begin{scriptsize}
@@ -117,9 +102,12 @@ available in the product line members that are {\bf not} configured with the
 \emph{Shopping Cart} and \emph{Bonus} features. Differently from the PLUSS
 approach, which directly relates alternative and optional steps to features, in
 our approach this kind of information is represented in a distinct artifact: the
-configuration knowledge. The effect of this advice is to introduce an optional behavior {\bf
+configuration knowledge.
+
+The effect of this advice is to introduce an optional behavior {\bf
 before} the join points identified in its \emph{pointcut} clause. In this case,
-the Step P1 defined in the \emph{Proceed to Purchase} scenario.
+the Step P1 defined in the \emph{Proceed to Purchase} scenario.
+
 \begin{figure}[h]
 \begin{scriptsize}
   \texttt{
@@ -179,7 +167,9 @@ scenario \emph{Proceed to Purchase}) from its variants, specified in the
 \emph{Buy Product} and \emph{Buy Product with Shopping Cart} advices. This allows
 our specifications to evolve according to the \emph{Open-Closed}
 principle~\cite{Meyer:2000aa}. In our approach, introducing new product variants
-require more extensions than changes to the base scenarios. {\bf Search for
+require more extensions than changes to the base scenarios.
+
+{\bf Search for
 Products:} this mandatory scenario (Figure~\ref{fig:search-products-flow}) allows
 the user to search for products. In order to save space, we only present Step S3,
 which performs a search based on the input criteria. This step is annotated with
@@ -188,10 +178,13 @@ point for the behavior of \emph{Register User Preferences}
 (Figure~\ref{fig:register-preferences-flow}). The same annotation was assigned to
 the Step P3 of \emph{Proceed to Purchase} (Figure~\ref{fig:proceed-to-checkout}).
 Such annotations can be referenced by advices, and were proposed as an attempt to
-reduce the problem of fragile pointcuts. \textcolor{red}{We believe that,
-similarly to the use of annotations, introducing semantic based mechanisms to
-compose scenarios~\cite{Chitchyan:2007aa} does not require significant changes to
-the SVMC weaving process.}
+reduce the problem of fragile pointcuts.
+
+%\textcolor{red}{We believe that,
+%similarly to the use of annotations, introducing semantic based mechanisms to
+%compose scenarios~\cite{Chitchyan:2007aa} does not require significant changes to
+%the SVCM weaving process.}
+%
 
 \begin{figure}[ht]
 \begin{scriptsize}
@@ -245,21 +238,23 @@ In this example, we described several scenarios as being optional or
 mandatory. It is important to observe that, in our approach, this kind of
 information is not specified in scenario documents. Actually, it is necessary to
 consider the relationships between scenarios and features in order to realize
-which configurations require a specific scenario. As we explained at the
-beginning of this section, each artifact (feature model, product configuration,
-configuration knowledge, and use case model) provides a specific contribution to
-the definition of a SPL's member.
+which configurations require a specific scenario.
+
+%As we explained at the
+%beginning of this section, each artifact (feature model, product configuration,
+%configuration knowledge, and use case model) provides a specific contribution to
+%the definition of a SPL's member.
 
 
-\subsubsection{Product configuration}\label{subsub:pc}
+\subsection{Product configuration}\label{subsub:pc}
 
 This artifact identifies a specific SPL member, which is characterized by a valid
 configuration of features. Each product configuration should conform to a feature
 model (the selected features should obey the feature model relationships and
 constraints). For the \emph{eShop} example, two possible configurations are
 presented in Figure~\ref{fig:product-config-01-02}. We represent these configurations as a
-tree, highlighting which features were selected. Such a representation was
-created using the \emph{Feature Modeling Plug-in}~\cite{Czarnecki:2004aa}
+tree, highlighting which features were selected.
+
 
  \begin{figure}[h]
  \begin{center}
@@ -285,22 +280,23 @@ second configuration is more complete, being configured with the features
 In PLUC, product configurations are scattered through existing scenarios, and
 are not explicitly related to features. As discussed in
 Section~\ref{sec:problem}, even simple changes in the configuration model might
-require a deep review of existing scenarios. 
+require a deep review of existing scenarios.
 
 The set of features selected to a specific product (represented as a product
-configuration) identifies which actions must be performed to
+configuration) identifies which tasks must be performed to
 generate the corresponding SPL member. In order to do that, the configuration
 knowledge (exemplified in what follows) relates feature expressions to such
-actions. 
+tasks.
 
-\subsubsection{Configuration knowledge}
+\subsection{Configuration knowledge}
 
 This artifact is represented as a list of configuration items, which relates
-feature expressions (written in propositional logic) to the actions used for
-generating specific product. Therefore, the configuration knowledge allows,
+feature expressions (written in propositional logic) to the tasks used for
+generating specific product. We provide the abstract syntax of this artifact in the appendix. Therefore, the configuration knowledge allows,
 during product engineering, the automatic configuration of SPL assets.
 Table~\ref{tab:eshop-ck} presents the configuration
-knowledge for the running example, enforcing that
+knowledge for the running example, enforcing that
+
 
 \begin{itemize}
 \item Both \emph{Proceed to Purchase} (SC01) and \emph{Search for Products}
@@ -328,10 +324,10 @@ selected alternatives of the \emph{Shipping Method} feature.
 \begin{small}
 \begin{tabular}{||lp{1.4in}||}
 \hline
-Feature Expression  						& Actions					 \\ \hline
+Feature Expression  						& Tasks					 \\ \hline
 
-eShop										& select scenario {\bf SC01} \\
-											& select scenario {\bf SC02} \\	\hline 
+\multirow{2}{*}{eShop}						& select scenario {\bf SC01} \\
+											& select scenario {\bf SC02} \\	\hline
 {\bf not} (Shopping Cart {\bf and} Bonus) 	& evaluate advice {\bf ADV01} \\
 \hline (Shopping Cart {\bf and} Bonus) 		& evaluate advice {\bf ADV02} 	\\
 \hline Update User Preferences 				& evaluate advice {\bf ADV03} \\ \hline
@@ -343,19 +339,18 @@ Shipping Method								& bind parameter {\bf SM}\\ \hline
 \label{tab:eshop-ck}
 \end{table}
 
-Three different actions are used in the configuration knowledge shown in
+Three different tasks are used in the configuration knowledge shown in
 Figure~\ref{tab:eshop-ck}: \emph{select scenario},
 \emph{evaluate advice}, and \emph{bind parameter}. Using the terminology
-proposed by Bachmann et al.~\cite{Bachmann:2001aa}, the first weaver deals with
+proposed by Bachmann et al.~\cite{Bachmann:2001aa}, the first task deals with
 the source of variability named as \emph{variation in function}; the second one
 deals with \emph{variation in control flow}; and the last one deals with
-\emph{variation in data}. The next section describes a modeling framework 
-for representing the semantics of these weavers as crosscutting mechanisms.
-
+\emph{variation in data}.
 Figure~\ref{fig:resulting-purchase} depicts the resulting scenario related to
 the purchasing behavior, after evaluating the configuration knowledge of
 Table~\ref{tab:eshop-ck}, and considering the second product of
-figure~\ref{fig:product-config-01-02}.
+figure~\ref{fig:product-config-01-02}.
+
 
 \begin{figure}[h]
 \begin{scriptsize}
@@ -380,15 +375,15 @@ figure~\ref{fig:product-config-01-02}.
    \end{center}
    }
 \end{scriptsize}
-\caption{Register user preferences.}
+\caption{Resulting Proceed to Purchase scenario}
 \label{fig:resulting-purchase}
 \end{figure}		
 
-There is no artifact similar to our configuration knowledge in
-PLUSS and PLUC approaches. As a consequence, introducing new variants of existing 
-features in these techniques usually propagates changes throughout many
-scenarios. Actually, this artifact is responsible for enforcing a clear
-separation between variability management and scenario specifications.
+%There is no artifact similar to our configuration knowledge in
+%PLUSS and PLUC approaches. As a consequence, introducing new variants of existing
+%features in these techniques usually propagates changes throughout many
+%scenarios.
+
 
 %=================================================================
 % Semantica do configuration knowledge
@@ -397,48 +392,48 @@ separation between variability management and scenario specifications.
 %  \begin{code}
 %   (|->) :: a -> b -> (a,b) -- just a 'syntactic sugar' to build pairs
 %   l |-> r = (l,r)
-% 
+%
 %   conf1 = Configuration (``eShop'' |-> selectScenarios[``SC01'', ``SC02''])
 %   conf2 = Configuration ('Not' (``ShoppingCart'' 'And' ``Bonus'') |-> evaluateAdvice[``ADV01''])
 %   conf3 = Configuration (``ShoppingCart'' 'And' ``Bonus'' |-> evaluateAdvice[``ADV02''])
 %   conf4 = Configuration (``UpdateUserPreferences'' |-> evaluateAdvice[``ADV03''])
 %   conf5 = Configuration (``ShipMethod'' |-> bindParameter(``ShipMethod'', `ShipMethod''))
 %   ...
-% 
+%
 %   ck = [conf1, conf2, conf3, conf4, conf5]
 %  \end{code}
 % \caption{eShop configuration knowledge}
 % \label{fig:ck-running-example}
 % \end{figure*}
-% 
+%
 % We can reason about the effect of evaluating a configuration knowledge
 % by means of trace models, defined to our context as:
-% 
+%
 
-% 
+%
 % \begin{definition}
 % A trace model is the set of valid sequences of events
 % computed from the product scenarios. Events are labeled as the step ids of a
 % scenario. The trace model for a scenario $s$ is given by:.
 % \end{definition}
-% 
+%
 % \begin{code}
 % traceModel s = traces (steps s)
 % where
 %   traces [] = [[]]
 %   traces (x:xs) = [] : (stepId x) ^ (traces (xs))
-% 
+%
 % (^) :: (a -> [[a]]) -> [[a]]
 % x ^ y = [ x:e | e <- y ]
 % \end{code}
-% 
+%
 % For instance, Table~\ref{tab:ck-evaluation} presents the resulting trace models,
 % after evaluating each configuration item of Figure~\ref{fig:ck-running-example}
 % and considering the second product represented in
 % Figure~\ref{fig:product-config-01-02}. Notice that the trace model of an empty
 % product is the set with just one element: the empty sequence of events (not
 % represented in Table~\ref{tab:ck-evaluation}).
-% 
+%
 % \begin{table}[hbt]
 %   \begin{tabular}{{||m{0.3in} m{0.1in} p{0.05in} l||}}
 %   	\hline

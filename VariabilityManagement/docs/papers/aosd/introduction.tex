@@ -6,14 +6,11 @@ inherent crosscutting nature, is a common challenge in software product line
 often require associated variation points to be scattered through SPL artifacts.
 Second, some approaches include product variant and configuration information
 inside artifacts.
+Both problems can be observed for use case scenario specifications.
 
-Both problems can be observed for use case scenario specifications. To minimize
-the first problem, \textcolor{red}{several authors have proposed the use of
-\emph{aspect-oriented} mechanisms to better modularize the composition of common
-and variant scenarios~\cite{moreira-re07,eriksson-splc-2005,pohl-caise-2005}},
-similar to what has been proposed to source code~\cite{alves-gpce-06,
-apel-icse2006}. With respect to the second problem, current
-approaches~\cite{favaro-icsr-98,Bertolino:2003aa,Eriksson:2005aa} do not offer a
+Several authors have proposed the use of
+\emph{aspect-oriented} mechanisms to better modularize the specification of crosscutting concerns~\cite{Moreira:2004aa,Chitchyan:2007aa}. These techniques minimizes the first problem, since they can be used to modularize the specification of certain features. However, they do not support the different sources of variability that occur in SPL requirements. With respect to the second problem, current
+approaches~\cite{Griss:1998aa,Bertolino:2003aa,Eriksson:2005aa} proposed to scenario variability management do not offer a
 clear separation between variability management and scenario specification. As a
 consequence, in the case where details about product variants are tangled with
 use case scenarios, the removal of one variant from the product line requires
@@ -22,34 +19,34 @@ representations.
 
 So in this paper we go beyond the common-variant scenario composition issues and
 consider a more encompassing notion of variability management, including
-artifacts such as feature models~\cite{gheyi-alloy-06,Czarnecki:2000aa} and
+artifacts such as feature models~\cite{Gheyi:2006aa,Czarnecki:2000aa} and
 configuration knowledge~\cite{Czarnecki:2000aa,Pohl:2005aa}. We explain this as a
 crosscutting phenomenon, using Masuhara and Kiczales work~\cite{Masuhara:2003aa},
 and apply this view of \emph{variability management as crosscutting} for
 modularizing SPL use case scenarios, providing the necessary separation between
 variability and scenario specification concerns. We also formalize the derivation
 of product specific scenarios in our approach, as demanded by current SPL
-generative practices~\cite{krueger-cacm-200712}. This formalization is based on
+generative practices~\cite{Krueger:2006aa}. This formalization is based on
 our framework for modeling the composition process of scenario variabilities with
-feature models, product configuration, and configuration knowledge
-(Section~\ref{sec:models}). Besides supporting the mentioned separation of
+feature models, product configuration, and configuration knowledge. Besides supporting the mentioned separation of
 concerns, this framework helps to precisely specify how to weave the different
 representations in order to generate specific scenarios for a SPL member.
 Therefore, the main contributions of this work are the following:
 
 \begin{itemize}
-\item Characterization of the languages of variability management as a crosscutting concern and, in this way, proposing an approach where variability concerns are separated from other concerns. Although this work focus on requirement artifacts, more specifically use case scenarios, we argue that such separation is also valid for other SPL artifacts. Actually, it has already been claimed for source code~\cite{Alves:2006aa,Apel:2006aa}, without considering the importance of variability artifacts.
+\item Characterization of the languages of variability management as a crosscutting concern and, in this way, proposing an approach where variability concerns are separated from other concerns (Section~\ref{sec:svmc}).
+
+    %Although this work focus on requirement artifacts, more specifically use case scenarios, we argue that such separation is also valid for other SPL artifacts. Actually, it has already been claimed for source code~\cite{Alves:2006aa,Apel:2006aa}, without considering the importance of variability artifacts.
 
 \item A framework for modeling the composition process of scenario variability
-mechanisms. This framework gives a basis for describing variability mechanisms,
-allowing a better understanding of each mechanism. In this work, such framework
+mechanisms (Section~\ref{sec:modeling-framework}). This framework gives a basis for describing variability mechanisms,
+allowing a better understanding of each mechanism. In this work, such a framework
 is used for modeling the semantics of some scenario variability mechanisms, but
 it could be customized for other mechanisms and SPL artifacts.
 
-\item Specification of three scenario variability mechanisms (selection of
-optional scenarios, scenario composition, scenario parameterization) using the
-modeling framework. Such specification provides a more formal semantic
-representation when compared to existing works; this is an important property for
+\item Specification of three scenario variability mechanisms: selection of
+optional scenarios (Section~\ref{sub:pd-weaver}), scenario parameterization (Section~\ref{sub:bind-weaver}), and scenario composition (Section~\ref{sub:sc-weaver}). This specification provides a more formal semantic
+representation when compared to existing works; which is an important property for
 supporting the automatic derivation of product specific artifacts.
 \end{itemize}
 
@@ -65,4 +62,4 @@ given SPL.
 Finally, we evaluate our approach (Section~\ref{sec:evaluation}) by comparing it
 to alternative approaches using different product lines. We also relate our work
 with other research topics (Section~\ref{sec:related}) and present our concluding
-remarks in Section~\ref{sec:conclusions}.
+remarks (Section~\ref{sec:conclusions}). 
