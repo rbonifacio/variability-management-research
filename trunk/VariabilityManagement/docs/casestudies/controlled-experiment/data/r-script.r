@@ -1,3 +1,7 @@
+sqr <- function(x) {
+	x * x
+}
+
 columnMean <- function(inputData, column) {
 	mean(inputData[column])
 }
@@ -5,7 +9,7 @@ columnMean <- function(inputData, column) {
 rowMean <- function(inputData, row) {
 
 	columns = length(inputData) - 1
-        total <- 0
+      total <- 0
 
 	for( i in 2:(columns+1)) {
 		total <- total + sum(inputData[row, i])
@@ -29,7 +33,7 @@ squareMean <- function(inputData) {
 }
 
 columnEffect <- function(inputData, column) {
-	sm <- squareMean(inputdata)
+	sm <- squareMean(inputData)
 	cm <- columnMean(inputData, column)
 
 	cm - sm	
@@ -40,6 +44,13 @@ rowEffect <- function(inputData, row) {
 	rm <- rowMean(inputData, row)
 
 	cm - rm
+}
+
+ssRows <- function(inputData) {
+	
+	ss <- 0 
+	
+	for
 }
 
 
