@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE CFRepository SYSTEM "cfrepository1_0.dtd">
+<CFRepository name="Smart Home" version="1.0" idCounter="39" guid="ID_AC1B08350000011CFC8C28A100000001">
+ <ModelSpace name="Model" guid="ID_AC1B08350000011CFC8C28B100000002">
+  <MetaLevel name="META" guid="ID_AC1B08350000011CFC8C28FF00000003">
+   <MetaFeature guid="ID_AC1B08350000011CFC8C298B00000004">
+   </MetaFeature>
+   <MetaFeatureNode guid="ID_AC1B08350000011CFC8C2B5100000021"/>
+   <MetaCardinality guid="ID_AC1B08350000011CFC8C2B700000002F">
+   </MetaCardinality>
+   <MetaGroup guid="ID_AC1B08350000011CFC8C2B8F0000003E">
+   </MetaGroup>
+  </MetaLevel>
+  <ModelLevel name="MODEL" guid="ID_AC1B08350000011CFC8C2BAE0000004D">
+   <Feature name="SmartHome" description="" premature="false" guid="ID_AC1B08350000011CFC8CC02E0000004F" constraintId="1">
+   </Feature>
+   <Feature name="Fire Detection" description="" premature="false" guid="ID_AC1B08350000011CFC8D7D0600000051" constraintId="3">
+   </Feature>
+   <Feature name="Security Mechanism" description="" premature="false" guid="ID_AC1B08350000011CFC8E404600000054" constraintId="6">
+   </Feature>
+   <Feature name="Smart Card" description="" premature="false" guid="ID_AC1B08350000011CFC8EE1E500000057" constraintId="9">
+   </Feature>
+   <Feature name="Finger Print" description="" premature="false" guid="ID_AC1B08350000011CFC8F210100000059" constraintId="11">
+   </Feature>
+   <Feature name="Access Properties" description="" premature="false" guid="ID_AC1B08350000011CFC90BD0E0000005E" constraintId="16">
+   </Feature>
+   <Feature name="Time To Close the Door" description="" premature="false" guid="ID_AC1B08350000011CFC9116E600000061" constraintId="19">
+   </Feature>
+   <Feature name="Number of Attempts" description="" premature="false" guid="ID_AC1B08350000011CFC9210B700000063" constraintId="21">
+   </Feature>
+   <Feature name="30 seconds" description="" premature="false" guid="ID_AC1B08350000011CFC92776000000067" constraintId="25">
+   </Feature>
+   <Feature name="50 seconds" description="" premature="false" guid="ID_AC1B08350000011CFC92A25800000069" constraintId="27">
+   </Feature>
+   <Feature name="3 attempts" description="" premature="false" guid="ID_AC1B08350000011CFC9376A00000006E" constraintId="32">
+   </Feature>
+   <Feature name="5 attempts" description="" premature="false" guid="ID_AC1B08350000011CFC93E16000000070" constraintId="34">
+   </Feature>
+   <Diagram name="SmartHome" guid="ID_AC1B08350000011CFC8C71140000004E" xpos="0" ypos="0" width="1067" height="913">
+    <FeatureNode guid="ID_AC1B08350000011CFC8CC02E00000050" refFeatureName="SmartHome" refGuidFeatureTree="ID_AC1B08350000011CFC8CC02E0000004F" xpos="340" ypos="92" constraintId="2">
+     <Cardinality guid="ID_AC1B08350000011CFC8D9D1100000053" constraintId="5">
+      <Limit min="0" max="1"/>
+      <FeatureNode guid="ID_AC1B08350000011CFC8D7D1500000052" refFeatureName="Fire Detection" refGuidFeatureTree="ID_AC1B08350000011CFC8D7D0600000051" xpos="170" ypos="166" constraintId="4">
+      </FeatureNode>
+     </Cardinality>
+     <Cardinality guid="ID_AC1B08350000011CFC8E8CFF00000056" constraintId="8">
+      <Limit min="1" max="1"/>
+      <FeatureNode guid="ID_AC1B08350000011CFC8E404600000055" refFeatureName="Security Mechanism" refGuidFeatureTree="ID_AC1B08350000011CFC8E404600000054" xpos="316" ypos="168" constraintId="7">
+       <Group guid="ID_AC1B08350000011CFC8FD06C0000005D" constraintId="15">
+        <Limit min="1" max="1"/>
+        <FeatureNode guid="ID_AC1B08350000011CFC8EE1F500000058" refFeatureName="Smart Card" refGuidFeatureTree="ID_AC1B08350000011CFC8EE1E500000057" xpos="282" ypos="213" constraintId="10">
+        </FeatureNode>
+        <FeatureNode guid="ID_AC1B08350000011CFC8F21110000005A" refFeatureName="Finger Print" refGuidFeatureTree="ID_AC1B08350000011CFC8F210100000059" xpos="401" ypos="214" constraintId="12">
+        </FeatureNode>
+       </Group>
+      </FeatureNode>
+     </Cardinality>
+     <Cardinality guid="ID_AC1B08350000011CFC90DC4E00000060" constraintId="18">
+      <Limit min="1" max="1"/>
+      <FeatureNode guid="ID_AC1B08350000011CFC90BD0E0000005F" refFeatureName="Access Properties" refGuidFeatureTree="ID_AC1B08350000011CFC90BD0E0000005E" xpos="553" ypos="165" constraintId="17">
+       <Cardinality guid="ID_AC1B08350000011CFC92312000000065" constraintId="23">
+        <Limit min="1" max="1"/>
+        <FeatureNode guid="ID_AC1B08350000011CFC9116E600000062" refFeatureName="Time To Close the Door" refGuidFeatureTree="ID_AC1B08350000011CFC9116E600000061" xpos="495" ypos="214" constraintId="20">
+         <Group guid="ID_AC1B08350000011CFC92ECDE0000006D" constraintId="31">
+          <Limit min="1" max="1"/>
+          <FeatureNode guid="ID_AC1B08350000011CFC92776000000068" refFeatureName="30 seconds" refGuidFeatureTree="ID_AC1B08350000011CFC92776000000067" xpos="472" ypos="271" constraintId="26">
+          </FeatureNode>
+          <FeatureNode guid="ID_AC1B08350000011CFC92A2580000006A" refFeatureName="50 seconds" refGuidFeatureTree="ID_AC1B08350000011CFC92A25800000069" xpos="576" ypos="270" constraintId="28">
+          </FeatureNode>
+         </Group>
+        </FeatureNode>
+       </Cardinality>
+       <Cardinality guid="ID_AC1B08350000011CFC923F4900000066" constraintId="24">
+        <Limit min="1" max="1"/>
+        <FeatureNode guid="ID_AC1B08350000011CFC9210C600000064" refFeatureName="Number of Attempts" refGuidFeatureTree="ID_AC1B08350000011CFC9210B700000063" xpos="688" ypos="216" constraintId="22">
+         <Group guid="ID_AC1B08350000011CFC941C5600000074" constraintId="38">
+          <Limit min="1" max="1"/>
+          <FeatureNode guid="ID_AC1B08350000011CFC9376A00000006F" refFeatureName="3 attempts" refGuidFeatureTree="ID_AC1B08350000011CFC9376A00000006E" xpos="671" ypos="270" constraintId="33">
+          </FeatureNode>
+          <FeatureNode guid="ID_AC1B08350000011CFC93E16000000071" refFeatureName="5 attempts" refGuidFeatureTree="ID_AC1B08350000011CFC93E16000000070" xpos="772" ypos="269" constraintId="35">
+          </FeatureNode>
+         </Group>
+        </FeatureNode>
+       </Cardinality>
+      </FeatureNode>
+     </Cardinality>
+    </FeatureNode>
+   </Diagram>
+  </ModelLevel>
+ </ModelSpace>
+</CFRepository>
