@@ -17,6 +17,7 @@ import FeatureModel
 --   b) ParseTransformationResult
 --   c) ParseError: indicates that an error has occurred while parsing
 -- ---------------------------------------------------------------------------------
+
 data ParseResult = ParseExpressionResult { expression :: FeatureExpression } 
                  | ParseTransformationResult { transformations :: [Model2Model] } 
  		 | ParseError  { parseErrorMessage :: String }
@@ -29,10 +30,10 @@ data ParseResult = ParseExpressionResult { expression :: FeatureExpression }
 charWithoutSpace :: Char -> Parser Char
 charWithoutSpace c =  
  do { skipMany space; 
-  	  r <- char c; 
-  	  skipMany space;
-  	  return r
-  	}	
+      r <- char c; 
+      skipMany space;
+      return r
+    }	
   	
 --
 -- A simple parser for identifiers.
@@ -126,14 +127,13 @@ parseTransformation =
  	  id2<-identifier ; 
  	  char ')'; 
  	  return (bindParametersM2M id1 id2)
- } 
--- <|>
--- do { try (string "evaluateAdvice");
---	  char '(';
---	  id1 <- identifier;
---	  char ')';
---	  return (evaluateAdviceM2M id1)
--- }			 
+ } <|>
+ do { try (string "evaluateAdvice");
+          char '(';
+	  id1 <- identifier;
+	  char ')';
+	  return (evaluateAspectM2M id1)
+ }			 
 
 featureExpressionParser :: String -> ParseResult
 featureExpressionParser str = 
