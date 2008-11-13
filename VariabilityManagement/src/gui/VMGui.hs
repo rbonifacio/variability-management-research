@@ -93,11 +93,11 @@ main = do
   checkFeatureExpButton <- xmlGetWidget xml castToButton "checkFeatureExpButton" 
   onClicked checkFeatureExpButton $ 
    do expressionTxt  <- entryGetText featureExpressionEntry
-      let parseResult = featureExpressionParser expressionTxt
-      let message = case parseResult of 
-      		ParseResult x -> "Feature expression " ++ (show x) ++ " is correct"
-      		ParseError y -> "Error parsing feature expression... on" ++ y
-      messageDialog <- messageDialogNew (Just ckWindow) [] MessageInfo ButtonsClose message	
+      -- let parseResult = featureExpressionParser expressionTxt
+      -- let message = case parseResult of 
+      --		ParseResult x -> "Feature expression " ++ (show x) ++ " is correct"
+      --		ParseError y -> "Error parsing feature expression... on" ++ y
+      messageDialog <- messageDialogNew (Just ckWindow) [] MessageInfo ButtonsClose "test" -- message	
       widgetShowAll messageDialog	
       response <- dialogRun messageDialog
       widgetHide messageDialog
@@ -140,10 +140,10 @@ main = do
 -- In order to do that, both feature expression and transformation 
 -- list must be well written.
 checkConfiguration :: String -> String -> Bool
-checkConfiguration e t = 
- case featureExpressionParser e of
- 	ParseResult x -> True
- 	ParseError y -> False 
+checkConfiguration e t = True 
+ -- case featureExpressionParser e of
+ 	-- ParseResult x -> True
+ 	-- ParseError y -> False 
 
 --
 -- Action related to addUseCaseButton
