@@ -9,11 +9,23 @@ import UseCaseModel
 import ProductLineModel
 import FeatureModel
 
-data ParseResult = 
- ParseExpressionResult { expression :: FeatureExpression } |
- ParseTransformationResult { transformations :: [Model2Model] } | 
- ParseError  { parseErrorMessage :: String }
+-- ---------------------------------------------------------------------------------
+-- datatype used to represent the parser results.
+-- 
+-- it might be one of the folowings:
+--   a) ParseExpressionResult
+--   b) ParseTransformationResult
+--   c) ParseError: indicates that an error has occurred while parsing
+-- ---------------------------------------------------------------------------------
+data ParseResult = ParseExpressionResult { expression :: FeatureExpression } 
+                 | ParseTransformationResult { transformations :: [Model2Model] } 
+ 		 | ParseError  { parseErrorMessage :: String }
 
+
+
+-- 
+-- parses a char, but ignores spaces.
+--
 charWithoutSpace :: Char -> Parser Char
 charWithoutSpace c =  
  do { skipMany space; 
@@ -35,14 +47,18 @@ charWithoutSpace c =
 identifier :: Parser String		
 identifier = 
  do { c <- letter;
-	  s <- many alphaNum;
-	  return (c : s)
-	 }	
-	 
+      s <- many alphaNum;
+      return (c : s)
+    }	
+	
+
+--
+-- A parser for binary expressions envolving features.
+-- 
 parseBinaryExp :: (FeatureExpression -> FeatureExpression -> FeatureExpression)	-> Parser FeatureExpression
 parseBinaryExp cons = 
  do { 
- 	  skipMany space; char '('; skipMany space;	
+      skipMany space; char '('; skipMany space;	
       exp1 <- parseExp;
       char ','; 
       skipMany space;
@@ -50,11 +66,14 @@ parseBinaryExp cons =
       skipMany space; char ')'; skipMany space;
       return (cons exp1 exp2)
   }
-    
+
+--
+-- A parser for the not feature expression
+--    
 parseNotExp :: Parser FeatureExpression
 parseNotExp = 
  do {
- 	  skipMany space; char '('; skipMany space;			 
+      skipMany space; char '('; skipMany space;			 
       exp1 <- parseExp;
       skipMany space; char ')'; skipMany space;
       return (NotExpression exp1)
@@ -63,7 +82,7 @@ parseNotExp =
 	   		 	
 -- 
 -- A parser for feature expressions.
--- This parser recongnize strings with the followin
+-- This parser recongnize strings with the following
 -- pattern:
 -- parseExp :: And (parseExp, parseExp) |
 --             Or (parseExp, parseExp)  |
@@ -107,7 +126,14 @@ parseTransformation =
  	  id2<-identifier ; 
  	  char ')'; 
  	  return (bindParametersM2M id1 id2)
- }
+ } 
+-- <|>
+-- do { try (string "evaluateAdvice");
+--	  char '(';
+--	  id1 <- identifier;
+--	  char ')';
+--	  return (evaluateAdviceM2M id1)
+-- }			 
 
 featureExpressionParser :: String -> ParseResult
 featureExpressionParser str = 
@@ -124,6 +150,7 @@ transformationParser str =
 run :: Show a => Parser a -> String -> IO ()
 run p input = 
  case (parse p " " input ) of 
+  Right e -> print e
   Left err -> do { putStr "parse error at "; print err }
-  Right x  -> print x
+  
 
