@@ -46,9 +46,10 @@ bindParametersM2M pName feature  spl productInstance =
 -- TODO: devemos passar o nome do aspecto.
 -- dessa forma, eh necessario recuperar o aspecto 
 -- no modelo de caso de uso da linha de produto 
-evaluateAspectM2M :: AspectualUseCase -> SPL -> ProductInstance -> ProductInstance
-evaluateAspectM2M aspect spl productInstance = 
+evaluateAspectM2M :: Name -> SPL -> ProductInstance -> ProductInstance
+evaluateAspectM2M name spl productInstance = 
  let
+   aspect = head [a | a <- (aspects (splUseCaseModel spl)), (aspectId a) == name] 
    outputUCM = instanceUseCaseModel productInstance	
    adviceList = advices aspect
    rName = ucmName outputUCM
