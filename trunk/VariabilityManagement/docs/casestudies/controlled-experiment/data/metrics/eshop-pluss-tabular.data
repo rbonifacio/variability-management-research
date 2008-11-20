@@ -1,0 +1,11 @@
+Feature						SC01	SC02	SC03	SC04	SC05
+AddItemsToShoppingCart		7		0		0		0		0
+ProceedToCheckout			0		10		0		0		0
+Register					0		0		0		8		0
+RegisterToBrowse			4		0		0		0		0
+RegisterQuickCheckout		0		0		0		4		0
+ExtendedCheckoutWorkflow	0		4		0		0		0
+QuickCheckout				0		0		5		0		0
+ShippingMethod				0		1		0		0		0
+WhishList					0		0		0		0		2
+AutoReserveItems			3		0		0		0		0
