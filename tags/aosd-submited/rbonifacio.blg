@@ -1,0 +1,61 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.7)
+The top-level auxiliary file: rbonifacio.aux
+The style file: abbrv.bst
+Database file #1: ../references/phd-references.bib
+Warning--I didn't find a database entry for "moreira-re07"
+Warning--I didn't find a database entry for "eriksson-splc-2005"
+Warning--I didn't find a database entry for "pohl-caise-2005"
+Warning--I didn't find a database entry for "alves-gpce-06"
+Warning--I didn't find a database entry for "apel-icse2006"
+Warning--I didn't find a database entry for "favaro-icsr-98"
+Warning--I didn't find a database entry for "gheyi-alloy-06"
+Warning--I didn't find a database entry for "krueger-cacm-200712"
+Warning--I didn't find a database entry for "AMPLE"
+Warning--I didn't find a database entry for "phol-spl-book"
+Warning--I didn't find a database entry for "noda-aom-2006"
+Warning--I didn't find a database entry for "thomas-aom-2006"
+Warning--I didn't find a database entry for "rashid-aosd-2007"
+Warning--to sort, need author or key in SPG:site
+Warning--to sort, need author or key in PPL:2008
+You've used 26 entries,
+            2118 wiz_defined-function locations,
+            679 strings with 8698 characters,
+and the built_in function-call counts, 9090 in all, are:
+= -- 927
+> -- 377
+< -- 12
++ -- 154
+- -- 122
+* -- 545
+:= -- 1418
+add.period$ -- 84
+call.type$ -- 26
+change.case$ -- 133
+chr.to.int$ -- 0
+cite$ -- 28
+duplicate$ -- 406
+empty$ -- 758
+format.name$ -- 122
+if$ -- 2025
+int.to.chr$ -- 0
+int.to.str$ -- 26
+missing$ -- 26
+newline$ -- 130
+num.names$ -- 48
+pop$ -- 199
+preamble$ -- 1
+purify$ -- 109
+quote$ -- 0
+skip$ -- 295
+stack$ -- 0
+substring$ -- 487
+swap$ -- 117
+text.length$ -- 12
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 96
+warning$ -- 2
+while$ -- 86
+width$ -- 28
+write$ -- 291
+(There were 15 warnings)

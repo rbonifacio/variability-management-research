@@ -1,0 +1,351 @@
+% ============================= Evaluation ============================
+\section{Evaluation}
+\label{sec:evaluation}
+
+We have applied our approach to four SPLs: the eShop Product Line, as partially shown  in Section~\ref{sec:svmc}; the Pedagogical Product Line
+(PPL)~\cite{PPL:2008}, which was proposed for learning about and experimenting
+with software product lines, and focus on the arcade game domain; the Smart
+Home Product Line, based on different
+specifications~\cite{Pohl:2005aa,Alferez:2008aa}, and the Multimedia Message Product Line (MMS), a case study conduced with one of our industrial patterns. .
+
+The last one---which consists of products for creating, sending, and
+receiving multimedia messages (MMS) in mobile phones---was used to
+evaluate an early version of our approach~\cite{Bonifacio:2008aa},
+using Design Structure Matrices (DSMs)~\cite{Baldwin:2000aa,Lopes:2006aa} and a suite of metrics for quantifying specification modularity and complexity. Here, we
+use it again, but with an improved metric suite and method for
+assigning feature to scenarios steps.
+In the remaining of this section we first present this new metric suite,
+and then describe the assessment of the Smart Home, MMS, and PPL case
+studies. Finally, we present some conclusions derived from the analysis
+of these different product lines.
+
+It is important to note that each case study was conduced with different settings. For instance, groups of students were assigned to specify the behavior of the Smart Home product line in both PLUSS and SVCM techniques. Differently, we compared our approach to an available PLUSS specification of the PPL. The input data and the tasks performed in each case study were also different. For example, some of the case studies (Smart Home and MMS) started from the specification of different products of a family. On the other hand, both \emph{eShop} and PPL case studies started from existing product line specifications.
+
+\subsection{Metric suite}\label{sub:metric-suite}
+
+In order to compare feature scattering and scenario cohesion in both SVCM and PLUSS, we adopt the metric suite proposed by Eaddy et al.~\cite{Eaddy:2007aa}. This suite considers the degree of scattering of
+features (concerns in the original paper) and the degree of focus of scenarios
+(components in the original paper). We also adopt their \emph{prune dependency analysis}, as a guide to assign features to scenario steps. Actually, we consider that a step $s$ has a dependency with a feature $f$ iff the configuration of $f$
+affects the selection or the configuration of the step $s$. Therefore, we can name our assignment approach as \emph{configuration dependency analysis}.
+
+%We could have used absolute values for quantifying scattering and tangling, as in a previous work~\cite{Bonifacio:2008aa}. Absolute values were computed using metrics such as feature diffusion over scenarios and number of features per scenario~\cite{Bonifacio:2008aa}. However, our previous metric suite just reveals if a feature is scattered or not--- without any information about the degree of its scattering. In fact, this limitation hinders the comparison of modularity between different specifications.
+
+We can now explain the customization of both metrics (degree of scattering and degree of focus) used in this work. First, the \emph{degree of scattering} of a feature $f$ is
+calculated by normalizing its concentration with respect to each scenario $s \in
+S$ (the set of all scenarios).
+
+\begin{center}
+$DOS(f) = 1 - \frac{S \sum_{s}^{S}(CONC(f,s)-\frac{1}{S})^2}{S-1}$, where:
+
+$CONC(f,s) = \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\
+of\ steps\ assigned\ to\ f}$
+\end{center}
+
+Likewise, we can calculate the \emph{degree of focus} of a scenario $s$ by
+normalizing its dedication with respect to each feature $f \in F$ (the set of
+all features).
+
+\begin{center}
+$DOF(s) = \frac{F \sum_{f}^{F}(DEDI(s,f)-\frac{1}{F})^2}{F-1}$, where:
+
+$DEDI(s,f) = \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\
+of\ steps\ in\ s}$
+\end{center}
+
+These metrics inherit the same properties of the original
+ones~\cite{Eaddy:2007aa}: (a) the
+\emph{degree of scattering} (DoS) is normalized between 0 (completely localized)
+and 1 (completely unlocalized); and (b) the \emph{degree of focus} (DoF) is also
+normalized between 0 (completely unfocused) and 1 (completely focused).
+
+%The next sections describe the assessment of the different case studies that we
+%have applied our approach. These assessments consider the metric suite just
+%presented.
+
+\subsection{Smart Home assessment}
+
+This study aimed at comparing feature modularity of PLUSS and SVCM specifications. Initially, three different products of the security module of a Smart Home family~\cite{Pohl:2005aa} were specified. Almost six use cases and fifteen scenarios are present in each product, with a significant number of duplicated steps among them. These specifications, available on-line, were used as input data. Then, six students, organized in groups, were assigned to identify the commonalities and variabilities among the products, and to restructure the input specifications. Two SPL specifications were produced, one using the PLUSS notation and the other one using the SVCM approach.
+
+%This study was divided in four major phases: (1) the specification of the input
+%data --- three different configurations of the security module of a smart home
+%were specified without PL support; (2) the presentation of preparatory classes to the subjects
+%(graduate students with similar skills in the area); (3) the activity of
+%restructuring the input specifications using both PLUSS and the Crosscutting
+%technique; and (4) the assessment of the resulting specifications.
+%In the first phase we have specified three different configurations of the
+%security module of a Smart Home. These specifications included feature models and
+%use case scenarios written without product line support. Additionally, they were
+%build upon the documentation available from~\cite{Pohl:2005aa,AMPLE}.
+
+%In the second phase, introductory classes and bibliographic references were
+%offered to post-graduate students. At that period, none of these students had had
+%previous knowledge in the field of scenario variability management. A total of
+%six students were involved in this case study. Then, the students were organized
+%in groups and assigned to restructure the input specifications using PLUSS and
+%Crosscutting techniques.
+
+
+Table~\ref{tab:sh-dof} summarizes the resulting \emph{degree of scattering} of
+the Smart Home features, computed from the PLUSS and SVCM specifications. Although the
+SVCM approach achieved a central tendency (median) of DoS closer to
+zero, we can not realize any significant improvement in this metric. Actually, for some
+features (3 features in a total of 17), the DoS for the SVCM approach presented a greater value than the corresponding ones in PLUSS.
+
+\begin{table}[htb]
+\centering
+\caption{Smart Home degree of scattering}
+\label{tab:sh-dos}
+\begin{small}
+\begin{tabular}{llllll} \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+	PLUSS			& 0.00  & 0.26   	& 0.28  & 0.70 	& 0.08 			\\
+	Crosscutting	& 0.00  & 0.00  	& 0.26 	& 0.82 & 0.10  		\\ \hline	
+\end{tabular}
+\end{small}
+\end{table}
+
+For instance, the feature \emph{Request Access to Home} in the SVCM
+approach has a DoS of $0.82$. Instead, the same feature in PLUSS has a
+DoS equals to $0.53$. The behavior of this feature is influenced by different
+alternatives, such as the security mechanism ($Password$ or $Finger Print$).
+In the SVCM approach, modularizing the variant behavior of this feature in
+aspectual scenarios produced the side effect of increasing the DoS, at the same time that it reduced the tangling of the related scenarios.
+On the other hand, the feature \emph{Turn On Internal and External Lights}
+presents a lower DoS in the SVCM approach (0.00) when compared to the
+PLUSS (0.54) notation. This feature requires a behavior that crosscuts, in a
+homogeneous way, the different scenarios related to the $Intrusion\ Detection$
+use case.
+
+Considering the degree of focus (data summarized in Table~\ref{tab:sh-dof}), we
+have evidence of a significant improvement of the SVCM approach
+(\emph{p-value=0.06}). Notice that the central tendency (median) of DoF in the
+SVCM approach ($1.00$) is closer to one than the corresponding value
+($0.63$) in the PLUSS notation.
+
+\begin{table}[htb] \centering
+\caption{Smart Home degree of focus}
+\label{tab:sh-dof}
+\begin{small}
+\begin{tabular}{llllll} \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+	PLUSS			& 0.33  & 0.63   	& 0.68  & 1.00 	& 0.07 			\\
+	Crosscutting	& 0.35  & 1.00   	& 0.82 	& 1.00 	& 0.05			\\ \hline	
+\end{tabular}
+\end{small}
+\end{table}
+
+Describing all variants of a behavior in a single asset
+(as exemplified in Section~\ref{sec:problem}) is the main reason for the lack of
+focus in scenarios written in the PLUSS approach. On the other hand, the SVCM technique
+allows the modularization of variant behavior in aspectual scenarios. The result
+is a better separation between common and optional steps of a scenario.
+
+In summary, the Smart Home case study gives us some evidence that removing tangling by
+means of aspectual scenarios improves the \emph{degree of focus}. Moreover, if
+the variant steps of a scenario corresponds to an homogeneous crosscutting
+behavior, modularizing it as an aspectual scenario also improves the DoS. On the
+other hand, modularizing features affected by heterogeneous crosscutting
+behavior increases the corresponding \emph{degree of scattering}, at the same time that it reduces the tangling of base scenarios.
+
+%The next sections present the evaluation of the Pedagogical Product Line (PPL)
+%and Multimedia Message Product Line (MMS). We have compared our specification of
+%\emph{MMS} product line to the specifications we had written for the
+%PLUSS technique. Similarly, we have compared our specification
+%of the PPL to a specification that had been sent to us by
+%the authors of the PLUSS approach.
+
+\subsection{MMS assessment}
+
+As explained earlier, the MMS product line, which was adapted from an industrial
+pattern, enables the customization of multimedia message applications. The
+primary goal of each one of these applications is to create and send messages
+with embedded multimedia content (image, audio, video)~\cite{Bonifacio:2008aa}.
+We have specified the MMS product line using both Crosscutting and PLUSS
+techniques. The results of this case study are
+summarized in Tables~\ref{tab:mms-dos}~and~\ref{tab:mms-dof}.
+
+\begin{table}[htb] \centering
+\caption{MMS degree of scattering}
+\label{tab:mms-dos}
+\begin{small}
+\begin{tabular}{llllll} \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+	PLUSS			& 0.00  & 0.60   	& 0.46  & 0.80 	& 0.11 			\\
+	Crosscutting	& 0.00  & 0.41   	& 0.34 	& 0.79 	& 0.10			\\ \hline	
+\end{tabular}
+\end{small}
+\end{table}
+
+This case study, differently from the Smart Home, gives evidence of improvements of the
+SVCM approach with respect to the feature's \emph{degree of scattering}
+(\emph{p-value=0.01}). This result was mainly achieved because several of the features of
+the MMS product line require an homogeneous crosscutting behavior. For example,
+there are some policies related to DRM\footnote{Digital Rights Management}
+content that crosscut, in a uniform manner, the behavior related to
+\emph{sending} and \emph{forwarding} messages.
+
+On the other hand, the MMS case study didn't reveal significant improvements with
+respect to the \emph{degree of focus} metric (Table~\ref{tab:mms-dof}). This
+result is also different from the corresponding one observed in the Smart Home
+case study. The main reason for such a difference is that several scenarios of
+the Smart Home specification are affected by alternative features. On the other
+hand, just a few scenarios of the MMS case study are affected by alternative
+features. Thus, the benefits achieved from extracting varying behavior to
+aspectual scenarios were minimized in this case study.
+
+\begin{table}[htb] \centering
+\caption{MMS degree of focus}
+\label{tab:mms-dof}
+\begin{small}
+\begin{tabular}{llllll} \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+	PLUSS			& 0.34	& 0.59		& 0.70	& 1.00	& 0.07			\\
+	Crosscutting	& 0.46  & 0.59   	& 0.71 	& 1.00 	& 0.06			\\ \hline	
+\end{tabular}
+\end{small}
+\end{table}
+
+\subsection{PPL assessment}
+
+We compared our approach to a PPL specification that was sent to us by the
+authors of the PLUSS technique. Similarly to the Smart Home product line, the PPL has been used in several case
+studies in the area. The original specification of PPL~\cite{PPL:2008} is already well
+modularized, since its features, in general, do not crosscut different
+use cases. Moreover, another characteristic of the PPL is that several features
+are related to qualities that do not cause effect into scenario specifications.
+Even in this context, our approach achieves some improvements in the
+resulting \emph{degree of scattering} (Table~\ref{tab:ppl-dos}). For instance,
+in almost all features we were able to improve the DoS (\emph{p-value=0.008}).
+
+
+\begin{table}[htb] \centering
+\caption{PPL degree of scattering}
+\label{tab:ppl-dos}
+\begin{small}
+\begin{tabular}{llllll} \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+	PLUSS			& 0.00	& 0.48		& 0.32	& 0.71	& 0.08			\\
+	Crosscutting	& 0.00  & 0.00   	& 0.07 	& 0.64 	& 0.05			\\ \hline	
+\end{tabular}
+\end{small}
+\end{table}
+
+
+Modularizing the error handling feature was the main reason for the
+aforementioned improvement. By applying our approach, all behavior related to
+the \emph{error handling} concern was modularized in a single scenario. The
+composition of \emph{error handling} with the basic scenarios was done by means
+of annotations to the corresponding steps. For instance,
+Figure~\ref{fig:error-handle} depicts just one scenario for error handling:
+raising  an error when there is no space available in the file system.
+
+
+\begin{figure}[h]
+\begin{scriptsize}
+\texttt{
+\begin{tabular}{l}
+     Description: There is no available space in file system.\\
+     After: [CatchFileException] \\
+\end{tabular}
+\begin{center}
+\begin{tabular}{||p{0.1in}||p{0.6in}||p{1.0in}||p{1.0in}||} \hline
+Id & User Action & System State & System Response \\ \hline \hline
+E1 & & There is not enough space to save the file. &  Raise the Disk is Full exception. The arcade game application is finished. \\  \hline \end{tabular} \end{center} }
+\end{scriptsize}
+\caption{Error handling scenario.}
+\label{fig:error-handle}
+\end{figure}
+
+This scenario can be started from any step that has been marked with
+the \emph{CatchFileException} annotation.
+Several features of the PPL need to save information in the file system.
+Therefore, in the PLUSS specifications of the \emph{Pedagogical}
+Product Line, several use cases have to deal with this kind of exception.
+As a consequence, we achieve a reduction (almost 20\%) in the number of scenario
+steps when comparing to the PLUSS approach.
+
+%It is important to notice that this
+%reduction of size didn't compromise the requirements coverage; it actually
+%represents an improvement in specification reuse.
+
+On the other hand, we
+didn't get improvements in the \emph{degree of focus} metric
+(Table~\ref{tab:ppl-dof}). Again, this result is primarily motivated by the
+reason that just a few scenarios of PPL are affected by alternative features. In longer SPLs, we expect
+
+\begin{table}[htb] \centering
+\caption{PPL degree of focus}
+\label{tab:ppl-dof}
+\begin{small}
+\begin{tabular}{llllll} \hline
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+	PLUSS			& 0.44	& 1.00		& 0.78	& 1.00	& 0.07			\\
+	Crosscutting	& 0.44  & 1.00   	& 0.83 	& 1.00 	& 0.07			\\ \hline	
+\end{tabular}
+\end{small}
+\end{table}
+
+As a final remark, regarding the modularization of
+variant behavior of a feature in aspectual scenarios, we have some evidences
+that our approach presents substantial improvements in the DoS when the
+modularized behavior corresponds to an \emph{homogeneous crosscutting} feature. Additionally, our approach also improves the degree of focus of scenarios that are affected by alternative features.
+
+\subsection{DSM Analysis}
+
+In this section we apply \emph{Design Structure Matrices} (DSMs) to report on the benefits of a clear separation between variability management and scenarios specifications. A DSM is a tool for visualizing dependencies between design decisions~\cite{Baldwin:2000aa}. Such decisions are arranged in both columns and rows of a matrix.
+Using the terminology described in~\cite{Czarnecki:2000aa}, the design decisions that we consider in this analysis are related to the problem space (represented as feature models), the solution space (represented as the use case models), the configuration space (used to relate the problem space to the solution space), and the product configurations.
+
+ We can identify dependencies between design decisions by observing the columns in a given row~\cite{Baldwin:2000aa}. For example, the first row in Figure~\ref{dsm:pluc} indicates that the task of creating the problem space in PLUSS depends on the task of creating the solution space. The first can not be independently performed before the second. As presented in Section~\ref{sec:problem}, the PLUC approach describes product instances and variability space at specific sections of use cases. Therefore, it is not possible to evolve variability management (introducing new variants of existing features, products, or relations between features and artifacts) without reviewing the use case model. This is expressed in the non modular DSM of Figure~\ref{dsm:pluc}, which depicts cyclical dependencies between the problem space and the solution space.
+
+\begin{figure}[htb]
+\centering
+\begin{small}
+\begin{tabular}{llllll} \hline
+  &                         & 1 & 2 & 3 & 4 \\ \hline
+1 & Problem space           &   & x &   &   \\
+2 & Solution space          & x &   & x & x \\
+3 & Configuration space     & x & x &   &   \\
+4 & Product configuration   & x & x &   &   \\ \hline
+\end{tabular}
+\end{small}
+\caption{DSM Analysis of PLUC}
+\label{dsm:pluc}
+\end{figure}
+
+PLUSS partially solves (see Figure~\ref{dsm:pluss}) the cyclical dependencies just presented, since the problem space is not documented in the same artifact of the solution space. However, since there is no independent model used to relate features to use cases, PLUSS still presents a cyclical dependency between the solution space and the configuration space. As a consequence, it is not possible to independently evolve the configuration space without reviewing existing scenarios.
+
+\begin{figure}[htb]
+\centering
+\begin{small}
+\begin{tabular}{llllll} \hline
+  &                         & 1 & 2 & 3 & 4 \\ \hline
+1 & Problem space           &   &   &   &   \\
+2 & Solution space          & x &   & x &   \\
+3 & Configuration space     & x & x &   &   \\
+4 & Product configuration   & x &  &   &    \\ \hline
+\end{tabular}
+\end{small}
+\caption{DSM Analysis of PLUSS}
+\label{dsm:pluss}
+\end{figure}
+
+Our approach reduces the dependencies between variability management and scenario specifications
+(Figure~\ref{dsm:cc}). For instance, introducing new alternatives of a feature does not require changes in the existing scenarios. Notice that the proposed configuration knowledge, used to relate feature expressions to artifacts, is responsible for
+decoupling the solution space from the configuration space.
+
+\begin{figure}[h]
+\centering
+\begin{small}
+\begin{tabular}{llllll} \hline
+  &                         & 1 & 2 & 3 & 4 \\ \hline
+1 & Problem space           &   &   &   &   \\
+2 & Solution space          & x &   &   &   \\
+3 & Configuration space     & x & x &   &   \\
+4 & Product configuration   & x &  &    &    \\ \hline
+\end{tabular}
+\end{small}
+\caption{DSM Analysis of SVCM}
+\label{dsm:cc}
+\end{figure}
+
+
