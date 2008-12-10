@@ -1,0 +1,156 @@
+\begin{thebibliography}{10}
+
+\bibitem{PPL:2008}
+Arcade game maker pedagogical product line.
+
+\bibitem{SPG:site}
+Software productivity group.
+\newblock online: http://www.sei.cmu.edu/splc2006/eShop.pdf.
+
+\bibitem{Alferez:2008aa}
+M.~Alferez et~al.
+\newblock A model-driven approach for software product lines requirements
+  engineering.
+\newblock In {\em Proceedings of the Twentieth International Conference on
+  Software Engineering {\&} Knowledge Engineering (SEKE'2008)}, pages 779--784,
+  San Francisco, USA, 2008.
+
+\bibitem{Alves:2006aa}
+V.~Alves et~al.
+\newblock From conditional compilation to aspects: A case study in software
+  product lines migration.
+\newblock In {\em 1st Workshop on Aspect-Oriented Product Line Engineering
+  (AOPLE)}, Portland, USA, Oct 2006.
+
+\bibitem{Czarnecki:2004aa}
+M.~Antkiewicz and K.~Czarnecki.
+\newblock Featureplugin: feature modeling plug-in for eclipse.
+\newblock In {\em OOPSLA workshop on eclipse technology eXchange}, pages
+  67--72, New York, NY, USA, 2004. ACM.
+
+\bibitem{Apel:2006aa}
+S.~Apel, T.~Leich, and G.~Saake.
+\newblock Aspectual mixin layers: aspects and features in concert.
+\newblock In {\em ICSE '06: Proceedings of the 28th international conference on
+  Software engineering}, pages 122--131, New York, NY, USA, 2006. ACM.
+
+\bibitem{Bachmann:2001aa}
+F.~Bachmann and L.~Bass.
+\newblock Managing variability in software architectures.
+\newblock {\em SIGSOFT Softw. Eng. Notes}, 26(3):126--132, 2001.
+
+\bibitem{Bertolino:2003aa}
+A.~Bertolino and S.~Gnesi.
+\newblock Use case-based testing of product lines.
+\newblock In {\em ESEC/FSE-11: Proceedings of the 9th European software
+  engineering conference}, pages 355--358, New York, NY, USA, 2003. ACM.
+
+\bibitem{Bonifacio:2008aa}
+R.~Bonif\'{a}cio, P.~Borba, and S.~Soares.
+\newblock On the benefits of variability management as crosscutting.
+\newblock In {\em Early Aspects Workshop at AOSD}, Brussels, Belgium, mar 2008.
+
+\bibitem{Chitchyan:2007aa}
+R.~Chitchyan, A.~Rashid, P.~Rayson, and R.~Waters.
+\newblock Semantics-based composition for aspect-oriented requirements
+  engineering.
+\newblock In {\em 6th international conference on Aspect-oriented software
+  development}, pages 36--48, New York, NY, USA, 2007. ACM.
+
+\bibitem{Clements:2001aa}
+P.~Clements and L.~Northrop.
+\newblock {\em Software Product Lines : Practices and Patterns}.
+\newblock {Addison-Wesley Professional}, August 2001.
+
+\bibitem{Conejero:2008aa}
+J.~Conejero and J.~Hern{\'a}ndez.
+\newblock Analysis of crosscutting features in software product lines.
+\newblock In {\em Early Aspects Workshop at ICSE}, pages 3--10, Leipzig,
+  Germany, 2008. ACM.
+
+\bibitem{Czarnecki:2000aa}
+K.~Czarnecki and U.~Eisenecker.
+\newblock {\em Generative programming: methods, tools, and applications}.
+\newblock ACM Press/Addison-Wesley Publishing Co. New York, NY, USA, 2000.
+
+\bibitem{Eaddy:2007aa}
+M.~Eaddy, A.~Aho, and G.~Murphy.
+\newblock Identifying, assigning, and quantifying crosscutting concerns.
+\newblock In {\em Assessment of Contemporary Modularization Techniques (ACOM)},
+  Minneapolis, USA, aop, metrics 2007.
+
+\bibitem{Eriksson:2005aa}
+M.~Eriksson, J.~Borstler, and K.~Borg.
+\newblock The pluss approach - domain modeling with features, use cases and use
+  case realizations.
+\newblock In {\em International Conference on Software Product Lines}, pages
+  33--44. LNCS, 2005.
+
+\bibitem{Figueiredo:2008ab}
+E.~Figueiredo, C.~Sant'Anna, A.~Garcia, T.~Bartolomei, W.~Cazzola, and
+  A.~Marchetto.
+\newblock {On the Maintainability of Aspect-Oriented Software: A
+  Concern-Oriented Measurement Framework}.
+\newblock {\em Software Maintenance and Reengineering, 2008. CSMR 2008. 12th
+  European Conference on}, pages 183--192, 2008.
+
+\bibitem{Garcia:2005aa}
+A.~Garcia et~al.
+\newblock {Modularizing design patterns with aspects: a quantitative study}.
+\newblock {\em Aspect-oriented software development: Proceedings of the 4 th
+  international conference on Aspect-oriented software development},
+  14(18):3--14, 2005.
+
+\bibitem{Gheyi:2006aa}
+R.~Gheyi, T.~Massoni, and P.~Borba.
+\newblock A theory for feature models in alloy.
+\newblock In {\em First Alloy Workshop}, pages 71--80, Portland, United States,
+  nov 2006.
+
+\bibitem{Greenwood:2007aa}
+P.~Greenwood et~al.
+\newblock On the impact of aspectual decompositions on design stability: An
+  empirical study.
+\newblock {\em Proceedings of the 21st European Conference on Object-Oriented
+  Programming (ECOOP. 07), July}, 2007.
+
+\bibitem{Jones:2002aa}
+S.~P. Jones.
+\newblock The haskell 98 report (revised).
+\newblock Technical report, Cambridge University Press, 2002.
+
+\bibitem{Kastner:2008aa}
+C.~K\"{a}stner, S.~Apel, and M.~Kuhlemann.
+\newblock Granularity in software product lines.
+\newblock In {\em ICSE '08: Proceedings of the 30th international conference on
+  Software engineering}, pages 311--320, New York, NY, USA, 2008. ACM.
+
+\bibitem{Masuhara:2003aa}
+H.~Masuhara and G.~Kiczales.
+\newblock Modeling crosscutting in aspect-oriented mechanisms.
+\newblock In {\em European Conference on Object-Oriented Programming (ECOOP)},
+  Lecture Notes in Computer Science, pages 2--28. Springer, 2003.
+
+\bibitem{Meyer:2000aa}
+B.~Meyer.
+\newblock {\em Object-Oriented Software Construction}.
+\newblock Prentice Hall PTR, 2nd edition, March 2000.
+
+\bibitem{Morin:2008aa}
+B.~Morin, J.~Klein, O.~Barais, and J.-M. J\'{e}z\'{e}quel.
+\newblock A generic weaver for supporting product lines.
+\newblock In {\em Early Aspects Workshop at ICSE}, pages 11--18, Leipzig,
+  Germany, 2008. ACM.
+
+\bibitem{Pohl:2005aa}
+K.~Pohl, G.~B\"{o}ckle, and F.~J. van~der Linden.
+\newblock {\em Software Product Line Engineering : Foundations, Principles and
+  Techniques}.
+\newblock Springer, September 2005.
+
+\bibitem{Pohl:eshop}
+K.~Pohl and A.~Metzger.
+\newblock The eshop product line.
+\newblock online: http://www.sei.cmu.edu/splc2006/eShop.pdf.
+
+\end{thebibliography}
