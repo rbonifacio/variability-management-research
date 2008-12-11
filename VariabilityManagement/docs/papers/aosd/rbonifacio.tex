@@ -274,7 +274,7 @@
 \lstset{language=Haskell, numbers=left,
 numberstyle=\tiny,numbersep=5pt,basicstyle=\scriptsize,aboveskip=20pt}
 
-\title{Scenario Variability as Crosscutting}
+\title{Modeling Scenario Variability with Crosscutting Mechanisms}
 
 
 \numberofauthors{2}
@@ -336,8 +336,13 @@ inside artifacts.
 Both problems can be observed for use case scenario specifications.
 
 Several authors have proposed the use of
-\emph{aspect-oriented} mechanisms to better modularize the specification of crosscutting concerns~\cite{Moreira:2004aa,Chitchyan:2007aa}. These techniques minimizes the first problem, since they can be used to modularize the specification of certain features. However, they do not support the different sources of variability that occur in SPL requirements. With respect to the second problem, current
-approaches~\cite{Griss:1998aa,Bertolino:2003aa,Eriksson:2005aa} proposed to scenario variability management do not offer a
+\emph{aspect-oriented} mechanisms to better modularize the specification of 
+crosscutting concerns~\cite{Moreira:2004aa,Chitchyan:2007aa}. These techniques minimizes 
+the first problem, since they can be used to modularize the specification of certain features. 
+However, they do not support the different sources of variability that occur in SPL requirements. 
+With respect to the second problem, existing
+approaches~\cite{Griss:1998aa,Bertolino:2003aa,Eriksson:2005aa} proposed to scenario variability 
+management do not offer a
 clear separation between variability management and scenario specification. As a
 consequence, in the case where details about product variants are tangled with
 use case scenarios, the removal of one variant from the product line requires
@@ -449,14 +454,13 @@ behavior, and configuration information (feature selection inside square
 brackets). For example, steps 1(a) and 1(b) are never performed together. They
 are alternative steps: Step 1(a) will be present only if the \emph{Shopping
 Cart} feature is selected, otherwise Step 1(b) will be present. In a similar
-way, we have to choose between options (a) and (b) for Step 2 (depending whether
-the \emph{Bonus} feature is selected or not). Finally, Step 6 is optional and
-would be present only if the feature \emph{Update User Preference} was selected.
+way, we have to choose between options (a) and (b) for Step 2 (depending
+on whether the \emph{Bonus} feature is selected or not). Finally, Step 6 is
+optional and would be present only if the feature \emph{Update User Preference} was selected.
 
 As a consequence, since all possible variants are described in the same
-artifact, PLUSS approach presents difficulties for understanding the behavior
-of specific products.
-Moreover, this tangling between \emph{common} and
+artifact, the behavior of specific products is difficult to understand with the
+PLUSS approach. Moreover, this tangling between \emph{common} and
 \emph{variant} behavior results in maintainability issues: introducing a new product variant
 requires changes in several points of existing scenarios. For example, including a
 \emph{B2B Integration} feature, which allows the integration between partners in
@@ -559,8 +563,8 @@ which product is being configured. For each \emph{alternative} or
 \end{center}
 \end{figure}
 
-Another kind of tangling occurs in this case. the specification of common and
-variant behavior are separate, but both are tangled to the variation points.
+Another kind of tangling occurs in this case. The specifications of common and
+variant behavior are separate, but both are tangled with the variation points.
 Additionally, SPL members are also described using the same tag notation (see the
 \emph{Products Definition} section in Figure~\ref{fig:pluc-01}). There is no
 explicit relationship between product configurations and feature models. In the
@@ -627,13 +631,13 @@ maintainability~\cite{Alves:2006aa,Kastner:2008aa}.
 \label{sec:svmc}
 
 To solve the problems mentioned in the previous section, we introduce now our
-approach for modeling variabilities in use case scenarios, which was named as
-\emph{Scenario Variability as Crosscutting Mechanisms} (SVCM). It improves the
-separation of concerns between variability management and scenario specifications, dealing with scenario variability as a composition of the
+approach for modeling variabilities in use case scenarios, which was named 
+\emph{Modeling Scenario Variability with Crosscutting Mechanisms} (MSVCM). It
+improves the separation of concerns between variability management and scenario specifications, dealing with scenario variability as a composition of the
 following artifacts: SPL use case model, feature model, product configuration,
 and configuration knowledge.
 
-Motivated by the Masuhara and Kiczales
+Motivated by the Masuhara and Kiczales (MK)
 framework~\cite{Masuhara:2003aa}, our approach for \textbf{scenario variability
 management} is based on a weaving process that takes as input the aforementioned
 specifications, which crosscut each other with respect to the resulting product
@@ -642,7 +646,7 @@ languages, it is possible to represent the sources of variability that we are
 interested in: \emph{variation in function}, \emph{variation in data}, and
 \emph{variation in control flow}~\cite{Bachmann:2001aa}. A reference implementation of the weaving process (Figure~\ref{fig:weave-process}) is provided in the appendix.
 
-In what follows we detail our approach showing how it
+In what follows, we detail our approach showing how it
 can be used to specify the motivating example. Several artifacts of each input model
 are shown; mentioning the contribution of these models to the whole weaving
 process. After that, in Section~\ref{sec:modeling-framework} we describe the semantics of our approach using a slight customization of the MK framework.
@@ -914,12 +918,10 @@ tasks.
 
 This artifact is represented as a list of configuration items, which relates
 feature expressions (written in propositional logic) to the tasks used for
-generating specific product. We provide the abstract syntax of this artifact in the appendix. Therefore, the configuration knowledge allows,
-during product engineering, the automatic configuration of SPL assets.
-Table~\ref{tab:eshop-ck} presents the configuration
-knowledge for the running example, enforcing that
-
-
+generating a specific product. We provide the abstract syntax of this artifact in
+the appendix. Therefore, the configuration knowledge allows, during product
+engineering, the automatic configuration of SPL assets. Table~\ref{tab:eshop-ck}
+presents the configuration knowledge for the running example, enforcing that
 \begin{itemize}
 \item Both \emph{Proceed to Purchase} (SC01) and \emph{Search for Products}
 (SC02) scenarios are mandatory, since their selection is related to the
@@ -962,7 +964,7 @@ Shipping Method								& bind parameter {\bf SM}\\ \hline
 \end{table}
 
 Three different tasks are used in the configuration knowledge shown in
-Figure~\ref{tab:eshop-ck}: \emph{select scenario},
+Table~\ref{tab:eshop-ck}: \emph{select scenario},
 \emph{evaluate advice}, and \emph{bind parameter}. Using the terminology
 proposed by Bachmann et al.~\cite{Bachmann:2001aa}, the first task deals with
 the source of variability named as \emph{variation in function}; the second one
@@ -1352,7 +1354,7 @@ framework, is shown in Table~\ref{tab:vf-weaver}. The \emph{selectScenarios}
 function is used to argue that the model is realizable and
 appropriate~\cite{Masuhara:2003aa}.
 We achieve this by matching the model elements to
-corresponding parameters and auxiliary functions in the implementation code.
+corresponding parameters and auxiliary functions in the implementation.
 
 The input languages
 \emph{configuration knowledge} (CK) and \emph{SPL use case model} (UCM) contributes to the
@@ -1514,9 +1516,22 @@ parameters to features ($CK_{EFF}$).
 
 \subsection{Variability in control flow}\label{sub:sc-weaver}
 
-This source of variability occurs when a particular pattern of interaction (a use case scenario) varies from one product to another. Differently from PLUSS and PLUC, in our approach we use the notion of $advices$ to modularize the variant behavior of a scenario. An advice customizes the specification of a feature, by means of extending the common behavior of existing scenarios with additional steps. The flow of events of an advice can be inserted before or after the steps referenced by its pointcut clause, which can be either the $step id$ or $annotations$ assigned to different steps.
+This source of variability occurs when a particular pattern of interaction (a use
+case scenario) varies from one product to another. Differently from PLUSS and
+PLUC, in our approach we use the notion of $advices$ to modularize the variant
+behavior of a scenario. An advice customizes the specification of a feature, by
+means of extending the common behavior of existing scenarios with additional
+steps. The flow of events of an advice can be inserted before or after the steps
+referenced by its pointcut clause, which can be either the $step id$ or
+$annotations$ assigned to different steps.
 
-The function \emph{evaluateAdvice} is the reference implementation of this weaver. Basically, this mechanism takes as input the name of an advice to be evaluated; the SPL use case model ($spl$), which defines both use cases and aspectual use cases; and the $product$ being generated. Then, it evaluates the advice, retrieving the steps in the product that matches the pointcut clause of the advice. Depending on the type of the advice (before or after), the composition of the \emph{advice's flow of events} occurs before or after the matched steps.
+The function \emph{evaluateAdvice} is the reference implementation of this
+weaver. Basically, this mechanism takes as input the name of an advice to be
+evaluated; the SPL use case model ($spl$), which defines both use cases and
+aspectual use cases; and the $product$ being generated. Then, it evaluates the
+advice, retrieving the steps in the product that match the pointcut clause of the
+advice. Depending on the type of the advice (before or after), the composition of
+the \emph{advice's flow of events} occurs before or after the matched steps.
 
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
@@ -1569,10 +1584,11 @@ Below we show a concrete instance of the second line of the \emph{eShop} configu
 \ColumnHook
 \end{hscode}\resethooks
 
-The model of this weaver is in Table~\ref{tab:sc-weaver}. The output is a new configuration of the \emph{product specific use case model}, whose scenarios where extended by alternative (or optional) flows of events. The extensions occurs before or after the steps that match ($O_{JP}$) the pointcut clause ($UCM_{ID}$) of the advice, declared in the SPL use case model (UCM).
+The model of this weaver is in Table~\ref{tab:sc-weaver}. The output is a new configuration of the \emph{product specific use case model}, whose scenarios were extended by alternative (or optional) flows of events. The extensions occur before or after the steps that match ($O_{JP}$) the pointcut clause ($UCM_{ID}$) of the advice, declared in the SPL use case model (UCM).
 
 The effect of evaluating the input language ($UCM$) in the composition process is to extend product specific scenarios that, before this activity, did not define a concrete flow of events. As a consequence, the \emph{match} function
-plays a fundamental role in this process, retrieving the steps in the use case model that satisfies the pointcut clauses.
+plays a fundamental role in this process, retrieving the steps in the use case
+model that satisfy the pointcut clauses.
 
 \begin{table}[hbt]
 \begin{center}
@@ -1666,31 +1682,45 @@ plays a fundamental role in this process, retrieving the steps in the use case m
 \section{Evaluation}
 \label{sec:evaluation}
 
-We have applied our approach to four SPLs: the eShop Product Line, as partially shown  in Section~\ref{sec:svmc}; the Pedagogical Product Line
+We have applied our approach to four SPLs: the eShop Product Line, as partially
+shown  in Section~\ref{sec:svmc}; the Pedagogical Product Line
 (PPL)~\cite{PPL:2008}, which was proposed for learning about and experimenting
-with software product lines, and focus on the arcade game domain; the Smart
+with software product lines, and focuses on the arcade game domain; the Smart
 Home Product Line, based on different
-specifications~\cite{Pohl:2005aa,Alferez:2008aa}, and the Multimedia Message Product Line (MMS), a case study conduced with one of our industrial patterns. .
+specifications~\cite{Pohl:2005aa,Alferez:2008aa}, and the Multimedia Message
+Product Line (MMS), a case study conducted with one of our industrial partners.
 
-The last one---which consists of products for creating, sending, and
-receiving multimedia messages (MMS) in mobile phones---was used to
-evaluate an early version of our approach~\cite{Bonifacio:2008aa},
-using Design Structure Matrices (DSMs)~\cite{Baldwin:2000aa,Lopes:2006aa} and a suite of metrics for quantifying specification modularity and complexity. Here, we
-use it again, but with an improved metric suite and method for
-assigning feature to scenarios steps.
-In the remaining of this section we first present this new metric suite,
-and then describe the assessment of the Smart Home, MMS, and PPL case
-studies. Finally, we present some conclusions derived from the analysis
-of these different product lines.
+The last one---which consists of products for creating, sending, and receiving
+multimedia messages (MMS) in mobile phones---was used to evaluate an early
+version of our approach~\cite{Bonifacio:2008aa}, using Design Structure Matrices
+(DSMs)~\cite{Baldwin:2000aa,Lopes:2006aa} and a suite of metrics for quantifying
+specification modularity and complexity. Here, we use it again, but with an
+improved metric suite and a method for assigning features to scenarios steps. In
+the remainder of this section, we first present this new metric suite, and then
+describe the assessment of the Smart Home, MMS, and PPL case studies. Finally, we
+present some conclusions derived from the analysis of these different product
+lines.
 
-It is important to note that each case study was conduced with different settings. For instance, groups of students were assigned to specify the behavior of the Smart Home product line in both PLUSS and SVCM techniques. Differently, we compared our approach to an available PLUSS specification of the PPL. The input data and the tasks performed in each case study were also different. For example, some of the case studies (Smart Home and MMS) started from the specification of different products of a family. On the other hand, both \emph{eShop} and PPL case studies started from existing product line specifications.
+It is important to note that each case study was conducted with different
+settings. For instance, groups of students were assigned to specify the behavior
+of the Smart Home product line in both PLUSS and SVCM techniques. Differently, we
+compared our approach to an available PLUSS specification of the PPL. The input
+data and the tasks performed in each case study were also different. For example,
+some of the case studies (Smart Home and MMS) started from the specification of
+different products of a family. On the other hand, both \emph{eShop} and PPL case
+studies started from existing product line specifications.
 
 \subsection{Metric suite}\label{sub:metric-suite}
 
-In order to compare feature scattering and scenario cohesion in both SVCM and PLUSS, we adopt the metric suite proposed by Eaddy et al.~\cite{Eaddy:2007aa}. This suite considers the degree of scattering of
-features (concerns in the original paper) and the degree of focus of scenarios
-(components in the original paper). We also adopt their \emph{prune dependency analysis}, as a guide to assign features to scenario steps. Actually, we consider that a step $s$ has a dependency with a feature $f$ iff the configuration of $f$
-affects the selection or the configuration of the step $s$. Therefore, we can name our assignment approach as \emph{configuration dependency analysis}.
+In order to compare feature scattering and scenario cohesion in both SVCM and
+PLUSS, we adopt the metric suite proposed by Eaddy et al.~\cite{Eaddy:2007aa}.
+This suite considers the degree of scattering of features (concerns in the
+original paper) and the degree of focus of scenarios (components in the original
+paper). We also adopt their \emph{prune dependency analysis}, as a guide to
+assign features to scenario steps. Actually, we consider that a step $s$ has a
+dependency with a feature $f$ iff the configuration of $f$ affects the selection
+or the configuration of the step $s$. Therefore, we name our assignment approach
+\emph{configuration dependency analysis}.
 
 %We could have used absolute values for quantifying scattering and tangling, as in a previous work~\cite{Bonifacio:2008aa}. Absolute values were computed using metrics such as feature diffusion over scenarios and number of features per scenario~\cite{Bonifacio:2008aa}. However, our previous metric suite just reveals if a feature is scattered or not--- without any information about the degree of its scattering. In fact, this limitation hinders the comparison of modularity between different specifications.
 
@@ -1699,7 +1729,8 @@ calculated by normalizing its concentration with respect to each scenario $s \in
 S$ (the set of all scenarios).
 
 \begin{center}
-$DOS(f) = 1 - \frac{S \sum_{s}^{S}(CONC(f,s)-\frac{1}{S})^2}{S-1}$, where:
+$DOS(f) = 1 - \frac{\mid S \mid \sum_{s}^{S}(CONC(f,s)-\frac{1}{\mid S
+\mid})^2}{\mid S \mid -1}$, where:
 
 $CONC(f,s) = \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\
 of\ steps\ assigned\ to\ f}$
@@ -1710,7 +1741,8 @@ normalizing its dedication with respect to each feature $f \in F$ (the set of
 all features).
 
 \begin{center}
-$DOF(s) = \frac{F \sum_{f}^{F}(DEDI(s,f)-\frac{1}{F})^2}{F-1}$, where:
+$DOF(s) = \frac{\mid F \mid \sum_{f}^{F}(DEDI(s,f)-\frac{1}{\mid F
+\mid})^2}{\mid F \mid -1}$, where:
 
 $DEDI(s,f) = \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\
 of\ steps\ in\ s}$
@@ -1728,7 +1760,15 @@ normalized between 0 (completely unfocused) and 1 (completely focused).
 
 \subsection{Smart Home assessment}
 
-This study aimed at comparing feature modularity of PLUSS and SVCM specifications. Initially, three different products of the security module of a Smart Home family~\cite{Pohl:2005aa} were specified. Almost six use cases and fifteen scenarios are present in each product, with a significant number of duplicated steps among them. These specifications, available on-line, were used as input data. Then, six students, organized in groups, were assigned to identify the commonalities and variabilities among the products, and to restructure the input specifications. Two SPL specifications were produced, one using the PLUSS notation and the other one using the SVCM approach.
+This study aimed at comparing feature modularity of PLUSS and SVCM
+specifications. Initially, three different products of the security module of a
+Smart Home family~\cite{Pohl:2005aa} were specified. Almost six use cases and
+fifteen scenarios are present in each product, with a significant number of
+duplicated steps among them. These specifications, available on-line, were used
+as input data. Then, six students, organized in groups, were assigned to identify
+the commonalities and variabilities among the products, and to restructure the
+input specifications. Two SPL specifications were produced, one using the PLUSS
+notation and the other one using the SVCM approach.
 
 %This study was divided in four major phases: (1) the specification of the input
 %data --- three different configurations of the security module of a smart home
@@ -1749,7 +1789,7 @@ This study aimed at comparing feature modularity of PLUSS and SVCM specification
 %Crosscutting techniques.
 
 
-Table~\ref{tab:sh-dof} summarizes the resulting \emph{degree of scattering} of
+Table~\ref{tab:sh-dos} summarizes the resulting \emph{degree of scattering} of
 the Smart Home features, computed from the PLUSS and SVCM specifications. Although the
 SVCM approach achieved a central tendency (median) of DoS closer to
 zero, we can not realize any significant improvement in this metric. Actually, for some
@@ -1806,7 +1846,7 @@ is a better separation between common and optional steps of a scenario.
 
 In summary, the Smart Home case study gives us some evidence that removing tangling by
 means of aspectual scenarios improves the \emph{degree of focus}. Moreover, if
-the variant steps of a scenario corresponds to an homogeneous crosscutting
+the variant steps of a scenario corresponds to a homogeneous crosscutting
 behavior, modularizing it as an aspectual scenario also improves the DoS. On the
 other hand, modularizing features affected by heterogeneous crosscutting
 behavior increases the corresponding \emph{degree of scattering}, at the same time that it reduces the tangling of base scenarios.
@@ -1821,7 +1861,7 @@ behavior increases the corresponding \emph{degree of scattering}, at the same ti
 \subsection{MMS assessment}
 
 As explained earlier, the MMS product line, which was adapted from an industrial
-pattern, enables the customization of multimedia message applications. The
+partner, enables the customization of multimedia message applications. The
 primary goal of each one of these applications is to create and send messages
 with embedded multimedia content (image, audio, video)~\cite{Bonifacio:2008aa}.
 We have specified the MMS product line using both Crosscutting and PLUSS
@@ -1843,7 +1883,7 @@ summarized in Tables~\ref{tab:mms-dos}~and~\ref{tab:mms-dof}.
 This case study, differently from the Smart Home, gives evidence of improvements of the
 SVCM approach with respect to the feature's \emph{degree of scattering}
 (\emph{p-value=0.01}). This result was mainly achieved because several of the features of
-the MMS product line require an homogeneous crosscutting behavior. For example,
+the MMS product line require a homogeneous crosscutting behavior. For example,
 there are some policies related to DRM\footnote{Digital Rights Management}
 content that crosscut, in a uniform manner, the behavior related to
 \emph{sending} and \emph{forwarding} messages.
@@ -1876,7 +1916,7 @@ authors of the PLUSS technique. Similarly to the Smart Home product line, the PP
 studies in the area. The original specification of PPL~\cite{PPL:2008} is already well
 modularized, since its features, in general, do not crosscut different
 use cases. Moreover, another characteristic of the PPL is that several features
-are related to qualities that do not cause effect into scenario specifications.
+are related to qualities that do not effect scenario specifications.
 Even in this context, our approach achieves some improvements in the
 resulting \emph{degree of scattering} (Table~\ref{tab:ppl-dos}). For instance,
 in almost all features we were able to improve the DoS (\emph{p-value=0.008}).
@@ -1926,7 +1966,7 @@ Several features of the PPL need to save information in the file system.
 Therefore, in the PLUSS specifications of the \emph{Pedagogical}
 Product Line, several use cases have to deal with this kind of exception.
 As a consequence, we achieve a reduction (almost 20\%) in the number of scenario
-steps when comparing to the PLUSS approach.
+steps when compared to the PLUSS approach.
 
 %It is important to notice that this
 %reduction of size didn't compromise the requirements coverage; it actually
@@ -1935,7 +1975,7 @@ steps when comparing to the PLUSS approach.
 On the other hand, we
 didn't get improvements in the \emph{degree of focus} metric
 (Table~\ref{tab:ppl-dof}). Again, this result is primarily motivated by the
-reason that just a few scenarios of PPL are affected by alternative features. In longer SPLs, we expect
+reason that just a few scenarios of PPL are affected by alternative features. 
 
 \begin{table}[htb] \centering
 \caption{PPL degree of focus}
@@ -1949,17 +1989,37 @@ reason that just a few scenarios of PPL are affected by alternative features. In
 \end{small}
 \end{table}
 
-As a final remark, regarding the modularization of
-variant behavior of a feature in aspectual scenarios, we have some evidences
-that our approach presents substantial improvements in the DoS when the
-modularized behavior corresponds to an \emph{homogeneous crosscutting} feature. Additionally, our approach also improves the degree of focus of scenarios that are affected by alternative features.
+As a final remark, regarding the modularization of variant behavior of a feature
+in aspectual scenarios, we have some evidences that our approach presents
+substantial improvements in the DoS when the modularized behavior corresponds to
+a \emph{homogeneous crosscutting} feature. Additionally, our approach also
+improves the degree of focus of scenarios that are affected by alternative
+features.
 
 \subsection{DSM Analysis}
 
-In this section we apply \emph{Design Structure Matrices} (DSMs) to report on the benefits of a clear separation between variability management and scenarios specifications. A DSM is a tool for visualizing dependencies between design decisions~\cite{Baldwin:2000aa}. Such decisions are arranged in both columns and rows of a matrix.
-Using the terminology described in~\cite{Czarnecki:2000aa}, the design decisions that we consider in this analysis are related to the problem space (represented as feature models), the solution space (represented as the use case models), the configuration space (used to relate the problem space to the solution space), and the product configurations.
+In this section we apply \emph{Design Structure Matrices} (DSMs) to report on the
+benefits of a clear separation between variability management and scenarios
+specifications. A DSM is a tool for visualizing dependencies between design
+decisions~\cite{Baldwin:2000aa}. Such decisions are arranged in both columns and
+rows of a matrix. Using the terminology described in~\cite{Czarnecki:2000aa}, the
+design decisions that we consider in this analysis are related to the problem
+space (represented as feature models), the solution space (represented as the use
+case models), the configuration space (used to relate the problem space to the
+solution space), and the product configurations.
 
- We can identify dependencies between design decisions by observing the columns in a given row~\cite{Baldwin:2000aa}. For example, the first row in Figure~\ref{dsm:pluc} indicates that the task of creating the problem space in PLUSS depends on the task of creating the solution space. The first can not be independently performed before the second. As presented in Section~\ref{sec:problem}, the PLUC approach describes product instances and variability space at specific sections of use cases. Therefore, it is not possible to evolve variability management (introducing new variants of existing features, products, or relations between features and artifacts) without reviewing the use case model. This is expressed in the non modular DSM of Figure~\ref{dsm:pluc}, which depicts cyclical dependencies between the problem space and the solution space.
+ We can identify dependencies between design decisions by observing the columns
+ in a given row~\cite{Baldwin:2000aa}. For example, the first row in
+ Figure~\ref{dsm:pluc} indicates that the task of creating the problem space in
+ PLUC depends on the task of creating the solution space. The first can not be
+ independently performed before the second. As presented in
+ Section~\ref{sec:problem}, the PLUC approach describes product instances and
+ variability space at specific sections of use cases. Therefore, it is not
+ possible to evolve variability management (introducing new variants of existing
+ features, products, or relations between features and artifacts) without
+ reviewing the use case model. This is expressed in the non modular DSM of
+ Figure~\ref{dsm:pluc}, which depicts cyclical dependencies between the problem
+ space and the solution space.
 
 \begin{figure}[htb]
 \centering
@@ -2030,9 +2090,19 @@ use cases. Although PLUSS partially reduces such a tangling,
 by considering the importance of feature modeling, some
 dependencies from scenarios to features are still present.
 
-Regarding to the early representation of aspects,
-there are works proposed to represent weaving mechanisms for textual requirements. Our work also supports the composition of aspects and scenarios specifications. However, differently from the previous works, our mechanisms were proposed for variability management, and considers the effect of different languages used in the SPL domain (such as feature models, configuration knowledge, and product configurations). 
-Other works were proposed in order to represent weaving mechanisms using abstract state machines and activity diagrams~\cite{Noda:2006aa,Cottenier:2006aa,Alferez:2008aa}. Our decision for using textual scenario specifications was motivated because this notation is still predominant for documenting requirements--- at least in the Brazilian industry. Additionally, our industrial pattern uses textual scenarios as input for generating test artifacts.
+Regarding to the early representation of aspects, there are works proposed to
+represent weaving mechanisms for textual requirements. Our work also supports the
+composition of aspects and scenarios specifications. However, differently from
+the previous works, our mechanisms were proposed for variability management, and
+considers the effect of different languages used in the SPL domain (such as
+feature models, configuration knowledge, and product configurations). Other works
+were proposed in order to represent weaving mechanisms using abstract state
+machines and activity
+diagrams~\cite{Noda:2006aa,Cottenier:2006aa,Alferez:2008aa}. Our decision for
+using textual scenario specifications was motivated because this notation is
+still predominant for documenting requirements--- at least in the Brazilian
+industry. Additionally, our industrial partner uses textual scenarios as input
+for generating test artifacts.
 
 Another difference of our work, comparing it with existing proposals for the early specification of crosscutting concerns, is that the semantics of our weavers are expressed using a well defined notion of crosscutting mechanisms.
 
@@ -2096,7 +2166,9 @@ is straightforward.
 \appendix
 % \section{A configuration knowledge interpreter}
 
-The fragment of code below represents the abstract syntax of the configuration knowledge and the \emph{weavingProcess} function, which corresponds to the implementation of the process shown in Figure~\ref{fig:weave-process}.
+The fragment of code below represents the abstract syntax of the 
+configuration knowledge and the \emph{weavingProcess} function, which 
+corresponds to the implementation of the process shown in Figure~\ref{fig:weave-process}.
  
  %\begin{small}
  \begin{hscode}\SaveRestoreHook
@@ -2122,27 +2194,29 @@ The fragment of code below represents the abstract syntax of the configuration k
 \>[B]{}\Varid{weavingProcess}\;\Varid{spl}\;\Varid{fm}\;\Varid{pc}\;\Varid{ck}\mathrel{=}{}\<[E]%
 \\
 \>[B]{}\hsindent{5}{}\<[5]%
-\>[5]{}\Varid{stepRefinement}\;[\mskip1.5mu (\Varid{t}\;\Varid{spl})\mid \Varid{t}\leftarrow \Varid{ts}\mskip1.5mu]\;\Varid{empty}{}\<[E]%
-\\
-\>[B]{}\hsindent{5}{}\<[5]%
-\>[5]{}\mathbf{where}{}\<[E]%
+\>[5]{}\Varid{stepRefinement}\;[\mskip1.5mu (\Varid{t}\;\Varid{spl})\mid \Varid{t}\leftarrow \Varid{ts}\mskip1.5mu]\;\Varid{empty}\;\mathbf{where}{}\<[E]%
 \\
 \>[5]{}\hsindent{1}{}\<[6]%
 \>[6]{}\Varid{ts}\mathrel{=}\Varid{concat}\;[\mskip1.5mu \Varid{tasks}\;\Varid{c}\mid \Varid{c}\leftarrow \Varid{ck},\Varid{eval}\;\Varid{pc}\;(\Varid{exp}\;\Varid{c})\mskip1.5mu]{}\<[E]%
 \\
 \>[5]{}\hsindent{1}{}\<[6]%
-\>[6]{}\Varid{empty}\mathrel{=}(\Varid{emptyInstance}\;\Varid{spl}\;\Varid{fc}){}\<[E]%
+\>[6]{}\Varid{empty}\mathrel{=}(\Varid{emptyInstance}\;\Varid{spl}{}\<[E]%
 \\
 \>[5]{}\hsindent{1}{}\<[6]%
-\>[6]{}\Varid{stepRefinement}\;\Varid{l}\;\Varid{m}\mathrel{=}\mathbin{...}{}\<[E]%
+\>[6]{}\Varid{fc}){}\<[E]%
+\\
+\>[B]{}\hsindent{5}{}\<[5]%
+\>[5]{}\Varid{stepRefinement}\;\Varid{l}\;\Varid{m}\mathrel{=}\mathbin{...}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 % \end{small}
  
- The \emph{weavingProcess} function applies the appropriate list of tasks ($ts$) 
- for a given product configuration. Therefore, it is necessary to verify  ($eval\ pc\ (exp\ c)$) which expressions ($exp\ c$) are valid for a specific product configuratio ($pc$). The $stepRefinement$ function composes the sequence of tasks that must
- be applied. Supposing $ts = [h,g,f]$, the semantics of
- this hypothetical product would be given by:
+ The \emph{weavingProcess} function applies the appropriate list of tasks ($ts$)
+ for a given product configuration. Therefore, it is necessary to verify  ($eval\
+ pc\ (exp\ c)$) which expressions ($exp\ c$) are valid for a specific product
+ configuration ($pc$). The $stepRefinement$ function composes the sequence of
+ tasks that must be applied. Supposing $ts = [h,g,f]$, the semantics of this
+ hypothetical product would be given by:
 
  \begin{center}
  $ p\ =\ f\ (spl,\ g\ (spl,\ h\ (spl,\ emptyProduct)))  $

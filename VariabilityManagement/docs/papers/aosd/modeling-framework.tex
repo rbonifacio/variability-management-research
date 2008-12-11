@@ -111,7 +111,7 @@ framework, is shown in Table~\ref{tab:vf-weaver}. The \emph{selectScenarios}
 function is used to argue that the model is realizable and
 appropriate~\cite{Masuhara:2003aa}.
 We achieve this by matching the model elements to
-corresponding parameters and auxiliary functions in the implementation code.
+corresponding parameters and auxiliary functions in the implementation.
 
 The input languages
 \emph{configuration knowledge} (CK) and \emph{SPL use case model} (UCM) contributes to the
@@ -250,9 +250,22 @@ parameters to features ($CK_{EFF}$).
 
 \subsection{Variability in control flow}\label{sub:sc-weaver}
 
-This source of variability occurs when a particular pattern of interaction (a use case scenario) varies from one product to another. Differently from PLUSS and PLUC, in our approach we use the notion of $advices$ to modularize the variant behavior of a scenario. An advice customizes the specification of a feature, by means of extending the common behavior of existing scenarios with additional steps. The flow of events of an advice can be inserted before or after the steps referenced by its pointcut clause, which can be either the $step id$ or $annotations$ assigned to different steps.
+This source of variability occurs when a particular pattern of interaction (a use
+case scenario) varies from one product to another. Differently from PLUSS and
+PLUC, in our approach we use the notion of $advices$ to modularize the variant
+behavior of a scenario. An advice customizes the specification of a feature, by
+means of extending the common behavior of existing scenarios with additional
+steps. The flow of events of an advice can be inserted before or after the steps
+referenced by its pointcut clause, which can be either the $step id$ or
+$annotations$ assigned to different steps.
 
-The function \emph{evaluateAdvice} is the reference implementation of this weaver. Basically, this mechanism takes as input the name of an advice to be evaluated; the SPL use case model ($spl$), which defines both use cases and aspectual use cases; and the $product$ being generated. Then, it evaluates the advice, retrieving the steps in the product that matches the pointcut clause of the advice. Depending on the type of the advice (before or after), the composition of the \emph{advice's flow of events} occurs before or after the matched steps.
+The function \emph{evaluateAdvice} is the reference implementation of this
+weaver. Basically, this mechanism takes as input the name of an advice to be
+evaluated; the SPL use case model ($spl$), which defines both use cases and
+aspectual use cases; and the $product$ being generated. Then, it evaluates the
+advice, retrieving the steps in the product that match the pointcut clause of the
+advice. Depending on the type of the advice (before or after), the composition of
+the \emph{advice's flow of events} occurs before or after the matched steps.
 
 \begin{code}
 evaluateAdvice name spl product =
@@ -276,10 +289,11 @@ c3 = Config (``ShoppingCart'' 'And' ``Bonus'',
    evaluateAdvice(``ADV02''))
 \end{code}
 
-The model of this weaver is in Table~\ref{tab:sc-weaver}. The output is a new configuration of the \emph{product specific use case model}, whose scenarios where extended by alternative (or optional) flows of events. The extensions occurs before or after the steps that match ($O_{JP}$) the pointcut clause ($UCM_{ID}$) of the advice, declared in the SPL use case model (UCM).
+The model of this weaver is in Table~\ref{tab:sc-weaver}. The output is a new configuration of the \emph{product specific use case model}, whose scenarios were extended by alternative (or optional) flows of events. The extensions occur before or after the steps that match ($O_{JP}$) the pointcut clause ($UCM_{ID}$) of the advice, declared in the SPL use case model (UCM).
 
 The effect of evaluating the input language ($UCM$) in the composition process is to extend product specific scenarios that, before this activity, did not define a concrete flow of events. As a consequence, the \emph{match} function
-plays a fundamental role in this process, retrieving the steps in the use case model that satisfies the pointcut clauses.
+plays a fundamental role in this process, retrieving the steps in the use case
+model that satisfy the pointcut clauses.
 
 \begin{table}[hbt]
 \begin{center}

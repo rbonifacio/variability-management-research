@@ -5,13 +5,13 @@
 \label{sec:svmc}
 
 To solve the problems mentioned in the previous section, we introduce now our
-approach for modeling variabilities in use case scenarios, which was named as
-\emph{Scenario Variability as Crosscutting Mechanisms} (SVCM). It improves the
-separation of concerns between variability management and scenario specifications, dealing with scenario variability as a composition of the
+approach for modeling variabilities in use case scenarios, which was named 
+\emph{Modeling Scenario Variability with Crosscutting Mechanisms} (MSVCM). It
+improves the separation of concerns between variability management and scenario specifications, dealing with scenario variability as a composition of the
 following artifacts: SPL use case model, feature model, product configuration,
 and configuration knowledge.
 
-Motivated by the Masuhara and Kiczales
+Motivated by the Masuhara and Kiczales (MK)
 framework~\cite{Masuhara:2003aa}, our approach for \textbf{scenario variability
 management} is based on a weaving process that takes as input the aforementioned
 specifications, which crosscut each other with respect to the resulting product
@@ -20,7 +20,7 @@ languages, it is possible to represent the sources of variability that we are
 interested in: \emph{variation in function}, \emph{variation in data}, and
 \emph{variation in control flow}~\cite{Bachmann:2001aa}. A reference implementation of the weaving process (Figure~\ref{fig:weave-process}) is provided in the appendix.
 
-In what follows we detail our approach showing how it
+In what follows, we detail our approach showing how it
 can be used to specify the motivating example. Several artifacts of each input model
 are shown; mentioning the contribution of these models to the whole weaving
 process. After that, in Section~\ref{sec:modeling-framework} we describe the semantics of our approach using a slight customization of the MK framework.
@@ -292,12 +292,10 @@ tasks.
 
 This artifact is represented as a list of configuration items, which relates
 feature expressions (written in propositional logic) to the tasks used for
-generating specific product. We provide the abstract syntax of this artifact in the appendix. Therefore, the configuration knowledge allows,
-during product engineering, the automatic configuration of SPL assets.
-Table~\ref{tab:eshop-ck} presents the configuration
-knowledge for the running example, enforcing that
-
-
+generating a specific product. We provide the abstract syntax of this artifact in
+the appendix. Therefore, the configuration knowledge allows, during product
+engineering, the automatic configuration of SPL assets. Table~\ref{tab:eshop-ck}
+presents the configuration knowledge for the running example, enforcing that
 \begin{itemize}
 \item Both \emph{Proceed to Purchase} (SC01) and \emph{Search for Products}
 (SC02) scenarios are mandatory, since their selection is related to the
@@ -340,7 +338,7 @@ Shipping Method								& bind parameter {\bf SM}\\ \hline
 \end{table}
 
 Three different tasks are used in the configuration knowledge shown in
-Figure~\ref{tab:eshop-ck}: \emph{select scenario},
+Table~\ref{tab:eshop-ck}: \emph{select scenario},
 \emph{evaluate advice}, and \emph{bind parameter}. Using the terminology
 proposed by Bachmann et al.~\cite{Bachmann:2001aa}, the first task deals with
 the source of variability named as \emph{variation in function}; the second one
