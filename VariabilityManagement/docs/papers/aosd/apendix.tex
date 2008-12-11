@@ -2,7 +2,7 @@
 % \section{A configuration knowledge interpreter}
 
 The fragment of code below represents the abstract syntax of the configuration knowledge and the \emph{weavingProcess} function, which corresponds to the implementation of the process shown in Figure~\ref{fig:weave-process}.
- 
+ \newpage
  %\begin{small}
  \begin{code}
  type ConfigurationKnowledge = [Configuration]
@@ -17,7 +17,7 @@ The fragment of code below represents the abstract syntax of the configuration k
  weavingProcess spl fm pc ck =
     stepRefinement [(t spl) | t <- ts] empty
     where
-     ts = concat [weavers c| c <- ck, eval pc (exp c)]
+     ts = concat [tasks c| c <- ck, eval pc (exp c)]
      empty = (emptyInstance spl fc)
      stepRefinement l m = ...   	
  \end{code}
