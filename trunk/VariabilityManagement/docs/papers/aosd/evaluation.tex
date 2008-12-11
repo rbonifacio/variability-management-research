@@ -2,31 +2,45 @@
 \section{Evaluation}
 \label{sec:evaluation}
 
-We have applied our approach to four SPLs: the eShop Product Line, as partially shown  in Section~\ref{sec:svmc}; the Pedagogical Product Line
+We have applied our approach to four SPLs: the eShop Product Line, as partially
+shown  in Section~\ref{sec:svmc}; the Pedagogical Product Line
 (PPL)~\cite{PPL:2008}, which was proposed for learning about and experimenting
-with software product lines, and focus on the arcade game domain; the Smart
+with software product lines, and focuses on the arcade game domain; the Smart
 Home Product Line, based on different
-specifications~\cite{Pohl:2005aa,Alferez:2008aa}, and the Multimedia Message Product Line (MMS), a case study conduced with one of our industrial patterns. .
+specifications~\cite{Pohl:2005aa,Alferez:2008aa}, and the Multimedia Message
+Product Line (MMS), a case study conducted with one of our industrial partners.
 
-The last one---which consists of products for creating, sending, and
-receiving multimedia messages (MMS) in mobile phones---was used to
-evaluate an early version of our approach~\cite{Bonifacio:2008aa},
-using Design Structure Matrices (DSMs)~\cite{Baldwin:2000aa,Lopes:2006aa} and a suite of metrics for quantifying specification modularity and complexity. Here, we
-use it again, but with an improved metric suite and method for
-assigning feature to scenarios steps.
-In the remaining of this section we first present this new metric suite,
-and then describe the assessment of the Smart Home, MMS, and PPL case
-studies. Finally, we present some conclusions derived from the analysis
-of these different product lines.
+The last one---which consists of products for creating, sending, and receiving
+multimedia messages (MMS) in mobile phones---was used to evaluate an early
+version of our approach~\cite{Bonifacio:2008aa}, using Design Structure Matrices
+(DSMs)~\cite{Baldwin:2000aa,Lopes:2006aa} and a suite of metrics for quantifying
+specification modularity and complexity. Here, we use it again, but with an
+improved metric suite and a method for assigning features to scenarios steps. In
+the remainder of this section, we first present this new metric suite, and then
+describe the assessment of the Smart Home, MMS, and PPL case studies. Finally, we
+present some conclusions derived from the analysis of these different product
+lines.
 
-It is important to note that each case study was conduced with different settings. For instance, groups of students were assigned to specify the behavior of the Smart Home product line in both PLUSS and SVCM techniques. Differently, we compared our approach to an available PLUSS specification of the PPL. The input data and the tasks performed in each case study were also different. For example, some of the case studies (Smart Home and MMS) started from the specification of different products of a family. On the other hand, both \emph{eShop} and PPL case studies started from existing product line specifications.
+It is important to note that each case study was conducted with different
+settings. For instance, groups of students were assigned to specify the behavior
+of the Smart Home product line in both PLUSS and SVCM techniques. Differently, we
+compared our approach to an available PLUSS specification of the PPL. The input
+data and the tasks performed in each case study were also different. For example,
+some of the case studies (Smart Home and MMS) started from the specification of
+different products of a family. On the other hand, both \emph{eShop} and PPL case
+studies started from existing product line specifications.
 
 \subsection{Metric suite}\label{sub:metric-suite}
 
-In order to compare feature scattering and scenario cohesion in both SVCM and PLUSS, we adopt the metric suite proposed by Eaddy et al.~\cite{Eaddy:2007aa}. This suite considers the degree of scattering of
-features (concerns in the original paper) and the degree of focus of scenarios
-(components in the original paper). We also adopt their \emph{prune dependency analysis}, as a guide to assign features to scenario steps. Actually, we consider that a step $s$ has a dependency with a feature $f$ iff the configuration of $f$
-affects the selection or the configuration of the step $s$. Therefore, we can name our assignment approach as \emph{configuration dependency analysis}.
+In order to compare feature scattering and scenario cohesion in both SVCM and
+PLUSS, we adopt the metric suite proposed by Eaddy et al.~\cite{Eaddy:2007aa}.
+This suite considers the degree of scattering of features (concerns in the
+original paper) and the degree of focus of scenarios (components in the original
+paper). We also adopt their \emph{prune dependency analysis}, as a guide to
+assign features to scenario steps. Actually, we consider that a step $s$ has a
+dependency with a feature $f$ iff the configuration of $f$ affects the selection
+or the configuration of the step $s$. Therefore, we name our assignment approach
+\emph{configuration dependency analysis}.
 
 %We could have used absolute values for quantifying scattering and tangling, as in a previous work~\cite{Bonifacio:2008aa}. Absolute values were computed using metrics such as feature diffusion over scenarios and number of features per scenario~\cite{Bonifacio:2008aa}. However, our previous metric suite just reveals if a feature is scattered or not--- without any information about the degree of its scattering. In fact, this limitation hinders the comparison of modularity between different specifications.
 
@@ -35,7 +49,8 @@ calculated by normalizing its concentration with respect to each scenario $s \in
 S$ (the set of all scenarios).
 
 \begin{center}
-$DOS(f) = 1 - \frac{S \sum_{s}^{S}(CONC(f,s)-\frac{1}{S})^2}{S-1}$, where:
+$DOS(f) = 1 - \frac{\mid S \mid \sum_{s}^{S}(CONC(f,s)-\frac{1}{\mid S
+\mid})^2}{\mid S \mid -1}$, where:
 
 $CONC(f,s) = \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\
 of\ steps\ assigned\ to\ f}$
@@ -46,7 +61,8 @@ normalizing its dedication with respect to each feature $f \in F$ (the set of
 all features).
 
 \begin{center}
-$DOF(s) = \frac{F \sum_{f}^{F}(DEDI(s,f)-\frac{1}{F})^2}{F-1}$, where:
+$DOF(s) = \frac{\mid F \mid \sum_{f}^{F}(DEDI(s,f)-\frac{1}{\mid F
+\mid})^2}{\mid F \mid -1}$, where:
 
 $DEDI(s,f) = \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\
 of\ steps\ in\ s}$
@@ -64,7 +80,15 @@ normalized between 0 (completely unfocused) and 1 (completely focused).
 
 \subsection{Smart Home assessment}
 
-This study aimed at comparing feature modularity of PLUSS and SVCM specifications. Initially, three different products of the security module of a Smart Home family~\cite{Pohl:2005aa} were specified. Almost six use cases and fifteen scenarios are present in each product, with a significant number of duplicated steps among them. These specifications, available on-line, were used as input data. Then, six students, organized in groups, were assigned to identify the commonalities and variabilities among the products, and to restructure the input specifications. Two SPL specifications were produced, one using the PLUSS notation and the other one using the SVCM approach.
+This study aimed at comparing feature modularity of PLUSS and SVCM
+specifications. Initially, three different products of the security module of a
+Smart Home family~\cite{Pohl:2005aa} were specified. Almost six use cases and
+fifteen scenarios are present in each product, with a significant number of
+duplicated steps among them. These specifications, available on-line, were used
+as input data. Then, six students, organized in groups, were assigned to identify
+the commonalities and variabilities among the products, and to restructure the
+input specifications. Two SPL specifications were produced, one using the PLUSS
+notation and the other one using the SVCM approach.
 
 %This study was divided in four major phases: (1) the specification of the input
 %data --- three different configurations of the security module of a smart home
@@ -85,7 +109,7 @@ This study aimed at comparing feature modularity of PLUSS and SVCM specification
 %Crosscutting techniques.
 
 
-Table~\ref{tab:sh-dof} summarizes the resulting \emph{degree of scattering} of
+Table~\ref{tab:sh-dos} summarizes the resulting \emph{degree of scattering} of
 the Smart Home features, computed from the PLUSS and SVCM specifications. Although the
 SVCM approach achieved a central tendency (median) of DoS closer to
 zero, we can not realize any significant improvement in this metric. Actually, for some
@@ -142,7 +166,7 @@ is a better separation between common and optional steps of a scenario.
 
 In summary, the Smart Home case study gives us some evidence that removing tangling by
 means of aspectual scenarios improves the \emph{degree of focus}. Moreover, if
-the variant steps of a scenario corresponds to an homogeneous crosscutting
+the variant steps of a scenario corresponds to a homogeneous crosscutting
 behavior, modularizing it as an aspectual scenario also improves the DoS. On the
 other hand, modularizing features affected by heterogeneous crosscutting
 behavior increases the corresponding \emph{degree of scattering}, at the same time that it reduces the tangling of base scenarios.
@@ -157,7 +181,7 @@ behavior increases the corresponding \emph{degree of scattering}, at the same ti
 \subsection{MMS assessment}
 
 As explained earlier, the MMS product line, which was adapted from an industrial
-pattern, enables the customization of multimedia message applications. The
+partner, enables the customization of multimedia message applications. The
 primary goal of each one of these applications is to create and send messages
 with embedded multimedia content (image, audio, video)~\cite{Bonifacio:2008aa}.
 We have specified the MMS product line using both Crosscutting and PLUSS
@@ -179,7 +203,7 @@ summarized in Tables~\ref{tab:mms-dos}~and~\ref{tab:mms-dof}.
 This case study, differently from the Smart Home, gives evidence of improvements of the
 SVCM approach with respect to the feature's \emph{degree of scattering}
 (\emph{p-value=0.01}). This result was mainly achieved because several of the features of
-the MMS product line require an homogeneous crosscutting behavior. For example,
+the MMS product line require a homogeneous crosscutting behavior. For example,
 there are some policies related to DRM\footnote{Digital Rights Management}
 content that crosscut, in a uniform manner, the behavior related to
 \emph{sending} and \emph{forwarding} messages.
@@ -212,7 +236,7 @@ authors of the PLUSS technique. Similarly to the Smart Home product line, the PP
 studies in the area. The original specification of PPL~\cite{PPL:2008} is already well
 modularized, since its features, in general, do not crosscut different
 use cases. Moreover, another characteristic of the PPL is that several features
-are related to qualities that do not cause effect into scenario specifications.
+are related to qualities that do not effect scenario specifications.
 Even in this context, our approach achieves some improvements in the
 resulting \emph{degree of scattering} (Table~\ref{tab:ppl-dos}). For instance,
 in almost all features we were able to improve the DoS (\emph{p-value=0.008}).
@@ -262,7 +286,7 @@ Several features of the PPL need to save information in the file system.
 Therefore, in the PLUSS specifications of the \emph{Pedagogical}
 Product Line, several use cases have to deal with this kind of exception.
 As a consequence, we achieve a reduction (almost 20\%) in the number of scenario
-steps when comparing to the PLUSS approach.
+steps when compared to the PLUSS approach.
 
 %It is important to notice that this
 %reduction of size didn't compromise the requirements coverage; it actually
@@ -271,7 +295,7 @@ steps when comparing to the PLUSS approach.
 On the other hand, we
 didn't get improvements in the \emph{degree of focus} metric
 (Table~\ref{tab:ppl-dof}). Again, this result is primarily motivated by the
-reason that just a few scenarios of PPL are affected by alternative features. In longer SPLs, we expect
+reason that just a few scenarios of PPL are affected by alternative features. 
 
 \begin{table}[htb] \centering
 \caption{PPL degree of focus}
@@ -285,17 +309,37 @@ reason that just a few scenarios of PPL are affected by alternative features. In
 \end{small}
 \end{table}
 
-As a final remark, regarding the modularization of
-variant behavior of a feature in aspectual scenarios, we have some evidences
-that our approach presents substantial improvements in the DoS when the
-modularized behavior corresponds to an \emph{homogeneous crosscutting} feature. Additionally, our approach also improves the degree of focus of scenarios that are affected by alternative features.
+As a final remark, regarding the modularization of variant behavior of a feature
+in aspectual scenarios, we have some evidences that our approach presents
+substantial improvements in the DoS when the modularized behavior corresponds to
+a \emph{homogeneous crosscutting} feature. Additionally, our approach also
+improves the degree of focus of scenarios that are affected by alternative
+features.
 
 \subsection{DSM Analysis}
 
-In this section we apply \emph{Design Structure Matrices} (DSMs) to report on the benefits of a clear separation between variability management and scenarios specifications. A DSM is a tool for visualizing dependencies between design decisions~\cite{Baldwin:2000aa}. Such decisions are arranged in both columns and rows of a matrix.
-Using the terminology described in~\cite{Czarnecki:2000aa}, the design decisions that we consider in this analysis are related to the problem space (represented as feature models), the solution space (represented as the use case models), the configuration space (used to relate the problem space to the solution space), and the product configurations.
+In this section we apply \emph{Design Structure Matrices} (DSMs) to report on the
+benefits of a clear separation between variability management and scenarios
+specifications. A DSM is a tool for visualizing dependencies between design
+decisions~\cite{Baldwin:2000aa}. Such decisions are arranged in both columns and
+rows of a matrix. Using the terminology described in~\cite{Czarnecki:2000aa}, the
+design decisions that we consider in this analysis are related to the problem
+space (represented as feature models), the solution space (represented as the use
+case models), the configuration space (used to relate the problem space to the
+solution space), and the product configurations.
 
- We can identify dependencies between design decisions by observing the columns in a given row~\cite{Baldwin:2000aa}. For example, the first row in Figure~\ref{dsm:pluc} indicates that the task of creating the problem space in PLUSS depends on the task of creating the solution space. The first can not be independently performed before the second. As presented in Section~\ref{sec:problem}, the PLUC approach describes product instances and variability space at specific sections of use cases. Therefore, it is not possible to evolve variability management (introducing new variants of existing features, products, or relations between features and artifacts) without reviewing the use case model. This is expressed in the non modular DSM of Figure~\ref{dsm:pluc}, which depicts cyclical dependencies between the problem space and the solution space.
+ We can identify dependencies between design decisions by observing the columns
+ in a given row~\cite{Baldwin:2000aa}. For example, the first row in
+ Figure~\ref{dsm:pluc} indicates that the task of creating the problem space in
+ PLUC depends on the task of creating the solution space. The first can not be
+ independently performed before the second. As presented in
+ Section~\ref{sec:problem}, the PLUC approach describes product instances and
+ variability space at specific sections of use cases. Therefore, it is not
+ possible to evolve variability management (introducing new variants of existing
+ features, products, or relations between features and artifacts) without
+ reviewing the use case model. This is expressed in the non modular DSM of
+ Figure~\ref{dsm:pluc}, which depicts cyclical dependencies between the problem
+ space and the solution space.
 
 \begin{figure}[htb]
 \centering

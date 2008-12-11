@@ -57,14 +57,13 @@ behavior, and configuration information (feature selection inside square
 brackets). For example, steps 1(a) and 1(b) are never performed together. They
 are alternative steps: Step 1(a) will be present only if the \emph{Shopping
 Cart} feature is selected, otherwise Step 1(b) will be present. In a similar
-way, we have to choose between options (a) and (b) for Step 2 (depending whether
-the \emph{Bonus} feature is selected or not). Finally, Step 6 is optional and
-would be present only if the feature \emph{Update User Preference} was selected.
+way, we have to choose between options (a) and (b) for Step 2 (depending
+on whether the \emph{Bonus} feature is selected or not). Finally, Step 6 is
+optional and would be present only if the feature \emph{Update User Preference} was selected.
 
 As a consequence, since all possible variants are described in the same
-artifact, PLUSS approach presents difficulties for understanding the behavior
-of specific products.
-Moreover, this tangling between \emph{common} and
+artifact, the behavior of specific products is difficult to understand with the
+PLUSS approach. Moreover, this tangling between \emph{common} and
 \emph{variant} behavior results in maintainability issues: introducing a new product variant
 requires changes in several points of existing scenarios. For example, including a
 \emph{B2B Integration} feature, which allows the integration between partners in
@@ -167,8 +166,8 @@ which product is being configured. For each \emph{alternative} or
 \end{center}
 \end{figure}
 
-Another kind of tangling occurs in this case. the specification of common and
-variant behavior are separate, but both are tangled to the variation points.
+Another kind of tangling occurs in this case. The specifications of common and
+variant behavior are separate, but both are tangled with the variation points.
 Additionally, SPL members are also described using the same tag notation (see the
 \emph{Products Definition} section in Figure~\ref{fig:pluc-01}). There is no
 explicit relationship between product configurations and feature models. In the
