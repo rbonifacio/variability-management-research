@@ -5,26 +5,31 @@
 \label{sec:svmc}
 
 To solve the problems mentioned in the previous section, we introduce now our
-approach for modeling variabilities in use case scenarios, which was named 
-\emph{Modeling Scenario Variability with Crosscutting Mechanisms} (MSVCM). It
-improves the separation of concerns between variability management and scenario specifications, dealing with scenario variability as a composition of the
+approach for modeling variabilities in use case scenarios, which was named
+\emph{Modeling Scenario Variability as Crosscutting Mechanisms} (MSVCM). It
+improves the separation of concerns between variability management and scenario
+specifications, dealing with scenario variability as a composition of the
 following artifacts: SPL use case model, feature model, product configuration,
 and configuration knowledge.
 
-Motivated by the Masuhara and Kiczales (MK)
-framework~\cite{Masuhara:2003aa}, our approach for \textbf{scenario variability
-management} is based on a weaving process that takes as input the aforementioned
-specifications, which crosscut each other with respect to the resulting product
-specific use case model (Figure~\ref{fig:weave-process}). Combining these input
-languages, it is possible to represent the sources of variability that we are
-interested in: \emph{variation in function}, \emph{variation in data}, and
-\emph{variation in control flow}~\cite{Bachmann:2001aa}. A reference implementation of the weaving process (Figure~\ref{fig:weave-process}) is provided in the appendix.
+Motivated by the Masuhara and Kiczales (MK) framework~\cite{Masuhara:2003aa}, our
+approach for \textbf{scenario variability management} is based on a weaving
+process that takes as input the aforementioned specifications, which crosscut
+each other with respect to the resulting product specific use case model
+(Figure~\ref{fig:weave-process}). Combining these input languages, it is possible
+to represent the sources of variability that we are interested in:
+\emph{variation in function}, \emph{variation in data}, and \emph{variation in
+control flow}~\cite{Bachmann:2001aa}. A reference implementation of the weaving
+process (Figure~\ref{fig:weave-process}) is provided in the appendix.
 
-In what follows, we detail our approach showing how it
-can be used to specify the motivating example. Several artifacts of each input model
-are shown; mentioning the contribution of these models to the whole weaving
-process. After that, in Section~\ref{sec:modeling-framework} we describe the semantics of our approach using a slight customization of the MK framework.
-
+In what follows, we detail our approach showing how it can be used to specify the
+motivating example. Several artifacts of each input model are shown; mentioning
+the contribution of these models to the whole weaving process. {\color{red}
+Instances of the input models are specified using  \emph{third-part} tools, and
+then imported to our variability management environment. We explain which are
+these tools and present the Haskell libraries used in our environment.} After
+that, in Section~\ref{sec:modeling-framework} we describe the semantics of our
+approach using a slight customization of the MK framework.
 \begin{figure}[htb]
  \begin{center}
   \includegraphics[scale=0.30]{img/weave-process2.eps}
@@ -35,24 +40,42 @@ process. After that, in Section~\ref{sec:modeling-framework} we describe the sem
 
 \subsection{Feature model}
 
-Feature models have an important contribution to our
-weaving process, since they are used for checking if a product
-configuration is a valid member of the product line. It is important to note
-that we are not proposing a new notation for feature modeling. Here we
-only present the features required (Figure~\ref{fig:eshop-fm}) for
-understanding the SVCM example.
+Feature models have an important contribution to our weaving process, since they
+are used for checking if a product configuration is a valid member of the product
+line. {\color{red}We have implemented specific functions in Haskell to deal with
+this kind of verification. Basically, these functions verify if all constraints defined in
+a feature model are satisfied by a product configuration. 
 
-Based on the feature model of Figure~\ref{fig:eshop-fm}, the \emph{Shopping
-Cart}, \emph{Bonus} and \emph{Update User Preferences} features are optional; on
-the other hand, the \emph{Shipping Method} feature is mandatory and all products
-have to be configured with at least one of its child. Additionally, the
-restriction $Shopping\ Cart\ \Leftrightarrow\ Bonus$ states that all
-products configured with the shopping cart feature must also be configured with
-the bonus feature. More details about feature modeling can be found
-elsewhere~\cite{Gheyi:2006aa,Czarnecki:2000aa}.
+The code fragment below presents the signature of the \emph{topmost} function
+for checking instances of a feature model. It states that
+\texttt{checkConfiguration} takes as input a feature model (FM) and a product
+configuration (\emph{PC}), returning a list with all constraints that a
+\emph{PC} does not satisfy. If a \emph{PC} satisfies all constraints, the
+function returns an empty list.
+\begin{code}
+checkConfiguration :: FM -> PC -> ErrorList
+\end{code}
+
+Presenting more details, the \texttt{checkConfiguration} function traverses both
+feature model and product configuration trees, calling specific functions for checking the constraints
+applied for each type of feature model relationship (mandatory, alternative,
+or). Moreover, additional functions were defined for importing feature models,
+generated by the \emph{Feature Modeling Plugin}~\cite{}, to our environment.} 
+
+It is important to note that we are not
+proposing a new notation for feature modeling. Here we only present the features
+required (Figure~\ref{fig:eshop-fm}) for understanding the MSVCM example. For
+instance, {\color{blue}Based on the feature model of Figure~\ref{fig:eshop-fm},
+the \emph{Shopping Cart}, \emph{Bonus} and \emph{Update User Preferences}
+features are optional; on the other hand, the \emph{Shipping Method} feature is
+mandatory and all products have to be configured with at least one of its child.
+Additionally, the restriction $Shopping\ Cart\ \Leftrightarrow\ Bonus$ states
+that all products configured with the shopping cart feature must also be
+configured with the bonus feature. More details about feature modeling can be
+found elsewhere~\cite{Gheyi:2006aa,Czarnecki:2000aa}.}
 
 
-\subsection{SPL use case model}
+\subsection{SPL use case model}\label{sub:spl-uc}
 
 This artifact defines scenarios that describe the expected behavior of the SPL's
 members. Scenarios might be optional, have parameters, and change (advice) the
@@ -63,7 +86,7 @@ System response}). An aspectual use case has a name and a list of advices, which
 can be used to extend the behavior of existing scenarios. Differently from
 PLUSS and PLUC, our proposed scenarios are not enriched with alternative steps,
 product definition, and information related to configurability.
-In this SVCM example, we consider the following scenarios and advices:
+In this MSVCM example, we consider the following scenarios and advices:
 
 {\bf Proceed to Purchase:} this mandatory scenario
 (Figure~\ref{fig:proceed-to-checkout}) specifies the common behavior that is
@@ -99,14 +122,18 @@ Purchase} scenario for different configurations of \emph{Shipping Method}.
 {\bf Buy Product:} this advice (Figure~\ref{fig:buy-product-scenario}) enables a
 customer to buy specific goods from an on-line shopping store. It is only
 available in the product line members that are {\bf not} configured with the
-\emph{Shopping Cart} and \emph{Bonus} features. Differently from the PLUSS
+\emph{Shopping Cart} and \emph{Bonus} features. The effect of this advice is to
+introduce an optional behavior {\bf before} the join points identified in its
+\emph{pointcut} clause. In this case, the Step P1 defined in the \emph{Proceed to
+Purchase} scenario.
+ Differently from the PLUSS
 approach, which directly relates alternative and optional steps to features, in
 our approach this kind of information is represented in a distinct artifact: the
-configuration knowledge.
+configuration knowledge. {\color{red}The result is that, in our approach, feature and use
+case models are syntactally independent from each other. There is no direct
+association joining this models and all relationships between them are kept by
+the configuration knowledge.}
 
-The effect of this advice is to introduce an optional behavior {\bf
-before} the join points identified in its \emph{pointcut} clause. In this case,
-the Step P1 defined in the \emph{Proceed to Purchase} scenario.
 
 \begin{figure}[h]
 \begin{scriptsize}
