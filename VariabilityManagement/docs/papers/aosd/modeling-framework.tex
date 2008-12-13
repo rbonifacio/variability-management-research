@@ -29,13 +29,15 @@ processes. We represent each weaver by filling in the six parameters of our
 and by stating how elements of the weaver implementation correspond to elements
 of the model.
 
-In our modeling framework, the concrete semantics of those weavers (and the
-meta-model of the input and output languages) are described using the Haskell
-programming language. This led to concise descriptions and
-kept our model close to the MK work, where their weaving processes are specified
-in the Scheme programming language. The choice for Haskell was motivated by
-several factors, such as improved readability and our background in the language.
-The resulting source code is available at a web site~\cite{SPG:site}.
+
+% NOTA: Esse texto foi levado para  a secao anterior.
+%In our modeling framework, the concrete semantics of those weavers (and the
+%meta-model of the input and output languages) are described using the Haskell
+%programming language. This led to concise descriptions and
+%kept our model close to the MK work, where their weaving processes are specified
+%in the Scheme programming language. The choice for Haskell was motivated by
+%several factors, such as improved readability and our background in the language.
+%The resulting source code is available at a web site~\cite{SPG:site}.
 
 \begin{equation}
 W = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\},
@@ -257,7 +259,8 @@ behavior of a scenario. An advice customizes the specification of a feature, by
 means of extending the common behavior of existing scenarios with additional
 steps. The flow of events of an advice can be inserted before or after the steps
 referenced by its pointcut clause, which can be either the $step id$ or
-$annotations$ assigned to different steps.
+$annotations$ assigned to different steps.
+
 
 The function \emph{evaluateAdvice} is the reference implementation of this
 weaver. Basically, this mechanism takes as input the name of an advice to be
@@ -265,7 +268,8 @@ evaluated; the SPL use case model ($spl$), which defines both use cases and
 aspectual use cases; and the $product$ being generated. Then, it evaluates the
 advice, retrieving the steps in the product that match the pointcut clause of the
 advice. Depending on the type of the advice (before or after), the composition of
-the \emph{advice's flow of events} occurs before or after the matched steps.
+the \emph{advice's flow of events} occurs before or after the matched steps.
+
 
 \begin{code}
 evaluateAdvice name spl product =
