@@ -434,21 +434,29 @@ EPL feature model~\cite{Gheyi:2006aa,Czarnecki:2000aa}, which represents the
 common and variable features of our example. Here we represent it by a tree like
 notation where relationships between a parent feature and its children are
 categorized as \emph{Optional} (features that might not be selected in a specific product), \emph{Mandatory} (feature that must be selected, if the parent
-is also selected), \emph{Or} (one or more subfeatures might be selected), and
-\emph{Alternative} (exactly one subfeature must be selected for each product).
+is also selected), \emph{Inclusive Or} (one or more subfeatures might be selected), and
+\emph{Exclusive Or} (exactly one subfeature must be selected for each product).
 Besides these relationships, feature models allow the specification of
 constraints among features. For instance, the constraint ($Shopping\ Cart\
 \Leftrightarrow\ Bonus$) states that the feature Shopping Cart is selected iff
 the feature Bonus is also selected.
 
- \begin{figure}[th]
- \begin{center}
-  \includegraphics[scale=0.45]{img/eShop-FM.eps}
-   \includegraphics[scale=0.40]{img/fm-notation.eps}
-  \caption{eShop feature model.}
-  \label{fig:eshop-fm}
-  \end{center}
-\end{figure}
+\begin{figure}[th]
+\begin{center}
+\input{featureModelXFIG.pstex_t}
+\caption{eShop feature model.}
+\label{fig:eshop-fm}
+\end{center}
+\end{figure} 
+
+% \begin{figure}[th]
+% \begin{center}
+%  \includegraphics[scale=0.45]{img/eShop-FM.eps}
+%   \includegraphics[scale=0.40]{img/fm-notation.eps}
+%  \caption{eShop feature model.}
+%  \label{fig:eshop-fm}
+%  \end{center}
+%\end{figure}
 
 
 %Other approaches are based on use case extensions~\cite{jacobson-reuse-book}, not explored here since they
@@ -590,7 +598,8 @@ specifications, it is hard and time consuming to keep consistent the
 relationships between them. Finally, the same definitions (product configuration
 and variation points) are often useful to manage variabilities in other
 artifacts, such as design and source code. As a consequence, this approach
-requires the replication of such definitions in different SPL views.
+requires the replication of such definitions in different SPL views.
+
 In conclusion, both PLUSS and PLUC do not present a clear separation between
 variability assets and scenario specifications, which compromises the
 evolution of a SPL. Besides that, both approaches rely on simple
@@ -752,8 +761,8 @@ Purchase} scenario for different configurations of \emph{Shipping Method}. {\col
 are also supported in PLUSS and PLUC, but, again, they are directly related to features 
 or members of the product line.}
 
-{\color{red} Additionally, the \mbox{{\bf [RegisterPreference]}} annotation (Step P3) is another variation point of \emph{Proceed to Purchase}. This annotation, also applied in the Step S3 of \emph{Search for Products} scenario~\ref{}, is used to reveal points in the specification that are related to the user preferences. Pointcuts can make reference to this annotations. For instance, the advice \emph{Update User Preferences}~\ref{} can extend the behavior of \emph{Proceed to Purchase} from Step P3. Note that our annotations were proposed just to expose variation points. Therefore, 
-annotated steps are \emph{obliviousness} about which features are interested in extend the corresponding behavior. }
+{\color{red} The \mbox{{\bf RegisterPreference}} annotation (Step P3) is another variation point of \emph{Proceed to Purchase}. This annotation, also applied in the Step S3 of \emph{Search for Products} scenario~\ref{}, is used to reveal points in the specification that are related to the user preferences. Pointcuts can make reference to annotations. For instance, the advice \emph{Update User Preferences}~\ref{} extends the behavior of \emph{Proceed to Purchase} after Step P3. Note that our annotations just reveal variation points, which means that  
+annotated steps are \emph{obliviousness} about which features extend the corresponding behavior. }
 
 
 \begin{figure}[h]
