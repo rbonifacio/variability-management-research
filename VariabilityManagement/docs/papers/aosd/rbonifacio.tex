@@ -378,12 +378,13 @@ concerns are separated from other concerns (Section~\ref{sec:svmc}).
 %Although this work focus on requirement artifacts, more specifically use case scenarios, we argue that such separation is also valid for other SPL artifacts. Actually, it has already been claimed for source code~\cite{Alves:2006aa,Apel:2006aa}, without considering the importance of variability artifacts.
 
 \item A framework for modeling the composition process of scenario variability
-mechanisms (Section~\ref{sec:modeling-framework}). This framework gives a basis
-for describing variability as crosscutting mechanisms, {\color{red}at the same
-time that the reference implementation provided for each mechanism corresponds to the
-essencial part of the environment responsible for mechanizing the composition
-processes. However, this paper does not present details about such an environment. Here,
-we focus just on its essencial parts.}
+mechanisms (Section~\ref{sec:modeling-framework}). Differently from existing
+works~\cite{Morin:2008aa,Groher:2008aa}, this framework gives a basis for
+describing variability as crosscutting mechanisms, at the same time it considers the contribution of different input
+languages: feature models, product configuration, configuration knowledge and SPL use case
+model. Moreover, the reference implementation provided for each variability
+mechanism corresponds to the essencial parts of a tool environment for scenario
+variability management. In this paper we focus just in these essencials.
 
 \item Specification of three {\color{red}sources of variability for use case
 scenarios: variability in function (Section~\ref{sub:pd-weaver}),
@@ -393,9 +394,9 @@ semantic representation when compared to existing works; which is an important p
 for supporting the automatic derivation of product specific artifacts.
 \end{itemize}
 
-{\color{red}It is important to notice that we do not claim that the sources of
-variability (or kinds of composition) for use case scenarios presented here are complete.
-However, our modeling framework is able to represent
+{\color{red}The sources of
+variability (or kinds of composition) for use case scenarios presented here are
+not complete. However, our modeling framework is able to represent
 other interesting sources of variability, such as context-aware adaptability.
 Additionally, since the word \emph{scenario} has different meanings in software
 engineering, we want to make clear that in the remainder of this paper the term
@@ -674,23 +675,6 @@ to represent the sources of variability that we are interested in:
 \emph{variability in function}, \emph{variability in data}, and \emph{variability in
 control flow}~\cite{Bachmann:2001aa}.
 
-{\color{blue}The {\color{red}concrete semantics} of the weaving process (and the
-meta-model of the input and output languages) are described using the Haskell
-programming language. This led to concise descriptions and
-kept our model close to the MK work, where their weaving processes are specified
-using Scheme--- another functional programming language. The choice for Haskell was motivated by
-several factors, such as improved readability and our background in the language.
-The resulting source code is available at a web site~\cite{SPG:site}.}
-
-In what follows, we detail our approach showing how it can be used to specify the
-motivating example. Several artifacts of each input model are shown; mentioning
-the contribution of these models to the whole weaving process. {\color{red}
-Notice that instances of the input models are specified using  \emph{widespread} tools, and
-then imported to our variability management environment. In this section, we also explain which are
-these tools and present the layered architecture of the Haskell libraries used in our environment.} After
-that, in Section~\ref{sec:modeling-framework} we describe the semantics of our
-approach using a slight customization of the MK framework.
-
 \begin{figure}[htb]
  \begin{center}
   \includegraphics[scale=0.30]{img/weave-process2.eps}
@@ -698,6 +682,28 @@ approach using a slight customization of the MK framework.
   \label{fig:weave-process}
   \end{center}
 \end{figure}
+
+{\color{blue}The {\color{red}concrete semantics} of the weaving process (and the
+meta-model of the input and output languages) are described using the Haskell
+programming language. This led to concise descriptions and kept our model close
+to the MK work, where their weaving processes are specified using Scheme---
+another functional programming language. The choice for Haskell was motivated by
+several factors, such as improved readability and our background in the language.
+The resulting source code is available at the \emph{Software and Processes} area
+of a web site~\cite{SPG:site}.} In what follows, we detail our approach showing
+how it can be used to specify the motivating example. Several artifacts of each
+input model are shown; mentioning the contribution of these models to the whole
+weaving process.
+
+% {\color{red} With
+% respect to the supporting tools, instances of the input models are specified
+% using \emph{widespread} tools, and then imported to our variability
+% management environment. In this section, we also explain which are these tools and present
+% the layered architecture of the Haskell libraries used in our environment.} After
+% that, in Section~\ref{sec:modeling-framework} we describe the semantics of our
+% approach using a slight customization of the MK framework.
+
+
 
 \subsection{Feature model}
 
@@ -776,8 +782,8 @@ present all input model data types.
  
 Additional functions were defined for importing feature models, generated by the
 \emph{Feature Modeling Plugin} (FMP)~\cite{Czarnecki:2004aa}, to our
-environment. In the remainder of this section, we consider the eShop feature model 
-introduced in the motivating example (Figure~\ref{fig:eshop-fm}). }
+environment. In the remainder of this section, we consider the \emph{eShop}
+feature model introduced in the motivating example (Figure~\ref{fig:eshop-fm}). }
 
 %For
 %instance, {\color{blue}Based on the feature model of Figure~\ref{fig:eshop-fm},
@@ -829,8 +835,8 @@ This parameter allows the reuse of the \emph{Proceed to
 Purchase} scenario for different configurations of the \emph{Shipping Method} feature. {\color{red} Parameters 
 are also supported in PLUSS and PLUC. However, in these approaches parameters are directly related to features or members of the product line.}
 
-{\color{red} The annotation \mbox{{\bf [CustomerPreferences]}} (Step P3) is another variation point of \emph{Proceed to Purchase} scenario. This annotation, also assigned to the Step S3 of \emph{Search for Products} (Figure~\ref{fig:search-products-flow}), reveals points in the specification that are related to the customer preferences. Since pointcuts can make references to annotations, the advice \emph{Register User Preferences} (Figure~\ref{fig:register-preferences-flow}) extends the behavior of \emph{Proceed to Purchase} after Step P3. Note that our annotations just reveal variation points, which means that  
-annotated steps are \emph{obliviousness} about which features extend the corresponding behavior. }
+{\color{red} The annotation \mbox{\texttt{[CustomerPreferences]}} (Step P3) is
+another variation point of \emph{Proceed to Purchase} scenario. This annotation, also assigned to the Step S3 of \emph{Search for Products} (Figure~\ref{fig:search-products-flow}), reveals points in the specification that are related to the customer preferences. Since pointcuts can make references to annotations, the advice \emph{Register User Preferences} (Figure~\ref{fig:register-preferences-flow}) extends the behavior of \emph{Proceed to Purchase} after Step P3. Note that our annotations just reveal variation points, which means that annotated steps are \emph{obliviousness} about which features extend the corresponding behavior. }
 
 
 \begin{figure}[h]
@@ -868,7 +874,7 @@ Purchase} scenario.
 step annotations (as explained before). However, we encourage the definition of
 pointcuts based on annotations, since they were proposed to mitigate the problem
 of fragile pointcuts. This problem occurs because changes in the order of
-steps might break pointcuts that refer to step ids.}{\color{blue} This problem
+steps might break pointcuts that refer to step ids.} {\color{blue}This problem
 might also be solved by means of specialized editors, similarly to the ones proposed for
 refactoring aspect-oriented programs~\cite{Wloka:2008aa}.}
  
@@ -924,9 +930,14 @@ are configured with both \emph{Shopping Cart} and \emph{Bonus} features.
 \label{fig:buy-product-changing-flow}
 \end{figure}
 
-{\bf Search for Products:} this mandatory scenario (Figure~\ref{fig:search-products-flow}) allows
-a customer to search for products. In order to save space, we only present Step S3,
-which performs a search based on the input criteria. {\color{red}Note that, similarly to the Step P3 shown in Figure~\ref{fig:proceed-to-checkout}, this step is also assigned to the {\bf [CustomerPreferences]} annotation. Therefore, any advice that points to the this annotation extends, at least, the behavior of \emph{Proceed to Purchase} and \emph{Search for Product} scenarios.}
+{\bf Search for Products:} this mandatory scenario
+(Figure~\ref{fig:search-products-flow}) allows a customer to search for products.
+In order to save space, we only present Step S3, which performs a search based on
+the input criteria. {\color{red}Note that, similarly to the Step P3 shown in
+Figure~\ref{fig:proceed-to-checkout}, this step is also assigned to the
+\mbox{\texttt{ [CustomerPreferences]}} annotation. Therefore, any advice that
+points to this annotation extends, at least, the behavior of \emph{Proceed to Purchase} and
+\emph{Search for Product} scenarios.}
 
 \begin{figure}[ht]
 \begin{scriptsize}
@@ -951,9 +962,10 @@ which performs a search based on the input criteria. {\color{red}Note that, simi
 
 
 
-{\bf Register User Preferences:} this advice updates the user preferences based
+{\bf Register User Preferences:} this advice
+(Figure~\ref{fig:register-preferences-flow}) updates the user preferences based
 on the user's history of searches and purchases. Its behavior can be started {\bf
-after} any step assigned to the {\bf [CustomerPreferences]} (see the
+after} any step assigned to the \texttt{[CustomerPreferences]} (see the
 \emph{pointcut} clause) annotation and is available in products that are
 configured with the \emph{Update User Preferences} feature.
 
@@ -984,18 +996,18 @@ all valid configurations of a scenario in a single artifact. Differently, using
 our approach, we could separate the common behavior required to confirm a
 purchase (the base scenario \emph{Proceed to Purchase}) from its variants,
 specified in the \emph{Buy Product} and \emph{Buy Product with Shopping Cart}
-advices. This allows our specifications to evolve according to the
+advices. {\color{blue}This allows our specifications to evolve according to the
 \emph{Open-Closed} principle~\cite{Meyer:2000aa}; which means that, in our
 approach, introducing new product variants require more extensions than changes
-to the base scenarios. Moreover, in this section we have described several
+to the base scenarios.} Moreover, in this section we have described several
 scenarios as being optional or mandatory. However, it is important to emphasize
 that, in our approach, this kind of information is not specified in the use case
 model. Actually, it is necessary to consider the relationships between features
 and scenarios, represented in the configuration knowledge, in order to be aware
 of which scenarios are present in a specific product configuration. Finally,
 since different advices can make references to a same joinpoint,  interferences
-between advice may occur. However, the weaving process evaluate each advice in a
-sequence defined by the configuration knowledge. For this reason, interferences
+between advices may occur. However, the weaving process evaluate each advice in
+a sequence defined by the configuration knowledge. For this reason, interferences
 between advices are deterministic and do not require specific constructs in the
 use case model to deal with them.}
 
@@ -1061,12 +1073,12 @@ deals with \emph{variation in data}, being responsible for binding parameters to
 features. The semantics of these tasks are described as crosscutting mechanisms
 in Section~\ref{sec:modeling-framework}.}
 
-{\color{red} The fragment of code below represents the configuration knowledge
-data type. As explained earlier, it is a list of configuration items, which
-relate feature expressions to \emph{tasks}. Actually, each task is a function
-that takes a \emph{SPL use case model} ($SPL$) and a \emph{product specific use
-case model} ($SPLMember$) as parameters; and then returns a refinement of the
-product specific model.}
+{\color{red} The configuration knowledge data type is shown bellow. As explained
+earlier, it is a list of configuration items, which relate feature expressions to
+\emph{tasks}. Actually, the type \texttt{Task} is a synonymous for the
+family of functions that receive a \emph{SPL use case model} ($SPL$) and a \emph{product
+specific use case model} ($SPLMember$) as parameters; and then returns a
+refinement of the product specific model.}
  
  % \begin{small}
  \begin{hscode}\SaveRestoreHook
@@ -1182,7 +1194,7 @@ member.
 Figure~\ref{fig:resulting-scenarios} depicts the resulting scenarios after evaluating the configuration knowledge of
 Table~\ref{tab:eshop-ck} and considering the second configuration of
 Figure~\ref{fig:product-config-01-02}. According to what was explained in the
-previous section, this configuration requires: 
+previous section, such a configuration requires: 
 
 \begin{enumerate} 
  \item The selection of \emph{Proceed to Purchase} and \emph{Search for Product} scenarios. This selection is directly responsible 
@@ -1244,38 +1256,46 @@ Purchase} scenarios.
 \label{fig:resulting-scenarios}
 \end{figure}	
 
-\subsection{Tool support}
+The next section details the semantics of our
+weaving process, modeling each source of scenario variability as a crosscutting 
+mechanism.
 
-{\color{red}As explained before, we are using external tools for specifying 
-features models, use case models, and product configurations. Therefore, only 
-the configuration knowledge is written using the tool support
-{\color{blue}developed for testing the ideas presented in this paper.} 
+%=====================================================
+% TOOL Support
+%=====================================================
 
-Besides allowing the users to specify configuration models, the tool 
-parses the input models from XML documents and starts the weaving process.
-Figure~\ref{fig:graphical-environment} shows the graphical environment that
-integrates these functionalities.
-
-\begin{figure}[h]
- \begin{center}
-  \includegraphics[scale=0.40]{img/msvcmTool.eps}
-   \caption{Weaving process' graphical environment.}
-  \label{fig:graphical-environment}
-  \end{center}
-\end{figure}
-
-Similar to the weaving process, detailed in the next section, the tool support
-was also developed in Haskell, reusing common libraries for parsing XML documents
-(HXT) and graphical user interface (gtk2hasell). One overview of the major
-libraries and tools is shown in Figure~\ref{fig:haskell-libraries}.}
-
-\begin{figure}[h]
- \begin{center}
-  \includegraphics[scale=0.55]{img/architecture.eps}
-   \caption{Haskell libraries and external tools.}
-  \label{fig:haskell-libraries}
-  \end{center}
-\end{figure}
+% \subsection{Tool support}
+% 
+% {\color{red}As explained before, we are using external tools for specifying 
+% features models, use case models, and product configurations. Therefore, only 
+% the configuration knowledge is written using the tool support
+% {\color{blue}developed for testing the ideas presented in this paper.} 
+% 
+% Besides allowing the users to specify configuration models, the tool 
+% parses the input models from XML documents and starts the weaving process.
+% Figure~\ref{fig:graphical-environment} shows the graphical environment that
+% integrates these functionalities.
+% 
+% \begin{figure}[h]
+%  \begin{center}
+%   \includegraphics[scale=0.40]{img/msvcmTool.eps}
+%    \caption{Weaving process' graphical environment.}
+%   \label{fig:graphical-environment}
+%   \end{center}
+% \end{figure}
+% 
+% Similar to the weaving process, detailed in the next section, the tool support
+% was also developed in Haskell, reusing common libraries for parsing XML documents
+% (HXT) and graphical user interface (gtk2hasell). One overview of the major
+% libraries and tools is shown in Figure~\ref{fig:haskell-libraries}.}
+% 
+% \begin{figure}[h]
+%  \begin{center}
+%   \includegraphics[scale=0.55]{img/architecture.eps}
+%    \caption{Haskell libraries and external tools.}
+%   \label{fig:haskell-libraries}
+%   \end{center}
+% \end{figure}
 
 
 %There is no artifact similar to our configuration knowledge in
@@ -1562,8 +1582,8 @@ W = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\},
 \end{table}
 
 In the next sections we describe the semantics of
-our weaving process. For simplicity, we provide one weaver
-description for each source of variability.
+our weaving process, modeling one weaver for each source of variability and
+providing reference implementations for them.
 
 \subsection{Variability in function}\label{sub:pd-weaver}
 
@@ -1620,7 +1640,7 @@ the identification of the scenarios that must be added to a specific product.
 \column{4}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{c1}{}\<[4]%
-\>[4]{}\mathrel{=}\Conid{Config}\;(``\Varid{eShop''},{}\<[E]%
+\>[4]{}\mathrel{=}\Conid{Configuration}\;(``\Varid{eShop''},{}\<[E]%
 \\
 \>[4]{}\Varid{selectScenarios}\;[\mskip1.5mu ``\Conid{SC01''},``\Conid{SC02''}\mskip1.5mu]){}\<[E]%
 \ColumnHook
@@ -1668,9 +1688,9 @@ specific product.
 \end{center}
 \end{table}
 
-The UCM has a greater importance over the other input languages ($UCM_{EFF}$),
-since it declares the parts that compose the product specific scenarios (the
-output of this weaver process generated by the \emph{selectScenarios} function).
+% The UCM has a greater importance over the other input languages ($UCM_{EFF}$),
+% since it declares the parts that compose the product specific scenarios (the
+% output of this weaver process generated by the \emph{selectScenarios} function).
 
 \subsection{Variability in data}\label{sub:bind-weaver}
 
@@ -1743,7 +1763,7 @@ coupling between SPL use case models and feature models.
 \column{4}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{c5}{}\<[4]%
-\>[4]{}\mathrel{=}\Conid{Config}\;(``\Conid{ShippingMethod''},{}\<[E]%
+\>[4]{}\mathrel{=}\Conid{Configuration}\;(``\Conid{ShippingMethod''},{}\<[E]%
 \\
 \>[4]{}\Varid{bindParameter}\;(``\Conid{SM''},``\Conid{ShippingMethod''})){}\<[E]%
 \ColumnHook
@@ -1799,9 +1819,8 @@ PLUC, in our approach we use the notion of $advices$ to modularize the variant
 behavior of a scenario. An advice customizes the specification of a feature, by
 means of extending the common behavior of existing scenarios with additional
 steps. The flow of events of an advice can be inserted before or after the steps
-referenced by its pointcut clause, which can be either the $step id$ or
+referenced by its pointcut clause, which can be either the $step\ id$ or
 $annotations$ assigned to different steps.
-
 
 The function \emph{evaluateAdvice} is the reference implementation of this
 weaver. Basically, this mechanism takes as input the name of an advice to be
@@ -1850,29 +1869,39 @@ the \emph{advice's flow of events} occurs before or after the matched steps.
 \ColumnHook
 \end{hscode}\resethooks
 
-Below we show a concrete instance of the second line of the \emph{eShop} configuration knowledge (Table~\ref{tab:eshop-ck}). Notice that the configuration knowledge binds the first parameter of the \emph{evaluateAdvice} function. Therefore, the configuration knowledge contributes to this source of variability by relating features to advices.
+Below we show a concrete instance of the second line of the \emph{eShop}
+configuration knowledge (Table~\ref{tab:eshop-ck}). Notice that the configuration
+knowledge binds the first parameter of the \emph{evaluateAdvice} function.
+Therefore, the configuration knowledge contributes to this source of variability
+by relating features to advices.
 
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{4}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{c3}{}\<[4]%
-\>[4]{}\mathrel{=}\Conid{Config}\;(``\Conid{ShoppingCart''}\;\text{\tt 'And'}``\Conid{Bonus''},{}\<[E]%
+\>[4]{}\mathrel{=}\Conid{Configuration}\;(``\Conid{ShoppingCart''}\;\text{\tt 'And'}``\Conid{Bonus''},{}\<[E]%
 \\
 \>[4]{}\Varid{evaluateAdvice}\;(``\Conid{ADV02''})){}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
 
-The model of this weaver is in Table~\ref{tab:sc-weaver}. The output is a new configuration of the \emph{product specific use case model}, whose scenarios were extended by alternative (or optional) flows of events. The extensions occur before or after the steps that match ($O_{JP}$) the pointcut clause ($UCM_{ID}$) of the advice, declared in the SPL use case model (UCM).
+The model of this weaver is in Table~\ref{tab:sc-weaver}. The output is a new
+configuration of the \emph{product specific use case model}, whose scenarios were
+extended by alternative (or optional) flows of events. The extensions occur
+before or after the steps that match ($O_{JP}$) the pointcut clause ($UCM_{ID}$)
+of the advice, declared in the SPL use case model (UCM).
 
-The effect of evaluating the input language ($UCM$) in the composition process is to extend product specific scenarios that, before this activity, did not define a concrete flow of events. As a consequence, the \emph{match} function
-plays a fundamental role in this process, retrieving the steps in the use case
-model that satisfy the pointcut clauses.
+The effect of evaluating the input language ($UCM$) in the composition process is
+to extend product specific scenarios that, before this activity, may not define
+a concrete flow of events. As a consequence, the \emph{match} function plays a
+fundamental role in this process, retrieving the steps in the use case model that
+satisfy the pointcut clauses.
 
 \begin{table}[hbt]
 \begin{center}
 \caption{Model of Scenario Composition Weaver} \label{tab:sc-weaver}
-\begin{tabular}{p{0.4in}p{2.6in}}
+\begin{tabular}{p{0.7in}p{2.3in}}
    \hline\noalign{\smallskip}
   {\bf Element} & {\bf Description} \\
    \noalign{\smallskip}
@@ -2001,11 +2030,18 @@ dependency with a feature $f$ iff the configuration of $f$ affects the selection
 or the configuration of the step $s$. Therefore, we name our assignment approach
 \emph{configuration dependency analysis}.
 
-%We could have used absolute values for quantifying scattering and tangling, as in a previous work~\cite{Bonifacio:2008aa}. Absolute values were computed using metrics such as feature diffusion over scenarios and number of features per scenario~\cite{Bonifacio:2008aa}. However, our previous metric suite just reveals if a feature is scattered or not--- without any information about the degree of its scattering. In fact, this limitation hinders the comparison of modularity between different specifications.
+% We could have used absolute values for quantifying scattering and tangling, as
+% in a previous work~\cite{Bonifacio:2008aa}. Absolute values were computed using
+% metrics such as feature diffusion over scenarios and number of features per
+% scenario~\cite{Bonifacio:2008aa}. However, our previous metric suite just
+% reveals if a feature is scattered or not--- without any information about the
+% degree of its scattering. In fact, this limitation hinders the comparison of
+% modularity between different specifications.
 
-We can now explain the customization of both metrics (degree of scattering and degree of focus) used in this work. First, the \emph{degree of scattering} of a feature $f$ is
-calculated by normalizing its concentration with respect to each scenario $s \in
-S$ (the set of all scenarios).
+We can now explain the customization of both metrics (degree of scattering and
+degree of focus) used in this work. First, the \emph{degree of scattering} of a
+feature $f$ is calculated by normalizing its concentration with respect to each
+scenario $s \in S$ (the set of all scenarios).
 
 \begin{center}
 $DOS(f) = 1 - \frac{\mid S \mid \sum_{s}^{S}(CONC(f,s)-\frac{1}{\mid S
@@ -2033,9 +2069,46 @@ ones~\cite{Eaddy:2007aa}: (a) the
 and 1 (completely unlocalized); and (b) the \emph{degree of focus} (DoF) is also
 normalized between 0 (completely unfocused) and 1 (completely focused).
 
-%The next sections describe the assessment of the different case studies that we
-%have applied our approach. These assessments consider the metric suite just
-%presented.
+Consider the scenarios shown in Figure~\ref{fig:smartHomeScenarios}, which
+represents the assignment of a few features of the Smart Home to 
+both PLUSS and MSVCM specifications. For instance, the left hand side of
+Figure~\ref{fig:smartHomeScenarios}(a) depicts that the PLUSS specification of
+Register Inhabitant scenario has seven steps. Two of these steps were assigned
+only to the \emph{Register Inhabitant} (RI) feature; other two steps
+were assigned to the interactions between \emph{Register Inhabitant} and
+\emph{Password} features; and other three steps were assigned to the
+interactions between \emph{Register Inhabitant} and \emph{Fingerprint}
+features. Note that the \emph{Password} and \emph{Fingerprint} features, which
+are mutually exclusive, also change the behavior of \emph{Request Access to Home}
+feature (Figure~\ref{fig:smartHomeScenarios}(b)).
+
+\begin{figure}[htb]
+ \begin{center}
+  \includegraphics[scale=0.60]{img/comparisonScenarios.eps}
+  \caption{Assignment of features in Smart Home.}
+  \label{fig:smartHomeScenarios}
+  \end{center}
+\end{figure}
+
+Similarly, Figure~\ref{} shows some features' assignments for the MMS
+product line. In this case, we want to emphasize that the behavior 
+of the XYZ feature is scattered through the scenarios ABC. This means that,
+the same specification of XYZ feature changes the behavior of other
+features in a similar way. For this reason we classify as
+\emph{homogeneous} the behavior of the XYZ feature. On the other hand, we say
+that the \emph{Password} optional feature has a \emph{heterogeneous crosscutting behavior}, 
+since its specification could not be modularized in a unique advice. 
+The same occured with the \emph{Fingerprint} feature.
+
+We have observed that the crosscutting nature of a feature, which here we
+consider as being homogeneous or heterogenous, has a great influence in our evaluations. For
+instance, Table~\ref{} shows the values of DOS and DOF for the scenarios and
+features depicted in Figure~\ref{} and~\ref{}. Although \ldots modularizing
+heterogenous features actually increases the DOS of the base scenarios. 
+
+ 
+    
+
 
 \subsection{Smart Home assessment}
 
@@ -2047,7 +2120,7 @@ duplicated steps among them. These specifications, available on-line, were used
 as input data. Then, six students, organized in groups, were assigned to identify
 the commonalities and variabilities among the products, and to restructure the
 input specifications. Two SPL specifications were produced, one using the PLUSS
-notation and the other one using the SVCM approach.
+notation and the other one using the SVCM approach.
 
 %This study was divided in four major phases: (1) the specification of the input
 %data --- three different configurations of the security module of a smart home

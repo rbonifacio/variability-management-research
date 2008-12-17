@@ -46,12 +46,13 @@ concerns are separated from other concerns (Section~\ref{sec:svmc}).
 %Although this work focus on requirement artifacts, more specifically use case scenarios, we argue that such separation is also valid for other SPL artifacts. Actually, it has already been claimed for source code~\cite{Alves:2006aa,Apel:2006aa}, without considering the importance of variability artifacts.
 
 \item A framework for modeling the composition process of scenario variability
-mechanisms (Section~\ref{sec:modeling-framework}). This framework gives a basis
-for describing variability as crosscutting mechanisms, {\color{red}at the same
-time that the reference implementation provided for each mechanism corresponds to the
-essencial part of the environment responsible for mechanizing the composition
-processes. However, this paper does not present details about such an environment. Here,
-we focus just on its essencial parts.}
+mechanisms (Section~\ref{sec:modeling-framework}). Differently from existing
+works~\cite{Morin:2008aa,Groher:2008aa}, this framework gives a basis for
+describing variability as crosscutting mechanisms, at the same time it considers the contribution of different input
+languages: feature models, product configuration, configuration knowledge and SPL use case
+model. Moreover, the reference implementation provided for each variability
+mechanism corresponds to the essencial parts of a tool environment for scenario
+variability management. In this paper we focus just in these essencials.
 
 \item Specification of three {\color{red}sources of variability for use case
 scenarios: variability in function (Section~\ref{sub:pd-weaver}),
@@ -61,9 +62,9 @@ semantic representation when compared to existing works; which is an important p
 for supporting the automatic derivation of product specific artifacts.
 \end{itemize}
 
-{\color{red}It is important to notice that we do not claim that the sources of
-variability (or kinds of composition) for use case scenarios presented here are complete.
-However, our modeling framework is able to represent
+{\color{red}The sources of
+variability (or kinds of composition) for use case scenarios presented here are
+not complete. However, our modeling framework is able to represent
 other interesting sources of variability, such as context-aware adaptability.
 Additionally, since the word \emph{scenario} has different meanings in software
 engineering, we want to make clear that in the remainder of this paper the term
