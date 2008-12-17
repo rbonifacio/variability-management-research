@@ -42,11 +42,18 @@ dependency with a feature $f$ iff the configuration of $f$ affects the selection
 or the configuration of the step $s$. Therefore, we name our assignment approach
 \emph{configuration dependency analysis}.
 
-%We could have used absolute values for quantifying scattering and tangling, as in a previous work~\cite{Bonifacio:2008aa}. Absolute values were computed using metrics such as feature diffusion over scenarios and number of features per scenario~\cite{Bonifacio:2008aa}. However, our previous metric suite just reveals if a feature is scattered or not--- without any information about the degree of its scattering. In fact, this limitation hinders the comparison of modularity between different specifications.
+% We could have used absolute values for quantifying scattering and tangling, as
+% in a previous work~\cite{Bonifacio:2008aa}. Absolute values were computed using
+% metrics such as feature diffusion over scenarios and number of features per
+% scenario~\cite{Bonifacio:2008aa}. However, our previous metric suite just
+% reveals if a feature is scattered or not--- without any information about the
+% degree of its scattering. In fact, this limitation hinders the comparison of
+% modularity between different specifications.
 
-We can now explain the customization of both metrics (degree of scattering and degree of focus) used in this work. First, the \emph{degree of scattering} of a feature $f$ is
-calculated by normalizing its concentration with respect to each scenario $s \in
-S$ (the set of all scenarios).
+We can now explain the customization of both metrics (degree of scattering and
+degree of focus) used in this work. First, the \emph{degree of scattering} of a
+feature $f$ is calculated by normalizing its concentration with respect to each
+scenario $s \in S$ (the set of all scenarios).
 
 \begin{center}
 $DOS(f) = 1 - \frac{\mid S \mid \sum_{s}^{S}(CONC(f,s)-\frac{1}{\mid S
@@ -74,9 +81,46 @@ ones~\cite{Eaddy:2007aa}: (a) the
 and 1 (completely unlocalized); and (b) the \emph{degree of focus} (DoF) is also
 normalized between 0 (completely unfocused) and 1 (completely focused).
 
-%The next sections describe the assessment of the different case studies that we
-%have applied our approach. These assessments consider the metric suite just
-%presented.
+Consider the scenarios shown in Figure~\ref{fig:smartHomeScenarios}, which
+represents the assignment of a few features of the Smart Home to 
+both PLUSS and MSVCM specifications. For instance, the left hand side of
+Figure~\ref{fig:smartHomeScenarios}(a) depicts that the PLUSS specification of
+Register Inhabitant scenario has seven steps. Two of these steps were assigned
+only to the \emph{Register Inhabitant} (RI) feature; other two steps
+were assigned to the interactions between \emph{Register Inhabitant} and
+\emph{Password} features; and other three steps were assigned to the
+interactions between \emph{Register Inhabitant} and \emph{Fingerprint}
+features. Note that the \emph{Password} and \emph{Fingerprint} features, which
+are mutually exclusive, also change the behavior of \emph{Request Access to Home}
+feature (Figure~\ref{fig:smartHomeScenarios}(b)).
+
+\begin{figure}[htb]
+ \begin{center}
+  \includegraphics[scale=0.60]{img/comparisonScenarios.eps}
+  \caption{Assignment of features in Smart Home.}
+  \label{fig:smartHomeScenarios}
+  \end{center}
+\end{figure}
+
+Similarly, Figure~\ref{} shows some features' assignments for the MMS
+product line. In this case, we want to emphasize that the behavior 
+of the XYZ feature is scattered through the scenarios ABC. This means that,
+the same specification of XYZ feature changes the behavior of other
+features in a similar way. For this reason we classify as
+\emph{homogeneous} the behavior of the XYZ feature. On the other hand, we say
+that the \emph{Password} optional feature has a \emph{heterogeneous crosscutting behavior}, 
+since its specification could not be modularized in a unique advice. 
+The same occured with the \emph{Fingerprint} feature.
+
+We have observed that the crosscutting nature of a feature, which here we
+consider as being homogeneous or heterogenous, has a great influence in our evaluations. For
+instance, Table~\ref{} shows the values of DOS and DOF for the scenarios and
+features depicted in Figure~\ref{} and~\ref{}. Although \ldots modularizing
+heterogenous features actually increases the DOS of the base scenarios. 
+
+ 
+    
+
 
 \subsection{Smart Home assessment}
 
@@ -88,7 +132,7 @@ duplicated steps among them. These specifications, available on-line, were used
 as input data. Then, six students, organized in groups, were assigned to identify
 the commonalities and variabilities among the products, and to restructure the
 input specifications. Two SPL specifications were produced, one using the PLUSS
-notation and the other one using the SVCM approach.
+notation and the other one using the SVCM approach.
 
 %This study was divided in four major phases: (1) the specification of the input
 %data --- three different configurations of the security module of a smart home
