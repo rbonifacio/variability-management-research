@@ -81,46 +81,103 @@ ones~\cite{Eaddy:2007aa}: (a) the
 and 1 (completely unlocalized); and (b) the \emph{degree of focus} (DoF) is also
 normalized between 0 (completely unfocused) and 1 (completely focused).
 
+{\color{blue}
 Consider the scenarios shown in Figure~\ref{fig:smartHomeScenarios}, which
-represents the assignment of a few features of the Smart Home to 
+represents the assignment of a few Smart Home features to 
 both PLUSS and MSVCM specifications. For instance, the left hand side of
 Figure~\ref{fig:smartHomeScenarios}(a) depicts that the PLUSS specification of
-Register Inhabitant scenario has seven steps. Two of these steps were assigned
-only to the \emph{Register Inhabitant} (RI) feature; other two steps
+Register Inhabitant scenario has seven steps (\emph{A1, A2, \ldots, A7}). Two of
+these steps were assigned only to the \emph{Register Inhabitant} (RI) feature; other two steps
 were assigned to the interactions between \emph{Register Inhabitant} and
 \emph{Password} features; and other three steps were assigned to the
 interactions between \emph{Register Inhabitant} and \emph{Fingerprint}
 features. Note that the \emph{Password} and \emph{Fingerprint} features, which
-are mutually exclusive, also change the behavior of \emph{Request Access to Home}
-feature (Figure~\ref{fig:smartHomeScenarios}(b)).
+are mutually exclusive, also change the behavior of the \emph{Request Access to
+Home} feature (Figure~\ref{fig:smartHomeScenarios}(b)).
 
-\begin{figure}[htb]
+\begin{figure}[th]
  \begin{center}
   \includegraphics[scale=0.60]{img/comparisonScenarios.eps}
-  \caption{Assignment of features in Smart Home.}
+  \caption{Sample of Smart Home assignment.}
   \label{fig:smartHomeScenarios}
   \end{center}
 \end{figure}
 
-Similarly, Figure~\ref{} shows some features' assignments for the MMS
-product line. In this case, we want to emphasize that the behavior 
-of the XYZ feature is scattered through the scenarios ABC. This means that,
-the same specification of XYZ feature changes the behavior of other
-features in a similar way. For this reason we classify as
-\emph{homogeneous} the behavior of the XYZ feature. On the other hand, we say
-that the \emph{Password} optional feature has a \emph{heterogeneous crosscutting behavior}, 
-since its specification could not be modularized in a unique advice. 
-The same occured with the \emph{Fingerprint} feature.
+Similarly, Figure~\ref{fig:MMSScenarios} shows some feature assignments for the
+MMS product line. In this case, we want to emphasize that the behavior related to
+the \emph{structured data operation} features is scattered through the scenarios
+\emph{Receive a MMS} (RM) and \emph{Select a MMS for Displaying} (SM). This means
+that, the same specification of \emph{Store an Embedded Number} and \emph{Send
+Message to Embedded Email} features changes the behavior of the RM and SM
+features in a similar way. For this reason, we classify the behavior of the
+\emph{Store an Embedded Number} and \emph{Send Message to Embedded Email}
+features as \emph{homogeneous}. On the other hand, we say that the
+\emph{Password} optional feature of the Smart Home case study has a
+\emph{heterogeneous crosscutting behavior}, since its specification could not be
+modularized in a unique advice. The same occured with the \emph{Fingerprint}
+feature.
 
-We have observed that the crosscutting nature of a feature, which here we
-consider as being homogeneous or heterogenous, has a great influence in our evaluations. For
-instance, Table~\ref{} shows the values of DOS and DOF for the scenarios and
-features depicted in Figure~\ref{} and~\ref{}. Although \ldots modularizing
-heterogenous features actually increases the DOS of the base scenarios. 
+ \begin{figure}[bth]
+ \begin{center}
+  \includegraphics[scale=0.60]{img/comparisonScenarios2.eps}
+  \caption{Sample of MMS assignment.}
+  \label{fig:MMSScenarios}
+  \end{center}
+\end{figure}
 
- 
-    
+We have observed that the \emph{crosscutting nature} of a feature, which here we
+consider as being homogeneous or heterogenous, has a great influence in our
+results. For instance, Table~\ref{tab:feature-dos} shows the DOS of
+the features depicted in Figures~\ref{fig:smartHomeScenarios}
+and~\ref{fig:MMSScenarios}. Note that, in MSVCM, modularizing the behavior
+of \emph{Password} and \emph{Fingerprint} as advices had
+increased the DoS of both \emph{Register Inhabitant} and \emph{Request Access to
+Home} features. This side effect does not occur with homogeneous
+crosscutting features--- modularizing the
+\emph{Store a Number} and \emph{Send Message to Email} as advices does not 
+change the DoS of the \emph{Receive a MMS} and \emph{Display a MMS} features.    
 
+\begin{table}[htb]
+\centering
+\caption{DoS of the presented features}
+\label{tab:feature-dos}
+\begin{small}
+\begin{tabular}{llll} \hline
+SPL							&	Feature							& PLUSS	& MSVCM	\\ \hline 
+\multirow{4}{*}{Smart Home} &	Register inhabitant				& 0.00  & 0.57  \\
+							&	Request access to Home			& 0.00  & 0.57  \\ 
+							&	Password						& 0.96  & 0.78  \\ 
+							&	Fingerprint						& 0.96  & 0.78  \\ \hline
+\multirow{4}{*}{MMS} 		&	Receive a MMS					& 0.00  & 0.00  \\ 
+							&	Display a MSS					& 0.00  & 0.00  \\ 
+							& 	Store a Number					& 1.00  & 0.00  \\
+							& 	Send Message to Email			& 1.00  & 0.00  \\ \hline		
+\end{tabular}
+\end{small}
+\end{table}
+
+Besides that, independently of the crosscutting nature of a feature, the
+MSVCM approach eliminates the tangling of the base scenarios, quantified by
+the DoF metric. As shown in Table~\ref{tab:scenario-dof}, base scenarios in
+MSVCM have a higher degree of focus. In the remainder of this section we
+present the sumarized data from the aforementioned case studies. 
+
+\begin{table}[htb]
+\centering
+\caption{DoF of the presented scenarios}
+\label{tab:scenario-dof}
+\begin{small}
+\begin{tabular}{llll} \hline
+							&				& PLUSS	& MSVCM	\\ \hline \\
+\multirow{2}{*}{Smart Home} &	SC01		& 0.24  & 1.00  \\
+							&	SC02		& 0.27  & 1.00  \\ 
+\multirow{2}{*}{MMS} 		&	SC01		& 0.12  & 1.00  \\ 
+							&	SC02		& 0.20  & 1.00  \\ 
+\end{tabular}
+\end{small}
+\end{table}
+
+}
 
 \subsection{Smart Home assessment}
 
