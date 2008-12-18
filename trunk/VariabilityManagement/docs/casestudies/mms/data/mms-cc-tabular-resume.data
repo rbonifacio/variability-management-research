@@ -1,0 +1,5 @@
+Feature					SC01	SC02	ADV01	ADV02
+StoreNumber     		0		0		2		0					
+SendEmail    			0		0		0		2
+ReceiveMessage     		3		0		0		0	
+DisplayMessage	     	0		5		0		0
