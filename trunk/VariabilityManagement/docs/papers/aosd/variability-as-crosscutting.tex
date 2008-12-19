@@ -91,7 +91,7 @@ data FeatureModel = FeatureModel {
 data Feature = Feature  { 
   id :: Id, 
   name :: Name, 
-  featureType :: FeatureType,-- (optinal, mandatory)
+  featureType :: FeatureType,-- (optional, mandatory)
   featureGroup :: Group,-- (none, ior, eor)
   children :: [Feature]
 } 
