@@ -71,7 +71,7 @@ optional and would be present only if the feature \emph{Update User Preference} 
 
 As a consequence, since all possible variants are described in the same
 artifact, the behavior of specific products is difficult to understand with the
-PLUSS approach. Moreover, this tangling between \emph{common} and
+PLUSS approach. In addition, this tangling between \emph{common} and
 \emph{variant} behavior results in maintainability issues: introducing a new product variant
 requires changes in several points of existing scenarios. For example, including a
 \emph{B2B Integration} feature, which allows the integration between partners in
@@ -109,7 +109,7 @@ and each scenario describes several configurations.
   \end{tabular}
   }
 \end{scriptsize}
-\caption{Buy Products scenarios using the PLUSS.}
+\caption{Buy Products scenarios using PLUSS.}
 \label{fig:pluss-01}
 \end{center}
 \end{figure}
@@ -169,29 +169,28 @@ which product is being configured. For each \emph{alternative} or
    \end{tabular}
   }
 \end{scriptsize}
-\caption{Buy Products scenarios using the PLUC.}
+\caption{Buy Products scenarios using PLUC.}
 \label{fig:pluc-01}
 \end{center}
 \end{figure}
 
 Another kind of tangling occurs in this case. The specifications of common and
 variant behavior are separate, but both are tangled with the variation points.
-{\color{red}Even worst}, the definition of the SPL members, described using the
-same tag notation,  {\color{red} is scattered through the \emph{Products
+{\color{red}Additionally}, the definition of the SPL members, described using the
+same tag notation,  {\color{red} is scattered throughout the \emph{Products
 Definition} section of many scenarios (Figure~\ref{fig:pluc-01})}.
-{\color{red} Which means that, differently from PLUSS}, there is no explicit
+{\color{red} Indeed, differently from PLUSS}, there is no explicit
 relationship between product configurations and feature models. In the example, two products (P1 and P2) are defined. The first product is configured by an implicit selection of the \emph{Shopping Cart}, \emph{Bonus}, and \emph{Update
 User Preferences} features; in contrast to the second product that is not
-configured with these features. As the values of alternative and optional
+configured with these features. Since the values of alternative and optional
 variation points are computed based on the defined products, instead of specific
 features, the inclusion of a new member in the product line might require a deep
-review of the \emph{Variation Points} section of {\color{red}almost all}
-scenarios. {\color{red}This specific problem does not occur in the PLUSS notation}. Moreover, since the
+review of the scenarios' \emph{Variation Points section}. {\color{red}This problem does not occur in the PLUSS notation}. Moreover, due to the
 variation points and the product definitions are spread among several scenario
 specifications, it is hard and time consuming to keep consistent the
 relationships between them. Finally, the same definitions (product configuration
 and variation points) are often useful to manage variabilities in other
-artifacts, such as design and source code. As a consequence, this approach
+artifacts, such as design and source code, implying that PLUC
 requires the replication of such definitions in different SPL views.
 
 In conclusion, both PLUSS and PLUC do not present a clear separation between
