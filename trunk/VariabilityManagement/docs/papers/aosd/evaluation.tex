@@ -8,20 +8,16 @@ shown  in Section~\ref{sec:svmc}; the Pedagogical Product Line
 with software product lines, and focuses on the arcade game domain; the Smart
 Home Product Line, based on different
 specifications~\cite{Pohl:2005aa,Alferez:2008aa}, and the Multimedia Message
-Product Line (MMS), a case study conducted with one of our industrial partners.
+Product Line (MMS), a case study conducted with one of our industrial partners.
 
 The last one---which consists of products for creating, sending, and receiving
 multimedia messages (MMS) in mobile phones---was used to evaluate an early
 version of our approach~\cite{Bonifacio:2008aa}, using Design Structure Matrices
 (DSMs)~\cite{Baldwin:2000aa,Lopes:2006aa} and a suite of metrics for quantifying
 specification modularity and complexity. Here, we use it again, but with an
-improved metric suite and a method for assigning features to scenarios steps.
-In the remainder of this section, we first present this new metric suite,
-and then describe the assessment of the Smart Home, MMS, and PPL case studies. Finally, we present some conclusions derived from the analysis of these different product
-lines. {\color{red}We focused our comparisons with
-the PLUSS approach, since we had identified that PLUC specifications are not
-maintainable at all~\cite{Bonifacio:2008aa}. Even the introduction of a new member in the
-SPL require changes in many PLUC scenarios.} 
+improved metric suite and a new method for assigning features to scenarios steps.
+{\color{red}In this paper we focused our comparisons with
+the PLUSS approach, mainly because in a previous work we have identified that PLUC specifications are not maintainable at all~\cite{Bonifacio:2008aa}. Even the introduction of a new member in the SPL require changes in many PLUC scenarios.} 
 
 It is important to note that each case study was conducted with different
 settings. For instance, groups of students were assigned to specify the behavior
@@ -30,18 +26,19 @@ compared our approach to an available PLUSS specification of the PPL. The input
 data and the tasks performed in each case study were also different. For example,
 some of the case studies (Smart Home and MMS) started from the specification of
 different products of a family. On the other hand, both \emph{eShop} and PPL case
-studies started from existing product line specifications. 
+studies started from existing product line specifications. Next, we first present this new metric suite,
+and then describe the assessment of the Smart Home, MMS, and PPL case studies. 
+
 
 \subsection{Metric suite}\label{sub:metric-suite}
 
-In order to compare feature scattering and scenario cohesion in both MSVCM and
-PLUSS, we adopted the metric suite proposed by Eaddy et al.~\cite{Eaddy:2007aa}.
-This suite considers the degree of scattering of features (concerns in the
-original paper) and the degree of focus of scenarios (components in the original
-paper). We also adopted their \emph{prune dependency analysis}, as a guide to
-assign features to scenario steps. Actually, a step $s$ depends on a feature $f$
-iff the configuration of $f$ effects the selection or the configuration of the step $s$. Therefore, we name our assignment approach
-\emph{configuration dependency analysis}.
+In order to evaluate our approach, we customized the metric suite proposed by Eaddy et al.~\cite{Eaddy:2007aa},
+considering the degree of scattering of features and the degree of focus of scenarios. We also customized their \emph{prune dependency analysis}, as a guide to
+assign features to scenario steps. Actually, we consider that a step $s$ depends on a feature $f$ iff the configuration of $f$ effects the selection or the configuration of the step $s$. Therefore, we name our assignment approach
+\emph{configuration dependency analysis}.  The \emph{degree of scattering} of a
+feature $f$ is calculated by normalizing its concentration with respect to each
+scenario $s \in S$ (the set of all scenarios).
+
 
 % We could have used absolute values for quantifying scattering and tangling, as
 % in a previous work~\cite{Bonifacio:2008aa}. Absolute values were computed using
@@ -50,11 +47,11 @@ iff the configuration of $f$ effects the selection or the configuration of the s
 % reveals if a feature is scattered or not--- without any information about the
 % degree of its scattering. In fact, this limitation hinders the comparison of
 % modularity between different specifications.
-
-We can now explain the semantics of both metrics (degree of scattering and
-degree of focus) used in this work. First, the \emph{degree of scattering} of a
-feature $f$ is calculated by normalizing its concentration with respect to each
-scenario $s \in S$ (the set of all scenarios).
+%
+%We can now explain the semantics of both metrics (degree of scattering and
+%degree of focus) used in this work. First, the \emph{degree of scattering} of a
+%feature $f$ is calculated by normalizing its concentration with respect to each
+%scenario $s \in S$ (the set of all scenarios).
 
 \begin{center}
 $DOS(f) = 1 - \frac{\mid S \mid \sum_{s}^{S}(CONC(f,s)-\frac{1}{\mid S
@@ -64,7 +61,7 @@ $CONC(f,s) = \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\
 of\ steps\ assigned\ to\ f}$
 \end{center}
 
-Likewise, we can calculate the \emph{degree of focus} of a scenario $s$ by
+Likewise, the \emph{degree of focus} of a scenario $s$ is calculated by
 normalizing its dedication with respect to each feature $f \in F$ (the set of
 all features).
 
@@ -93,12 +90,13 @@ were assigned to the interactions between \emph{Register Inhabitant} and
 interactions between \emph{Register Inhabitant} and \emph{Fingerprint}
 features. Notice that the \emph{Password} and \emph{Fingerprint} features, which
 are mutually exclusive, also change the behavior of the \emph{Request Access to
-Home} feature (Figure~\ref{fig:smartHomeScenarios}(b)).
+Home} feature (Figure~\ref{fig:smartHomeScenarios}(b)).
+
 
 \begin{figure}[th]
  \begin{center}
-  \includegraphics[scale=0.60]{img/comparisonScenarios.eps}
-  \caption{Sample of Smart Home assignment.}
+  \includegraphics[scale=0.65]{img/comparisonScenarios.eps}
+  \caption{Sample of Smart Home assignments.}
   \label{fig:smartHomeScenarios}
   \end{center}
 \end{figure}
@@ -106,49 +104,48 @@ Home} feature (Figure~\ref{fig:smartHomeScenarios}(b)).
 Similarly, Figure~\ref{fig:MMSScenarios} shows some feature assignments for the
 MMS product line. In this case, we want to emphasize that the behavior related to
 the \emph{Store an Embedded Number} and \emph{Send a Message to Embedded Email} 
-features change the behavior of the \emph{Receive a MMS} (RM) and \emph{Select a
-MMS for Displaying} (SM) features in a similar way. For this reason, we
+features change the behavior of the \emph{Receive a MMS} and \emph{Select a
+MMS for Displaying} features in a similar way. For this reason, we
 classify the behavior of the \emph{Store an Embedded Number} and \emph{Send
 a Message to Embedded Email} features as \emph{homogeneous}. On the other hand,
 we say that the \emph{Password} optional feature of the Smart Home case study has a
-\emph{heterogeneous crosscutting behavior}, since its specification could not be
-modularized in a unique advice (Figure~\ref{fig:smartHomeScenarios}(a) and
-(b)). The same occurred with the \emph{Fingerprint} feature.
-\begin{figure}[bth]
+\emph{heterogeneous crosscutting behavior}~\cite{Apel:2006aa}, since it requires one advice for each join point (Figure~\ref{fig:smartHomeScenarios}(a) and (b)). The same occurred with the \emph{Fingerprint} feature.
+
+\begin{figure}[hbt]
  \begin{center}
-  \includegraphics[scale=0.60]{img/comparisonScenarios2.eps}
-  \caption{Sample of MMS assignment.}
+  \includegraphics[scale=0.65]{img/comparisonScenarios2.eps}
+  \caption{Sample of MMS assignments.}
   \label{fig:MMSScenarios}
   \end{center}
 \end{figure}
 
 We have observed that the \emph{crosscutting nature} of a feature, which here we
-consider as being homogeneous or heterogeneous, has a great influence in our
+consider as being homogeneous or heterogeneous~\cite{Apel:2006aa}, has a great influence in our
 results. For instance, Table~\ref{tab:feature-dos} shows the DoS of
 the assets depicted in Figures~\ref{fig:smartHomeScenarios}
 and~\ref{fig:MMSScenarios}. Notice that, in MSVCM, modularizing the behavior
 of \emph{Password} and \emph{Fingerprint} as advices had
 increased the DoS of both \emph{Register Inhabitant} and \emph{Request Access to
-Home} features. This side effect does not occur with homogeneous
+Home} features. A similar problem does not occur with homogeneous
 crosscutting features--- modularizing the
-\emph{Store a Number} and \emph{Send Message to Email} as advices does not 
-change the DoS of the \emph{Receive a MMS} and \emph{Display a MMS} features.    
+\emph{Store an Embedded Number} and \emph{Send Message to Embedded Email} as advices does not 
+change the DoS of the \emph{Receive a MMS} and \emph{Select a MMS for Displaying} features.    
 
-\begin{table}[htb]
+\begin{table}[thb]
 \centering
 \caption{DoS of the presented features}
 \label{tab:feature-dos}
 \begin{small}
-\begin{tabular}{llll} \hline
-SPL							&	Feature							& PLUSS	& MSVCM	\\ \hline 
-\multirow{4}{*}{Smart Home} &	Register Inhabitant				& 0.00  & 0.57  \\
-							&	Request Access to Home			& 0.00  & 0.57  \\ 
-							&	Password						& 0.96  & 0.78  \\ 
-							&	Fingerprint						& 0.96  & 0.78  \\ \hline
-\multirow{4}{*}{MMS} 		&	Receive a MMS					& 0.00  & 0.00  \\ 
-							&	Display a MSS					& 0.00  & 0.00  \\ 
-							& 	Store a Number					& 1.00  & 0.00  \\
-							& 	Send Message to Email			& 1.00  & 0.00  \\ \hline		
+\begin{tabular}{p{0.25in}lll} \hline
+SPL							&	Feature						& PLUSS	& MSVCM	\\ \hline 
+ 							&	Register Inhabitant				& 0.00  & 0.57  \\
+Smart						&	Request Access to Home			& 0.00  & 0.57  \\ 
+Home						&	Password						& 0.96  & 0.78  \\ 
+							&	Fingerprint					& 0.96  & 0.78  \\ \hline
+\multirow{4}{*}{MMS}	 		&	Receive a MMS				& 0.00  & 0.00  \\ 
+							&	Select a MSS for Displaying		& 0.00  & 0.00  \\ 
+							& 	Store an Embedded Number		& 1.00  & 0.00  \\
+							& 	Send a Message to Email			& 1.00  & 0.00  \\ \hline		
 \end{tabular}
 \end{small}
 \end{table}
@@ -157,10 +154,11 @@ Besides that, independently of the crosscutting nature of a feature, the
 MSVCM approach eliminates the tangling of the base scenarios, quantified by
 the DoF metric. As shown in Table~\ref{tab:scenario-dof}, the base scenarios in
 MSVCM have a higher degree of focus. 
-
 In what follows, we present summaries of the data collected from the
 aforementioned case studies. Since each case study presents a different distribution of
-\emph{crosscutting features}, the significance level related to the benefitsof our approach vary. All specifications and collected data are available atthe \emph{Software and Process} area of a web site~\cite{SPG:site}.
+\emph{crosscutting features}, the significance level related to the benefits
+of our approach vary. All specifications and collected data are available~\cite{SPG:site}.
+
 
 \begin{table}[htb]
 \centering
@@ -189,7 +187,8 @@ duplicated steps among them. These specifications, available on-line, were used
 as input data. Then, six students, organized in groups, were assigned to identify
 the commonalities and variabilities among the products, and to restructure the
 input specifications. Two SPL specifications were produced, one using the PLUSS
-notation and the other one using the MSVCM approach
+notation and the other one using the MSVCM approach
+
 %This study was divided in four major phases: (1) the specification of the input
 %data --- three different configurations of the security module of a smart home
 %were specified without PL support; (2) the presentation of preparatory classes to the subjects
@@ -214,7 +213,8 @@ the Smart Home features, computed from the PLUSS and MSVCM specifications.
 Although the MSVCM approach achieved a central tendency (median) of DoS closer to
 zero, we can not realize any significant improvement in this metric. Actually,
 for some features (3 features in a total of 17), the DoS for the MSVCM approach
-presented a greater value than the corresponding ones in PLUSS.
+presented a greater value than the corresponding ones in PLUSS.
+
 
 \begin{table}[htb]
 \centering
@@ -236,7 +236,8 @@ the tangling of the related scenarios. On the other hand, the feature \emph{Turn
 On Internal and External Lights} presents a lower DoS in the MSVCM approach
 (0.00) when compared to the PLUSS (0.54) notation. This feature requires a
 behavior that crosscuts, in a homogeneous way, the different scenarios related to
-the $Intrusion\ Detection$ use case.
+the $Intrusion\ Detection$ use case.
+
 
 Considering the degree of focus (data summarized in Table~\ref{tab:sh-dof}), we
 have evidences of a significant improvement of the MSVCM approach
@@ -268,7 +269,8 @@ is a better separation between common and optional steps of a scenario.
 % crosscutting behavior, modularizing it as an aspectual scenario also improves the
 % DoS. On the other hand, modularizing features effected by heterogeneous
 % crosscutting behavior increases the corresponding \emph{degree of scattering}, at
-% the same time that it reduces the tangling of base scenarios.}
+% the same time that it reduces the tangling of base scenarios.}
+
 
 %The next sections present the evaluation of the Pedagogical Product Line (PPL)
 %and Multimedia Message Product Line (MMS). We have compared our specification of
@@ -421,7 +423,8 @@ evolving a SPL. If a scenario has a lower DoF, introducing a new alternative to 
 requires more changes in the base specification. On the other hand, the level of
 modularity supported by our approach reduces the number of changes in the base
 scenarios of a SPL. As a consequence, a SPL evolves by means of the
-introduction of new scenarios and/or advices. Additionally, evolving a featurewith lower DoS require changes in localized assets.  
+introduction of new scenarios and/or advices. Additionally, evolving a feature
+with lower DoS require changes in localized assets.  
 
 Investigating the effort required for specifying a SPL in
 PLUSS and MSVCM is an issue for future research. However, it is important

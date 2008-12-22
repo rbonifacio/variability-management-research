@@ -6,7 +6,9 @@
 In this Section we describe the notation proposed to represent variability
 management as crosscutting mechanisms. In fact, our notation is a slight
 customization of the \emph{Crosscutting Modeling Framework}, proposed by Masuhara
-and Kiczales (the MK framework)~\cite{Masuhara:2003aa}. The goal of the MK
+and Kiczales (the MK framework)~\cite{Masuhara:2003aa}. 
+
+The goal of the MK
 framework is to explain how different \emph{aspect-oriented} mechanisms support
 crosscutting modularity. In order to do that, each mechanism is represented as a
 three-part description: the related weaving processes take two programs as input,
@@ -14,7 +16,7 @@ which crosscut each other with respect to the resulting program or
 computation~\cite{Masuhara:2003aa}.
 Their requirement for characterizing a mechanism as crosscutting is fulfilled by
 our approach, in the sense that different specifications contribute to the
-definition of a specific SPL member, as illustrated in the previous section. 
+definition of a SPL member. 
 
 %As a
 %consequence, due to its crosscutting nature, the modeling framework proposed
@@ -62,7 +64,7 @@ W = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\},
 \end{center}
 \end{table}
 
-In the next sections we describe the semantics of
+Next, we describe the semantics of
 our weaving process, modeling one weaver for each source of variability and
 providing reference implementations for them.
 
@@ -84,15 +86,15 @@ use case model} (spl), and the $product$ being generated. Then, this function
 returns a new configuration of the product, which is refined by each scenario $s$
 in the SPL use case model that satisfies the condition $(id\ s) \in\ ids$. In
 this case, the configuration knowledge (CK) and the SPL use case model
-(UCM) crosscut each other with respect to the list of scenarios added to the
+(UCM) crosscut each other with respect to the list of selected scenarios of a 
 specific SPL member.
 
 \begin{code}
- selectScenarios ids spl product =
-  addScenarios (product, scenarios)
-  where 	
-    scenarios = [s | s <- (splScenarios spl), (id s) in ids]
-    addScenarios ...
+selectScenarios ids spl product =
+ addScenarios (product, scenarios)
+ where 	
+   scenarios = [s | s <- (splScenarios spl), (id s) in ids]
+   addScenarios ...
 \end{code}
 
 Below we present the concrete instantiation of the first line of the
@@ -100,7 +102,7 @@ Below we present the concrete instantiation of the first line of the
 source of variability. Notice that the configuration knowledge
 binds the first parameter of the \emph{selectScenario} function. Therefore,
 particularly to this weaver, the configuration knowledge contributes to
-the identification of the scenarios that must be added to a specific product.
+the identification of the scenarios that must be selected to a specific product.
 
 
 \begin{code}
@@ -113,13 +115,13 @@ framework, is shown in Table~\ref{tab:vf-weaver}. The \emph{selectScenarios}
 function is used to argue that the model is realizable and
 appropriate~\cite{Masuhara:2003aa}.
 We achieve this by matching the model elements to
-corresponding parameters and auxiliary functions in the implementation.
+the corresponding parameters and auxiliary functions in the implementation.
 
 The input languages
 \emph{configuration knowledge} (CK) and \emph{SPL use case model} (UCM) contributes to the
 binding of \emph{selectScenarios} parameters. An instance of the SPL use
 case model corresponds to the specification of all SPL scenarios.
-Instead, the identification of which scenarios must be added to a specific
+Instead, the identification of which scenarios must be selected to a specific
 feature expression are documented in the configuration knowledge. Finally, the
 \emph{product configuration} (PC) specifies which features were selected for a
 specific product.
@@ -160,9 +162,11 @@ This kind of variability occurs whenever two or more scenarios share the same
 behavior (the sequence of steps) and differ in relation only to values of a same
 concept. For instance, the \emph{Proceed to Purchase} scenario
 (Figure~\ref{fig:proceed-to-checkout}) can be reused for different kinds
-of shipping method. Without this parameterized specification, and aiming, for
-example, at automatically generating a test case suite with a good coverage, it
-would be necessary to create a scenario for each kind of shipping method.
+of shipping method. 
+
+%Without this parameterized specification, and aiming, for
+%example, at automatically generating a test case suite with a good coverage, it
+%would be necessary to create a scenario for each kind of shipping method.
 
 
 % This weaver takes into consideration \emph{scenario specifications} and
@@ -174,12 +178,11 @@ would be necessary to create a scenario for each kind of shipping method.
 % feature}~\cite{gheyi-alloy-06,czarnecki-wsfactory-2005,czarnecki-book}.
 
 
-The next code fragment presents the reference implementation for solving scenario
-parameterization. The function \emph{bindParameter} takes as input the identifier
-of a parameter ($pId$); the identifier of a feature ($fId$); the SPL use case model ($spl$); and the
+The function \emph{bindParameter} is the reference implementation of 
+this weaver. It receives as input 
+a parameter identifier ($pId$); a feature identifier ($fId$); the SPL use case model ($spl$); and the
 $product$ being generated. Then, it replaces all references to $pId$ in
-$product$ by a suitable representation of the corresponding feature selection ($features$), which is represented by the product configuration.
-For example, if a product is configured with both \emph{Economical} and \emph{Fast}
+$product$ by a suitable representation of the corresponding feature selection ($features$). For example, if a product is configured with both \emph{Economical} and \emph{Fast}
 shipping methods, applying this weaver for the \emph{Proceed to
 Purchase} scenario (Figure~\ref{fig:proceed-to-checkout}) replaces each reference to the ``SM'' parameter by
 the text (\emph{Economical, Fast}).
@@ -197,10 +200,8 @@ bindParameter pId fId spl product =
 Below we present the concrete instantiation of the fifth line of
 the \emph{eShop} configuration knowledge (Table~\ref{tab:eshop-ck}), which deals
 with this source of variability. In this case, the configuration knowledge
-binds the first two parameters of the \emph{bindParameter} function. Therefore,
-particularly to this weaver, the configuration knowledge contributes to
-a mapping between \emph{parameter ids}, used in the SPL scenarios, and (alternative
-or optional) features in the feature model. Such a mapping reduces the
+binds the first two parameters of the \emph{bindParameter} function, contributing as 
+a mapping between \emph{parameter ids} and feature configurations. Such a mapping reduces the
 coupling between SPL use case models and feature models.
 
 \begin{code}
@@ -264,10 +265,11 @@ $annotations$ assigned to different steps.
 The function \emph{evaluateAdvice} is the reference implementation of this
 weaver. Basically, this mechanism takes as input the name of an advice to be
 evaluated; the SPL use case model ($spl$), which defines both use cases and
-aspectual use cases; and the $product$ being generated. Then, it evaluates the
-advice, retrieving the steps in the product that match the pointcut clause of the
-advice. Depending on the type of the advice (before or after), the composition of
-the \emph{advice's flow of events} occurs before or after the matched steps.
+advices; and the $product$ being generated. Then, it evaluates the
+advice, retrieving the steps in \emph{product} that match the pointcut clause. Finally, the function introduces the advice's flow of events before or after the matched steps.
+
+%Depending on the type of the advice (before or after), the composition of
+%the \emph{advice's flow of events} occurs before or after the matched steps.
 
 
 \begin{code}
@@ -281,15 +283,14 @@ evaluateAdvice' product advice =
     then composeBefore product matchedSteps flow
     else composeAfter product matchedSteps flow
   where
-  matchedSteps = match (product (pointCut advice))
-  flow = scenarioOfAdvice (advice)
+   matchedSteps = match (product (pointCut advice))
+   flow = scenarioOfAdvice (advice)
 \end{code}
 
-Below we show a concrete instance of the second line of the \emph{eShop}
+Below we show a concrete instantiation of the second line of the \emph{eShop}
 configuration knowledge (Table~\ref{tab:eshop-ck}). Notice that the configuration
-knowledge binds the first parameter of the \emph{evaluateAdvice} function.
-Therefore, the configuration knowledge contributes to this source of variability
-by relating features to advices.
+knowledge binds the first parameter of the \emph{evaluateAdvice} function, 
+being responsible for relating features expressions to advices.
 
 \begin{code}
 c3 = Configuration (``ShoppingCart'' 'And' ``Bonus'',
@@ -301,10 +302,9 @@ configuration of the \emph{product specific use case model}, whose scenarios wer
 extended by alternative (or optional) flows of events. The extensions occur
 before or after the steps that match ($O_{JP}$) the pointcut clause ($UCM_{ID}$)
 of the advice, declared in the SPL use case model (UCM).
-
-The effect of evaluating the input language ($UCM$) in the composition process is
-to extend product specific scenarios that, before this activity, may not define
-a concrete flow of events. As a consequence, the \emph{match} function plays a
+The effect of evaluating advices in the composition process is
+to extend product specific scenarios that may not define
+a concrete flow of events. The \emph{match} function plays a
 fundamental role in this process, retrieving the steps in the use case model that
 satisfy the pointcut clauses.
 
