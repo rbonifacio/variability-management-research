@@ -320,7 +320,7 @@ that, in our approach, this kind of information is not specified in the use case
 model. Actually, it is necessary to consider the relationships between features
 and scenarios, represented in the configuration knowledge, in order to be aware
 of which scenarios are present in a specific product configuration. Finally,
-since different advices can make references to a same joinpoint,  interferences
+since different advices can make references to a same join point,  interferences
 between advices may occur. Nevertheless, the weaving process evaluates each advice in
 a sequence defined by the configuration knowledge. For this reason, interferences
 between advices are deterministic and do not require specific constructs in the
@@ -375,22 +375,22 @@ Update User Preferences 				& evaluate advice {\bf ADV03} \\     \hline
 \label{tab:eshop-ck}
 \end{table}
 
-{\color{red}Three different tasks are shown
+Three different tasks are shown
 in Table~\ref{tab:eshop-ck}: \emph{select scenario}, \emph{evaluate advice}, and
 \emph{bind parameter}. According to Bachmann et
 al.~\cite{Bachmann:2001aa}, the first type of task deals with the source of
 variability named as \emph{variation in function}, being responsible for
 selecting scenarios; the second one deals with \emph{variation in control flow},
-being responsible for composing advices at specific joinpoints; and the last one
+being responsible for composing advices at specific join points; and the last one
 deals with \emph{variation in data}, being responsible for binding parameters to
-features.} 
+features.
 
-{\color{red} The semantics of these tasks are described as crosscutting mechanisms
+The semantics of these tasks are described as crosscutting mechanisms
 in Section~\ref{sec:modeling-framework}. Besides that, the configuration knowledge data type is shown bellow. As explained before, it is a list of configuration items, which relate feature expressions to
 \emph{tasks}. Actually, the type \texttt{Task} is a synonymous for the
 family of functions that receive a \emph{SPL use case model} ($SPL$) and a \emph{product
 specific use case model} ($SPLMember$) as parameters; and then returns a
-refinement of the product specific model.}
+refinement of the product specific model.
  
  % \begin{small}
  \begin{code}
@@ -404,7 +404,7 @@ refinement of the product specific model.}
  type Task = (SPL -> SPLMember) -> SPLMember
 \end{code}
 
-{\color{red}Note that feature expressions have to be written in propositional
+Note that feature expressions have to be written in propositional
 logic, because it is necessary to express, for example, that the \emph{Buy Products} advice will be evaluated iff the feature expression {\bf ``not ShoppingCart and Bonus''} is true for a specific product configuration.
 
 Indeed, the \emph{weavingProcess} function, whose source code is presented bellow, behaves like a generator that applies 
@@ -433,10 +433,10 @@ g  & = & (evaluate\ ADV01) \\
 f   & = & (evaluate\ ADV02) \\
 \end{eqnarray*}
 
-{\color{red}The previous input models are specified during the domain
+The previous input models are specified during the domain
 engineering phase of SPL development~\cite{Clements:2001aa,Pohl:2005aa}. The next
 one, on the other hand, is supposed to be designed whenever a specific product
-has to be generated. }
+has to be generated.
 
 \subsection{Product configuration}\label{subsub:pc}
 
@@ -445,14 +445,13 @@ configuration of features. One important property is that each product
 configuration must comply to a feature model (the selected features must obey
 the feature model relationships and constraints).
 
-{\color{red}In our environment, we also use the FMP
-tool~\cite{Czarnecki:2004aa} for configuring individual products. Then,
-we parse such configurations to our
-environment, instantiating the abstract representations of the product
-configuration input model. Actually, the abstract representation of a product
+Our tool environment also uses the FMP~\cite{Czarnecki:2004aa} for representing valid configurations
+of specific products. Then, these configurations are parsed to our
+environment, instantiating the abstract representation of the \emph{product
+configuration} input model. Actually, the abstract representation of a product
 configuration is basically a tree representing the selected features. For the
 \emph{eShop} example, two possible configurations are presented in
-Figure~\ref{fig:product-config-01-02}.}
+Figure~\ref{fig:product-config-01-02}.
 
  \begin{figure}[h]
  \begin{center}
@@ -469,7 +468,7 @@ Additionally, it supports only the economical and fast shipping methods. The
 second configuration is more complete, being configured with the features
 \emph{Shopping Cart}, \emph{Bonus}, and \emph{Update User Preferences}.
 
-{\color{red} As explained in the previous section, the features selected to a specific product
+As explained in the previous section, the features selected to a specific product
 (represented as a product configuration) identify which \emph{tasks} (or
 transformations) must be performed in order to generate the corresponding SPL
 member. 
@@ -485,8 +484,7 @@ for the resulting scenarios shown in Figure~\ref{fig:resulting-scenarios}.
  \item The evaluation of \emph{Buy Products with Cart} advice. The result of this evaluation is the introduction of the 
 first two steps in the resulting specification of the \emph{Proceed to Purchase} scenario. 
  
- \item The evaluation of \emph{Register User Preferences} advice. The result of this evaluation is the introduction of the last steps 
-{\color{blue}on} both \emph{Search for Products} and \emph{Proceed to
+ \item The evaluation of \emph{Register User Preferences} advice. The result of this evaluation is the introduction of the last steps on both \emph{Search for Products} and \emph{Proceed to
 Purchase} scenarios.
 
  \item The binding of the \emph{SM} parameter to the selected options of the \emph{Shipping Method} feature. This binding is responsible for 
@@ -494,7 +492,7 @@ Purchase} scenarios.
  resulting \emph{Proceed to Purchase} scenario.
 
 \end{enumerate}
-}
+
  
 \begin{figure}[h]
 \begin{scriptsize}

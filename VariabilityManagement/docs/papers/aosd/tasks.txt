@@ -1,3 +1,5 @@
+* rever o uso de environmento no texto *
+
 Justificar a importância do modelo. Onde fazer isso... introdução, talvez seção 4 e conclusões.
 
 IMPORTANTE: Rever se a organização em camadas 
