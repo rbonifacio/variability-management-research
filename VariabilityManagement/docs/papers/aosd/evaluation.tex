@@ -13,11 +13,10 @@ Product Line (MMS), a case study conducted with one of our industrial partners.
 The last one---which consists of products for creating, sending, and receiving
 multimedia messages (MMS) in mobile phones---was used to evaluate an early
 version of our approach~\cite{Bonifacio:2008aa}, using Design Structure Matrices
-(DSMs)~\cite{Baldwin:2000aa,Lopes:2006aa} and a suite of metrics for quantifying
+(DSMs) and a suite of metrics for quantifying
 specification modularity and complexity. Here, we use it again, but with an
-improved metric suite and a new method for assigning features to scenarios steps.
-{\color{red}In this paper we focused our comparisons with
-the PLUSS approach, mainly because in a previous work we have identified that PLUC specifications are not maintainable at all~\cite{Bonifacio:2008aa}. Even the introduction of a new member in the SPL require changes in many PLUC scenarios.} 
+improved metric suite and a new method for assigning features to scenarios steps. In this paper we focused our comparisons with
+the PLUSS approach, mainly because in a previous work we have identified that PLUC specifications are not maintainable at all~\cite{Bonifacio:2008aa}. Even the introduction of a new member in the SPL require changes in many PLUC scenarios.
 
 It is important to note that each case study was conducted with different
 settings. For instance, groups of students were assigned to specify the behavior
@@ -40,13 +39,7 @@ feature $f$ is calculated by normalizing its concentration with respect to each
 scenario $s \in S$ (the set of all scenarios).
 
 
-% We could have used absolute values for quantifying scattering and tangling, as
-% in a previous work~\cite{Bonifacio:2008aa}. Absolute values were computed using
-% metrics such as feature diffusion over scenarios and number of features per
-% scenario~\cite{Bonifacio:2008aa}. However, our previous metric suite just
-% reveals if a feature is scattered or not--- without any information about the
-% degree of its scattering. In fact, this limitation hinders the comparison of
-% modularity between different specifications.
+
 %
 %We can now explain the semantics of both metrics (degree of scattering and
 %degree of focus) used in this work. First, the \emph{degree of scattering} of a
@@ -79,7 +72,7 @@ ones~\cite{Eaddy:2007aa}: (a) the
 and 1 (completely unlocalized); and (b) the \emph{degree of focus} (DoF) is also
 normalized between 0 (completely unfocused) and 1 (completely focused).
 
-{\color{blue}
+
 For instance, consider the scenarios shown in
 Figure~\ref{fig:smartHomeScenarios}, which represents the assignment of a few Smart Home features to 
 both PLUSS and MSVCM specifications. The left hand side of
@@ -154,6 +147,7 @@ Besides that, independently of the crosscutting nature of a feature, the
 MSVCM approach eliminates the tangling of the base scenarios, quantified by
 the DoF metric. As shown in Table~\ref{tab:scenario-dof}, the base scenarios in
 MSVCM have a higher degree of focus. 
+
 In what follows, we present summaries of the data collected from the
 aforementioned case studies. Since each case study presents a different distribution of
 \emph{crosscutting features}, the significance level related to the benefits
@@ -174,8 +168,6 @@ SPL							&	Scenario		& PLUSS	& MSVCM	\\ \hline
 \end{tabular}
 \end{small}
 \end{table}
-
-}
 
 \subsection{Smart Home assessment}
 
@@ -210,9 +202,8 @@ notation and the other one using the MSVCM approach
 
 Table~\ref{tab:sh-dos} summarizes the resulting \emph{degree of scattering} of
 the Smart Home features, computed from the PLUSS and MSVCM specifications.
-Although the MSVCM approach achieved a central tendency (median) of DoS closer to
-zero, we can not realize any significant improvement in this metric. Actually,
-for some features (3 features in a total of 17), the DoS for the MSVCM approach
+Although the MSVCM approach achieved a central tendency (median) closer to
+zero, for some features (3 features in a total of 17) the DoS for the MSVCM approach
 presented a greater value than the corresponding ones in PLUSS.
 
 
@@ -222,7 +213,7 @@ presented a greater value than the corresponding ones in PLUSS.
 \label{tab:sh-dos}
 \begin{small}
 \begin{tabular}{llllll} \hline
-					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline 
 	PLUSS			& 0.00  & 0.26   	& 0.28  & 0.70 	& 0.08 			\\
 	MSVCM	& 0.00  & 0.00  	& 0.26 	& 0.82 & 0.10  		\\ \hline	
 \end{tabular}
@@ -230,8 +221,7 @@ presented a greater value than the corresponding ones in PLUSS.
 \end{table}
 
 As discussed in the previous section, modularizing the variant behavior of
-\emph{Register Inhabitant} and \emph{Request Access to Home} in aspectual
-scenarios produced the side effect of increasing the DoS, at the same time that it reduced
+\emph{Register Inhabitant} and \emph{Request Access to Home} in advices produced the side effect of increasing the DoS, at the same time that it reduced
 the tangling of the related scenarios. On the other hand, the feature \emph{Turn
 On Internal and External Lights} presents a lower DoS in the MSVCM approach
 (0.00) when compared to the PLUSS (0.54) notation. This feature requires a
@@ -250,7 +240,7 @@ MSVCM approach ($1.00$) is closer to one than the corresponding value
 \label{tab:sh-dof}
 \begin{small}
 \begin{tabular}{llllll} \hline
-					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline 
 	PLUSS			& 0.33  & 0.63   	& 0.68  & 1.00 	& 0.07 			\\
 	MSVCM			& 0.35  & 1.00   	& 0.82 	& 1.00 	& 0.05			\\ \hline	
 \end{tabular}
@@ -260,7 +250,7 @@ MSVCM approach ($1.00$) is closer to one than the corresponding value
 Describing all variants of a behavior in a single asset
 (as exemplified in Section~\ref{sec:problem}) is the main reason for the lack of
 focus in scenarios written in the PLUSS approach. On the other hand, the MSVCM technique
-allows the modularization of variant behavior in aspectual scenarios. The result
+allows the modularization of variant behavior in advices. The result
 is a better separation between common and optional steps of a scenario.
 
 % {\color{green}In summary, the Smart Home case study gives us some evidences that
@@ -294,7 +284,7 @@ summarized in Tables~\ref{tab:mms-dos}~and~\ref{tab:mms-dof}.
 \label{tab:mms-dos}
 \begin{small}
 \begin{tabular}{llllll} \hline
-					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline 
 	PLUSS			& 0.00  & 0.60   	& 0.46  & 0.80 	& 0.11 			\\
 	MSVCM			& 0.00  & 0.41   	& 0.34 	& 0.79 	& 0.10			\\ \hline	
 \end{tabular}
@@ -310,11 +300,7 @@ content that crosscut, in a uniform manner, the behavior related to
 \emph{sending} and \emph{forwarding} messages.
 
 On the other hand, the MMS case study didn't reveal significant improvements with
-respect to the \emph{degree of focus} metric (Table~\ref{tab:mms-dof}). This
-result is also different from the corresponding one observed in the Smart Home
-case study. The main reason for such a difference is that several scenarios of
-the Smart Home specification are effected by alternative features. On the other
-hand, just a few scenarios of the MMS case study are effected by alternative
+respect to the \emph{degree of focus} metric (Table~\ref{tab:mms-dof}). The main reason for such a result is that just a few scenarios of the MMS case study are effected by alternative
 features. Thus, the benefits achieved from extracting varying behavior to
 aspectual scenarios were minimized in this case study.
 
@@ -323,7 +309,7 @@ aspectual scenarios were minimized in this case study.
 \label{tab:mms-dof}
 \begin{small}
 \begin{tabular}{llllll} \hline
-					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline 
 	PLUSS			& 0.34	& 0.59		& 0.70	& 1.00	& 0.07			\\
 	MSVCM			& 0.46  & 0.59   	& 0.71 	& 1.00 	& 0.06			\\ \hline	
 \end{tabular}
@@ -338,17 +324,18 @@ studies in the area. The original specification of PPL~\cite{PPL:2008} is alread
 modularized, since its features, in general, do not crosscut different
 use cases. Moreover, another characteristic of the PPL is that several features
 are related to qualities that do not effect scenario specifications.
-Even in this context, our approach achieves some improvements in the
-resulting \emph{degree of scattering} (Table~\ref{tab:ppl-dos}). For instance,
-in almost all features we were able to improve the DoS (\emph{p-value=0.008}).
 
+Even in this context, our approach achieves some improvements in the
+resulting \emph{degree of scattering} (Table~\ref{tab:ppl-dos}). Modularizing the error handling feature was the main reason for the
+aforementioned improvement. By applying our approach, all behavior related to
+the \emph{error handling} concern was modularized in a single advice. 
 
 \begin{table}[htb] \centering
 \caption{PPL degree of scattering}
 \label{tab:ppl-dos}
 \begin{small}
 \begin{tabular}{llllll} \hline
-					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline 
 	PLUSS			& 0.00	& 0.48		& 0.32	& 0.71	& 0.08			\\
 	MSVCM			& 0.00  & 0.00   	& 0.07 	& 0.64 	& 0.05			\\ \hline	
 \end{tabular}
@@ -356,46 +343,42 @@ in almost all features we were able to improve the DoS (\emph{p-value=0.008}).
 \end{table}
 
 
-Modularizing the error handling feature was the main reason for the
-aforementioned improvement. By applying our approach, all behavior related to
-the \emph{error handling} concern was modularized in a single scenario. The
-composition of \emph{error handling} with the basic scenarios was done by means
-of annotations to the corresponding steps. For instance,
-Figure~\ref{fig:error-handle} depicts just one scenario for error handling:
-raising  an error when there is no space available in the file system.
 
 
-\begin{figure}[h]
-\begin{scriptsize}
-\texttt{
-\begin{tabular}{l}
-     Description: There is no available space in file system.\\
-     After: [CatchFileException] \\
-\end{tabular}
-\begin{center}
-\begin{tabular}{||p{0.1in}||p{0.6in}||p{1.0in}||p{1.0in}||} \hline
-Id & User Action & System State & System Response \\ \hline \hline
-E1 & & There is not enough space to save the file. &  Raise the Disk is Full exception. The arcade game application is finished. \\  \hline \end{tabular} \end{center} }
-\end{scriptsize}
-\caption{Error handling scenario.}
-\label{fig:error-handle}
-\end{figure}
+%For instance,
+%Figure~\ref{fig:error-handle} depicts one scenario for error handling:
+%raising  an error when there is no space available in the file system.
 
-This scenario can be started from any step that has been marked with
-the \emph{CatchFileException} annotation.
-Several features of the PPL need to save information in the file system.
-Therefore, in the PLUSS specifications of the \emph{Pedagogical}
-Product Line, several use cases have to deal with this kind of exception.
-As a consequence, we achieve a reduction (almost 20\%) in the number of scenario
-steps when compared to the PLUSS approach.
+
+%\begin{figure}[h]
+%\begin{scriptsize}
+%\texttt{
+%\begin{tabular}{l}
+%     Description: There is no available space in file system.\\
+%     After: [CatchFileException] \\
+%\end{tabular}
+%\begin{center}
+%\begin{tabular}{||p{0.1in}||p{0.6in}||p{1.0in}||p{1.0in}||} \hline
+%Id & User Action & System State & System Response \\ \hline \hline
+%E1 & & There is not enough space to save the file. &  Raise the Disk is Full exception. The arcade game application is finished. \\  \hline \end{tabular} \end{center} }
+%\end{scriptsize}
+%\caption{Error handling scenario.}
+%\label{fig:error-handle}
+%\end{figure}
+
+%Several features of the PPL need to save information in the file system.
+%Therefore, in the PLUSS specifications of the \emph{Pedagogical}
+%Product Line, several use cases have to deal with this kind of exception.
+%As a consequence, we achieved a reduction (almost 20\%) in the number of scenario
+%steps when compared to the PLUSS approach.
 
 %It is important to notice that this
 %reduction of size didn't compromise the requirements coverage; it actually
 %represents an improvement in specification reuse.
 
-On the other hand, we
-didn't get improvements in the \emph{degree of focus} metric
-(Table~\ref{tab:ppl-dof}). Again, this result is primarily motivated by the
+Similarly to the MMS case study, we
+didn't get significant improvements in the \emph{degree of focus} metric
+(Table~\ref{tab:ppl-dof}). Again, this result was primarily motivated by the
 reason that just a few scenarios of PPL are effected by alternative features. 
 
 \begin{table}[htb] \centering
@@ -403,7 +386,7 @@ reason that just a few scenarios of PPL are effected by alternative features.
 \label{tab:ppl-dof}
 \begin{small}
 \begin{tabular}{llllll} \hline
-					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline \\
+					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline
 	PLUSS			& 0.44	& 1.00		& 0.78	& 1.00	& 0.07			\\
 	MSVCM	& 0.44  & 1.00   	& 0.83 	& 1.00 	& 0.07			\\ \hline	
 \end{tabular}
@@ -412,9 +395,9 @@ reason that just a few scenarios of PPL are effected by alternative features.
 
 \subsection{Discussion}
 
-{\color{red} After running the different case studies, we concluded that the 
+After running the different case studies, we concluded that the 
 \emph{greater} is the number of \emph{homogeneous crosscutting features} and
-the number of alternatives for a same behavior, the greater is the 
+the number of variants for a scenario, the greater is the 
 benefits of applying our approach. In that cases, the MSVCM improvements of 
 both feature modularity and scenario cohesion become more evident. 
 
@@ -422,17 +405,15 @@ In fact, the expected benefit of our approach is to reduce the impact of
 evolving a SPL. If a scenario has a lower DoF, introducing a new alternative to its variant behavior
 requires more changes in the base specification. On the other hand, the level of
 modularity supported by our approach reduces the number of changes in the base
-scenarios of a SPL. As a consequence, a SPL evolves by means of the
-introduction of new scenarios and/or advices. Additionally, evolving a feature
-with lower DoS require changes in localized assets.  
+scenarios of a SPL.  Additionally, evolving a feature
+with lower DoS requires localized changes. 
 
-Investigating the effort required for specifying a SPL in
-PLUSS and MSVCM is an issue for future research. However, it is important
+It is important
 to note that SPL development, independently of the approach, requires a
-mapping between the domain and solution spaces~\cite{Czarnecki:2000aa}. As a
-consequence, here we do not introduce new kinds of concerns to the SPL
-development. Actually, our approach just presents a better separation for
-mapping those SPL concerns. }
+mapping between the domain and solution spaces~\cite{Czarnecki:2000aa,Jayaraman:2007aa}. As a
+consequence, in this paper we did not introduce new kinds of concerns to the SPL
+development. Actually, our approach mainly presents a better separation for
+mapping those SPL concerns. 
 
 
 % \subsection{DSM Analysis}
