@@ -13,7 +13,7 @@ artifacts: SPL use case model, feature model, product configuration,
 and configuration knowledge.
 
 Motivated by the Masuhara and Kiczales (MK) work~\cite{Masuhara:2003aa}, our
-approach for \textbf{scenario variability management} is based on a weaving
+approach for \textbf{scenario variability management} relies on a weaving
 process that takes as input the aforementioned artifacts, which crosscut
 each other with respect to the resulting product specific use case model
 (Figure~\ref{fig:weave-process}). Combining these input artifacts, it is possible
@@ -133,7 +133,7 @@ the configuration knowledge (Section~\ref{sub:configuration-knowledge}).
  Section~\ref{sec:modeling-framework}, is responsible for binding the variation
  points defined in the SPL use case model. In order to do that, other assets
  (such as product configurations and configuration knowledge) have to be
- consider.
+ considered.
 
 Regarding tool support, instances of the use case model can
 be written in any text editor that is able to export documents using a specific
@@ -395,12 +395,10 @@ refinement of the product specific model.
  % \begin{small}
  \begin{code}
  type ConfigurationKnowledge = [Configuration]
-
  data Configuration = Configuration {
   exp :: FeatureExpression,
   tasks :: [Task] 	
  }
-
  type Task = (SPL -> SPLMember) -> SPLMember
 \end{code}
 
@@ -430,7 +428,7 @@ the semantics of this hypothetical product would be given by: $p\ =\  f\ (spl,\ 
 \begin{eqnarray*}
 h  & = & (select\ SC01)\ spl\ emptyInstance \\
 g  & = & (evaluate\ ADV01) \\
-f   & = & (evaluate\ ADV02) \\
+f   & = & (evaluate\ ADV02) 
 \end{eqnarray*}
 
 The previous input models are specified during the domain

@@ -87,7 +87,7 @@
 \visiblecomments
 
 \newlength{\blanklineskip}
-\setlength{\blanklineskip}{0.66084ex}
+\setlength{\blanklineskip}{1mm}
 
 \newcommand{\hsindent}[1]{\quad}% default is fixed indentation
 \let\hspre\empty
@@ -409,7 +409,8 @@ Finally, we evaluate our approach (Section~\ref{sec:evaluation}) by comparing it
 to alternative approaches using different product lines. We also relate our work
 with other research topics (Section~\ref{sec:related}) and present our concluding
 remarks (Section~\ref{sec:conclusions}). In the remainder of this paper, we use the word
-\emph{scenario} as  synonym for the textual specifications of use cases~\cite{Cockburn:2000aa}.
+\emph{scenario} as a synonym for the textual specifications of use
+cases~\cite{Cockburn:2000aa}.
 %-----------------------------------------------------------------------
 % Subsection: Motivating example
 %-----------------------------------------------------------------------
@@ -597,7 +598,8 @@ User Preferences} features; in contrast to the second product that is not
 configured with these features. Since the values of alternative and optional
 variation points are computed based on the defined products, instead of specific
 features, the inclusion of a new member in the product line might require a deep
-review of the scenarios' \emph{Variation Points section}. This problem does not occur in the PLUSS notation. Moreover, due to the
+review of the scenarios' \emph{Variation Points section}. This problem does not 
+occur in the PLUSS notation. Moreover, since the
 variation points and the product definitions are spread among several scenario
 specifications, it is hard and time consuming to keep consistent the
 relationships between them. Finally, the same definitions (product configuration
@@ -660,7 +662,7 @@ artifacts: SPL use case model, feature model, product configuration,
 and configuration knowledge.
 
 Motivated by the Masuhara and Kiczales (MK) work~\cite{Masuhara:2003aa}, our
-approach for \textbf{scenario variability management} is based on a weaving
+approach for \textbf{scenario variability management} relies on a weaving
 process that takes as input the aforementioned artifacts, which crosscut
 each other with respect to the resulting product specific use case model
 (Figure~\ref{fig:weave-process}). Combining these input artifacts, it is possible
@@ -742,7 +744,7 @@ present all input model data types.
 \column{25}{@{}>{\hspre}c<{\hspost}@{}}%
 \column{25E}{@{}l@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\mathbf{data}\;\Conid{FeatureModel}\mathrel{=}\Conid{FeatureModel}\;\{\mskip1.5mu {}\<[E]%
+\>[B]{}\mathbf{data}\;\Conid{FeatureModel}\mathrel{=}\Conid{FeatureModel}\{\mskip1.5mu {}\<[E]%
 \\
 \>[B]{}\hsindent{9}{}\<[9]%
 \>[9]{}\Varid{root}\mathbin{::}\Conid{Feature},{}\<[E]%
@@ -752,7 +754,7 @@ present all input model data types.
 \\
 \>[B]{}\mskip1.5mu\}{}\<[E]%
 \\
-\>[B]{}\mathbf{data}\;\Conid{Feature}\mathrel{=}\Conid{Feature}\;{}\<[25]%
+\>[B]{}\mathbf{data}\;\Conid{Feature}\mathrel{=}\Conid{Feature}{}\<[25]%
 \>[25]{}\{\mskip1.5mu {}\<[25E]%
 \\
 \>[B]{}\hsindent{3}{}\<[3]%
@@ -809,7 +811,7 @@ the configuration knowledge (Section~\ref{sub:configuration-knowledge}).
  Section~\ref{sec:modeling-framework}, is responsible for binding the variation
  points defined in the SPL use case model. In order to do that, other assets
  (such as product configurations and configuration knowledge) have to be
- consider.
+ considered.
 
 Regarding tool support, instances of the use case model can
 be written in any text editor that is able to export documents using a specific
@@ -1074,8 +1076,8 @@ refinement of the product specific model.
 \column{3}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\mathbf{type}\;\Conid{ConfigurationKnowledge}\mathrel{=}[\mskip1.5mu \Conid{Configuration}\mskip1.5mu]{}\<[E]%
-\\[\blanklineskip]%
-\>[B]{}\mathbf{data}\;\Conid{Configuration}\mathrel{=}\Conid{Configuration}\;\{\mskip1.5mu {}\<[E]%
+\\
+\>[B]{}\mathbf{data}\;\Conid{Configuration}\mathrel{=}\Conid{Configuration}\{\mskip1.5mu {}\<[E]%
 \\
 \>[B]{}\hsindent{3}{}\<[3]%
 \>[3]{}\Varid{exp}\mathbin{::}\Conid{FeatureExpression},{}\<[E]%
@@ -1084,7 +1086,7 @@ refinement of the product specific model.
 \>[3]{}\Varid{tasks}\mathbin{::}[\mskip1.5mu \Conid{Task}\mskip1.5mu]{}\<[E]%
 \\
 \>[B]{}\mskip1.5mu\}{}\<[E]%
-\\[\blanklineskip]%
+\\
 \>[B]{}\mathbf{type}\;\Conid{Task}\mathrel{=}(\Conid{SPL}\to \Conid{SPLMember})\to \Conid{SPLMember}{}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
@@ -1130,7 +1132,7 @@ the semantics of this hypothetical product would be given by: $p\ =\  f\ (spl,\ 
 \begin{eqnarray*}
 h  & = & (select\ SC01)\ spl\ emptyInstance \\
 g  & = & (evaluate\ ADV01) \\
-f   & = & (evaluate\ ADV02) \\
+f   & = & (evaluate\ ADV02) 
 \end{eqnarray*}
 
 The previous input models are specified during the domain
@@ -2354,7 +2356,7 @@ reason that just a few scenarios of PPL are effected by alternative features.
 \begin{tabular}{llllll} \hline
 					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline
 	PLUSS			& 0.44	& 1.00		& 0.78	& 1.00	& 0.07			\\
-	MSVCM	& 0.44  & 1.00   	& 0.83 	& 1.00 	& 0.07			\\ \hline	
+	MSVCM			& 0.44  & 1.00  	& 0.83 	& 1.00 	& 0.07			\\ \hline	
 \end{tabular}
 \end{small}
 \end{table}
@@ -2367,15 +2369,18 @@ the number of variants for a scenario, the greater is the
 benefits of applying our approach. In that cases, the MSVCM improvements of 
 both feature modularity and scenario cohesion become more evident. 
 
-In fact, the expected benefit of our approach is to reduce the impact of
-evolving a SPL. If a scenario has a lower DoF, introducing a new alternative to its variant behavior
-requires more changes in the base specification. On the other hand, the level of
+In fact, the expected benefit of our approach is to reduce the impact of evolving
+a SPL. The metric suite presented here tries to quantify such an impact, since
+(a) if a scenario has a lower DoF, introducing a new alternative to its variant
+behavior requires more changes in the base specification; and (b) evolving
+features with high DoS requires changes in different scenarios. Although the
+significance level varies from one case study to another, in most of the cases we
+could improve both scenario cohesion and feature scattering. Therefore, the
 modularity supported by our approach reduces the number of changes in the base
-scenarios of a SPL.  Additionally, evolving a feature
-with lower DoS requires localized changes. 
+scenarios of a SPL; in such a way that it can evolve by means of the
+introduction of new scenarios and/or advices.
 
-It is important
-to note that SPL development, independently of the approach, requires a
+It is important to note that SPL development, independently of the approach, requires a
 mapping between the domain and solution spaces~\cite{Czarnecki:2000aa,Jayaraman:2007aa}. As a
 consequence, in this paper we did not introduce new kinds of concerns to the SPL
 development. Actually, our approach mainly presents a better separation for
@@ -2504,23 +2509,32 @@ To our knowledge, our work is pioneer in applying crosscutting metrics for evalu
 %========================
 \section{Conclusions}\label{sec:conclusions}
 
-In this paper we formally described variability management as 
-crosscutting mechanisms, considering the contribution
-of different input languages that crosscut each other for deriving
-specific members of a product line. 
+In this paper we formally described variability management as crosscutting
+mechanisms, considering the contribution of different input languages that
+crosscut each other for deriving specific members of a product line. We applied
+this notion of variability management in the context of use case scenarios,
+achieving several benefits. First, our approach supports a clear separation of
+concerns between variability and scenario specifications, allowing both
+representations to evolve independently. Second, for different case studies we
+improve both feature modularity and scenario cohesion. Finally, we achieved a
+reduction in the size of specifications by composing scenarios in a quantified
+way. 
 
-We applied this notion of variability management in the context of use
-case scenarios, achieving several benefits. First, our approach supports
-a clear separation of concerns between variability and scenario specifications,
-allowing both representations to evolve independently. Second, for different case studies we improve both feature modularity and scenario cohesion. Finally, we achieved a reduction in the size of specifications by composing scenarios in a quantified way. Besides that, investigating the effort for specifying a SPL in
-existing approaches is an issue for future research.  
+% Besides that, investigating the effort for specifying a SPL in existing
+% approaches is an issue for future research.
 
-Although our modeling framework was instantiated for representing
-scenario variabilities, we believe that it could assist the modular design of variability mechanisms to other kinds of artifacts. Particularly, optional and parameterized artifacts
-are also relevant for non-functional requirements and test cases.
-Moreover, our notion of crosscutting was based on a work target at source code definitions of crosscutting. Therefore,
-we argue that representing variabilities in source code, using our modeling framework,
-is straightforward.
+% Although our modeling framework was instantiated for representing
+% scenario variabilities, we believe that it could assist the modular design of variability mechanisms to other kinds of artifacts. Particularly, optional and parameterized artifacts
+% are also relevant for non-functional requirements and test cases.
+
+% Moreover, our notion of crosscutting was based on a work target at source code definitions of crosscutting. Therefore,
+% we argue that representing variabilities in source code, using our modeling framework,
+% is straightforward.
+
+\section{Acknowledgments}
+We gratefully acknowledge Mehmet Aksit and the anonymous referees
+for useful suggestions to improve the paper. This research was partially
+sponsored by CNPq (grant CT-INFO 17/2007). 
 
 %As future work, we would like to apply our notion of variability management in order
 %to identify relationships between
