@@ -388,7 +388,7 @@ reason that just a few scenarios of PPL are effected by alternative features.
 \begin{tabular}{llllll} \hline
 					& Min 	& Median 	& Mean 	& Max 	& St. Deviation \\ \hline
 	PLUSS			& 0.44	& 1.00		& 0.78	& 1.00	& 0.07			\\
-	MSVCM	& 0.44  & 1.00   	& 0.83 	& 1.00 	& 0.07			\\ \hline	
+	MSVCM			& 0.44  & 1.00  	& 0.83 	& 1.00 	& 0.07			\\ \hline	
 \end{tabular}
 \end{small}
 \end{table}
@@ -401,15 +401,18 @@ the number of variants for a scenario, the greater is the
 benefits of applying our approach. In that cases, the MSVCM improvements of 
 both feature modularity and scenario cohesion become more evident. 
 
-In fact, the expected benefit of our approach is to reduce the impact of
-evolving a SPL. If a scenario has a lower DoF, introducing a new alternative to its variant behavior
-requires more changes in the base specification. On the other hand, the level of
+In fact, the expected benefit of our approach is to reduce the impact of evolving
+a SPL. The metric suite presented here tries to quantify such an impact, since
+(a) if a scenario has a lower DoF, introducing a new alternative to its variant
+behavior requires more changes in the base specification; and (b) evolving
+features with high DoS requires changes in different scenarios. Although the
+significance level varies from one case study to another, in most of the cases we
+could improve both scenario cohesion and feature scattering. Therefore, the
 modularity supported by our approach reduces the number of changes in the base
-scenarios of a SPL.  Additionally, evolving a feature
-with lower DoS requires localized changes. 
+scenarios of a SPL; in such a way that it can evolve by means of the
+introduction of new scenarios and/or advices.
 
-It is important
-to note that SPL development, independently of the approach, requires a
+It is important to note that SPL development, independently of the approach, requires a
 mapping between the domain and solution spaces~\cite{Czarnecki:2000aa,Jayaraman:2007aa}. As a
 consequence, in this paper we did not introduce new kinds of concerns to the SPL
 development. Actually, our approach mainly presents a better separation for
