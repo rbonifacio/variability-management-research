@@ -1,6 +1,0 @@
-instalacao da biblioteca HaXml
-
-- exigiu um esforco razoalvel de configuracao, justificando essas notas
-- necessario ter GNUreadline e GMF.
-- ferramenta para controle de pacotes ghc-pkg (existe uma serie de opcoes para ocultar o tornar um pacote visiviel)
---- ghc-pkg hide {nome do pacote}
