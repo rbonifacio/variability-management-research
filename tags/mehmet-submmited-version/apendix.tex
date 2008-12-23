@@ -1,0 +1,37 @@
+\appendix
+% \section{A configuration knowledge interpreter}
+
+The fragment of code below represents the abstract syntax of the 
+configuration knowledge and the \emph{weavingProcess} function, which 
+corresponds to the implementation of the process shown in Figure~\ref{fig:weave-process}.
+ 
+ %\begin{small}
+ \begin{code}
+ type ConfigurationKnowledge = [Configuration]
+
+ data Configuration = Configuration {
+  exp :: FeatureExpression,
+  tasks :: [Task] 	
+ }
+
+ type Task = (SPL -> SPLMember) -> SPLMember
+
+ weavingProcess spl fm pc ck =
+    stepRefinement [(t spl) | t <- ts] empty where
+     ts = concat [tasks c| c <- ck, eval pc (exp c)] 
+     empty = (emptyInstance spl
+     fc)
+    stepRefinement l m = ...
+ \end{code}
+% \end{small}
+ 
+ The \emph{weavingProcess} function applies the appropriate list of tasks ($ts$)
+ for a given product configuration. Therefore, it is necessary to verify  ($eval\
+ pc\ (exp\ c)$) which expressions ($exp\ c$) are valid for a specific product
+ configuration ($pc$). The $stepRefinement$ function composes the sequence of
+ tasks that must be applied. Supposing $ts = [h,g,f]$, the semantics of this
+ hypothetical product would be given by:
+
+ \begin{center}
+ $ p\ =\ f\ (spl,\ g\ (spl,\ h\ (spl,\ emptyProduct)))  $
+ \end{center}

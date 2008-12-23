@@ -1,0 +1,100 @@
+\documentclass{acm_proc_article-sp}
+%\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{epsfig}
+\usepackage[all]{xy}
+\usepackage{multirow}
+
+%include polycode.fmt
+%include lhs2tex.sty
+
+%format |->           = "\longmapsto"
+%format ^			  = "\otimes"
+%format in			  = "\in"
+%format id			  = "id"
+%format ==            = "=="
+%separation 2
+%latency 1
+
+
+
+
+\begin{document}
+\conferenceinfo{AOSD'09,} {March 2--6, 2009, Charlottesville, Virginia, USA.} 
+
+\CopyrightYear{2009}
+
+\crdata{978-1-60558-442-3/09/03} 
+\lstset{language=Haskell, numbers=left,
+numberstyle=\tiny,numbersep=5pt,basicstyle=\scriptsize,aboveskip=20pt}
+
+\title{Modeling Scenario Variability as Crosscutting Mechanisms}
+
+
+\numberofauthors{2}
+
+\author{
+\alignauthor
+Rodrigo Bonif\'{a}cio\\
+       \affaddr{Informatics Center}\\
+       \affaddr{Federal University of Pernambuco}\\
+       \affaddr{Recife, Brazil}\\
+       \email{rba2@@cin.ufpe.br}
+\alignauthor
+Paulo Borba\\
+       \affaddr{Informatics Center}\\
+       \affaddr{Federal University of Pernambuco}\\
+       \affaddr{Recife, Brazil}\\
+       \email{phmb@@cin.ufpe.br}
+}
+
+\maketitle
+
+\begin{abstract}
+Variability management is a common challenge for Software Product
+Line (SPL) adoption, since developers need suitable
+mechanisms for specifying and implementing variability
+that occurs at different SPL artifacts (requirements, design,
+implementation, and test). In this paper, we present a novel approach for
+use case scenario variability management, enabling a better
+separation of concerns between languages used to manage
+variabilities and languages used to specify use case scenarios. The
+result is that both representations can be understood and evolved in
+a separate way. We achieve such a goal by modeling variability management
+as a crosscutting phenomenon, for the reason that artifacts such as feature models,
+product configurations, and configuration knowledge crosscut each
+other with respect to each specific SPL member. After applying our approach to
+different case studies, we achieved a better feature modularity and scenario cohesion.
+\end{abstract}
+
+\category{D.2.1}{Software Engineering}{Requirements}[Languages,
+Methodologies]\
+\category{D.2.13}{Software Engineering}{Reusable
+Software}
+
+\terms{Design, Documentation}
+
+\keywords{Software product line, variability management, requirements models}
+
+\newdef{definition}{Definition}
+
+%include introduction.tex
+%include motivating-example.tex
+%include variability-as-crosscutting.tex
+%include modeling-framework.tex
+%include evaluation.tex
+%include related.tex
+%include conclusions.tex
+
+%
+% ---- Bibliography ----
+%
+
+\bibliographystyle{abbrv}
+\bibliography{../references/aosd-references}
+%\bibliography{../references/phd-references}
+
+
+\end{document}
