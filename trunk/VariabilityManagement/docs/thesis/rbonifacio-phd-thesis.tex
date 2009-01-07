@@ -21,7 +21,7 @@
 %%         * Paginação
 %%           oneside - para impressão em face única
 %%           twoside - para impressão em frente e verso (padrão)
-\documentclass[en,phd]{ufpethesis}
+\documentclass[en,phd,scr]{ufpethesis}
 
 \institute{Informatics Center}
 
@@ -94,6 +94,7 @@ what happened and it turned out the last version was the same as the first one.
 \mainmatter
 
 \include{introduction}
+\include{background}
 
 
 %%
@@ -104,14 +105,7 @@ what happened and it turned out the last version was the same as the first one.
 % Apêndices
 % Comente se não houver apêndices
 \appendix
-
-% É aconselhável criar cada apêndice em um arquivo à parte, digamos
-% "apendice1.tex", "apendice.tex", ... "apendiceM.tex" e depois
-% incluí-los com:
-% \include{apendice1}
-% \include{apendice2}
-% ...
-% \include{apendiceM}
+\include{appendix1}
 
 
 % Bibliografia
