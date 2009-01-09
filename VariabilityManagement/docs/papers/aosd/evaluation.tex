@@ -8,15 +8,16 @@ shown  in Section~\ref{sec:svmc}; the Pedagogical Product Line
 with software product lines, and focuses on the arcade game domain; the Smart
 Home Product Line, based on different
 specifications~\cite{Pohl:2005aa,Alferez:2008aa}, and the Multimedia Message
-Product Line (MMS), a case study conducted with one of our industrial partners.
+Product Line (MMS), a case study conducted with one of our industrial partners.  In this paper we focused our comparisons with
+the PLUSS approach, mainly because in a previous work we have identified that PLUC specifications are not maintainable at all~\cite{Bonifacio:2008aa}. 
 
-The last one---which consists of products for creating, sending, and receiving
-multimedia messages (MMS) in mobile phones---was used to evaluate an early
-version of our approach~\cite{Bonifacio:2008aa}, using Design Structure Matrices
-(DSMs) and a suite of metrics for quantifying
-specification modularity and complexity. Here, we use it again, but with an
-improved metric suite and a new method for assigning features to scenarios steps. In this paper we focused our comparisons with
-the PLUSS approach, mainly because in a previous work we have identified that PLUC specifications are not maintainable at all~\cite{Bonifacio:2008aa}. Even the introduction of a new member in the SPL require changes in many PLUC scenarios.
+%The last one---which consists of products for creating, sending, and receiving
+%multimedia messages (MMS) in mobile phones---was used to evaluate an early
+%version of our approach~\cite{Bonifacio:2008aa}, using Design Structure Matrices
+%(DSMs) and a suite of metrics for quantifying
+%specification modularity and complexity. Here, we use it again, but with an
+%improved metric suite and a new method for assigning features to scenarios steps. In this paper we focused our comparisons with
+%the PLUSS approach, mainly because in a previous work we have identified that PLUC specifications are not maintainable at all~\cite{Bonifacio:2008aa}. Even the introduction of a new member in the SPL require changes in many PLUC scenarios.
 
 It is important to note that each case study was conducted with different
 settings. For instance, groups of students were assigned to specify the behavior
@@ -88,7 +89,7 @@ Home} feature (Figure~\ref{fig:smartHomeScenarios}(b)).
 
 \begin{figure}[th]
  \begin{center}
-  \includegraphics[scale=0.65]{img/comparisonScenarios.eps}
+  \includegraphics[scale=0.62]{img/comparisonScenarios.eps}
   \caption{Sample of Smart Home assignments.}
   \label{fig:smartHomeScenarios}
   \end{center}
@@ -106,7 +107,7 @@ we say that the \emph{Password} optional feature of the Smart Home case study ha
 
 \begin{figure}[hbt]
  \begin{center}
-  \includegraphics[scale=0.65]{img/comparisonScenarios2.eps}
+  \includegraphics[scale=0.62]{img/comparisonScenarios2.eps}
   \caption{Sample of MMS assignments.}
   \label{fig:MMSScenarios}
   \end{center}
@@ -144,14 +145,7 @@ Home						&	Password						& 0.96  & 0.78  \\
 \end{table}
 
 Besides that, independently of the crosscutting nature of a feature, the
-MSVCM approach eliminates the tangling of the base scenarios, quantified by
-the DoF metric. As shown in Table~\ref{tab:scenario-dof}, the base scenarios in
-MSVCM have a higher degree of focus. 
-
-In what follows, we present summaries of the data collected from the
-aforementioned case studies. Since each case study presents a different distribution of
-\emph{crosscutting features}, the significance level related to the benefits
-of our approach vary. All specifications and collected data are available~\cite{SPG:site}.
+MSVCM approach eliminates the tangling of the base scenarios (Table~\ref{tab:scenario-dof}), quantified by the DoF metric.  In what follows, we present summaries of the data collected from the different case studies. All specifications and collected data are available~\cite{SPG:site}.
 
 
 \begin{table}[htb]
@@ -176,10 +170,8 @@ specifications. Initially, three different products of the security module of a
 Smart Home family~\cite{Pohl:2005aa} were specified. Almost six use cases and
 fifteen scenarios are present in each product, with a significant number of
 duplicated steps among them. These specifications, available on-line, were used
-as input data. Then, six students, organized in groups, were assigned to identify
-the commonalities and variabilities among the products, and to restructure the
-input specifications. Two SPL specifications were produced, one using the PLUSS
-notation and the other one using the MSVCM approach
+as input data. Then, two groups of students were assigned to restructure the
+input specifications, using either PLUSS or MSVCM approaches. 
 
 %This study was divided in four major phases: (1) the specification of the input
 %data --- three different configurations of the security module of a smart home
@@ -247,11 +239,11 @@ MSVCM approach ($1.00$) is closer to one than the corresponding value
 \end{small}
 \end{table}
 
-Describing all variants of a behavior in a single asset
-(as exemplified in Section~\ref{sec:problem}) is the main reason for the lack of
-focus in scenarios written in the PLUSS approach. On the other hand, the MSVCM technique
-allows the modularization of variant behavior in advices. The result
-is a better separation between common and optional steps of a scenario.
+%Describing all variants of a behavior in a single asset
+%(as exemplified in Section~\ref{sec:problem}) is the main reason for the lack of
+%focus in scenarios written in the PLUSS approach. On the other hand, the MSVCM technique
+%allows the modularization of variant behavior in advices. The result
+%is a better separation between common and optional steps of a scenario.
 
 % {\color{green}In summary, the Smart Home case study gives us some evidences that
 % removing tangling by means of aspectual scenarios improves the \emph{degree of focus}.
@@ -398,7 +390,7 @@ reason that just a few scenarios of PPL are effected by alternative features.
 After running the different case studies, we concluded that the 
 \emph{greater} is the number of \emph{homogeneous crosscutting features} and
 the number of variants for a scenario, the greater is the 
-benefits of applying our approach. In that cases, the MSVCM improvements of 
+benefits of applying our approach. In that cases, the MSVCM improvements on 
 both feature modularity and scenario cohesion become more evident. 
 
 In fact, the expected benefit of our approach is to reduce the impact of evolving
