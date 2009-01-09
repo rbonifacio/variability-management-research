@@ -12,6 +12,113 @@ notation and the other one using the MSVCM approach
 
 \section{PLUSS specifications}
 
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC01} 	\\
+     {\bf Description:} Register inhabitant\\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1in}|p{2.5in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [RI]	& 
+       The home owner selects the register inhabitant
+       option in the security configuration menu. & 
+       The inhabitant personal form is
+       displayed. \\ \hline
+       2 [RI] and [Password] & 
+       The home owner fills in the inhabitant personal form and selects the
+       proceed option. & 
+       The system requires the inhabitant password (and
+       password confirmation) for getting access to the home. \\ \hline
+       2 [RI] and [FingerPrint] & 
+       The home owner fills in the inhabitant personal form and selects the proceed option. &
+       The system requires the inhabitant inhabitant finger print to capture
+       it. \\ \hline
+       3 [RI] and [Password] &
+       The system requires the inhabitant inhabitant
+       finger print to capture it. & 
+       The system requests the home owner configuration password. \\ \hline
+       3 [RI] and [FingerPrint] & 
+       The new inhabitant put your finger in the finger print capture device. &
+       The system get the new inhabitant finger print information and asks the
+       home owner to proceed. \\ \hline
+       4 [RI] and [Password] & 
+       The home owner selects the proceed option. & 
+       The system requests the home owner configuration password. \\ \hline
+       5 [RI] &
+      The home owner fills in the configuration password and selects the
+      proceed option. & 
+      The system register the new inhabitant, allowing he (she) to access the
+      smart house. \\ \hline       
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Register inhabitant scenario.}
+\label{fig:register-inhabitant-pluss}
+\end{figure}
 
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC02} 	\\
+     {\bf Description:} Defines the home state\\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1in}|p{2.5in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [DHS] + [HS]	& 
+       The home owner selects the set home state option in the security configuration menu. & 
+       The home state form is displayed, requiring the selection of one of the
+       available states HomeState \\ \hline    
+       2 [DHS] & The home owner selects one of the configured states. & The
+       system requests the home owner configuration password.\\ \hline
+       3 [DHS] & The home owner fills in the configuration password and selects
+       the proceed option. & The system updates the home state and activates
+       the corresponding intrusion and presence policies. \\ \hline
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Defines the home state.}
+\label{fig:defines-the-home-state-pluss}
+\end{figure}
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC02} 	\\
+     {\bf Description:} Defines policies for home state\\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1in}|p{2.5in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [DP] + [HS]	& 
+       The home owner selects the configure policies for home state option in
+       the security configuration menu. & The home state form is displayed,
+       requiring the selection of one of the available states HomeState \\
+       \hline
+       2 [DP] & The home owner selects one of the available states. & The home
+       state policy form is displayed, requiring: list of notification numbers,
+       audio message, and text message. \\ \hline
+       3 [DP] & The home owner fills in the requested information. & The system
+       requests the home owner configuration password. \\ \hline 
+       4 [DP] & The home owner fills in the configuration password and selects
+       the proceed option. & The system updates the home state and activates
+       the corresponding intrusion and presence policies. \\ \hline 
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Defines the home state.}
+\label{fig:defines-the-home-state-pluss}
+\end{figure}
 
 \section{MSVCM specifications}
