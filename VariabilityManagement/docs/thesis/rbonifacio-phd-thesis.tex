@@ -23,32 +23,23 @@
 %%           twoside - para impressão em frente e verso (padrão)
 \documentclass[en,phd,scr]{ufpethesis}
 
-\institute{Informatics Center}
-
+\institute{Centro de Informática}
 \program{Pós-graduação em Ciência da Computação}
-
 \majorfield{Engenharia de Software}
-
 % Título da dissertação/tese
 % e.g. \title{Sobre a conjectura $P=NP$}
 \title{Modeling Variability Management as Crosscutting Mechanisms}
-
 % Data da defesa
 % e.g. \date{19 de fevereiro de 2003}
 %\date{<DATA DA DEFESA>}
-
 \author{Rodrigo Bonifácio de Almeida}
-
 \adviser{Prof. Paulo Henrique Monteiro Borba}
-
-
 %% Inicio do documento
 \begin{document}
 
 \frontmatter
 \frontpage
 \presentationpage
-
 % Dedicatória
 % Comente para ocultar
 %\begin{dedicatory}
@@ -59,7 +50,6 @@
 % Se preferir, crie um arquivo à parte e o inclua via \include{}
 %\acknowledgements
 %\include{acknowledgements}
-
 \begin{epigraph}[Dutch public TV broadcaster, 2001]{Edsger W. Dijkstra}
 There are many different styles of composition. 
 I characterize them always as Mozart versus Beethoven. When Mozart began 
@@ -69,45 +59,32 @@ beautiful. Beethoven was an indecisive and a tinkerer and wrote down before he h
 composition ready and plastered parts over to change them. There was a certain place where 
 he plastered over nine times and one did remove that carefully to see
 what happened and it turned out the last version was the same as the first one.
-\end{epigraph}\include{resumo}
-
+\end{epigraph}\include{resumo}
 \include{abstract}
-
-
 % Sumário
 % Comente para ocultar
 \tableofcontents
-
 % Lista de figuras
 % Comente para ocultar
 \listoffigures
-
 % Lista de tabelas
 % Comente para ocultar
 \listoftables
-
-
-
 %%
 %% Parte textual
 %%
 \mainmatter
 
-\include{introduction}
-\include{background}
-
-
+\input{introduction}
+\input{background}
 %%
 %% Parte pós-textual
 %%
 \backmatter
-
 % Apêndices
 % Comente se não houver apêndices
 \appendix
-\include{appendix1}
-
-
+\input{appendix1}
 % Bibliografia
 % É aconselhável utilizar o BibTeX a partir de um arquivo, digamos "biblio.bib".
 % Para ajuda na criação do arquivo .bib e utilização do BibTeX, recorra ao
@@ -115,11 +92,9 @@ what happened and it turned out the last version was the same as the first one.
 \nocite{*}
 \bibliographystyle{alpha}
 \bibliography{biblio}
-
 % Cólofon
 % Inclui uma pequena nota com referência à UFPEThesis
 % Comente para omitir
 \colophon
-
 %% Fim do documento
 \end{document}

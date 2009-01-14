@@ -11,6 +11,8 @@ input specifications. Two SPL specifications were produced, one using the PLUSS
 notation and the other one using the MSVCM approach
 
 \section{PLUSS specifications}
+In  this Section we present the PLUSS specifications of the Smart Home case
+study.  
 
 \begin{figure}[h]
 \begin{scriptsize}
@@ -66,7 +68,7 @@ notation and the other one using the MSVCM approach
   \texttt{
    \begin{tabular}{l}
    	 {\bf Id: SC02} 	\\
-     {\bf Description:} Defines the home state\\
+     {\bf Description:} Define the home state\\
    \end{tabular}
   \begin{center}
   \begin{tabular}{|p{1in}|p{2.5in}|p{2.5in}|}
@@ -93,8 +95,8 @@ notation and the other one using the MSVCM approach
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
-   	 {\bf Id: SC02} 	\\
-     {\bf Description:} Defines policies for home state\\
+   	 {\bf Id: SC03} 	\\
+     {\bf Description:} Define policies for the home state\\
    \end{tabular}
   \begin{center}
   \begin{tabular}{|p{1in}|p{2.5in}|p{2.5in}|}
@@ -121,4 +123,361 @@ notation and the other one using the MSVCM approach
 \label{fig:defines-the-home-state-pluss}
 \end{figure}
 
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC04} 	\\
+     {\bf Description:} Define rights for the inhabitants\\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1in}|p{2.5in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [DefineRights]	& 
+       The home owner selects the configure rights for inhabitant option in the
+       security configuration menu. & The select an inhabitant form is displayed, 
+       requiring the selection of one of the registered inhabitants. \\ \hline
+       2 [DefineRights] & The home owner selects one of the registered
+       inhabitants & The inhabitant rights form is displayed, requiring the home owner to inform 
+       if the inhabitant is able to entering in the house and which environments of the house 
+       the inhabitant can change the access control.  \\ \hline
+       3 [DefineRights] & The home owner fills in the requested information.  & The system 
+       requests the home owner configuration password. \\ \hline 
+       4 [DefineRights] & The home owner fills in the configuration password and selects the 
+       proceed option. & The system updates the inhabitant rights and activates the corresponding policies. \\ \hline 
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Define rights for the inhabitants.}
+\label{fig:defines-rights-pluss}
+\end{figure}
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC05} 	\\
+     {\bf Description:} Request access to home\\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1in}|p{2.5in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1(a) [RequestAccess] [Password]	& 
+       The inhabitant request access to the home at the main entrance. & The
+       system requests to the user to pass the smart card. \\ \hline 
+       1(b) [RequestAccess] [FingerPrint] & 
+       The inhabitant request access to the home at the main entrance. & The
+       system requests the user to put your finger in the finger print reader.  \\ \hline 
+       (2) [RequestAccess] [Password] & 
+       The inhabitant pass the smart card in the card reader. & The system
+       requests to the user the password to access the smart home. \\ \hline 
+       3(a) [RequestAccess] [Password]&  
+       The inhabitant informs the access password.  & 
+       The system verifies that the password is valid for the registered
+       inhabitant. \\ \hline
+       3(b) [RequestAccess] [FingerPrint]&  
+       The inhabitant put his (her) finger in the fingerprint reader. & 
+       The system recognizes the finger print information as a registered
+       inhabitant. \\ \hline
+       4 [RequestAccess] & & The system displays the message of success login. \\ \hline
+       5 [RequestAccess] & & The system opens the front door and register the occurrence. \\ \hline
+       6 [RequestAccess] & & After SecondToClose seconds, the front door is closed. \\ \hline
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Request access to home.}
+\label{fig:request-access-to-home-pluss}
+\end{figure}
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC06} 	\\
+     {\bf Description:} Invalid attempt to home access \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1(a) [RequestAccess] [Password]	& 
+       The inhabitant request access to the home at the main entrance. & 
+       The system requests to the user to pass the smart card. \\ \hline 
+       1(b) [RequestAccess] [FingerPrint] & 
+       The inhabitant request access to the home at the main entrance. & The
+       system requests the user to put your finger in the finger print reader. \\ \hline 
+       (2) [RequestAccess] [Password] & 
+	   The inhabitant pass the smart card in the card reader. & 
+	   The system requests to the user the password to access the smart home.  \\ \hline 
+	   3(a) [RequestAccess] [Password]&  
+       The inhabitant informs the access password.  & 
+		The system verifies that the password is not valid for the registered inhabitant. \\ \hline
+       3(b) [RequestAccess] [FingerPrint]&  
+       The inhabitant put his (her) finger in the finger print reader. & 
+       The system does not recognize the finger print information as a registered inhabitant. \\ \hline 
+       (4) [RequestAccess] [Password] & & The system displays the message
+       reporting that the inhabitant was not recognized. \\ \hline 
+       5(a) [RequestAccess] [Password] & & The system registers the occurrence.\\ \hline 
+       5(b) [RequestAccess] [FingerPrint]& & The system register the occurrence, taking a photograph of the not recognized inhabitant. \\ \hline
+	   (6) [RequestAccess] [Password] [NumberOfAttempts] & & The system request to
+	   the user to pass the smart card again, returning to the previews step. If the number of 
+	   attempts is greater than NumberOfAttempts, the system sends an warning message for the home 
+	   owner and blocks the inhabitant to enter into the house.  \\ \hline	    	
+	   7 [RequestAccess] & & A warning message is sent to the home owner. \\ \hline
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Invalid attempt to home access.}
+\label{fig:invalid-attempt-to-access-pluss}
+\end{figure}
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC07} 	\\
+     {\bf Description:} Guest requests access and the house is empty \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [GRA]	& 
+       A guest request access to the home at main entrance.  & 
+       The system requests the guest name and the reason for entering in the house. \\ \hline 
+       2 [GRA] & 
+       The guest fills in the requested information & 
+       The system takes a guest photograph and sends a message to the home
+       owner mobile device.  \\ \hline 
+       3 [GRA] & &
+	   The system asks for the guest to wait a few minutes.  \\ \hline 
+       4 [GRA] & 
+	   The home owner, using the mobile interface with the security model,
+	   authorizes the guest to enter into the house. & 
+	   The system displays the message of authorized access. \\ \hline
+	   5 [GRA] & &
+	   The system opens the front door and register the occurrence. \\ \hline 
+	   6 [GRA] & &
+	   After SecondToClose seconds, the front door is closed.  \\ \hline 
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Guest request access and the house is empty.}
+\label{fig:guest-request-access-pluss}
+\end{figure}
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC08} 	\\
+     {\bf Description:} Guest requests access but the home owner does not authorize it \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [GRA]	& 
+       A guest request access to the home at main entrance.  & 
+       The system requests the guest name and the reason for entering in the house. \\ \hline 
+       2 [GRA] & 
+       The guest fills in the requested information & 
+       The system takes a guest photograph and sends a message to the home
+       owner mobile device.  \\ \hline 
+       3 [GRA] & &
+	   The system asks for the guest to wait a few minutes.  \\ \hline 
+       4 [GRA] & 
+	   The home owner do not authorize the guest to enter into the house. & 
+	   The system displays the message of unauthorized access. \\ \hline
+	   5 [GRA] & &
+	   The system asks the guest to place a call to the home owner. The scenario finishes.\\ \hline 
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Not authorized access of a guest}
+\label{fig:guest-request-not-authorized-access-pluss}
+\end{figure}
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC09} 	\\
+     {\bf Description:} Configure access to specific environment \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [CAE]	& 
+       The inhabitant selects the configure access rule for specific
+       environment option in the security configuration menu. & 
+	   The system requests to the user to select a specific environment (room,
+	   office, bedroom, kitchen) of the smart home. \\ \hline 
+	   2 [CAE] & 
+       The inhabitant selects one of the available environments of the smart home.  & 
+       The system checks that the inhabitant is able to change the access rule for the selected environment. \\ \hline 
+       3 [CAE] & The inhabitant select the access rule to be applied in the
+       selected environment. The valid access rules are: restricted and
+       unrestricted. & The system requests the inhabitant password.   \\ \hline 
+       4 [CAE] & 
+	   The inhabitant fills in the password and selects the proceed option. & 
+	   The system applies the policy for the selected environment. \\ \hline	    
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Configure access to specific environment.}
+\label{fig:configure-access-to-environment-pluss}
+\end{figure}
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC10} 	\\
+     {\bf Description:} Insufficient privileges to configure access to a specific environment \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [CAE]	& 
+       The inhabitant selects the configure access rule for specific
+       environment option in the security configuration menu. & 
+	   The system requests to the user to select a specific environment (room,
+	   office, bedroom, kitchen) of the smart home. \\ \hline 
+	   2 [CAE] & 
+       The inhabitant selects one of the available environments of the smart home.  & 
+       The system checks that the inhabitant does not have sufficient
+       privileges to change the access rule for the selected environment.  \\ \hline 
+       3 [CAE] & & The system presents to the user the appropriated message and 
+       the scenario finishes. \\ \hline 	    
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Insufficient privileges for configure access.}
+\label{fig:configure-access-to-environment-pluss}
+\end{figure}
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC11} 	\\
+     {\bf Description:} Intrusion detection \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [ID]	& 
+	   The presence sensor identifies that someone is trying to intrude into the
+	   smart home. This might be deduced by observing any suspect event (forcing or
+       braking) in external doors and windows. & The system emits the configured internal sound alarm.  \\ \hline 
+       2 [ID] & &         
+       The system places a call to the police department  \\ \hline 
+	   (3) [LockBedrooms] & &         
+       The system locks the access to the bedrooms.  \\ \hline
+	   (4) [TurnOnLights] & &         
+       The system turns on external and internal lights. \\ \hline               	    
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Intrusion detection.}
+\label{fig:intrusion-detection-pluss}
+\end{figure}
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC12} 	\\
+     {\bf Description:} Intrusion detection and the house is empty \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [ID]	& 
+	   The presence sensor identifies that someone is trying to intrude into the
+	   smart home. This might be deduced by observing any suspect event (forcing or
+       braking) in external doors and windows. & The system emits the
+       configured internal and external sound alarms. \\ \hline 
+       2 [ID] & &         
+       The system places a call to the police department and sends a message to the home owner.  \\ \hline 
+	   (3) [TurnOnLights] & &         
+       The system turns on external and internal lights. \\ \hline               	    
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Intrusion detection and the house is empty.}
+\label{fig:intrusion-detection-empty-house-pluss}
+\end{figure}
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC13} 	\\
+     {\bf Description:} Presence detection \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [PD]	& 
+	   The presence sensor identifies some presence information.  & The system emits the configured external sound alarm.  \\ \hline 
+       2 [PD] & &         
+       The system places a call to the police department and send a message to the home owner.   \\ \hline 
+	   (3) [TurnOnLights] & &         
+       The system turns on external and internal lights. \\ \hline               	    
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Presence detection.}
+\label{fig:presence-detection-pluss}
+\end{figure}
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC14} 	\\
+     {\bf Description:} Fire detection \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline 
+       1 [FD] & The fire sensor identifies a possible fire occurrence (based on
+       smoke or temperature elevation). & The system emits the configured
+       internal sound alarm. \\ \hline
+       2 [FD] & & The system places a call to the fireguard department and
+       sends a message to the home owner. \\ \hline
+       3 [FD] & & The system unlocks all doors and windows. \\ \hline
+       4 [FD] & & The system sends a message to the fire control system, which
+       performs its configured reactive actions.  \\ \hline
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Fire detection.}
+\label{fig:fire-detection-pluss}
+\end{figure}
+
+
 \section{MSVCM specifications}
+
+
+\section{MSVCM specifications}
+In this section we present the MSVCM specifications of the Smart Home case
+study.
