@@ -1,0 +1,128 @@
+LCompilationUnitP. CompilationUnit ::= "package" [Ident] [Semi] [Import] [TypeDecl] ;
+LCompilationUnit.  CompilationUnit ::= [Import] [TypeDecl] ;
+
+LSemi1.	Semi ::=  ";" ;
+
+LImport.  Import  ::= "import" [Ident] [Semi] ; 
+LImportA. Import ::= "import" [Ident] ".*" [Semi] ;
+separator Import "" ;
+
+
+LDecl. TypeDecl ::= ClassHeader "{" [MemberDeclaration] "}" ;
+separator  TypeDecl "";
+
+LClassDecl.         ClassHeader ::= [Modifier] "class" Ident ; 
+LClassDeclEx.       ClassHeader ::= [Modifier] "class" Ident "extends" [TypeName] ;
+LClassDeclIm.       ClassHeader ::= [Modifier] "class" Ident "implements" [TypeName] ;
+LClassDeclExIm.     ClassHeader ::= [Modifier] "class" Ident "extends" [TypeName] "implements" [TypeName] ; 
+LInterfaceDecl.     ClassHeader ::= [Modifier] "interface" Ident ;
+LInterfaceDeclEx.   ClassHeader ::= [Modifier] "interface" Ident "extends" [TypeName] ;
+LInterfaceDeclIm.   ClassHeader ::= [Modifier] "interface" Ident "implements" [TypeName] ; 
+LInterfaceDeclExIm. ClassHeader ::= [Modifier] "interface" Ident "extends" [TypeName] "implements" [TypeName] ; 
+
+-- member declaration
+
+LMethodDefinition.       MemberDeclaration ::= [Modifier] TypeName Ident "(" [Args] ")"  [Semi] ;
+LMethodDefinitionT.      MemberDeclaration ::= [Modifier] TypeName Ident "(" [Args] ")" Throws [Semi] ;
+LMethodDeclaration.      MemberDeclaration ::= [Modifier] TypeName Ident "(" [Args] ")" BlockStmt ;  
+LMethodDeclarationT.     MemberDeclaration ::= [Modifier] TypeName Ident "(" [Args] ")" Throws BlockStmt ;  
+LFieldDeclaration.       MemberDeclaration ::= [Modifier] VariableDeclaration [Semi] ;
+LConstructorDeclaration. MemberDeclaration ::= [Modifier] Ident "(" [Args] ")" BlockStmt ;
+LStaticBlock.            MemberDeclaration ::= "static" BlockStmt ; 
+
+-- throws declaration
+
+LThrows. Throws ::= "throws" [TypeName] ; 
+ 
+-- variable declaration and initialization  
+
+LVariableDeclaration.  VariableDeclaration ::= TypeName [VariableId] ;
+LVariableDeclarationI. VariableDeclaration ::= TypeName [VariableId] "=" VariableInitializer ; 
+
+LVariableId. VariableId ::= Ident ;
+LVariableIdV. VariableId ::= Ident "[" "]" ; 
+
+LVariableInitializer.  VariableInitializer ::= Stmt ;
+LVariableInitializerV. VariableInitializer ::= "{" [Stmt] "}" ; 
+ 
+separator VariableId "," ;
+
+
+-- statements
+
+LBlockStmt.               BlockStmt ::= "{" [Stmt] "}" ;
+LExpressionStmt.          Stmt      ::= Expression [Semi];  
+LVariableDeclarationStmt. Stmt      ::= VariableDeclaration [Semi] ; 
+LBlockStmtStmT.           Stmt      ::= BlockStmt ;
+
+
+LStmtDummy. Stmt ::= String ;
+
+separator Stmt "" ;
+
+separator MemberDeclaration "";
+
+-- expressions
+
+-- the unary expressions ++ and --
+
+LIncExpressionL. Expression ::= "++" Expression ;
+LIncExpressionR. Expression ::= Expression "++" ;
+LDecExpressionL. Expression ::= "--" Expression ; 
+LDecExpressionR. Expression ::= Expression "--" ;
+
+-- the binary expressions + - * / 
+
+LAddExpression. ::= Expression "+" Expression ;
+LSubExpression. ::= Expression "-" Expression ; 
+LMulExpression. ::= Expression "*" Expression ;
+LDivExpression. ::= Expression "/" Expression ;
+LModExpression. ::= Expression "%" Expression ; 
+
+
+-- args declaration
+LArgs. Args ::= TypeName Ident ;
+
+separator Args "," ; 
+
+
+-- types
+
+Tchar.        BasicType ::= "char";
+Tshort.       BasicType ::= "short";
+Tint.         BasicType ::= "int";
+Tlong.        BasicType ::= "long";
+Tfloat.       BasicType ::= "float";
+Tdouble.      BasicType ::= "double";
+Tbyte.        BasicType ::= "byte";
+Tboolean.     BasicType ::= "boolean";
+
+ArrayType. 	  TypeSpec ::= TypeName [BracketsOpt];
+TypeName. 	  TypeSpec ::= TypeName;
+
+BuiltIn.	  TypeName ::= BasicType;
+ClassType.        TypeName ::= [Ident];
+
+separator nonempty TypeName ",";
+
+BracketsOpt.   BracketsOpt ::= "[]";
+
+separator nonempty BracketsOpt "";
+
+-- modifiers
+
+Mabstract.	  Modifier ::= "abstract";
+Mfinal.		  Modifier ::= "final";
+Mpublic.	  Modifier ::= "public";
+Mprotected.	  Modifier ::= "protected";
+Mprivate.	  Modifier ::= "private";
+Mtransient.	  Modifier ::= "transient";
+Mvolatile.	  Modifier ::= "volatile";
+Mnative.	  Modifier ::= "native";
+Msync.		  Modifier ::= "synchronized";
+Mstatic.	  Modifier ::= "static";
+terminator Modifier "";
+
+
+terminator nonempty Semi "";
+separator nonempty Ident "."; 
