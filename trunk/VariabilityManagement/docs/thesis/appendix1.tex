@@ -476,8 +476,84 @@ study.
 
 
 \section{MSVCM specifications}
-
-
-\section{MSVCM specifications}
 In this section we present the MSVCM specifications of the Smart Home case
 study.
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Scenario SC01} 	\\
+     {\bf Description:} Register inhabitant \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline
+       1 [RI] & The home owner selects the register inhabitant option in the
+       security configuration menu. & The inhabitant personal form is
+       displayed [RegisterInhabitant]. \\ \hline
+       2 [RI] & The home owner fills in the configuration password and selects
+       the proceed option. & The system register the new inhabitant, allowing he
+       (she) to access the smart house. \\ \hline
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Register inhabitant scenario.}
+\label{fig:register-inhabitant-msvcm}
+\end{figure}
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Advice SC01} 	\\
+     {\bf Description:} Register inhabitant with password \\
+     {\bf From: RegisterInhabitant} \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline
+       1 [RI] [Passwordd] & The home owner fills in the inhabitant personal form
+       and selects the proceed option. & The system requires the inhabitant password (and password confirmation) 
+       for getting access to the home. \\ \hline
+       2 [RI] [Password] & The new inhabitant fills in the password (and
+       confirmation password) for home access. & The system requests the home owner
+       configuration password. \\ \hline
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Register inhabitant with password advice.}
+\label{fig:register-inhabitant-password-msvcm}
+\end{figure}
+
+\begin{figure}[h]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Advice SC01} 	\\
+     {\bf Description:} Register inhabitant with FingerPrint \\
+     {\bf From: RegisterInhabitant} \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline
+       1 [RI] [FingerPrint] & The home owner fills in the inhabitant personal form and selects 
+       the proceed option.  & The system requires the inhabitant inhabitant finger 
+       print to capture it. \\ \hline
+       2 [RI] [FingerPrint] & The new inhabitant put your finger in the finger print capture 
+       device. & The system get the new inhabitant finger print information and
+       asks the home owner to proceed.  \\ \hline
+       3 [RI] [FingerPrint] & The home owner selects the proceed option. & 
+       The system requests the home owner configuration password. \\ \hline
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Register inhabitant with fingerprint advice.}
+\label{fig:register-inhabitant-fingerprint-msvcm}
+\end{figure}
