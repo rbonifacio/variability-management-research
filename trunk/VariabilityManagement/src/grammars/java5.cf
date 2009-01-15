@@ -39,7 +39,7 @@ LThrows. Throws ::= "throws" [TypeName] ;
 LVariableDeclaration.  VariableDeclaration ::= TypeName [VariableId] ;
 LVariableDeclarationI. VariableDeclaration ::= TypeName [VariableId] "=" VariableInitializer ; 
 
-LVariableId. VariableId ::= Ident ;
+LVariableId.  VariableId ::= Ident ;
 LVariableIdV. VariableId ::= Ident "[" "]" ; 
 
 LVariableInitializer.  VariableInitializer ::= Stmt ;
@@ -54,10 +54,7 @@ LBlockStmt.               BlockStmt ::= "{" [Stmt] "}" ;
 LExpressionStmt.          Stmt      ::= Expression [Semi];  
 LVariableDeclarationStmt. Stmt      ::= VariableDeclaration [Semi] ; 
 LBlockStmtStmT.           Stmt      ::= BlockStmt ;
-
-
-LStmtDummy. Stmt ::= String ;
-
+LConstantStmt.			  Stmt		::= Constant ;
 separator Stmt "" ;
 
 separator MemberDeclaration "";
@@ -73,13 +70,22 @@ LDecExpressionR. Expression ::= Expression "--" ;
 
 -- the binary expressions + - * / 
 
-LAddExpression. ::= Expression "+" Expression ;
-LSubExpression. ::= Expression "-" Expression ; 
-LMulExpression. ::= Expression "*" Expression ;
-LDivExpression. ::= Expression "/" Expression ;
-LModExpression. ::= Expression "%" Expression ; 
+LAddExpression. Expression ::= Expression "+" Expression ;
+LSubExpression. Expression ::= Expression "-" Expression ; 
+LMulExpression. Expression ::= Expression "*" Expression ;
+LDivExpression. Expression ::= Expression "/" Expression ;
+LModExpression. Expression ::= Expression "%" Expression ; 
 
+-- assignment expressions
+LAssignmentExpression. Expression ::= Expression "=" Expression [Semi] ;
 
+-- 
+LIdentExpression. Expression ::= Ident ; 
+
+-- constant expressions
+
+LConstantExpression. Expression ::= Constant ;
+LStringExpression.   Expression ::= String ;
 -- args declaration
 LArgs. Args ::= TypeName Ident ;
 
@@ -125,4 +131,68 @@ terminator Modifier "";
 
 
 terminator nonempty Semi "";
-separator nonempty Ident "."; 
+separator nonempty Ident ".";
+
+-- tokens. used to define constants.
+
+token Unsigned ["123456789"] digit * ('u'|'U');
+
+token Long ["123456789"] digit * ('l'|'L');
+
+token UnsignedLong ["123456789"] digit * (('u''l')|('U''L'));
+
+token Hexadecimal '0' ('x'|'X') (digit | ["abcdef"] | ["ABCDEF"])+;
+
+token HexUnsigned '0' ('x'|'X') (digit | ["abcdef"] | ["ABCDEF"])+ ('u'|'U');
+
+token HexLong '0' ('x'|'X') (digit | ["abcdef"] | ["ABCDEF"])+ ('l'|'L');
+
+token HexUnsLong '0' ('x'|'X') (digit | ["abcdef"] | ["ABCDEF"])+ (('u''l')|('U''L'));
+
+token Octal '0'["01234567"]*;
+
+token OctalUnsigned '0'["01234567"]*('u'|'U');
+
+token OctalLong '0'["01234567"]* ('l'|'L');
+
+token OctalUnsLong '0'["01234567"]* (('u''l')|('U''L'));
+
+token JDouble (((digit+ '.')|('.' digit+))(('e'|'E') ('-')? digit+)?)|
+              (digit+ ('e'|'E') ('-')? digit+)|(digit+ '.' digit+ 'E' ('-')? digit+);
+
+token JFloat (((digit+ '.' digit+)|(digit+ '.')|('.' digit+))(('e'|'E')('-')? digit+)?
+                               ('f'|'F'))|((digit+ ('e'|'E')('-')? digit+)('f'|'F'));
+
+token JLongDouble (((digit+ '.' digit+)|(digit+ '.')|('.' digit+))(('e'|'E')('-')? 
+                   digit+)?('l'|'L'))|((digit+ ('e'|'E')('-')? digit+)('l'|'L'));
+
+token UnicodeChar '\'' '\\' 'u' (digit | ["abcdef"] | ["ABCDEF"]) (digit | ["abcdef"] | ["ABCDEF"]) (digit | ["abcdef"] | ["ABCDEF"]) (digit | ["abcdef"] | ["ABCDEF"]) '\'';
+
+token JChar '\'' ((char - ["'\\"]) | ('\\' ["'\\ntr"])) '\'';
+
+Efloat.        Constant ::= Double;
+Echar.         Constant ::= JChar;
+Eunicode.      Constant ::= UnicodeChar;
+Eunsigned.     Constant ::= Unsigned;
+Elong.         Constant ::= Long;
+Eunsignlong.   Constant ::= UnsignedLong;
+Ehexadec.      Constant ::= Hexadecimal;
+Ehexaunsign.   Constant ::= HexUnsigned;
+Ehexalong.     Constant ::= HexLong;
+Ehexaunslong.  Constant ::= HexUnsLong;
+Eoctal.        Constant ::= Octal;
+Eoctalunsign.  Constant ::= OctalUnsigned;
+Eoctallong.    Constant ::= OctalLong;
+Eoctalunslong. Constant ::= OctalUnsLong;
+Ecdouble.      Constant ::= JDouble;
+Ecfloat.       Constant ::= JFloat;
+Eclongdouble.  Constant ::= JLongDouble;
+Eint.          Constant ::= Integer;  
+Etrue.	       Constant ::= "true";
+Efalse.	       Constant ::= "false";
+
+internal Elonger. Constant ::= Integer;
+internal Edouble. Constant ::= Double;
+
+
+ 
