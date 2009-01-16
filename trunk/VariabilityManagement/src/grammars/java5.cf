@@ -51,41 +51,23 @@ separator VariableId "," ;
 -- statements
 
 LBlockStmt.               BlockStmt ::= "{" [Stmt] "}" ;
-LExpressionStmt.          Stmt      ::= Expression [Semi];  
 LVariableDeclarationStmt. Stmt      ::= VariableDeclaration [Semi] ; 
 LBlockStmtStmT.           Stmt      ::= BlockStmt ;
-LConstantStmt.			  Stmt		::= Constant ;
+LExpressionStmt.          Stmt 		::= Expression [Semi] ;
+
 separator Stmt "" ;
 
 separator MemberDeclaration "";
 
 -- expressions
 
--- the unary expressions ++ and --
-
-LIncExpressionL. Expression ::= "++" Expression ;
-LIncExpressionR. Expression ::= Expression "++" ;
-LDecExpressionL. Expression ::= "--" Expression ; 
-LDecExpressionR. Expression ::= Expression "--" ;
-
--- the binary expressions + - * / 
-
-LAddExpression. Expression ::= Expression "+" Expression ;
-LSubExpression. Expression ::= Expression "-" Expression ; 
-LMulExpression. Expression ::= Expression "*" Expression ;
-LDivExpression. Expression ::= Expression "/" Expression ;
-LModExpression. Expression ::= Expression "%" Expression ; 
-
--- assignment expressions
-LAssignmentExpression. Expression ::= Expression "=" Expression [Semi] ;
-
--- 
-LIdentExpression. Expression ::= Ident ; 
-
--- constant expressions
+-- constant expressions.
 
 LConstantExpression. Expression ::= Constant ;
 LStringExpression.   Expression ::= String ;
+LIdentExpression. Expression ::= Ident ; 
+
+
 -- args declaration
 LArgs. Args ::= TypeName Ident ;
 
@@ -130,7 +112,7 @@ Mstatic.	  Modifier ::= "static";
 terminator Modifier "";
 
 
-terminator nonempty Semi "";
+terminator Semi "";
 separator nonempty Ident ".";
 
 -- tokens. used to define constants.
@@ -170,26 +152,27 @@ token UnicodeChar '\'' '\\' 'u' (digit | ["abcdef"] | ["ABCDEF"]) (digit | ["abc
 
 token JChar '\'' ((char - ["'\\"]) | ('\\' ["'\\ntr"])) '\'';
 
-Efloat.        Constant ::= Double;
-Echar.         Constant ::= JChar;
-Eunicode.      Constant ::= UnicodeChar;
-Eunsigned.     Constant ::= Unsigned;
-Elong.         Constant ::= Long;
-Eunsignlong.   Constant ::= UnsignedLong;
-Ehexadec.      Constant ::= Hexadecimal;
-Ehexaunsign.   Constant ::= HexUnsigned;
-Ehexalong.     Constant ::= HexLong;
-Ehexaunslong.  Constant ::= HexUnsLong;
-Eoctal.        Constant ::= Octal;
-Eoctalunsign.  Constant ::= OctalUnsigned;
-Eoctallong.    Constant ::= OctalLong;
-Eoctalunslong. Constant ::= OctalUnsLong;
-Ecdouble.      Constant ::= JDouble;
-Ecfloat.       Constant ::= JFloat;
-Eclongdouble.  Constant ::= JLongDouble;
-Eint.          Constant ::= Integer;  
-Etrue.	       Constant ::= "true";
-Efalse.	       Constant ::= "false";
+Efloat.        Constant ::= Double ;
+Echar.         Constant ::= JChar ;
+Eunicode.      Constant ::= UnicodeChar ;
+Eunsigned.     Constant ::= Unsigned ;
+Elong.         Constant ::= Long ;
+Eunsignlong.   Constant ::= UnsignedLong ;
+Ehexadec.      Constant ::= Hexadecimal ;
+Ehexaunsign.   Constant ::= HexUnsigned ;
+Ehexalong.     Constant ::= HexLong ;
+Ehexaunslong.  Constant ::= HexUnsLong ;
+Eoctal.        Constant ::= Octal ;
+Eoctalunsign.  Constant ::= OctalUnsigned ;
+Eoctallong.    Constant ::= OctalLong ;
+Eoctalunslong. Constant ::= OctalUnsLong ;
+Ecdouble.      Constant ::= JDouble ;
+Ecfloat.       Constant ::= JFloat ;
+Eclongdouble.  Constant ::= JLongDouble ;
+Eint.          Constant ::= Integer ;  
+Etrue.	       Constant ::= "true" ;
+Efalse.	       Constant ::= "false" ;
+EString.	   Constant ::= String ;
 
 internal Elonger. Constant ::= Integer;
 internal Edouble. Constant ::= Double;
