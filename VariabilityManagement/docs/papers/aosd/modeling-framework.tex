@@ -14,14 +14,9 @@ crosscutting modularity. In order to do that, each mechanism is represented as a
 three-part description: the related weaving processes take two programs as input,
 which crosscut each other with respect to the resulting program or
 computation~\cite{Masuhara:2003aa}.
-Their requirement for characterizing a mechanism as crosscutting is fulfilled by
-our approach, in the sense that different specifications contribute to the
-definition of a SPL member. 
 
-%As a
-%consequence, due to its crosscutting nature, the modeling framework proposed
-%in~\cite{Masuhara:2003aa} is suitable for formalizing variability management
-%compositions.
+The MK framework requirements for characterizing a mechanism as crosscutting is fulfilled by our approach, in the sense that different specifications contribute to the
+definition of a SPL member. 
 
 Similarly to the MK work, our modeling framework represents each
 weaver as an 6-tuple (Eq.~\ref{eq:tuple} and Table~\ref{tab:tup-01}),
@@ -31,15 +26,6 @@ processes. We represent each weaver by filling in the six parameters of our
 and by stating how elements of the weaver implementation correspond to elements
 of the model.
 
-
-% NOTA: Esse texto foi levado para  a secao anterior.
-%In our modeling framework, the concrete semantics of those weavers (and the
-%meta-model of the input and output languages) are described using the Haskell
-%programming language. This led to concise descriptions and
-%kept our model close to the MK work, where their weaving processes are specified
-%in the Scheme programming language. The choice for Haskell was motivated by
-%several factors, such as improved readability and our background in the language.
-%The resulting source code is available at a web site~\cite{SPG:site}.
 
 \begin{equation}
 W = \{o, o_{jp}, L, L_{id}, L_{eff}, L_{mod}\},

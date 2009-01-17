@@ -155,7 +155,7 @@ steps might break pointcuts.
      {\bf Before:}  P1
    \end{tabular}
   \begin{center}
-  \begin{tabular}{||p{0.1in}||p{1.2in}||p{1.6in}||}
+  \begin{tabular}{||p{0.1in}||p{1.4in}||p{1.4in}||}
    \hline
        Id & User Action  & System Response \\ \hline \hline
        B1 & Select the buy product option.  & Present the selected product. The user can change the quantity of items he wants to buy. Calculate and show the amount to be paid. \\  \hline
@@ -377,8 +377,11 @@ weavingProcess spl fm pc ck =
  
 As a consequence, supposing the list of tasks
  
+\begin{center}
 $ts=[select(SC01),evaluate(ADV01),evaluate(ADV02)]$,
- 
+\end{center}
+
+\noindent 
 the semantics of this hypothetical product would be given by: $p\ =\  f\ (spl,\ g\ (spl,\ h))$, where:
 \begin{eqnarray*}
 h  & = & (select\ SC01)\ spl\ emptyInstance \\
@@ -386,6 +389,7 @@ g  & = & (evaluate\ ADV01) \\
 f   & = & (evaluate\ ADV02) 
 \end{eqnarray*}
 
+\indent
 %The previous input models are specified during the domain
 %engineering phase of SPL development~\cite{Clements:2001aa,Pohl:2005aa}. The next
 %one, on the other hand, is supposed to be designed whenever a specific product
