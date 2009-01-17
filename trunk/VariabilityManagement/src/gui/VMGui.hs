@@ -93,14 +93,30 @@ main = do
   checkFeatureExpButton <- xmlGetWidget xml castToButton "checkFeatureExpButton" 
   onClicked checkFeatureExpButton $ 
    do expressionTxt  <- entryGetText featureExpressionEntry
-      -- let parseResult = featureExpressionParser expressionTxt
-      -- let message = case parseResult of 
-      --		ParseResult x -> "Feature expression " ++ (show x) ++ " is correct"
-      --		ParseError y -> "Error parsing feature expression... on" ++ y
-      messageDialog <- messageDialogNew (Just ckWindow) [] MessageInfo ButtonsClose "test" -- message	
+      let parseResult = featureExpressionParser expressionTxt
+      let message = case parseResult of 
+      		ParseExpressionResult x -> "Feature expression " ++ (show x) ++ " is correct"
+      		ParseError y -> "Error parsing feature expression... on " ++ y
+      messageDialog <- messageDialogNew (Just ckWindow) [] MessageInfo ButtonsClose message	
       widgetShowAll messageDialog	
       response <- dialogRun messageDialog
       widgetHide messageDialog
+
+  -- the check transformation button
+  -- this button is used for performing a spell checking in the 
+  -- list of transformations entry 
+  checkTransformationButton <- xmlGetWidget xml castToButton "buttonTransformationListCheck"
+  onClicked checkTransformationButton $ 
+   do transformationTxt <- entryGetText transformationListEntry
+      let parseResult = transformationParser transformationTxt
+      let message = case parseResult of
+                ParseTransformationResult x -> "List of transformations " ++ transformationTxt ++ " is correct"
+                ParseError y -> "Error parsing feature expression... on " ++ y
+      messageDialog <- messageDialogNew (Just ckWindow) [] MessageInfo ButtonsClose message
+      widgetShowAll messageDialog
+      response <- dialogRun messageDialog
+      widgetHide messageDialog
+ 
       
 
   -- the add configuration button
