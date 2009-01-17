@@ -1,0 +1,280 @@
+\documentclass{article}
+
+%% ODER: format ==         = "\mathrel{==}"
+%% ODER: format /=         = "\neq "
+%
+%
+\makeatletter
+\@ifundefined{lhs2tex.lhs2tex.sty.read}%
+  {\@namedef{lhs2tex.lhs2tex.sty.read}{}%
+   \newcommand\SkipToFmtEnd{}%
+   \newcommand\EndFmtInput{}%
+   \long\def\SkipToFmtEnd#1\EndFmtInput{}%
+  }\SkipToFmtEnd
+
+\newcommand\ReadOnlyOnce[1]{\@ifundefined{#1}{\@namedef{#1}{}}\SkipToFmtEnd}
+\usepackage{amstext}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\DeclareFontFamily{OT1}{cmtex}{}
+\DeclareFontShape{OT1}{cmtex}{m}{n}
+  {<5><6><7><8>cmtex8
+   <9>cmtex9
+   <10><10.95><12><14.4><17.28><20.74><24.88>cmtex10}{}
+\DeclareFontShape{OT1}{cmtex}{m}{it}
+  {<-> ssub * cmtt/m/it}{}
+\newcommand{\texfamily}{\fontfamily{cmtex}\selectfont}
+\DeclareFontShape{OT1}{cmtt}{bx}{n}
+  {<5><6><7><8>cmtt8
+   <9>cmbtt9
+   <10><10.95><12><14.4><17.28><20.74><24.88>cmbtt10}{}
+\DeclareFontShape{OT1}{cmtex}{bx}{n}
+  {<-> ssub * cmtt/bx/n}{}
+\newcommand{\tex}[1]{\text{\texfamily#1}}	% NEU
+
+\newcommand{\Sp}{\hskip.33334em\relax}
+
+
+\newcommand{\Conid}[1]{\mathit{#1}}
+\newcommand{\Varid}[1]{\mathit{#1}}
+\newcommand{\anonymous}{\kern0.06em \vbox{\hrule\@width.5em}}
+\newcommand{\plus}{\mathbin{+\!\!\!+}}
+\newcommand{\bind}{\mathbin{>\!\!\!>\mkern-6.7mu=}}
+\newcommand{\sequ}{\mathbin{>\!\!\!>}}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+\usepackage{polytable}
+
+%mathindent has to be defined
+\@ifundefined{mathindent}%
+  {\newdimen\mathindent\mathindent\leftmargini}%
+  {}%
+
+\def\resethooks{%
+  \global\let\SaveRestoreHook\empty
+  \global\let\ColumnHook\empty}
+\newcommand*{\savecolumns}[1][default]%
+  {\g@addto@macro\SaveRestoreHook{\savecolumns[#1]}}
+\newcommand*{\restorecolumns}[1][default]%
+  {\g@addto@macro\SaveRestoreHook{\restorecolumns[#1]}}
+\newcommand*{\aligncolumn}[2]%
+  {\g@addto@macro\ColumnHook{\column{#1}{#2}}}
+
+\resethooks
+
+\newcommand{\onelinecommentchars}{\quad-{}- }
+\newcommand{\commentbeginchars}{\enskip\{-}
+\newcommand{\commentendchars}{-\}\enskip}
+
+\newcommand{\visiblecomments}{%
+  \let\onelinecomment=\onelinecommentchars
+  \let\commentbegin=\commentbeginchars
+  \let\commentend=\commentendchars}
+
+\newcommand{\invisiblecomments}{%
+  \let\onelinecomment=\empty
+  \let\commentbegin=\empty
+  \let\commentend=\empty}
+
+\visiblecomments
+
+\newlength{\blanklineskip}
+\setlength{\blanklineskip}{1mm}
+
+\newcommand{\hsindent}[1]{\quad}% default is fixed indentation
+\newcommand{\NB}{\textbf{NB}}
+\newcommand{\Todo}[1]{$\langle$\textbf{To do:}~#1$\rangle$}
+
+\makeatother
+\EndFmtInput
+%
+
+
+\begin{document}
+\large
+\begingroup\par\noindent\advance\leftskip\mathindent\(
+\begin{pboxed}\SaveRestoreHook
+\column{B}{@{}l@{}}
+\column{3}{@{}l@{}}
+\column{21}{@{}l@{}}
+\column{E}{@{}l@{}}
+\>[B]{}\mathbf{type}\;\Conid{ConfigurationKnowledge}\mathrel{=}[\mskip1.5mu \Conid{Configuration}\mskip1.5mu]{}\<[E]
+\\[\blanklineskip]
+\>[B]{}\mathbf{data}\;\Conid{Configuration}{}\<[21]
+\>[21]{}\mathrel{=}\Conid{Configuration}\{\mskip1.5mu {}\<[E]
+\\
+\>[B]{}\Varid{expression}\mathbin{::}\Conid{FeatureExpression},{}\<[E]
+\\
+\>[B]{}\Varid{transformations}\mathbin{::}[\mskip1.5mu \Conid{Model2Model}\mskip1.5mu]{}\<[E]
+\\
+\>[B]{}\mskip1.5mu\}{}\<[E]
+\\[\blanklineskip]
+\>[B]{}\Varid{build}\;\Varid{spl}\;\Varid{fc}\;\Varid{ck}\mathrel{=}\Varid{stepRefinement}\;[\mskip1.5mu (\Varid{x}\;\Varid{spl})\mid \Varid{x}\in\Varid{ts}\mskip1.5mu]\;\Varid{sm}{}\<[E]
+\\
+\>[B]{}\mathbf{where}{}\<[E]
+\\
+\>[B]{}\hsindent{3}{}\<[3]
+\>[3]{}\Varid{ts}\mathrel{=}[\mskip1.5mu \Varid{transformations}\;\Varid{c}\mid \Varid{c}\in\Varid{ck},\Varid{eval}\;\Varid{fc}\;(\Varid{expression}\;\Varid{c})\mskip1.5mu]{}\<[E]
+\\
+\>[B]{}\hsindent{3}{}\<[3]
+\>[3]{}\Varid{sm}\mathrel{=}(\Varid{emptyInstance}\;\Varid{spl}\;\Varid{fc}){}\<[E]
+\ColumnHook
+\end{pboxed}
+\)\par\noindent\endgroup\resethooks
+
+\newpage
+
+\begingroup\par\noindent\advance\leftskip\mathindent\(
+\begin{pboxed}\SaveRestoreHook
+\column{B}{@{}l@{}}
+\column{34}{@{}l@{}}
+\column{E}{@{}l@{}}
+\>[B]{}\Varid{exp1}\mathrel{=}\Conid{FeatureRef}\;\text{\tt \char34 FEA-01\char34}\mbox{\onelinecomment  eShop feature}{}\<[E]
+\\
+\>[B]{}\Varid{exp2}\mathrel{=}\Conid{FeatureRef}\;\text{\tt \char34 FEA-14\char34}\mbox{\onelinecomment  shopping cart}{}\<[E]
+\\
+\>[B]{}\Varid{exp3}\mathrel{=}\Conid{FeatureRef}\;\text{\tt \char34 FEA-15\char34}\mbox{\onelinecomment  register user preferences}{}\<[E]
+\\
+\>[B]{}\Varid{exp4}\mathrel{=}{\bf{not}}\;\Varid{exp2}{}\<[E]
+\\
+\>[B]{}\Varid{exp5}\mathrel{=}{\bf{not}}\;\Varid{exp3}{}\<[E]
+\\
+\>[B]{}\mathbin{...}{}\<[E]
+\\[\blanklineskip]
+\>[B]{}\Varid{conf1}\mathrel{=}(\Varid{exp1},[\mskip1.5mu (\Varid{addScenariosM2M}\;[\mskip1.5mu \text{\tt \char34 1\char34}\mskip1.5mu])\mskip1.5mu]){}\<[E]
+\\
+\>[B]{}\Varid{conf2}\mathrel{=}(\Varid{exp2},[\mskip1.5mu (\Varid{evaluateAspectM2M}\;\Varid{aucShoppingCart})\mskip1.5mu]){}\<[E]
+\\
+\>[B]{}\Varid{conf3}\mathrel{=}(\Varid{exp3},[\mskip1.5mu (\Varid{evaluateAspectM2M}\;\Varid{aucBasicFlow})\mskip1.5mu]){}\<[E]
+\\
+\>[B]{}\Varid{conf4}\mathrel{=}(\Varid{exp4},[\mskip1.5mu (\Varid{evaluateAspectM2M}\;\Varid{aucUpdatePreferences})\mskip1.5mu]){}\<[E]
+\\
+\>[B]{}\Varid{conf5}\mathrel{=}(\Varid{exp5},[\mskip1.5mu (\Varid{bindParametersM2M}\;\text{\tt \char34 ShipMethod\char34}\;(\Varid{fId}\;\Varid{shipMethod}))\mskip1.5mu]){}\<[E]
+\\
+\>[B]{}\mathbin{...}{}\<[E]
+\\[\blanklineskip]
+\>[B]{}\Varid{configuration}\mathrel{=}[\mskip1.5mu \Varid{conf1},\Varid{conf2},\Varid{conf3},\Varid{conf4},\Varid{conf5},\mathbin{...}\mskip1.5mu]{}\<[E]
+\\[\blanklineskip]
+\>[B]{}\mathbf{type}\;\Conid{Model2Model}\mathrel{=}(\Conid{SPL}\to \Conid{ProductInstance})\to \Conid{ProductInstance}{}\<[E]
+\\[\blanklineskip]
+\>[B]{}\Varid{addScenariosM2M}\mathbin{::}[\mskip1.5mu \Conid{Id}\mskip1.5mu]\to \Conid{Model2Model}{}\<[E]
+\\
+\>[B]{}\Varid{addScenariosM2M}\;\Varid{ids}\;\Varid{spl}\;\Varid{productInstance}\mathrel{=}\mathbin{...}{}\<[E]
+\\[\blanklineskip]
+\>[B]{}\Varid{bindParametersM2M}\mathbin{::}\Conid{Name}\to \Conid{Feature}\to \Conid{Model2Model}{}\<[E]
+\\
+\>[B]{}\Varid{bindParametersM2M}\;\Varid{pName}\;\Varid{feature}\;{}\<[34]
+\>[34]{}\Varid{spl}\;\Varid{productInstance}\mathrel{=}\mathbin{...}{}\<[E]
+\\[\blanklineskip]
+\>[B]{}\Varid{evaluateAspectM2M}\mathbin{::}\Conid{AspectualUseCase}\to \Conid{Model2Model}{}\<[E]
+\\
+\>[B]{}\Varid{evaluateAspectM2M}\;\Varid{aspect}\;\Varid{spl}\;\Varid{productInstance}\mathrel{=}\mathbin{...}{}\<[E]
+\ColumnHook
+\end{pboxed}
+\)\par\noindent\endgroup\resethooks
+
+\newpage
+
+\begingroup\par\noindent\advance\leftskip\mathindent\(
+\begin{pboxed}\SaveRestoreHook
+\column{B}{@{}l@{}}
+\column{9}{@{}c@{}}
+\column{9E}{@{}l@{}}
+\column{10}{@{}c@{}}
+\column{10E}{@{}l@{}}
+\column{17}{@{}l@{}}
+\column{27}{@{}l@{}}
+\column{71}{@{}c@{}}
+\column{71E}{@{}l@{}}
+\column{E}{@{}l@{}}
+\>[B]{}\mathbf{data}\;\Conid{UseCaseModel}\mathrel{=}\Conid{UCM}\{\mskip1.5mu {}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{ucmName}\mathbin{::}\Conid{Name},{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{useCases}\mathbin{::}[\mskip1.5mu \Conid{UseCase}\mskip1.5mu],{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{aspects}\mathbin{::}[\mskip1.5mu \Conid{AspectualUseCase}\mskip1.5mu]{}\<[E]
+\\
+\>[B]{}\hsindent{10}{}\<[10]
+\>[10]{}\mskip1.5mu\}{}\<[10E]
+\\[\blanklineskip]
+\>[B]{}\mathbf{data}\;\Conid{UseCase}\mathrel{=}\Conid{UseCase}\{\mskip1.5mu {}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{ucId}\mathbin{::}\Conid{Id},{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{ucName}\mathbin{::}\Conid{Name},{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{ucDescription}\mathbin{::}\Conid{Description},{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{ucScenarios}\mathbin{::}\Conid{ScenarioList}{}\<[E]
+\\
+\>[B]{}\hsindent{9}{}\<[9]
+\>[9]{}\mskip1.5mu\}{}\<[9E]
+\\[\blanklineskip]
+\>[B]{}\mathbf{data}\;\Conid{Scenario}\mathrel{=}\Conid{Scenario}\{\mskip1.5mu {}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{scenarioId}\mathbin{::}\Conid{Id},{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{scenarioDescription}\mathbin{::}\Conid{Description},{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{steps}\mathbin{::}\Conid{StepList}{}\<[E]
+\\
+\>[B]{}\hsindent{9}{}\<[9]
+\>[9]{}\mskip1.5mu\}{}\<[9E]
+\\[\blanklineskip]
+\>[B]{}\mathbf{data}\;\Conid{Step}\mathrel{=}\Conid{Step}\{\mskip1.5mu {}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{stepId}\mathbin{::}\Conid{Id},{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{action}\mathbin{::}\Conid{Action},{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{state}\mathbin{::}{}\<[27]
+\>[27]{}\Conid{State},{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{response}\mathbin{::}\Conid{Response},{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{annotations}\mathbin{::}[\mskip1.5mu \Conid{Annotation}\mskip1.5mu]{}\<[E]
+\\
+\>[B]{}\hsindent{9}{}\<[9]
+\>[9]{}\mskip1.5mu\}{}\<[9E]
+\\[\blanklineskip]
+\>[B]{}\mathbf{data}\;\Conid{AspectualUseCase}\mathrel{=}\Conid{AspectualUseCase}\{\mskip1.5mu {}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{aspectId}\mathbin{::}\Conid{Id},{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{aspectName}\mathbin{::}\Conid{Name},{}\<[E]
+\\
+\>[B]{}\hsindent{17}{}\<[17]
+\>[17]{}\Varid{advices}\mathbin{::}[\mskip1.5mu \Conid{Advice}\mskip1.5mu]{}\<[E]
+\\
+\>[B]{}\hsindent{9}{}\<[9]
+\>[9]{}\mskip1.5mu\}{}\<[9E]
+\\[\blanklineskip]
+\>[B]{}\mathbf{data}\;\Conid{Advice}\mathrel{=}{}\<[E]
+\\
+\>[B]{}\Conid{BeforeAdvice}\{\mskip1.5mu \Varid{pointCut}\mathbin{::}[\mskip1.5mu \Conid{StepRef}\mskip1.5mu],\Varid{aspectualScenario}\mathbin{::}\Conid{Scenario}\mskip1.5mu\}{}\<[71]
+\>[71]{}\mid {}\<[71E]
+\\
+\>[B]{}\Conid{AfterAdvice}\{\mskip1.5mu \Varid{pointCut}\mathbin{::}[\mskip1.5mu \Conid{StepRef}\mskip1.5mu],\Varid{aspectualScenario}\mathbin{::}\Conid{Scenario}\mskip1.5mu\}{}\<[E]
+\ColumnHook
+\end{pboxed}
+\)\par\noindent\endgroup\resethooks
+
+\end{document}
