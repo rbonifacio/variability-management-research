@@ -47,25 +47,23 @@ scenario $s \in S$ (the set of all scenarios).
 %feature $f$ is calculated by normalizing its concentration with respect to each
 %scenario $s \in S$ (the set of all scenarios).
 
-\begin{center}
-$DOS(f) = 1 - \frac{\mid S \mid \sum_{s}^{S}(CONC(f,s)-\frac{1}{\mid S
-\mid})^2}{\mid S \mid -1}$, where:
-
-$CONC(f,s) = \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\
-of\ steps\ assigned\ to\ f}$
-\end{center}
+\begin{small}
+\begin{eqnarray*}
+DOS(f)   & = & 1 - \frac{\mid S \mid \sum_{s}^{S}(CONC(f,s)-\frac{1}{\mid S \mid})^2}{\mid S \mid -1} \\
+CONC(f,s) & = &  \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\ of\ steps\ assigned\ to\ f}
+\end{eqnarray*}
+\end{small}
 
 Likewise, the \emph{degree of focus} of a scenario $s$ is calculated by
 normalizing its dedication with respect to each feature $f \in F$ (the set of
 all features).
 
-\begin{center}
-$DOF(s) = \frac{\mid F \mid \sum_{f}^{F}(DEDI(s,f)-\frac{1}{\mid F
-\mid})^2}{\mid F \mid -1}$, where:
-
-$DEDI(s,f) = \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\
-of\ steps\ in\ s}$
-\end{center}
+\begin{small}
+\begin{eqnarray*}
+DOF(s) & = & \frac{\mid F \mid \sum_{f}^{F}(DEDI(s,f)-\frac{1}{\mid F \mid})^2}{\mid F \mid -1} \\
+DEDI(s,f) & = & \frac{number\ of\ steps\ in\ s\ assigned\ to\ f}{total\ number\ of\ steps\ in\ s}
+\end{eqnarray*}
+\end{small} 
 
 These metrics inherit the same properties of the original
 ones~\cite{Eaddy:2007aa}: (a) the
@@ -95,6 +93,14 @@ Home} feature (Figure~\ref{fig:smartHomeScenarios}(b)).
   \end{center}
 \end{figure}
 
+\begin{figure}[tbh]
+ \begin{center}
+  \includegraphics[scale=0.62]{img/comparisonScenarios2.eps}
+  \caption{Sample of MMS assignments.}
+  \label{fig:MMSScenarios}
+  \end{center}
+\end{figure}
+
 Similarly, Figure~\ref{fig:MMSScenarios} shows some feature assignments for the
 MMS product line. In this case, we want to emphasize that the behavior related to
 the \emph{Store an Embedded Number} and \emph{Send a Message to Embedded Email} 
@@ -105,19 +111,15 @@ a Message to Embedded Email} features as \emph{homogeneous}. On the other hand,
 we say that the \emph{Password} optional feature of the Smart Home case study has a
 \emph{heterogeneous crosscutting behavior}~\cite{Apel:2006aa}, since it requires one advice for each join point (Figure~\ref{fig:smartHomeScenarios}(a) and (b)). The same occurred with the \emph{Fingerprint} feature.
 
-\begin{figure}[hbt]
- \begin{center}
-  \includegraphics[scale=0.62]{img/comparisonScenarios2.eps}
-  \caption{Sample of MMS assignments.}
-  \label{fig:MMSScenarios}
-  \end{center}
-\end{figure}
+
 
 We have observed that the \emph{crosscutting nature} of a feature, which here we
 consider as being homogeneous or heterogeneous~\cite{Apel:2006aa}, has a great influence in our
 results. For instance, Table~\ref{tab:feature-dos} shows the DoS of
 the assets depicted in Figures~\ref{fig:smartHomeScenarios}
-and~\ref{fig:MMSScenarios}. Notice that, in MSVCM, modularizing the behavior
+and~\ref{fig:MMSScenarios}. 
+
+Notice that, in MSVCM, modularizing the behavior
 of \emph{Password} and \emph{Fingerprint} as advices had
 increased the DoS of both \emph{Register Inhabitant} and \emph{Request Access to
 Home} features. A similar problem does not occur with homogeneous
@@ -266,12 +268,10 @@ MSVCM approach ($1.00$) is closer to one than the corresponding value
 As explained earlier, the MMS product line, which was adapted from an industrial
 partner, enables the customization of multimedia message applications. The
 primary goal of each one of these applications is to create and send messages
-with embedded multimedia content (image, audio, video)~\cite{Bonifacio:2008aa}.
-We have specified the MMS product line using both Crosscutting and PLUSS
-techniques. The results of this case study are
-summarized in Tables~\ref{tab:mms-dos}~and~\ref{tab:mms-dof}.
+with embedded multimedia content (image, audio, and video)~\cite{Bonifacio:2008aa}.
 
-\begin{table}[htb] \centering
+
+\begin{table}[thb] \centering
 \caption{MMS degree of scattering}
 \label{tab:mms-dos}
 \begin{small}
@@ -283,6 +283,11 @@ summarized in Tables~\ref{tab:mms-dos}~and~\ref{tab:mms-dof}.
 \end{small}
 \end{table}
 
+
+We have specified the MMS product line using both Crosscutting and PLUSS
+techniques. The results of this case study are
+summarized in Tables~\ref{tab:mms-dos}~and~\ref{tab:mms-dof}.
+
 This case study, differently from the Smart Home, gives evidence of improvements of the
 MSVCM approach with respect to the feature's \emph{degree of scattering}
 (\emph{p-value=0.01}). This result was mainly achieved because several of the features of
@@ -292,9 +297,7 @@ content that crosscut, in a uniform manner, the behavior related to
 \emph{sending} and \emph{forwarding} messages.
 
 On the other hand, the MMS case study didn't reveal significant improvements with
-respect to the \emph{degree of focus} metric (Table~\ref{tab:mms-dof}). The main reason for such a result is that just a few scenarios of the MMS case study are effected by alternative
-features. Thus, the benefits achieved from extracting varying behavior to
-aspectual scenarios were minimized in this case study.
+respect to the \emph{degree of focus} metric (Table~\ref{tab:mms-dof}). 
 
 \begin{table}[htb] \centering
 \caption{MMS degree of focus}
@@ -308,11 +311,19 @@ aspectual scenarios were minimized in this case study.
 \end{small}
 \end{table}
 
+The main reason for such a result is that just a few scenarios of the MMS case study are effected by alternative
+features. Thus, the benefits achieved from extracting varying behavior to
+aspectual scenarios were minimized in this case study.
+
+
+
 \subsection{PPL assessment}
 
 We compared our approach to a PPL specification that was sent to us by the
 authors of the PLUSS technique. Similarly to the Smart Home product line, the PPL has been used in several case
-studies in the area. The original specification of PPL~\cite{PPL:2008} is already well
+studies in the area. 
+
+The original specification of PPL~\cite{PPL:2008} is already well
 modularized, since its features, in general, do not crosscut different
 use cases. Moreover, another characteristic of the PPL is that several features
 are related to qualities that do not effect scenario specifications.
