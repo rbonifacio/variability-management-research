@@ -1,6 +1,14 @@
+{-- 
+
+Common types and function used in the VariabilityManagemnt toool suite.
+
+--}
+
+
 module BasicTypes where 
 
 import List
+
 
 type Id = String
 type Name = String
