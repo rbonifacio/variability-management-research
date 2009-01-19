@@ -14,7 +14,7 @@ notation and the other one using the MSVCM approach
 In  this Section we present the PLUSS specifications of the Smart Home case
 study.  
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -63,7 +63,7 @@ study.
 \label{fig:register-inhabitant-pluss}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -91,7 +91,7 @@ study.
 \label{fig:defines-the-home-state-pluss}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -119,11 +119,11 @@ study.
   \end{center}
   }
 \end{scriptsize}
-\caption{Defines the home state.}
+\caption{Define policies for the the home state.}
 \label{fig:defines-the-home-state-pluss}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -153,7 +153,7 @@ study.
 \caption{Define rights for the inhabitants.}
 \label{fig:defines-rights-pluss}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -192,7 +192,7 @@ study.
 \label{fig:request-access-to-home-pluss}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -235,7 +235,7 @@ study.
 \label{fig:invalid-attempt-to-access-pluss}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -270,7 +270,7 @@ study.
 \caption{Guest request access and the house is empty.}
 \label{fig:guest-request-access-pluss}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -303,7 +303,7 @@ study.
 \label{fig:guest-request-not-authorized-access-pluss}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -336,7 +336,7 @@ study.
 \label{fig:configure-access-to-environment-pluss}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -366,7 +366,7 @@ study.
 \label{fig:configure-access-to-environment-pluss}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -395,7 +395,7 @@ study.
 \label{fig:intrusion-detection-pluss}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -423,7 +423,7 @@ study.
 \label{fig:intrusion-detection-empty-house-pluss}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -447,7 +447,7 @@ study.
 \caption{Presence detection.}
 \label{fig:presence-detection-pluss}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -474,12 +474,13 @@ study.
 \label{fig:fire-detection-pluss}
 \end{figure}
 
-
+\clearpage 
+\FloatBarrier 
 \section{MSVCM specifications}
 In this section we present the MSVCM specifications of the Smart Home case
 study.
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
@@ -503,12 +504,13 @@ study.
 \caption{Register inhabitant scenario.}
 \label{fig:register-inhabitant-msvcm}
 \end{figure}
+ 
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
-   	 {\bf Advice SC01} 	\\
+   	 {\bf Advice ADV01} 	\\
      {\bf Description:} Register inhabitant with password \\
      {\bf From: RegisterInhabitant} \\
    \end{tabular}
@@ -517,7 +519,7 @@ study.
    \hline
        Step & User Action  & System Response \\ \hline
        1 [RI] [Passwordd] & The home owner fills in the inhabitant personal form
-       and selects the proceed option. & The system requires the inhabitant password (and password confirmation) 
+       and selects the proceed option. & The system requires the inhabitant password (and password confirmation)
        for getting access to the home. \\ \hline
        2 [RI] [Password] & The new inhabitant fills in the password (and
        confirmation password) for home access. & The system requests the home owner
@@ -530,11 +532,11 @@ study.
 \label{fig:register-inhabitant-password-msvcm}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{scriptsize}
   \texttt{
    \begin{tabular}{l}
-   	 {\bf Advice SC01} 	\\
+   	 {\bf Advice ADV02} 	\\
      {\bf Description:} Register inhabitant with FingerPrint \\
      {\bf From: RegisterInhabitant} \\
    \end{tabular}
@@ -542,13 +544,13 @@ study.
   \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
    \hline
        Step & User Action  & System Response \\ \hline
-       1 [RI] [FingerPrint] & The home owner fills in the inhabitant personal form and selects 
-       the proceed option.  & The system requires the inhabitant inhabitant finger 
+       1 [RI] [FingerPrint] & The home owner fills in the inhabitant personal form and selects
+       the proceed option.  & The system requires the inhabitant inhabitant finger
        print to capture it. \\ \hline
-       2 [RI] [FingerPrint] & The new inhabitant put your finger in the finger print capture 
+       2 [RI] [FingerPrint] & The new inhabitant put your finger in the finger print capture
        device. & The system get the new inhabitant finger print information and
        asks the home owner to proceed.  \\ \hline
-       3 [RI] [FingerPrint] & The home owner selects the proceed option. & 
+       3 [RI] [FingerPrint] & The home owner selects the proceed option. &
        The system requests the home owner configuration password. \\ \hline
   \end{tabular}
   \end{center}
@@ -556,4 +558,181 @@ study.
 \end{scriptsize}
 \caption{Register inhabitant with fingerprint advice.}
 \label{fig:register-inhabitant-fingerprint-msvcm}
-\end{figure}
+\end{figure}
+% 
+
+% 
+\begin{figure}[htb]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC02} 	\\
+     {\bf Description:} Define the home state\\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1in}|p{2.5in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [DHS] + [HS]	&
+       The home owner selects the set home state option in the security configuration menu. &
+       The home state form is displayed, requiring the selection of one of the
+       available states HomeState \\ \hline
+       2 [DHS] & The home owner selects one of the configured states. & The
+       system requests the home owner configuration password.\\ \hline
+       3 [DHS] & The home owner fills in the configuration password and selects
+       the proceed option. & The system updates the home state and activates
+       the corresponding intrusion and presence policies. \\ \hline
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Defines the home state.}
+\label{fig:defines-the-home-state-msvcm}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC03} 	\\
+     {\bf Description:} Define policies for the home state\\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1in}|p{2.5in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [DP] + [HS]	&
+       The home owner selects the configure policies for home state option in
+       the security configuration menu. & The home state form is displayed,
+       requiring the selection of one of the available states HomeState \\
+       \hline
+       2 [DP] & The home owner selects one of the available states. & The home
+       state policy form is displayed, requiring: list of notification numbers,
+       audio message, and text message. \\ \hline
+       3 [DP] & The home owner fills in the requested information. & The system
+       requests the home owner configuration password. \\ \hline
+       4 [DP] & The home owner fills in the configuration password and selects
+       the proceed option. & The system updates the home state and activates
+       the corresponding intrusion and presence policies. \\ \hline
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Define policies for the the home state.}
+\label{fig:defines-the-home-state-msvcm}
+\end{figure}
+
+% 
+\begin{figure}[htb]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC04} 	\\
+     {\bf Description:} Define rights for the inhabitants\\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1in}|p{2.5in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [DefineRights]	&
+       The home owner selects the configure rights for inhabitant option in the
+       security configuration menu. & The select an inhabitant form is displayed,
+       requiring the selection of one of the registered inhabitants. \\ \hline
+       2 [DefineRights] & The home owner selects one of the registered
+       inhabitants & The inhabitant rights form is displayed, requiring the home owner to inform
+       if the inhabitant is able to entering in the house and which environments of the house
+       the inhabitant can change the access control.  \\ \hline
+       3 [DefineRights] & The home owner fills in the requested information.  & The system
+       requests the home owner configuration password. \\ \hline
+       4 [DefineRights] & The home owner fills in the configuration password and selects the
+       proceed option. & The system updates the inhabitant rights and activates the corresponding policies. \\ \hline
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Define rights for the inhabitants.}
+\label{fig:defines-rights-msvcm}
+\end{figure}
+
+%
+% MSVCM: Request access to Home scenario
+%
+\begin{figure}[htb]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Id: SC05} 	\\
+     {\bf Description:} Request access to home\\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1in}|p{2.5in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline \hline
+       1 [RequestAccess] & & The system displays the message of success login.
+       [AuthorizeAccess]\\ \hline 
+       2 [RequestAccess] & & The system opens the front door and register the occurrence. \\ \hline 
+       3 [RequestAccess] & & After SecondToClose seconds, the front door is closed. \\ \hline
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Request access to home scenario.}
+\label{fig:request-access-to-home-msvcm}
+\end{figure}
+
+
+\begin{figure}[htb]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Advice ADV03} 	\\
+     {\bf Description:} Request access to home with password\\
+     {\bf Before: AuthorizeAccess} \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline
+       1a [RequestAccess] [Password]	& 
+       The inhabitant request access to the home at the main entrance. & The
+       system requests to the user to pass the smart card. \\ \hline
+       2 [RequestAccess] [Password] & 
+       The inhabitant pass the smart card in the card reader. & The system
+       requests to the user the password to access the smart home. \\ \hline 
+       3 [RequestAccess] [Password]& The inhabitant informs the access password.  & 
+       The system verifies that the password is valid for the registered
+       inhabitant. \\ \hline       
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Request access to home with password advice.}
+\label{fig:request-access-password-msvcm}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{scriptsize}
+  \texttt{
+   \begin{tabular}{l}
+   	 {\bf Advice ADV03} 	\\
+     {\bf Description:} Request access to home with fingerprint\\
+     {\bf Before: AuthorizeAccess} \\
+   \end{tabular}
+  \begin{center}
+  \begin{tabular}{|p{1.2in}|p{2.3in}|p{2.5in}|}
+   \hline
+       Step & User Action  & System Response \\ \hline
+       1(b) [RequestAccess] [FingerPrint] & 
+       The inhabitant request access to the home at the main entrance. & The
+       system requests the user to put your finger in the finger print reader.  \\ \hline
+	   3(b) [RequestAccess] [FingerPrint]&  
+       The inhabitant put his (her) finger in the fingerprint reader. & 
+       The system recognizes the finger print information as a registered
+       inhabitant. \\ \hline       
+  \end{tabular}
+  \end{center}
+  }
+\end{scriptsize}
+\caption{Request access to home with fingerprint advice.}
+\label{fig:request-access-fingerprint-msvcm}
+\end{figure}
