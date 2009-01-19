@@ -63,10 +63,38 @@ separator MemberDeclaration "";
 
 -- constant expressions.
 
-LConstantExpression. Expression ::= Constant ;
-LStringExpression.   Expression ::= String ;
-LIdentExpression. Expression ::= Ident ; 
 
+LAssignExpression.     	Expression   ::= Expression1 Assignment_op Expression;
+LIntanceOffExpression. 	Expression   ::= Expression1 "instanceof" TypeName;
+
+LIncExpressionL. Expression1 ::= "++" Expression1 [Semi] ;
+LDecExpressionL. Expression1 ::= "--" Expression1 [Semi] ;
+LDecExpressionR. Expression2 ::= Expression2 "++" [Semi] ;
+
+
+LConstantExpression. 	Expression3 ::= Constant ;
+LStringExpression.   	Expression3 ::= String ;
+LIdentExpression. 		Expression5 ::= Ident ; 
+
+coercions  Expression 5;
+
+Plus.        Unary_operator ::= "+" ;
+Negative.    Unary_operator ::= "-" ;
+Complement.  Unary_operator ::= "~" ;
+LogicalNeg.  Unary_operator ::= "!" ;
+
+Assign.       Assignment_op ::= "=" ;
+AssignMul.    Assignment_op ::= "*=" ;
+AssignDiv.    Assignment_op ::= "/=" ;
+AssignMod.    Assignment_op ::= "%=" ;
+AssignAdd.    Assignment_op ::= "+=" ;
+AssignSub.    Assignment_op ::= "-=" ;
+AssignLeft.   Assignment_op ::= "<<=" ;
+AssignRight.  Assignment_op ::= ">>=" ;
+AssignTrip.   Assignment_op ::= ">>>=" ;
+AssignAnd.    Assignment_op ::= "&=" ;
+AssignXor.    Assignment_op ::= "^=" ;
+AssignOr.     Assignment_op ::= "|=" ;
 
 -- args declaration
 LArgs. Args ::= TypeName Ident ;
@@ -89,7 +117,7 @@ ArrayType. 	  TypeSpec ::= TypeName [BracketsOpt];
 TypeName. 	  TypeSpec ::= TypeName;
 
 BuiltIn.	  TypeName ::= BasicType;
-ClassType.        TypeName ::= [Ident];
+ClassType.    TypeName ::= [Ident];
 
 separator nonempty TypeName ",";
 

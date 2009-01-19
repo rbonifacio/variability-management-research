@@ -7,6 +7,7 @@ public class Point {
 	
 	private Point() {
 		int z = x;
+		z++;
 	}
 	
 }
