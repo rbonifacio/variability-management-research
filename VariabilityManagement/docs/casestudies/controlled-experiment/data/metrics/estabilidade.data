@@ -4,6 +4,17 @@ mean(totalDegreeOfScattering(baseSVCM)) = 0
 mean(totalDegreeOfFocus(baseSVCM)) = 0.969
 
 
+mean(totalDegreeOfScattering(cr01Pluss)) - mean(totalDegreeOfScattering(basePluss)) = -0.009848485
+mean(totalDegreeOfScattering(cr02Pluss)) - mean(totalDegreeOfScattering(basePluss)) = 0
+mean(totalDegreeOfScattering(cr03Pluss)) - mean(totalDegreeOfScattering(basePluss)) = 0
+mean(totalDegreeOfScattering(cr04Pluss)) - mean(totalDegreeOfScattering(basePluss)) = -0.666
+mean(totalDegreeOfScattering(cr06Pluss)) - mean(totalDegreeOfScattering(basePluss)) = 0.009
+
+
+
+
+
+
 
 Student 	CR		Treatment 	DesignImpact
 S1		CR01		PLUSS
