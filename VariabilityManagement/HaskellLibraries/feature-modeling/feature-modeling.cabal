@@ -1,0 +1,11 @@
+name:                feature-modeling
+version:             0.0
+synopsis:            <Project description>
+description:         <Project description>
+category:            Development
+license:             BSD3
+license-file:        LICENSE
+author:              Rodrigo Bonifacio
+maintainer:          rbonifacio@computer.org
+build-Depends:       base
+ghc-options:         
