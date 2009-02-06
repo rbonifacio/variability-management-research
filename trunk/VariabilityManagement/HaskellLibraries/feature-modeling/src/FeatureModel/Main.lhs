@@ -26,11 +26,9 @@
 
 This document describes the Haskell library for feature modeling. 
 
-%include FeatureModel.lhs
+%include Types.lhs
+%include FMTypeChecker.lhs
+%include FCTypeChecker.lhs
 
-\begin{code}
-module Main where
-import FeatureModel.FeatureModel
-\end{code} 
 
  
