@@ -134,18 +134,19 @@ definition of the configuration knowledge. In this later case, they are necessar
 dealing with some types of feature interactions. 
 
 \begin{code}
-data FeatureExpression = 
- ConstantExpression Bool |
- FeatureRef Id | 
- Not FeatureExpression | 
- And FeatureExpression FeatureExpression |
- Or FeatureExpression FeatureExpression 
+data FeatureExpression = ConstantExpression Bool 
+                       | FeatureRef Id 
+                       | Not FeatureExpression 
+                       | And FeatureExpression FeatureExpression 
+                       | Or FeatureExpression FeatureExpression 
 
 expTrue = ConstantExpression True
 expFalse = ConstantExpression False
 \end{code}
 
-Just some syntactic sugars used for:
+Finally, we have defined some \emph{syntactic sugars} for building 
+expressions, such as: 
+
 \begin{itemize}
  \item converting $p \Rightarrow q$ into $\lnot p \lor q$
  \item generating an And expression from a list of expressions
@@ -166,16 +167,75 @@ ref f = FeatureRef (fId f)
 
 \end{code}
 
-Just a set of auxiliary functions. 
+\subsection{Searching and traversing feature models}
+
+Now, we present several functions for searching and traversing 
+feature models. First of all, the \texttt{plainFeature} function 
+translates a feature tree into a flat structure (a list) of 
+features. It is just an auxiliarly function that simplifies 
+the searching for features. 
 
 \begin{code}
--- Property related functions
-propertyName :: Property -> String
-propertyName (name, value) = name
-
-propertyValue :: Property -> String
-propertyValue (name, value) = value
+plainFeature :: Feature -> FeatureList
+plainFeature f = f : plainFeature' (children f)
+ where 
+  plainFeature' [] = [] 
+  plainFeature' (x:xs) = (plainFeature x) ++ (plainFeature' xs)
 \end{code}
+
+Using the plainFeature function, it is easy to define functions 
+for searching for a features or for checking if it exists in a feature tree. 
+ 
+\begin{code}
+featureExists :: Feature -> Feature -> Bool 
+featureExists  f1 f2 = elem f1 [x | x <- (plainFeature feature)]
+
+findFeature :: Feature -> Feature -> Feature
+findFeature f1 f2 = findFeature' f1 (plainFeature f2)  
+ where 
+  findFeature' f1 [] = FeatureError  
+  findFeature' f1 (x:xs) = if (f1 == x) then x else findFeature' f1 xs
+\end{code}
+
+Bellow we present a few functions for peforming more specific 
+queries on feature models: 
+
+\begin{itemize}
+ \item The allChildrenExists function returns True if all children 
+  elements of the feature f1 are also defined as children of f2.
+ \item The findChildFeature returns a children of f2 which is 
+  equals to f1; where the equality is based on the feature ids. 
+ \item The findFeatureInList returns the feature in (x:xs) that is 
+  equals to f1. 
+\end{itemize}
+
+Notice that these functions are useful for checking if a feature 
+configuration belongs to (or is a valid instance of) a feature 
+model. 
+
+\begin{code} 
+
+allChildrenExists :: Feature -> Feature -> Bool 
+allChildrenExists f1 f2 = 
+ foldr (&&) True [elem x (children f2) | x <- (children f1)]
+
+findChildFeature :: Feature -> Feature -> Feature
+findChildFeature f1 f2 = findFeatureInList f1 (children f2)
+
+findFeatureInList :: Feature -> FeatureList -> Feature
+findFeatureInList f [] = FeatureError 
+findFeatureInList f (x:xs) = if (f == x) then x else findFeatureInList f xs
+
+\end{code}
+
+\subsection{Accessors for feature options and properties}
+Also related to the feature model data type, we have 
+developed several functions for accessing:
+
+\begin{itemize}
+ \item the selected options of features; and 
+ \item the attached properties of a feature.
+\end{itemize}
 
 The \texttt{featureOptions} function retrieves the selected options 
 of an \emph{alternative feature} or \emph{or feature}. An error is 
@@ -199,75 +259,18 @@ featureOptionsValues feature =
 If the application developer is interested in a property of the 
 selected options, the \texttt{featureOptionsPropertyValue} function can 
 be used, instead of the two functions shown immediately above. Again, 
-this function expect a basic feature as the first argument. Elsewhere, 
+this function does not expect a basic feature as the first argument. Otherwise, 
 an error is reported.  
 
 \begin{code}
 featureOptionsPropertyValue :: Feature -> String -> ValueList
 featureOptionsPropertyValue feature property = 
-  [featurePropertyValue (properties x) property | x <- featureOptions feature]  
-
--- 
--- just an auxiliarly function.
---
-featurePropertyValue ::  Properties -> String -> String
-featurePropertyValue [] property = error ("The property " ++ property ++ " is not defined") 
-featurePropertyValue (x:xs) property = 
- if ((propertyName x) == property) 
-  then propertyValue x  
-  else featurePropertyValue xs property 
-
+ [snd y | x <- (featureOptions feature), y <- (properties x), fst y == property]  
 \end{code}
+ 
 
-Now, we define several functions for checking if a 
-feature configuration is a valida feature model instance. First of 
-all, we have to check if a feature f1 is present in a feature tree starting 
-from f2. Bellow, it is also define a function for finding a feature f1 in a 
-feature tree f2. 
-
+%if False
 \begin{code}
--- just an auxiliarly function for traversing all features
-plainFeature :: Feature -> FeatureList
-plainFeature f = f : plainFeature' (children f)
- where 
-  plainFeature' [] = [] 
-  plainFeature' (x:xs) = (plainFeature x) ++ (plainFeature' xs)
-
- 
-featureExists :: Id -> Feature -> Bool 
-featureExists ref feature = elem ref [fId x | x<- (plainFeature feature)]
-
- 
-findFeature :: Feature -> Feature -> Feature
-findFeature f1 f2 = findFeature' f1 (plainFeature f2)  
- where 
-  findFeature' f1 [] = FeatureError  
-  findFeature' f1 (x:xs) = if (f1 == x) then x else findFeature' f1 xs
-\end{code}
-
-This function checks if all children of a feature f1 (defined, 
-for instance, in a product configuration) are also defined as 
-children of a feature f2 (defined, for instance, in a feature model).
-
-\begin{code} 
-allChildrenExists :: Feature -> Feature -> Bool 
-allChildrenExists f1 f2 = 
- foldr (&&) True [elem x (children f2) | x <- (children f1)]
-
-findChildFeature :: Feature -> Feature -> Feature
-findChildFeature f1 f2 = findChildFeature' f1 (children f2)
- where 
-  findChildFeature' _ [] = FeatureError 
-  findChildFeature' f1 (x:xs) = if (f1 == x) then x else findChildFeature' f1 xs 
-
-findFeatureInList :: Feature -> FeatureList -> Feature
-findFeatureInList f [] = FeatureError 
-findFeatureInList f (x:xs) = if (f == x) then x else findFeatureInList f xs
-
-\end{code}
- 
-
-
 -- 
 -- Eq instance definition is (or are)
 -- placede in this point.
@@ -342,5 +345,6 @@ simplifyNot e
  | otherwise = Not (simplifyExpression e)
 
 \end{code}
+%endif
 
 \end{document}
