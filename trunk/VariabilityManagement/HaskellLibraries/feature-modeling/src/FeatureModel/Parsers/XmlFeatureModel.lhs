@@ -1,3 +1,5 @@
+\begin{code}
+
 module FeatureModel.Parsers.XmlFeatureModel where
 
 import FeatureModel.Types
@@ -28,29 +30,29 @@ data XmlGroupFeature = XmlGroupFeature {
 xmlFeature2Feature :: XmlFeature -> Feature	
 xmlFeature2Feature (XmlFeature fid cmin cmax name children group) = 
  Feature fid 
- 		 name 
- 		 (featureTypeFromCardinality cmin)
- 		 (groupTypeFromXmlGroup group)
- 		 (childrenFromXmlFeatureList children group)
- 		 []
+         name 
+ 	(featureTypeFromCardinality cmin)
+ 	(groupTypeFromXmlGroup group)
+ 	(childrenFromXmlFeatureList children group)
+ 	[]
  		 
 
 featureTypeFromCardinality :: CMin -> FeatureType	
 featureTypeFromCardinality cmin = 
 	if (cmin == 0) 
-	 then optional 
-	 else mandatory
+	 then Optional 
+	 else Mandatory
 	 
 groupTypeFromXmlGroup :: (Maybe XmlGroupFeature) -> GroupType
-groupTypeFromXmlGroup Nothing = basicFeature
+groupTypeFromXmlGroup Nothing = BasicFeature
 groupTypeFromXmlGroup (Just (XmlGroupFeature cmin cmax options) )= 
 	if (cmin == 1)
-	 then alternativeFeature
-	 else orFeature
+	 then AlternativeFeature
+	 else OrFeature
 	
 childrenFromXmlFeatureList :: Maybe XmlChildren -> Maybe XmlGroupFeature -> Children
 childrenFromXmlFeatureList _  (Just (XmlGroupFeature _ _ options)) = [xmlFeature2Feature x | x <- options] 
 childrenFromXmlFeatureList (Just (children))  Nothing = [xmlFeature2Feature x | x <- children] 
 	 
-	 
+\end{code}	 
  	 
