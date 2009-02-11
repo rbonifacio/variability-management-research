@@ -2,13 +2,14 @@
 
 This section presents the unit tests performed 
 for the Feature Model library. A feature model 
-for the automobile domain is used for as the basis 
+for the automobile domain is used as the basis 
 for almost all tests. 
 
 \begin{code}
 module FeatureModelTests where 
 
-import FeatureModel.FeatureModel
+import FeatureModel.Types
+import FeatureModel.FCTypeChecker
 
 import Test.HUnit
 
