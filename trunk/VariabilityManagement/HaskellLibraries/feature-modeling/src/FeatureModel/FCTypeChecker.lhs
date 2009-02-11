@@ -1,8 +1,12 @@
-\subsection{Type checker for feature configurations}
+\section{Type Checker for Feature Configurations}
 
 %if False
 \begin{code}
 module FeatureModel.FCTypeChecker where 
+
+import FeatureModel.Types
+import FeatureModel.FMTypeChecker
+
 \end{code}
 %endif 
 
@@ -19,16 +23,25 @@ validInstance fm fc =
  let f1 = fmRoot fm
      f2 = fcRoot fc
  in 
-  if (f1 == f2) then checkFeatures f1 f2
+  if (f1 == f2) then (checkType fm) ++ (checkFeatures f1 f2) ++ (checkConstraints fm fc)
   else ["The root elements must be the same"]
+
+validInstance' :: FeatureModel -> FeatureConfiguration -> Bool
+validInstance' fm fc = 
+ let fmExpression = foldAnd (fmToPropositionalLogic fm)
+ in eval fc fmExpression 
+
+checkType :: FeatureModel -> ErrorList
+checkType fm = 
+ case fmTypeChecker fm of 
+  Success   -> []
+  Fail xs   -> [("Type checker of the feature model fail" ++ show (xs))]
 \end{code}
 
-\subsubsection{Type checker for a selected feature}
-
-The type checker for a selected feature (the second parameter)
+The type checker for a selected feature \texttt{fc}
 verifies that it complies to the feature constraints 
 defined in the feature model. Such a verification relies 
-on the group type of the feature.
+on the group type of the feature \texttt{fm}.
 
 \begin{code}
 checkFeatures :: Feature -> Feature -> ErrorList
@@ -41,20 +54,34 @@ checkFeatures fm fc =
    OrFeature -> checkOrFeature fm fc
 \end{code}
 
+We have defined specific functions for checking if a 
+feature \texttt{fc} complies to the constraints of a feature 
+\texttt{fm}, based on the \texttt{fm} type 
+(if it is a mandatory, optional, alternative, and so on). Those 
+functions are nor shown in this report.  
+
+%if False
+\begin{code}
+-- check the constraints of a Basic feature
 checkBasicFeature :: Feature -> Feature -> ErrorList
 checkBasicFeature fm fc = 
  (checkMandatoryFeatures fm fc) ++ (checkOptionalFeatures fm fc) 
 
-
+-- check the constraints of a Mandatory feature
 checkMandatoryFeatures :: Feature -> Feature -> ErrorList
 checkMandatoryFeatures fm fc = 
- foldr (++) [] [checkFeatures x (findChildFeature x fc) | x <- children fm, fType x == Mandatory] 
+ foldr (++) [] [checkFeatures x (findChildFeature x fc) 
+               | x <- children fm
+               , fType x == Mandatory] 
    
+-- check the constraints of Optional features
 checkOptionalFeatures :: Feature -> Feature -> ErrorList
-checkOptionalFeatures fm fc = 
- (foldr (++) [] [checkFeatures x y | x <- children fm, y <- children fc, x == y, fType x == Optional]) ++
- (foldr (++) [] [checkFeatures FeatureError y | y <- children fc, (findChildFeature y fm) == FeatureError])
+checkOptionalFeatures fm fc = (fms ++ fcs)
+ where
+  fms = foldr (++) [] [checkFeatures x y | x <- children fm, y <- children fc, x == y, fType x == Optional]
+  fcs = foldr (++) [] [checkFeatures FeatureError y | y <- children fc, (findChildFeature y fm) == FeatureError]
 
+-- check the constraints of an Alternative feature
 checkAlternativeFeature :: Feature -> Feature -> ErrorList
 checkAlternativeFeature fm fc = 
  case children fc of 
@@ -62,28 +89,24 @@ checkAlternativeFeature fm fc =
   [x]    ->  checkFeatures (findChildFeature x fm) x 
   (x:xs) -> [("Exactly one child must be selected for feture " ++ (fId fm))] 
 
+-- check the constraints of an Or feature
 checkOrFeature :: Feature -> Feature -> ErrorList
 checkOrFeature fm fc = 
  case children fc of 
   [] -> [("At least one child must be selected for feature " ++ (fId fm))]
   xs -> foldr (++) [] [checkFeatures (findChildFeature x fm) x | x <- xs] 
 
-\end{code}
+-- check if the fc complies to the fm global constraints
+checkConstraints :: FeatureModel -> FeatureConfiguration -> ErrorList
+checkConstraints fm fc = [("Constraint " ++ (show c) ++ " not satisfied") 
+                         | c <- fmConstraints fm
+                         , not (evalConstraint fc c)
+                         ]
 
-The \texttt{eval} function checks if a feature configuration satisfies 
-the constraints represented in the feature expression. 
-
-\begin{code}
-eval :: FeatureConfiguration -> FeatureExpression -> Bool
-eval config (FeatureRef ref) = featureExists ref (fcRoot config)
-eval config (Not e) = not (eval config e)
-eval config (And e1 e2) = (eval config e1) && (eval config e2)
-eval config (Or e1 e2) = (eval config e1) || (eval config e2)
-eval _ (ConstantExpression e) = e
-\end{code}
-
-\begin{code}
+-- just an auxiliarly function for checking if errors where found
 existError :: ErrorList -> Bool
 existError [] = False
 existError (x:xs) = True
+
 \end{code}
+%endif
