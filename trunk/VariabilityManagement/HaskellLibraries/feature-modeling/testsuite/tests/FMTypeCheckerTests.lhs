@@ -1,18 +1,24 @@
-\section{Feature Model to Propositional Logic Tests}
+%otions ghci -i.:../../src/
 
-This section presents several unit tests for the functions 
-related to the mapping of feature models to propositional 
-logic. 
+\section{Unit tests for the module Feature Model Type Checker}
 
+This section presents several unit tests for the feature model type 
+checker. First, we have to declare several instances of the feature model data 
+type. Then, we test if the type checker functions implement what they 
+are suppose to do.  
+
+
+%if False
 \begin{code}
-module FeatureModToPropositionalLogicTests where
+module FMTypeCheckerTests where
 
-import FeatureModel.FeatureModel
+import FeatureModel.Types
+import FeatureModel.FMTypeChecker
 import Test.HUnit
 
 (|&&) :: FeatureExpression -> FeatureExpression -> FeatureExpression
 exp1 |&& exp2 = And exp1 exp2
- 
+
 a = Feature {
  fId   = "A", 
  fName = "A",
@@ -329,3 +335,7 @@ allTests = TestList [TestLabel "test1"  test1,
                      TestLabel "test11" test11]
 
 \end{code}
+%endif
+
+The feature models that we consider here are: \eval{1+1}
+
