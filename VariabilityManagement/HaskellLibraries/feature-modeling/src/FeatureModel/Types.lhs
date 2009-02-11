@@ -9,7 +9,7 @@
 %
 
 
-\section{Module \texttt{FeatureModel}}
+\section{FeatureModel Data Types}
 
 This module defines the main concepts (data types such as 
 feature model, features, constraints, and so on) related 
@@ -19,9 +19,11 @@ is a valid instance of a feature model.
 	
 %if False
 \begin{code}
---| This modulde defines the main concepts related 
---  to feature modeling.
 module FeatureModel.Types where 
+
+import Funsat.Types
+
+import qualified Data.Set as Set
 
 import List
 import Maybe
@@ -41,7 +43,6 @@ for building types. For instance, the data type \texttt{CheckerResult} has
 two constructors: \texttt{Success} and \texttt{Fail}.   
 
 \begin{code}
--- * data types
 type Id		   = String             
 type Name	   = String             
 type Root          = Feature            
@@ -52,10 +53,10 @@ type Properties    = [Property]
 type FeatureList   = [Feature]
 type ValueList	   = [String]
 type ErrorList 	   = [String]
-data CheckerResult = Success | Fail { errorList :: ErrorList } deriving (Show)
+data CheckerResult = Success | Fail { errorList :: ErrorList } deriving (Show, Eq)
 \end{code}
 
-\texttt{FeatureType} is a new data type for defining if a feature is required or 
+The \texttt{FeatureType} data type defines if a feature is required or 
 not in a feature configuration. Therefore, according to its type, 
 a feature can be either an \emph{optional} or a \emph{mandatoty} feature.
 
@@ -69,7 +70,7 @@ valid configurations of their children. For instance, \texttt{basic} features mi
 not have children. On the other hand, \texttt{alternative} and \texttt{or} features 
 {\bf must have} children. The difference is that, when selected,  
 an \texttt{alternative} feature require exactly one child to be selected. Differently,  
-an \texttt{or} feature, when present in a product configuration, 
+an \texttt{or} feature, when selected in a product configuration, 
 requires that {\bf at least one of its child} must  be selected. 
 
 \begin{code}
@@ -95,7 +96,7 @@ data FeatureConfiguration = FeatureConfiguration {
 
 A feature is either a concrete description of a product capability (with a 
 name, type, children and so on); or an error representation of a feature, which 
-is usefull for reporting some kinds of errors. 
+is a usefull representation for reporting some kinds of errors. 
 
 \begin{code}
 data Feature = Feature {
@@ -130,7 +131,7 @@ data Constraint = Constraint {
 
 Feature expressions are written in propositional formula, with the NOT, AND, and OR connectors. 
 Expressions are usefull for specifying constraints, as state above, but are also usefull in the 
-definition of the configuration knowledge. In this later case, they are necessary for 
+definition of the configuration knowledge. In this later case, feature expressions are necessary for 
 dealing with some types of feature interactions. 
 
 \begin{code}
@@ -140,6 +141,7 @@ data FeatureExpression = ConstantExpression Bool
                        | And FeatureExpression FeatureExpression 
                        | Or FeatureExpression FeatureExpression 
 
+-- the constant expressions for representing True and False
 expTrue = ConstantExpression True
 expFalse = ConstantExpression False
 \end{code}
@@ -167,13 +169,172 @@ ref f = FeatureRef (fId f)
 
 \end{code}
 
+\subsection{Feature Models to Propositional Logic}
+
+The constraints defined in a whole feature model migh be translated to 
+propositional logic, which is a useful representation for reasoning about 
+feature models. This translation consists of:
+
+\begin{itemize}
+ \item create an expression to the root feature, stating that it must be present in 
+       all members of the product line; and 
+ \item translate each feature, in the feature model, to a corresponding propositional 
+       logic expression.  
+\end{itemize}
+ 
+The corresponding propostional expression for a feature \emph{f} depends on  
+the group type of the feature. For a \emph{Basic Feature}, we state that \emph{f} implies 
+all of its mandatory children; for an \emph{Alternative Feature}, we state that \emph{f}
+implies at least one child to be selected; and, finally, for an \emph{Or Feature}, we 
+state that \emph{f} implies one, and only one, child to be selected. 
+The result is a list of \emph{feature expressions} that {\bf must} be 
+satisfied in order to consider a product as a valid instance of the feature model.  
+
+\begin{code}
+fmToPropositionalLogic :: FeatureModel -> [FeatureExpression]
+fmToPropositionalLogic fm =  (ref froot) : (featureToPropositionalLogic froot) ++ cExpressions               
+ where 
+  froot = fmRoot fm
+  cExpressions = map constraintToPropositionalLogic (fmConstraints fm)
+\end{code}
+
+\begin{code}
+featureToPropositionalLogic :: Feature -> [FeatureExpression]
+featureToPropositionalLogic  f = (featureToPL f) 
+ where 
+  featureToPL f = (
+   case groupType f of
+    BasicFeature-> [(ref f) |=> (ref x) | x <- children f, fType x == Mandatory] 
+    OrFeature -> [(ref f) |=> (foldOr [ref x | x <- children f])]  
+    AlternativeFeature -> [(ref f) |=> (foldOr [xor x (delete x (children f)) | x <- children f])]  
+   ) ++ (childrenToPL f) 
+  childrenToPL f = foldr (++) [] [featureToPL c | c <- children f]
+  xor f [] = ref f
+  xor f xs = And (ref f) (foldAnd [Not (ref x) | x <- xs])
+\end{code}
+
+We also have to translate constraints to propositional logic--- or even better, to 
+\emph{Feature Expressions}. 
+
+\begin{code}
+constraintToPropositionalLogic :: Constraint -> FeatureExpression 
+constraintToPropositionalLogic c = 
+ case constraintType c of 
+  Implies -> lhs |=> rhs 
+  Iff     -> And (lhs |=> rhs) (rhs |=>lhs)
+ where 
+  lhs = constraintLHSExp c
+  rhs = constraintRHSExp c
+\end{code}
+
+Then, it was also necessary to convert the feature expressions to the Conjunctive 
+Normal Form (CNF), since most of the available SAT solvers expect 
+sentences in CNF. \emph{FunSAT}, the SAT solver used in this librar, is available at 
+the Hackage repository.  
+
+\begin{code}
+fmToCNFExpression :: FeatureModel -> FeatureExpression 
+fmToCNFExpression fm = 
+ let
+  fmExpressions = fmToPropositionalLogic fm
+ in toCNFExpression (foldAnd fmExpressions) 
+\end{code}
+
+Auxiliarly funcions were defined for converting feature expressions 
+to both CNF and Dimacs CNF format. These functions are not
+shown in this report. Besides that, the \texttt{eval} function checks if a 
+feature configuration (\texttt{fc}) satisfies the constraints represented 
+in the feature expression (\text{exp}). As a consequence, it is also 
+useful for checking if \texttt{fc} is a valid instance of a feature model. 
+
+%if False
+\begin{code} 
+
+toCNFExpression :: FeatureExpression -> FeatureExpression
+toCNFExpression (And e1 e2)    = And (toCNFExpression e1) (toCNFExpression e2)
+toCNFExpression (Or e1 e2)     = distributeAndOverOr e1 e2
+toCNFExpression (Not e1)       = moveNotInwards e1
+toCNFExpression (FeatureRef f) = (FeatureRef f) 
+
+distributeAndOverOr :: FeatureExpression -> FeatureExpression -> FeatureExpression  
+distributeAndOverOr (And x y) e2 = And (toCNFExpression (Or x e2)) (toCNFExpression(Or y e2)) 
+distributeAndOverOr e1 (And x y) = And (toCNFExpression(Or e1 x)) (toCNFExpression(Or e1 y))
+distributeAndOverOr e1 e2 = distributeAndOverOr' a b 
+ where 
+  distributeAndOverOr' (And x y) e = toCNFExpression (Or (And x y) e)
+  distributeAndOverOr' e (And x y) = toCNFExpression (Or e (And x y))
+  distributeAndOverOr' x y = Or (toCNFExpression x) (toCNFExpression  y) 
+  a = toCNFExpression e1
+  b = toCNFExpression e2
+ 
+moveNotInwards :: FeatureExpression -> FeatureExpression
+moveNotInwards (And x y) = Or  (toCNFExpression (Not x)) (toCNFExpression (Not y))
+moveNotInwards (Or x y)  = And (toCNFExpression (Not x)) (toCNFExpression (Not y))
+moveNotInwards (Not x)   = toCNFExpression x
+moveNotInwards e         =  Not e  
+
+dimacsFormat :: FeatureExpression -> CNF 
+dimacsFormat exp = 
+ let 
+  vars = getVars exp
+  cs = map (expToLiterals vars) (getClauses exp)
+ in CNF {
+   numVars = length vars,
+   numClauses = length cs,
+   clauses =  Set.fromList cs
+ } 
+
+getVars :: FeatureExpression -> [FeatureExpression] 
+getVars (And exp1 exp2)  = nub ((getVars exp1) ++ (getVars exp2))
+getVars (Or  exp1 exp2)  = nub ((getVars exp1) ++ (getVars exp2))
+getVars (Not exp1)       =  getVars exp1
+getVars (FeatureRef f) = [(FeatureRef f)]
+getVars otherwise      = []
+
+getClauses :: FeatureExpression -> [FeatureExpression]
+getClauses (And exp1 exp2) = (getClauses exp1) ++ (getClauses exp2)
+getClauses (Or  exp1 exp2) = [Or exp1 exp2]
+getClauses (Not exp1)      = [Not exp1]
+getClauses (FeatureRef f)  = [FeatureRef f]
+getClauses otherwhise      = [] 
+
+expToLiterals :: [FeatureExpression] -> FeatureExpression -> Clause
+expToLiterals fs e = map intToLiteral (expToLiterals' fs e)
+ where
+  expToLiterals' fs (Or  exp1 exp2) = (expToLiterals' fs exp1) ++ (expToLiterals' fs exp2) 
+  expToLiterals' fs (Not exp1)      = map (*(-1)) (expToLiterals' fs exp1)
+  expToLiterals' fs (FeatureRef f)  = 
+   if isJust (elemIndex (FeatureRef f) fs)
+    then [fromJust(elemIndex (FeatureRef f) fs) + 1] 
+    else []
+  expToLiterals' fs otherwise = []
+  intToLiteral x = L { unLit = x }
+\end{code}
+%endif
+
+\begin{code}
+eval :: FeatureConfiguration -> FeatureExpression -> Bool
+eval config (FeatureRef f) = elem f [fId x | x <- plainFeature (fcRoot config)]
+eval config (Not e) = not (eval config e)
+eval config (And e1 e2) = (eval config e1) && (eval config e2)
+eval config (Or e1 e2) = (eval config e1) || (eval config e2)
+eval _ (ConstantExpression e) = e
+
+evalConstraint :: FeatureConfiguration -> Constraint -> Bool
+evalConstraint fc c = 
+ let cpl = constraintToPropositionalLogic c
+ in  eval fc cpl 
+\end{code}
+
+
+
 \subsection{Searching and traversing feature models}
 
 Now, we present several functions for searching and traversing 
 feature models. First of all, the \texttt{plainFeature} function 
 translates a feature tree into a flat structure (a list) of 
 features. It is just an auxiliarly function that simplifies 
-the searching for features. 
+the definition of functions for searching features. 
 
 \begin{code}
 plainFeature :: Feature -> FeatureList
@@ -183,12 +344,13 @@ plainFeature f = f : plainFeature' (children f)
   plainFeature' (x:xs) = (plainFeature x) ++ (plainFeature' xs)
 \end{code}
 
-Using the plainFeature function, it is easy to define functions 
-for searching for a features or for checking if it exists in a feature tree. 
+Using the \texttt{plainFeature} function, we can easly define functions 
+for searching a feature \texttt{f1} (or for checking if it exists) 
+in a feature tree \texttt{f2}. 
  
 \begin{code}
 featureExists :: Feature -> Feature -> Bool 
-featureExists  f1 f2 = elem f1 [x | x <- (plainFeature feature)]
+featureExists  f1 f2 = elem f1 [x | x <- (plainFeature f2)]
 
 findFeature :: Feature -> Feature -> Feature
 findFeature f1 f2 = findFeature' f1 (plainFeature f2)  
@@ -201,11 +363,11 @@ Bellow we present a few functions for peforming more specific
 queries on feature models: 
 
 \begin{itemize}
- \item The allChildrenExists function returns True if all children 
-  elements of the feature f1 are also defined as children of f2.
- \item The findChildFeature returns a children of f2 which is 
-  equals to f1; where the equality is based on the feature ids. 
- \item The findFeatureInList returns the feature in (x:xs) that is 
+ \item The \texttt{allChildrenExists} function returns True if all children 
+  elements of the feature f1 are also defined as children of the feature f2.
+ \item The \texttt{findChildFeature} returns a children of f2 which is 
+  equals to f1; where equality is based on the feature ids. 
+ \item The \texttt{findFeatureInList} returns the feature in (x:xs) that is 
   equals to f1. 
 \end{itemize}
 
@@ -216,8 +378,7 @@ model.
 \begin{code} 
 
 allChildrenExists :: Feature -> Feature -> Bool 
-allChildrenExists f1 f2 = 
- foldr (&&) True [elem x (children f2) | x <- (children f1)]
+allChildrenExists f1 f2 = and [elem x (children f2) | x <- (children f1)]
 
 findChildFeature :: Feature -> Feature -> Feature
 findChildFeature f1 f2 = findFeatureInList f1 (children f2)
@@ -229,7 +390,7 @@ findFeatureInList f (x:xs) = if (f == x) then x else findFeatureInList f xs
 \end{code}
 
 \subsection{Accessors for feature options and properties}
-Also related to the feature model data type, we have 
+Still related to the feature model data type, we have 
 developed several functions for accessing:
 
 \begin{itemize}
@@ -238,11 +399,11 @@ developed several functions for accessing:
 \end{itemize}
 
 The \texttt{featureOptions} function retrieves the selected options 
-of an \emph{alternative feature} or \emph{or feature}. An error is 
-reported if this function is called with a \emph{basic feature} as 
-argument. Besides that, the featureOptionsValues function retrieves 
-a string representation of the selected values of an \emph{alternative feature} 
-or \emph{or feature}.
+of an \emph{Alternative feature} or \emph{Or feature}. An error is 
+reported if this function is called with a \emph{Basic feature} as 
+argument. Besides that, the \texttt{featureOptionsValues} function retrieves 
+a string representation of the selected values of an \emph{Alternative feature} 
+or \emph{Or feature}.
 
 \begin{code}
 featureOptions :: Feature -> Children 
@@ -259,7 +420,7 @@ featureOptionsValues feature =
 If the application developer is interested in a property of the 
 selected options, the \texttt{featureOptionsPropertyValue} function can 
 be used, instead of the two functions shown immediately above. Again, 
-this function does not expect a basic feature as the first argument. Otherwise, 
+this function does not expect a \emph{Basic feature} as the first argument. Otherwise, 
 an error is reported.  
 
 \begin{code}
@@ -277,6 +438,7 @@ featureOptionsPropertyValue feature property =
 --
 instance Eq Feature where 
  Feature id1 _ _ _ _ _  == Feature id2  _ _ _ _ _ = id1 == id2
+ FeatureError == FeatureError = True
  FeatureError == _ = False
  _ == FeatureError = False 
  
@@ -346,5 +508,3 @@ simplifyNot e
 
 \end{code}
 %endif
-
-\end{document}
