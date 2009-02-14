@@ -46,19 +46,82 @@ might be used for running it:
 \end{description}
 
 \begin{code}
+module Main where
+
+import FeatureModel.Types
+import FeatureModel.FMTypeChecker
+import FeatureModel.FCTypeChecker
+
+import FeatureModel.Parsers.FMPlugin.XmlFeatureParser 
+
+import FeatureModel.Parsers.FMIde.FMIde2FeatureModel
+import FeatureModel.Parsers.FMIde.AbsFMIde
+import FeatureModel.Parsers.FMIde.SkelFMIde
+import FeatureModel.Parsers.FMIde.ErrM
+import FeatureModel.Parsers.FMIde.LexFMIde
+import FeatureModel.Parsers.FMIde.ParFMIde
+
+import Text.XML.HXT.Arrow
 import System
 
 parseArgs :: [String] -> IO ()
 parseArgs args = 
  case head args of 
-  "--fmIsSatisfiable" -> print "isSatisfiable"
+  "--isFMSatisfiable" -> execIsSatisfiable (tail args)
+  "--printFM" -> execPrint (tail args)
   otherwhise -> print "error"
+ 
+-- execIsSatisfiable :: [String] -> IO ()
+-- execIsSatisfiable []  = print "expecting a file name. try --help"
+-- execIsSatisfiable [s] = 
+--  do 
+--      [x] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
+--                                     , (a_trace, v_1)
+--                                     , (a_remove_whitespace,v_1)
+--                                     , (a_preserve_comment, v_0)
+--                                      ] s);
+--      print s
+ 
+-- execIsSatisfiable otherwhise = print "command line error. try --help"
+
+execPrint :: [String] -> IO ()
+execPrint []  = print "expecting a file name. try --help"
+execPrint [fn] = 
+ do 
+  x <- readFile fn 
+  print "===== FM ==== \n"
+  let y   = pGrammar (myLexer x)
+  let fm  = translateToFm y
+  print fm
+  print "===== PL ==== \n"
+  let pl = fmToPropositionalLogic fm
+  print pl
+  print "===== CNF ==== \n"
+  -- let cnf = fmToCNFExpression fm
+  -- print cnf
+execPrint otherwhise = print "command line error. try --help"
+
+
+
+execIsSatisfiable :: [String] -> IO () 
+execIsSatisfiable []  = print "expecting a file name. try --help"
+execIsSatisfiable [fn] = 
+ do 
+  x <- readFile fn 
+  let y   = pGrammar (myLexer x)
+  let fm  = translateToFm y
+  let sat = isSatisfiable fm
+  print sat
+execIsSatisfiable otherwhise = print "command line error. try --help" 
+
+ 
+translateToFm (Ok g) = grammarToFeatureModel g
  
 main :: IO ()
 main = do
  args <- getArgs
  case args of 
-  [] -> print "expecting one of the options: --fmIsSatifiable"
+  [] -> print "expecting one of the options: --isFMSatifiable, --printFM"
   (x:xs) -> parseArgs args
 \end{code}
 
