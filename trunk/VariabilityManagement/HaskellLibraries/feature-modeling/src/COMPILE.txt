@@ -1,0 +1,2 @@
+ ghc -o ../dist/afml --make FeatureModel/Main
+
