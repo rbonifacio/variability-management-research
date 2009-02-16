@@ -262,7 +262,7 @@ fm3 = FeatureModel {
   fmRoot = fmCarroError
 }
 
-
+expTest = Or (And (FeatureRef "a") (FeatureRef "b")) (And (Or (FeatureRef "c") (FeatureRef "d") ) (FeatureRef "e"))
 testFC1 = TestCase (assertEqual "checkFeatures should not hold" True (existError (validInstance fm1 fc1)))
 testFC2 = TestCase (assertEqual "checkFeatures should hold" False (existError (validInstance fm1 fc2)))
 testFC3 = TestCase (assertEqual "checkFeatures should not hold" True (existError (validInstance fm1 fc3)))
