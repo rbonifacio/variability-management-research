@@ -230,14 +230,20 @@ constraintToPropositionalLogic c =
 Then, it was also necessary to convert the feature expressions to the Conjunctive 
 Normal Form (CNF), since most of the available SAT solvers expect 
 sentences in CNF. \emph{FunSAT}, the SAT solver used in this librar, is available at 
-the Hackage repository.  
-
+the Hackage repository.
 \begin{code}
 fmToCNFExpression :: FeatureModel -> FeatureExpression 
 fmToCNFExpression fm = 
  let
   fmExpressions = fmToPropositionalLogic fm
  in toCNFExpression (foldAnd fmExpressions) 
+
+fmToTseitinEncode :: FeatureModel -> FeatureExpression
+fmToTseitinEncode fm = 
+ let
+  fmExpressions = fmToPropositionalLogic fm
+ in toTseitinEncode (foldAnd fmExpressions)
+ 
 \end{code}
 
 Auxiliarly funcions were defined for converting feature expressions 
@@ -246,6 +252,10 @@ shown in this report. Besides that, the \texttt{eval} function checks if a
 feature configuration (\texttt{fc}) satisfies the constraints represented 
 in the feature expression (\text{exp}). As a consequence, it is also 
 useful for checking if \texttt{fc} is a valid instance of a feature model. 
+
+We provide two implementations for converting a propositional formula to CNF. The 
+\textt{Tseitin} algorithm have a linear time, although it is not so clear. 
+For real feature models, the Tseitin implementation must be used.
 
 %if False
 \begin{code} 
@@ -273,6 +283,63 @@ moveNotInwards (Or x y)  = And (toCNFExpression (Not x)) (toCNFExpression (Not y
 moveNotInwards (Not x)   = toCNFExpression x
 moveNotInwards e         =  Not e  
 
+type Gate = Integer
+
+toTseitinEncode :: FeatureExpression -> FeatureExpression
+toTseitinEncode (Or e1 e2) =
+ let
+   a1 = newRef [1] 
+   a2 = newRef [2]
+ in foldAnd ([Or a1 a2] ++ (toTseitinEncode' [1] e1) ++ (toTseitinEncode' [2] e2))
+
+toTseitinEncode (And e1 e2) =
+ let
+   a1 = newRef [1] 
+   a2 = newRef [2]
+ in foldAnd ([And a1 a2] ++ (toTseitinEncode' [1] e1) ++ (toTseitinEncode' [2] e2)) 
+ 
+toTseitinEncode (Not e1) = 
+ let a1 = newRef [1] 
+ in foldAnd( [Not a1] ++ (toTseitinEncode' [1] e1))
+
+toTseitinEncode e = e   
+
+-- toTseitinEncode' _  (FeatureRef e) = []
+
+toTseitinEncode' gs (Or e1 e2) = 
+ let 
+  gl = gs ++ [1]
+  gr = gs ++ [2]
+  w  = newRef gs
+  w1 = newRef gl
+  w2 = newRef gr
+ in  [And (Or (Not w) (Or w1 w2) ) (And (Or w (Not w1)) (Or w (Not w2)))] ++ 
+     (toTseitinEncode' gl e1) ++
+     (toTseitinEncode' gr e2)
+
+toTseitinEncode' gs (And e1 e2) = 
+ let
+  gl = gs ++ [1]
+  gr = gs ++ [2]
+  w  = newRef gs
+  w1 = newRef gl
+  w2 = newRef gr
+ in [And (Or (Not w) w1) (And (Or (Not w) w2) (Or w (Or (Not w1) (Not w2))))] ++
+    (toTseitinEncode' gl e1) ++
+    (toTseitinEncode' gr e2)
+    
+toTseitinEncode' gs (Not e1) = 
+ let 
+  gl = gs ++ [1] 
+  w  = newRef gs
+  w1 = newRef gl
+ in [And (Or (Not w) (Not w1)) (Or w w1) ] ++ (toTseitinEncode' gl e1)
+
+toTseitinEncode' gs  otherwise = []
+     
+newRef :: [Gate] -> FeatureExpression
+newRef gs = FeatureRef (foldl (++) "g" [show g | g <- gs])
+ 
 dimacsFormat :: FeatureExpression -> CNF 
 dimacsFormat exp = 
  let 
