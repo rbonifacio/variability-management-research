@@ -110,13 +110,13 @@ execIsSatisfiable [fn] =
   x <- readFile fn 
   let y   = pGrammar (myLexer x)
   let fm  = translateToFm y
-  let sat = isSatisfiable fm
+  let sat = fmTypeChecker fm
   print sat
 execIsSatisfiable otherwhise = print "command line error. try --help" 
 
  
-translateToFm (Ok g) = grammarToFeatureModel g
- 
+translateToFm (Ok g)  = grammarToFeatureModel g
+translateToFm (Bad s) = error s 
 main :: IO ()
 main = do
  args <- getArgs

@@ -36,7 +36,8 @@ fmTypeChecker fm =
   [] -> Success
   xs -> Fail { errorList = errors }
  where
-  errors = cRootFeature ++ cConstraints ++ cDuplications ++ cSatisfiable 
+  errors = if (e1) == [] then cSatisfiable else e1
+  e1 = cRootFeature ++ cConstraints ++ cDuplications   
   cRootFeature  = featureTC (fmRoot fm) 
   cConstraints  = constraintsTC fm
   cDuplications = noDuplicationsTC fm 
@@ -79,7 +80,7 @@ satisfiable.
  
 \begin{code}
 fmSATSolver :: FeatureModel -> (Solution, Stats, Maybe ResolutionTrace) 
-fmSATSolver fm = solve1 (dimacsFormat (fmToCNFExpression fm))
+fmSATSolver fm = solve1 (dimacsFormat (fmToTseitinEncode fm))
 
 isSatisfiable :: FeatureModel -> Bool 
 isSatisfiable fm = 
