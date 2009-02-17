@@ -34,8 +34,8 @@
 % - Use the \inst{?} command only if the authors have different
 %   affiliation.
 %\author{F.~Author\inst{1} \and S.~Another\inst{2}}
-\author{Rodrigo Bonif\'{a}cio\inst{1} \and Paulo Borba\inst{1} \and Cristiano
-Ferraz\inst{2}}
+\author{Rodrigo Bonif\'{a}cio\inst{1} \and Paulo Borba\inst{1} \and
+Roberto Ferreira\inst{2} \and Cristiano Ferraz\inst{2}}
 
 % - Use the \inst command only if there are several affiliations.
 % - Keep it simple, no one is interested in your street address.
@@ -150,7 +150,8 @@ Latin Squares for the second experiment
 \begin{block}{Assumptions}
 \begin{itemize}
   \item the errors $\epsilon_{ijt}$ are $IIDN(0,\sigma^2)$
-  \item The model must be additive
+  \item the model must be additive
+  \item there is no interactions between factors
 \end{itemize}
 \end{block}
 
@@ -169,12 +170,91 @@ Latin Squares for the second experiment
   \end{itemize}
 \end{enumerate}
 \end{frame}
-\end{document}
 
 \begin{frame}
-\frametitle{Analysis Procedure}
-\begin{block}{Check the model assumptions}
+\frametitle{First Experiment}
+Testing for the \emph{No interaction assumption}
+\begin{center}
+ \includegraphics[scale=0.30]{images/fphase-interaction.eps}
+\end{center}
+\end{frame}
 
+\begin{frame}
+\frametitle{First Experiment}
+Testing for the \emph{Additivity model assumption} 
+\begin{block}{Tukey non-additivity test}
+\begin{itemize} 
+ \item {\bf p = 0.084}
+\end{itemize} 
 \end{block}
 \end{frame}
+
+\begin{frame}
+\frametitle{First Experiment}
+Testing for the \emph{normal distribution of residuals}
+\begin{center}
+ \includegraphics[scale=0.30]{images/fphase-normal.eps}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{First Experiment}
+Testing for the \emph{Constant variance of errors}
+
+\begin{block}{Non-constant Variance Score Test}
+\begin{itemize}
+ \item Variance formula: ~ fitted.values 
+ \item Chisquare = 6.93516    
+ \item Df = 1     
+ \item {\bf p = 0.00845175}
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{First Experiment}
+
+\begin{block}{Model improvement}
+\begin{itemize}
+\item Box-Cox technique
+\end{itemize}
+\end{block}
+
+\begin{center}
+ \includegraphics[scale=0.25]{images/fphase-boxcox.eps}
+\end{center}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{First Experiment}
+\begin{block}{Summary (base model)}
+\begin{scriptsize}
+\begin{table}[htbp]  \centering  \begin{tabular}{@{} cccccc @{}}                             	& Df    	& Sum Sq   	& Mean Sq  	& F value    	&  Pr(>F)  	\\
+Replicacao            	& 5     	& 4705.8    	& 941.2        	& 5.1132     	&  0.01382 *	\\
+Dominio                	& 1      	& 4.2           	& 4.2            	& 0.0226   	&  0.88340  	\\
+Tecnica                 	& 1     	& 1504.2     	& 1504.2      	& 8.1719    	&  0.01700 *	\\
+Replicacao:Aluno  	& 6     	& 1079.0     	& 179.8        	& 0.9770    	&  0.48763  	\\
+Residuals              	& 10   	& 1840.7     	& 184.1   		&			&			\\
+\end{tabular}\end{table}
+\end{scriptsize}
+\end{block} 
+\end{frame}
+
+\begin{frame}
+\frametitle{First Experiment}
+\begin{block}{Summary (improved model)}
+\begin{scriptsize}
+\begin{table}[htbp]  \centering  \begin{tabular}{@{} cccccc @{}}                 		& Df     	& Sum Sq    	& Mean 		& Sq F value   	& Pr(>F)   		\\
+Replicacao     		& 5 		& 1.8901e-04 	& 3.7802e-05  	& 4.8472 		& 0.016431 * 		\\
+Dominio         		& 1 		& 1.3944e-05 	& 1.3944e-05   & 1.7880 		& 0.210785   		\\
+Tecnica           		& 1 		& 9.4738e-05 	& 9.4738e-05   & 12.1479 	&  0.005868 **		\\
+Replicacao:Aluno  	& 6 		& 6.8153e-05 	& 1.1359e-05   & 1.4565 		& 0.285374   		\\
+Residuals        		& 10 	& 7.7987e-05 	& 7.7990e-06   &			&    				\\
+\end{tabular}\end{table}
+\end{scriptsize}
+\end{block} 
+\end{frame}
+
 \end{document}
