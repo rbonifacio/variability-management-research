@@ -351,6 +351,18 @@ dimacsFormat exp =
    clauses =  Set.fromList cs
  } 
 
+data FMSummary = FMSummary {
+  nfeatures :: Int,
+  nconstraints :: Int
+} deriving (Show)
+
+summary :: FeatureModel -> FMSummary 
+summary fm = 
+ let 
+   e = fmToPropositionalLogic fm
+   r = fmRoot fm
+ in FMSummary (length (plainFeature r)) (length (e))
+
 getVars :: FeatureExpression -> [FeatureExpression] 
 getVars (And exp1 exp2)  = nub ((getVars exp1) ++ (getVars exp2))
 getVars (Or  exp1 exp2)  = nub ((getVars exp1) ++ (getVars exp2))
