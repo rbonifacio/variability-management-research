@@ -62,15 +62,12 @@ import FeatureModel.Parsers.FMIde.LexFMIde
 import FeatureModel.Parsers.FMIde.ParFMIde
 
 import Text.XML.HXT.Arrow
-import System
 
-parseArgs :: [String] -> IO ()
-parseArgs args = 
- case head args of 
-  "--isFMSatisfiable" -> execIsSatisfiable (tail args)
-  "--printFM" -> execPrint (tail args)
-  otherwhise -> print "error"
- 
+import Maybe
+
+import System
+import System.Console.GetOpt
+
 -- execIsSatisfiable :: [String] -> IO ()
 -- execIsSatisfiable []  = print "expecting a file name. try --help"
 -- execIsSatisfiable [s] = 
@@ -84,45 +81,98 @@ parseArgs args =
  
 -- execIsSatisfiable otherwhise = print "command line error. try --help"
 
-execPrint :: [String] -> IO ()
-execPrint []  = print "expecting a file name. try --help"
-execPrint [fn] = 
- do 
-  x <- readFile fn 
-  print "===== FM ==== \n"
-  let y   = pGrammar (myLexer x)
-  let fm  = translateToFm y
-  print fm
-  print "===== PL ==== \n"
-  let pl = fmToPropositionalLogic fm
-  print pl
-  print "===== CNF ==== \n"
-  -- let cnf = fmToCNFExpression fm
-  -- print cnf
-execPrint otherwhise = print "command line error. try --help"
+execSummary :: FeatureModel -> IO ()
+execSummary fmodel = do print $ summary fmodel
 
 
+execCheck1 :: FeatureModel -> IO () 
+execCheck1 fmodel = do print $ fmTypeChecker fmodel
 
-execIsSatisfiable :: [String] -> IO () 
-execIsSatisfiable []  = print "expecting a file name. try --help"
-execIsSatisfiable [fn] = 
- do 
-  x <- readFile fn 
-  let y   = pGrammar (myLexer x)
-  let fm  = translateToFm y
-  let sat = fmTypeChecker fm
-  print sat
-execIsSatisfiable otherwhise = print "command line error. try --help" 
-
- 
-translateToFm (Ok g)  = grammarToFeatureModel g
-translateToFm (Bad s) = error s 
 main :: IO ()
 main = do
  args <- getArgs
- case args of 
-  [] -> print "expecting one of the options: --isFMSatifiable, --printFM"
-  (x:xs) -> parseArgs args
+ case getOpt Permute options args of
+  ( [], [], [] ) -> error $ usageInfo header options
+  ( flags, [] , [] ) -> processFlags flags
+  ( _, nonOpts, [] ) -> error $ concat ["\nunrecognized options ", unwords nonOpts, (usageInfo header options)]
+  ( _, _, msgs) -> error $ concat msgs ++ usageInfo header options
+
+processFlags :: [Flag] -> IO ()
+processFlags flags = do
+ let args = getOptions flags defaultOptions
+ fmodel <- parseFeatureModel args
+ case (cmd args) of
+  "summary" -> execSummary (fmodel)
+  "check1"  -> execCheck1  (fmodel)
+  "check2"  -> execCheck1  (fmodel)
+  otherwise -> error $ concat ["\nunrecognized command ", (cmd args), (usageInfo header options)]
+
+
+parseFeatureModel args = do
+ x <- readFile (fm args) 
+ let fm = case (fmt args) of 
+           "fmp"   -> translateToFm (pGrammar (myLexer x)) 
+           "fmide" -> translateToFm (pGrammar (myLexer x))
+           otherwise -> error $ concat ["\nunrecognized format ", (fmt args), (usageInfo header options)]
+ return fm
+
+translateToFm (Ok g)  = grammarToFeatureModel g
+translateToFm (Bad s) = error s
+
+data Flag = Format String 
+          | Command String 
+          | FMFile String 
+          | FCFile String
+ deriving (Show)
+
+options :: [OptDescr Flag]
+options = [ 
+  Option ['f'] ["format"] 
+         (OptArg optformat "FMT") 
+         ("Set the format option. Use (fmide) for FMIde models" ++
+          "\nor (fmp) for FMPlugin models. The defaul option" ++
+         "\nis fmp.\n\n") , 
+  Option ['c'] ["command"] 
+         (ReqArg Command "CMD")
+         ("Identify the command to be performed. Use \"summary\" " ++
+          "\nfor presenting a summary of the specified feature model" ++
+          "\nUse \"check1\" for checking the specified feature model.  " ++
+          "\nFinally, use \"check2\" for checking the specified " ++  
+          "\nfeature model and feature configuration.\n\n"),
+  Option [] ["file1"] 
+         (ReqArg FMFile "FILE")
+         "Identify the feature model file.\n\n",
+  Option [] ["file2"] 
+         (ReqArg FCFile "FILE")
+         "Identify the feature configuration file.\n\n"
+ ]
+
+optformat :: Maybe String -> Flag
+optformat = Format . fromMaybe "fmp" 
+
+data Options = Options {
+  fmt :: String,
+  cmd :: String,
+  fm  :: String,
+  fc  :: String
+} deriving (Show)
+
+defaultOptions = Options {
+  fmt = "fmp",
+  cmd = "",
+  fm  = "",
+  fc = ""
+}
+
+getOptions [] options = options
+getOptions (x:xs) options = 
+ case x of  
+  (Format s)  -> getOptions xs (options { fmt = s })
+  (Command s) -> getOptions xs (options { cmd = s })
+  (FMFile s)  -> getOptions xs (options { fm  = s })
+  (FCFile s)  -> getOptions xs (options { fc  = s })
+
+header = "\nUsage: hfm [OPTION...]\n"
 \end{code}
 
 %include Types.lhs
