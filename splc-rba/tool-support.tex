@@ -1,0 +1,65 @@
+\section{Tool Support}\label{sec:tool-support}
+
+We have developed a Haskell library and a set of tools for checking errors and bad smells in feature models. Therefore, offering these asserts to the Haskell community is another contribution of this work--- since, to our knowledge, there is no corresponding set of libraries and tools developed in functional languages. In short, these libraries and tools make available:
+
+\begin{itemize}
+ \item data types for feature modeling in Haskell;
+ \item functions for checking if a feature model is well typed;
+ \item functions for detecting bad smells in feature models;
+ \item functions for checking if a feature model is satisfiable;
+ \item functions for checking if a selection of features is a valid instance of a feature model; and
+ \item integration with existing tools, such as Feature Modeling Plugin and FeatureIde 
+\end{itemize}   
+
+We start this section by presenting a few design decisions regarding the development of the feature model library. Then, we present some analysis of benchmarking that were performed on three distinct feature models available at~\cite{Group:2009yg}: \emph{eShop feature model} (325 features), \emph{Model transformation} (113 features) and \emph{Web portal} (49 features). These feature models have been widely described in the literature. We have also checked the satisfiability functions on models with 1000 features. 
+
+\subsection{Design decisions}
+
+For checking satisfiability, we have implemented two solutions. The first one is a purely functional implementation, using the Funsat Haskell library. Besides informing if a feature model is satisfiable or not, using this approach we can also get a valid instance for the model. However, this library is not optimized for complex feature models. For this reason, we have also developed an interface with the Minisat SAT solver, an open source project developed in C.    
+
+\subsection{Benchmark analysis}
+
+We evaluated our tools in small and medium-sized feature models that are publicly available. Since these models have been widely used in the literature, we believe that they are representative to our analysis. Basically, here we present  that our tools correctly detect errors and bad smells in reasonable time. Some of the existing models that we took already present some kind of error. Most of them are related to duplicated features. Bad smells were introduced in the evaluated feature models. 
+
+For each feature model we evaluated three operations: type checker (TC), satisfiability checker (SC), and bad smells detection (BSD). Additionally, in order to reduce bias, we performed 50 evaluations for each pair \emph{operation and feature model}. We conducted all measurements on the same Mac OS-X with 2.16 GHz and 2 GB of RAM. The time, measured in milliseconds, was collected using the \emph{BenchPress} library~\cite{Tibell:2009rm}. The mean time for each pair is present in Table~\ref{tab:analysis}.
+
+\begin{table}[htdp]
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|} \hline
+Feature model 			& Features 			& TC 	& SC 	& BSD      		\\ \hline
+Web portal       			& 49                             	& 4.8 	& 4.5 	& 125.78 		\\ \hline
+Model transformation       & 113			    	& 4.5	& 20.70	& 1339.03		\\ \hline 
+eShop				& 325				& 15.27  	& 125.76	& 25806.05 	\\ \hline
+\end{tabular}
+\end{center}
+\caption{Benchmark results}
+\label{tab:analysis}
+\end{table}
+
+We can observe that the time required for detecting bad smells increases significantly as the number of features increase. For instance, checking bad smells in the \emph{eShop} feature model took approximately 25 seconds. This number is almost 20 times greater than the time required for detecting bad smells in the \emph{Model transformation} feature model. However, we claim that even in this case, the response time is reasonable, since it might significantly reduce the effort for detecting bad design decisions manually. Additionally, the current implementations of the corresponding functions were developed without considering performance. For instance, the function for detecting dead features (Listing~\ref{lst:dead})is extremely time consuming, since, for each optional feature, it makes a call for the satisfiability function. Optimizing these functions is a future activity. 
+
+\begin{lstlisting}[belowskip=12pt,frame=tb,caption={Function for checking dead features.},label=lst:dead]
+checkDeadFeatures :: FeatureModel -> [Feature]
+checkDeadFeatures fm = 
+ let fm' = addImplies fm
+ in
+  [ f | f <- features fm
+  , isOptional f
+  , not (isSatisfiable fm' f)
+  ]
+\end{lstlisting} 
+
+
+
+
+
+
+
+  
+
+
+
+  
+ 
+
+

@@ -1,0 +1,61 @@
+<feature_model name="Web_Portal">	
+<feature_tree>
+:r Web Portal (web_portal)
+	[:o Additional Services (add_services)
+		[:o Site Statistics (site_stats)
+			[:m Basic (basic)
+			 :o Advanced (advanced)]
+		:o Site Search (site_search)
+			[:o Images (images)
+			 :o Text (text)
+				[:m HTML (html)
+				 :o Dynamic (dynamic)]]
+		:o Ad Server (ad_server)
+			[:m Reports (reports)
+			 :o Pop_ups (popups)
+			 :m Banners (banners)
+				[:m Image (ban_img)
+				 :o Flash (ban_flash)]
+			:o Keyword Support (keyword)]]
+	:m Web Server (web_server)
+		[:o Logging (logging)
+			<:g[1,1]
+				[: DB (db)
+				 : File (file)]>
+		 :o Protocols (protocol)
+			<:g[1,*]
+				[: NTTP (nttp)
+				 : FTP (ftp)
+				 : HTTPS (https)]>
+		 :m Content (content)
+			[:m Static (static)
+			 :o Active (active)
+				<:g[1,*]
+					[: ASP (asp)
+					 : PHP (php)
+					 : JSP (jsp)
+					 : CGI (cgi)]>]]
+	:o Persistence (persistence)
+		<:g[1,1]
+			[: XML (xml)
+			 : Database (database)]>
+	:o Security (ri)
+		<:g[1,*]
+			[: Data Storage (data_storage)
+			 : Data Transfer (data_transfer)
+			 : User Authentication (user_auth)]>
+	:o Performance (performance)
+		<:g[1,1]
+			[: Ms (ms)
+			 : Sec (sec)
+			 : Min (min)]>]
+</feature_tree>	
+<constraints>
+ implies(keyword, text)
+ implies(dynamic, active)
+ implies(db, database)
+ implies(data_transfer,https)
+ implies(file, ftp) 
+ implies(https, ms)
+</constraints>
+</feature_model>
