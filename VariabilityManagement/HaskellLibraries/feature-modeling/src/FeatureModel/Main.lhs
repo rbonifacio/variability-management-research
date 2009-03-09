@@ -53,6 +53,7 @@ import FeatureModel.FMTypeChecker
 import FeatureModel.FCTypeChecker
 
 import FeatureModel.Parsers.FMPlugin.XmlFeatureParser 
+import FeatureModel.Parsers.FMPlugin.XmlFeatureModel (xmlFeature2Feature) 
 
 import FeatureModel.Parsers.FMIde.FMIde2FeatureModel
 import FeatureModel.Parsers.FMIde.AbsFMIde
@@ -63,11 +64,19 @@ import FeatureModel.Parsers.FMIde.ParFMIde
 
 import Funsat.Types
 
+import  qualified FeatureModel.Parsers.SXFM.ParsecSXFM as ParsecSXFM
+
+import Text.ParserCombinators.Parsec
+import qualified Text.ParserCombinators.Parsec.Token as P
+import Text.ParserCombinators.Parsec.Language( haskellStyle )
+
 import Text.XML.HXT.Arrow
 
 import Data.Set
 
 import Maybe
+
+import Test.BenchPress
 
 import IO 
 import System
@@ -75,14 +84,6 @@ import System.Console.GetOpt
 
 -- execIsSatisfiable :: [String] -> IO ()
 -- execIsSatisfiable []  = print "expecting a file name. try --help"
--- execIsSatisfiable [s] = 
---  do 
---      [x] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
---                                     , (a_trace, v_1)
---                                     , (a_remove_whitespace,v_1)
---                                     , (a_preserve_comment, v_0)
---                                      ] s);
---      print s
  
 -- execIsSatisfiable otherwhise = print "command line error. try --help"
 
@@ -101,6 +102,9 @@ execMinisat out fmodel = do
  execFm2Cnf out fmodel 
  code <- System.system ("minisat " ++ out)
  print $ code
+
+execSAT :: FeatureModel -> IO ()
+execSAT fmodel = do print $ fmSATSolver fmodel
 
 -- translate the fm to a dimacs cnf 
 -- file.
@@ -140,19 +144,44 @@ processFlags flags = do
   "check2"  -> execCheck1  (fmodel)
   "fm2cnf"  -> execFm2Cnf  (fc args) (fmodel)
   "minisat" -> execMinisat (fc args) (fmodel)
+  "sat"     -> execSAT (fmodel)
+  "find-bad-smells" -> print $ findBadSmells fmodel
   otherwise -> error $ concat ["\nunrecognized command ", (cmd args), (usageInfo header options)]
 
 
 parseFeatureModel args = do
- x <- readFile (fm args) 
- let fm = case (fmt args) of 
-           "fmp"   -> translateToFm (pGrammar (myLexer x)) 
-           "fmide" -> translateToFm (pGrammar (myLexer x))
-           otherwise -> error $ concat ["\nunrecognized format ", (fmt args), (usageInfo header options)]
- return fm
+ let fn = fm args
+ x <- readFile (fn) 
+ case (fmt args) of 
+   "fmp"   -> do
+               fm <- translateFMPToFm fn
+               return fm
+   
+   "fmide" -> do
+               let fm = translateFMIdeToFm (pGrammar (myLexer x))
+               return fm
 
-translateToFm (Ok g)  = grammarToFeatureModel g
-translateToFm (Bad s) = error s
+   "sxfm"  -> do
+               r <- parseFromFile ParsecSXFM.parseFeatureModel fn ; 
+               case (r) of
+                 Left err  -> error (show err)
+                 Right f  -> do let fm = f
+                                return fm
+    
+   otherwise -> error $ concat ["\nunrecognized format ", (fmt args), (usageInfo header options)]
+
+translateFMIdeToFm (Ok g)  = grammarToFeatureModel g
+translateFMIdeToFm (Bad s) = error s
+
+translateFMPToFm s = 
+ do
+      [x] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
+                                      , (a_trace, v_1)
+                                      , (a_remove_whitespace,v_1)
+                                      , (a_preserve_comment, v_0)
+                                      ] s);
+      return FeatureModel { fmRoot = (xmlFeature2Feature x), fmConstraints = [] }
+
 
 data Flag = Format String 
           | Command String 
