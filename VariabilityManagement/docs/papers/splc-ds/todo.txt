@@ -1,1 +1,0 @@
-revisar modeling framework para variability model ou variability framework
