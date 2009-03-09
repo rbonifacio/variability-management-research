@@ -1,0 +1,23 @@
+<feature_model name="Telecommunication_System">
+<feature_tree>
+:r tecom
+	[:o ipvoice (ipvoice)
+		[:m software
+			<:g[1,1]
+				[: swpack1 (swpack1)
+				 : swpack2]>]
+         :m rack
+		[:m sizes
+			<:g[1,1]
+				[: large
+				 : medium
+				 : small]>]
+	:o messaging (messaging)
+		[:o upgrade_swpack (upgrade_swpack)]]
+</feature_tree>
+<constraints>
+ implies (swpack1, Not (upgrade_swpack))
+ implies (ipvoice, Or  (Not (messaging), upgrade_swpack))
+</constraints>
+</feature_model>
+
