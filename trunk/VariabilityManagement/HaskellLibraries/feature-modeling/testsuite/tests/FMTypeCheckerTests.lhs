@@ -70,7 +70,7 @@ e2 = Feature {
  fName = "E2",
  fType = Mandatory,
  groupType = AlternativeFeature,
- children = [f1,f2],
+ children = [f1],
  properties = [] 
 }
 
@@ -79,7 +79,7 @@ e3 = Feature {
  fName = "E3",
  fType = Mandatory,
  groupType = AlternativeFeature,
- children = [f1,f2,f3],
+ children = [f1,f2],
  properties = [] 
 }
 
@@ -195,6 +195,18 @@ cnt02 = Constraint {
  constraintRHSExp = Not (ref a)
 }
 
+cnt03 = Constraint {
+ constraintType = Iff ,
+ constraintLHSExp = (ref f1), 
+ constraintRHSExp = (ref f2)
+}
+
+cnt04 = Constraint {
+  constraintType = Iff ,
+  constraintLHSExp = (ref a), 
+  constraintRHSExp = (ref f1)
+}
+
 a1 = a { children = [b]}
 a2 = a { children = [b,c]}
 a3 = a { children = [b,c,d]}
@@ -220,7 +232,7 @@ fm05 = fm01 { fmRoot = a4 }
 
 fm06 = fm01 { fmRoot = a5 }
 
-fm07 = fm01 { fmRoot = a6 }
+fm07 = fm01 { fmRoot = a6, fmConstraints = [cnt03,cnt04] }
 
 fm08 = fm01 { fmRoot = a7 } 
 
@@ -319,6 +331,14 @@ test11 = TestCase (assertEqual
                                         (And    ( (ref h2) |=> (Or (ref i1) (Or (ref i2) (ref i3) ) ) ) 
                                                 ( (ref c)  |=> (ref i3) ) ) ) ) )  
                   (fmToCNFExpression fm11))
+
+
+
+test13 = TestCase (assertEqual
+                   "for the issatisfiable "
+                   (isSatisfiable fm07)
+                   False
+                  )
 
 
 
