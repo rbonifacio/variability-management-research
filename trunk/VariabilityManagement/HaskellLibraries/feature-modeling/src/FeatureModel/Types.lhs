@@ -585,5 +585,14 @@ simplifyNot e
  | e == expFalse = expTrue
  | otherwise = Not (simplifyExpression e)
 
+essentialFeatures :: FeatureModel -> [Feature]
+essentialFeatures fm = essentialFeatures' (fmRoot fm)   
+ where 
+  essentialFeatures' f = 
+   if (fType f == Mandatory) 
+    then f :  concat (map (essentialFeatures') (children f)) 
+   else 
+    []
+
 \end{code}
 %endif

@@ -80,7 +80,7 @@ satisfiable.
  
 \begin{code}
 fmSATSolver :: FeatureModel -> (Solution, Stats, Maybe ResolutionTrace) 
-fmSATSolver fm = solve1 (dimacsFormat (fmToTseitinEncode fm))
+fmSATSolver fm = solve1 (dimacsFormat (fmToCNFExpression fm))
 
 isSatisfiable :: FeatureModel -> Bool 
 isSatisfiable fm = 
@@ -96,13 +96,21 @@ in the feature model.
 
 \begin{code}
 constraintsTC :: FeatureModel -> ErrorList
-constraintsTC fm = foldr (++) [] [constraintTC' c | c <- fmConstraints fm]
- where 
-  constraintTC' c = (checkReferences c)
-  checkReferences c = checkExpReferences (constraintLHSExp c) ++ checkExpReferences (constraintRHSExp c)  
-  checkExpReferences e = 
-   if (eval fc e) then [] else [("Expression " ++ (show e) ++ " is not valid")]
-  fc = FeatureConfiguration { fcRoot = (fmRoot fm) } 
+constraintsTC fm = 
+ let 
+  cnames = [(c,n) | c <- fmConstraints fm, n <- expNames (constraintToPropositionalLogic c)]
+  fnames = [fId f | f <- plainFeature (fmRoot fm)]
+  inames = [(c,n) | (c,n) <- cnames, notElem n fnames] --invalid references of the constraint 
+ in ["Invalid reference " ++ n  ++ " found in constraint " ++ show (c) | (c,n) <- inames] 
+ 
+ 
+
+expNames :: FeatureExpression -> [String] 
+expNames (And e1 e2)    = (expNames e1) ++ (expNames e2)
+expNames (Or  e1 e2)    = (expNames e1) ++ (expNames e2)
+expNames (Not e1)       = expNames e1
+expNames (FeatureRef e) = [e]
+expNames otherwise    = []  
 \end{code}
 
 \subsection{Duplication type checker}
@@ -117,7 +125,96 @@ features.
 \begin{code}
 noDuplicationsTC :: FeatureModel -> ErrorList
 noDuplicationsTC fm = 
- if (length xs == length (nub xs)) then [] 
- else ["There are duplicated features in the feature model"] 
- where  xs = plainFeature (fmRoot fm)
+ let 
+  fnames = [fId f | f <- plainFeature (fmRoot fm)]
+  dupps  = [f | f <- fnames, length (filter (==f) fnames) > 1]
+ in ["Feature " ++ f ++ " is duppliecated." | f <- dupps] 
+ 
+\end{code}
+
+\section{Detecting bad smells}
+
+\begin{code}
+missingAlternatives :: FeatureModel -> [BadSmell]
+missingAlternatives fm = missingAlternative' r 
+ where 
+  missingAlternative' f =  
+   (
+    case groupType f of 
+    BasicFeature -> []
+    otherwise -> if (length (children f) > 1) 
+     then [] 
+     else ["Expecting more than one child in Feature " ++ show(f) ]
+   ) ++ (concat [missingAlternative' x | x <- children f])
+  r = fmRoot fm
+
+constraintImposingAlternatives :: FeatureModel -> [BadSmell]
+constraintImposingAlternatives fm = 
+ let 
+  ecs  = filter (expectedConstraint fm) (fmConstraints fm)
+ in ["Constraint " ++ (show c) ++ " imposes alternative feature." | c <- ecs, impliesFeatures (altfIds fm) c]
+  
+constraintRequiringOptional :: FeatureModel -> [BadSmell]
+constraintRequiringOptional fm = 
+ let 
+  ecs = filter (expectedConstraint fm) (fmConstraints fm) 
+ in ["Constraint " ++ (show c) ++ " imposes optional feature." | c <- ecs, impliesFeatures (optfIds fm) c]
+
+
+checkDeadFeatures :: FeatureModel -> [BadSmell]
+checkDeadFeatures fm = [ "Dead feature: " ++ show f | f <- checkDeadFeatures' fm]
+ where 
+  checkDeadFeatures' fm = [f | f <- plainFeature (fmRoot fm), fType f == Optional,  not (isSatisfiable (addImpliesFeature fm f))]
+
+addImpliesFeature :: FeatureModel -> Feature -> FeatureModel
+addImpliesFeature fm f = 
+ let 
+  cs = fmConstraints fm 
+  c = Constraint {
+        constraintType = Implies ,
+        constraintLHSExp = ref (fmRoot fm),
+        constraintRHSExp = ref (f)
+      }
+  in 
+   fm { fmConstraints = c : cs}
+
+  
+optfIds :: FeatureModel -> [String]
+optfIds fm = [fId f | f <- plainFeature (fmRoot fm), (fType f) == Optional]
+
+altfIds :: FeatureModel -> [String]
+altfIds fm = 
+ map fId (concat [children f | f <- plainFeature (fmRoot fm), groupType f == AlternativeFeature]) 
+    
+
+impliesFeatures :: [String] -> Constraint -> Bool
+impliesFeatures altf c = 
+ let names = expNames (constraintRHSExp c)
+ in (intersect names altf) == names
+  
+expectedConstraint :: FeatureModel -> Constraint -> Bool
+expectedConstraint fm c = 
+ let 
+  c1 = Constraint {
+         constraintType = Implies,
+         constraintLHSExp = ref (fmRoot fm),
+         constraintRHSExp = Not (constraintLHSExp c) 
+       }
+  fmt = fm { fmConstraints = [c1] }
+ in not (isSatisfiable fmt)
+ 
+type BadSmell = String 
+
+findBadSmells :: FeatureModel -> [BadSmell]
+findBadSmells fm = 
+ if (isSatisfiable fm)
+  then 
+   (missingAlternatives fm) ++
+   (constraintImposingAlternatives fm) ++
+   (constraintRequiringOptional fm) ++ 
+   (checkDeadFeatures fm)
+ else
+  ["The feature model is inconsistent (unsatisfiable)"]
+ 
+ 
 \end{code}
