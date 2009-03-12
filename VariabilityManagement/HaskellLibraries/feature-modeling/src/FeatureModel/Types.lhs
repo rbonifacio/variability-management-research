@@ -84,7 +84,7 @@ data FeatureTree = Leaf Feature | Root Feature [FeatureTree]
 
 fnode :: FeatureTree -> Feature
 fnode (Leaf f) = f
-fonde (Root f fs) = f
+fnode (Root f fs) = f
 
 children :: FeatureTree -> [Feature]
 children (Leaf f) = []
@@ -99,10 +99,9 @@ data FeatureConfiguration = FeatureConfiguration {
 	fcTree :: FeatureTree
 } deriving (Show)
 
-foldFTree::  (b -> b -> b) -> (FeatureTree -> b) -> FeatureTree ->  b
-foldFTree f1 f2 (Leaf f)  = f2 (Leaf f)
-foldFTree f1 f2 (Root f []) = foldFTree f1 f2 (Leaf f) 
-foldFTree f1 f2 (Root f (x:xs)) = f1 (foldFTree f1 f2 x) (foldFTree f1 f2 (Root f xs))
+foldFTree::  (b -> b -> b) -> (FeatureTree -> b) -> (FeatureTree -> b) -> b -> FeatureTree ->  b
+foldFTree f1 f2 f3 f4 (Leaf f)  = f2 (Leaf f)
+foldFTree f1 f2 f3 f4 (Root f fs) = f1 (f3 (Root f fs)) (foldr (f1) f4 [foldFTree f1 f2 f3 f4 x | x <- fs])  
 \end{code}
 
 A feature is either a concrete description of a product capability (with a 
@@ -135,6 +134,11 @@ data FeatureExpression = ConstantExpression Bool
 -- the constant expressions for representing True and False
 expTrue = ConstantExpression True
 expFalse = ConstantExpression False
+
+-- check if a expression is an implies expression
+isImpliesExpression :: FeatureExpression -> Bool
+isImpliesExpression (Or (Not e1) (e2)) = True
+isImpliesExpression otherwise = False
 \end{code}
 
 Finally, we have defined some \emph{syntactic sugars} for building 
@@ -191,16 +195,18 @@ satisfied in order to consider a product as a valid instance of the feature mode
 
 \begin{code}
 fmToPropositionalLogic :: FeatureModel -> [FeatureExpression]
-fmToPropositionalLogic fm = (ref f) : (foldFTree (++) (featureToPropositionalLogic) (Root f fs)) ++ cs             
+fmToPropositionalLogic fm = rootProposition ++ ftPropositions ++ csPropositions 
  where 
   (Root f fs) = fmTree fm
-  cs = fmConstraints fm
-  
+  ftPropositions  = foldFTree (++) (\(Leaf f) -> []) (featureToPropositionalLogic) [] (Root f fs)
+  csPropositions  = fmConstraints fm
+  rootProposition = [ref f]
+
 featureToPropositionalLogic :: FeatureTree -> [FeatureExpression]
-featureToPropositionalLogic  ft = 
+featureToPropositionalLogic  ftree = 
  let 
-  f  = fnode ft
-  cs = children ft 
+  f  = fnode ftree
+  cs = children ftree 
  in case groupType f of
      BasicFeature       -> [(ref f) <=> (ref c) | c <- cs, fType c == Mandatory] ++
                            [(ref c) |=> (ref f) | c <- cs, fType c == Optional]
@@ -378,7 +384,7 @@ expToLiterals fs e = map intToLiteral (expToLiterals' fs e)
 
 \begin{code}
 eval :: FeatureConfiguration -> FeatureExpression -> Bool
-eval config (FeatureRef f) = elem f [fId x | x <- flatten (fcTree config)]
+eval config (FeatureRef f) = elem f [fId (fnode x) | x <- flatten (fcTree config)]
 eval config (Not e) = not (eval config e)
 eval config (And e1 e2) = (eval config e1) && (eval config e2)
 eval config (Or e1 e2) = (eval config e1) || (eval config e2)
@@ -397,8 +403,11 @@ features. It is just an auxiliarly function that simplifies
 the definition of functions for searching features. 
 
 \begin{code}
-flatten :: FeatureTree -> [Feature]
-flatten ft = foldFTree (++) (\(Leaf f) -> [f]) ft
+flatten :: FeatureTree -> [FeatureTree]
+flatten ftree = foldFTree (++) unit unit [] ftree 
+ where 
+  unit ftree = [ftree]
+
 \end{code}
 
 Using the \texttt{flatten} function, we can easly define functions 
@@ -407,10 +416,10 @@ in a feature tree \texttt{f2}.
  
 \begin{code}
 featureExists :: Feature -> FeatureTree -> Bool 
-featureExists  f1 ft = elem f1 (flatten ft)
+featureExists  f1 ft = elem f1 (map fnode (flatten ft))
 
 findFeature :: Feature -> FeatureTree -> Feature
-findFeature f1 ft = findFeature' f1 (flatten ft)  
+findFeature f1 ft = findFeature' f1 (map fnode (flatten ft))  
  where 
   findFeature' f1 [] = FeatureError  
   findFeature' f1 (x:xs) = if (f1 == x) then x else findFeature' f1 xs
@@ -565,7 +574,11 @@ simplifyNot e
 
 essentialFeatures :: FeatureModel -> [Feature]
 essentialFeatures fm = 
- foldFTree (++) (\(Leaf f) -> if isMandatory f then [f] else []) (fmTree fm)
+ foldFTree (++) (filterMandatory) (filterMandatory) [] (fmTree fm)
+ where 
+  filterMandatory ftree = if isMandatory (fnode ftree) 
+   then [fnode ftree] 
+   else [] 
 
 isMandatory :: Feature -> Bool
 isMandatory f = 
