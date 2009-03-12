@@ -37,10 +37,7 @@ fmTypeChecker fm =
   xs -> Fail { errorList = errors }
  where
   errors = if (e1) == [] then cSatisfiable else e1
-  e1 = cRootFeature ++ cConstraints ++ cDuplications   
-  cRootFeature  = featureTC (fmRoot fm) 
-  cConstraints  = constraintsTC fm
-  cDuplications = noDuplicationsTC fm 
+  e1 = (checkFeatureTree (fmTree fm)) ++ (checkConstraints fm) ++ (checkDuplications fm)   
   cSatisfiable  = if (isSatisfiable fm) then [] else ["Feature model is not satisfiable."]
 \end{code}
 
@@ -50,13 +47,12 @@ The type checker for a feature checks if an \texttt{alternative} feature or
 an {or} feature had defined at least one child.  
 
 \begin{code}
-featureTC :: Feature -> ErrorList
-featureTC feature = foldr (++) [] [featureTC' x | x <- plainFeature feature] 
- where 
-  featureTC' FeatureError = ["FeatureError is not expected in a feature model"]
-  featureTC' f = 
-   if ((groupType f) /= BasicFeature) && (length (children f) == 0)  
-    then [("Expecting at least one child for feature" ++ (fId f))] 
+checkFeatureTree :: FeatureTree -> [ErrorMessage]
+checkFeatureTree ftree = foldFTree (++) (checkFeature') (checkFeature') [] ftree 
+ where
+  checkFeature' ftree = 
+   if ((groupType (fnode ftree)) /= BasicFeature) && (length (children ftree) == 0)  
+    then [("Expecting at least one child for feature" ++ (fId (fnode ftree)))] 
     else []  
 \end{code}
 
@@ -95,16 +91,15 @@ Additionally, we have to check if the constraints refer to features declared
 in the feature model. 
 
 \begin{code}
-constraintsTC :: FeatureModel -> ErrorList
-constraintsTC fm = 
+checkConstraints :: FeatureModel -> [ErrorMessage]
+checkConstraints fm = 
  let 
-  cnames = [(c,n) | c <- fmConstraints fm, n <- expNames (constraintToPropositionalLogic c)]
-  fnames = [fId f | f <- plainFeature (fmRoot fm)]
+  cnames = [(c,n) | c <- fmConstraints fm, n <- expNames c]
+  fnames = [fId (fnode f) | f <- flatten (fmTree fm)]
   inames = [(c,n) | (c,n) <- cnames, notElem n fnames] --invalid references of the constraint 
  in ["Invalid reference " ++ n  ++ " found in constraint " ++ show (c) | (c,n) <- inames] 
  
  
-
 expNames :: FeatureExpression -> [String] 
 expNames (And e1 e2)    = (expNames e1) ++ (expNames e2)
 expNames (Or  e1 e2)    = (expNames e1) ++ (expNames e2)
@@ -123,10 +118,10 @@ features.
 
  
 \begin{code}
-noDuplicationsTC :: FeatureModel -> ErrorList
-noDuplicationsTC fm = 
+checkDuplications :: FeatureModel -> [ErrorMessage]
+checkDuplications fm = 
  let 
-  fnames = [fId f | f <- plainFeature (fmRoot fm)]
+  fnames = [fId (fnode f) | f <- flatten (fmTree fm)]
   dupps  = [f | f <- fnames, length (filter (==f) fnames) > 1]
  in ["Feature " ++ f ++ " is duppliecated." | f <- dupps] 
  
@@ -134,87 +129,86 @@ noDuplicationsTC fm =
 
 \section{Detecting bad smells}
 
+
 \begin{code}
-missingAlternatives :: FeatureModel -> [BadSmell]
-missingAlternatives fm = missingAlternative' r 
- where 
-  missingAlternative' f =  
-   (
-    case groupType f of 
-    BasicFeature -> []
-    otherwise -> if (length (children f) > 1) 
-     then [] 
-     else ["Expecting more than one child in Feature " ++ show(f) ]
-   ) ++ (concat [missingAlternative' x | x <- children f])
-  r = fmRoot fm
+missingAlternatives :: FeatureModel -> [Feature]
+missingAlternatives fm = [ fnode f 
+                         | f <- flatten (fmTree fm)
+                         , groupType (fnode f) /= BasicFeature 
+                         , length (children f) < 2
+                         ]
 
-constraintImposingAlternatives :: FeatureModel -> [BadSmell]
-constraintImposingAlternatives fm = 
- let 
-  ecs  = filter (expectedConstraint fm) (fmConstraints fm)
- in ["Constraint " ++ (show c) ++ " imposes alternative feature." | c <- ecs, impliesFeatures (altfIds fm) c]
-  
-constraintRequiringOptional :: FeatureModel -> [BadSmell]
-constraintRequiringOptional fm = 
- let 
-  ecs = filter (expectedConstraint fm) (fmConstraints fm) 
- in ["Constraint " ++ (show c) ++ " imposes optional feature." | c <- ecs, impliesFeatures (optfIds fm) c]
+checkDeadFeatures :: FeatureModel -> [Feature]
+checkDeadFeatures fm = [ fnode f 
+                       | f <- flatten (fmTree fm) 
+                       , fType (fnode f) == Optional
+                       , not (isSatisfiable (addConstraint fm (ref (fnode f))))
+                       ]
 
-
-checkDeadFeatures :: FeatureModel -> [BadSmell]
-checkDeadFeatures fm = [ "Dead feature: " ++ show f | f <- checkDeadFeatures' fm]
- where 
-  checkDeadFeatures' fm = [f | f <- plainFeature (fmRoot fm), fType f == Optional,  not (isSatisfiable (addImpliesFeature fm f))]
-
-addImpliesFeature :: FeatureModel -> Feature -> FeatureModel
-addImpliesFeature fm f = 
- let 
-  cs = fmConstraints fm 
-  c = Constraint {
-        constraintType = Implies ,
-        constraintLHSExp = ref (fmRoot fm),
-        constraintRHSExp = ref (f)
-      }
-  in 
-   fm { fmConstraints = c : cs}
-
-  
-optfIds :: FeatureModel -> [String]
-optfIds fm = [fId f | f <- plainFeature (fmRoot fm), (fType f) == Optional]
-
-altfIds :: FeatureModel -> [String]
-altfIds fm = 
- map fId (concat [children f | f <- plainFeature (fmRoot fm), groupType f == AlternativeFeature]) 
-    
-
-impliesFeatures :: [String] -> Constraint -> Bool
-impliesFeatures altf c = 
- let names = expNames (constraintRHSExp c)
- in (intersect names altf) == names
-  
-expectedConstraint :: FeatureModel -> Constraint -> Bool
-expectedConstraint fm c = 
- let 
-  c1 = Constraint {
-         constraintType = Implies,
-         constraintLHSExp = ref (fmRoot fm),
-         constraintRHSExp = Not (constraintLHSExp c) 
-       }
-  fmt = fm { fmConstraints = [c1] }
- in not (isSatisfiable fmt)
- 
 type BadSmell = String 
 
 findBadSmells :: FeatureModel -> [BadSmell]
 findBadSmells fm = 
  if (isSatisfiable fm)
   then 
-   (missingAlternatives fm) ++
-   (constraintImposingAlternatives fm) ++
-   (constraintRequiringOptional fm) ++ 
-   (checkDeadFeatures fm)
+   ["Expecting at least 2 children in feature " ++ show (f) | f <- missingAlternatives fm] ++
+   ["Feature " ++ show f ++ " is a dead feature" | f <- checkDeadFeatures fm]
  else
   ["The feature model is inconsistent (unsatisfiable)"]
+
+
+addConstraint :: FeatureModel -> FeatureExpression -> FeatureModel
+addConstraint fm exp = fm { fmConstraints = exp : cs}
+ where cs = fmConstraints fm 
+
+
+
+-- constraintImpliesAlternative :: FeatureModel -> [Constraint]
+-- constraintImpliesAlternative fm = [ c 
+--                                   | c <- fmConstraints fm
+--                                   , expectedImpliesConstraint c
+--                                   , c `impliesFeaturesIn` (alternativeFeatures fm)
+--                                   ]  
+  
+-- findAlternativeIds :: FeatureModel -> [Feature]
+-- findAlternativeIds fm = [ fId (fnode c) 
+--                         | c <- children f
+--                         , f <- flatten (fmTree fm)   
+--                         , fType (fNode f) = AlternativeFeature 
+--                         ]
+
+-- impliesFeaturesIn :: Constraint -> [String] -> Bool
+-- impliesFeaturesIn (Or (Not e1) (FeatureRef r)) ids = r `elem` ids
+-- impliesFeaturesIn _ fs = False 
+
+  
+-- constraintRequiringOptional :: FeatureModel -> [BadSmell]
+-- constraintRequiringOptional fm = 
+--  let 
+--   ecs = filter (expectedConstraint fm) (fmConstraints fm) 
+--  in ["Constraint " ++ (show c) ++ " imposes optional feature." | c <- ecs, impliesFeatures (optfIds fm) c]
+
+
+-- optfIds :: FeatureModel -> [String]
+-- optfIds fm = [fId f | f <- plainFeature (fmRoot fm), (fType f) == Optional]
+
+-- altfIds :: FeatureModel -> [String]
+-- altfIds fm = 
+--  map fId (concat [children f | f <- plainFeature (fmRoot fm), groupType f == AlternativeFeature]) 
+    
+
+-- impliesFeatures :: [String] -> Constraint -> Bool
+-- impliesFeatures altf c = 
+--  let names = expNames (constraintRHSExp c)
+--  in (intersect names altf) == names
+  
+-- expectedImpliesConstraint :: FeatureModel -> Constraint -> Bool
+-- expectedImpliesConstraint fm (Or (Not e1) e2) = 
+--  let 
+--   checkedConstraint = (Not e1)
+--   newFeatureModel = fm { fmConstraints = [checkedConstraint] }
+--  in not (isSatisfiable fmt)
+ 
  
  
 \end{code}
