@@ -46,14 +46,9 @@ two constructors: \texttt{Success} and \texttt{Fail}.
 type Id		   = String             
 type Name	   = String             
 type Root          = Feature            
-type Children      = FeatureList        
 type Property      = (String, String)     
-type Constraints   = [Constraint]
-type Properties    = [Property]
-type FeatureList   = [Feature]
-type ValueList	   = [String]
-type ErrorList 	   = [String]
-data CheckerResult = Success | Fail { errorList :: ErrorList } deriving (Show, Eq)
+type ErrorMessage  = String
+data CheckerResult = Success | Fail { errorList :: [ErrorMessage] } deriving (Show, Eq)
 \end{code}
 
 The \texttt{FeatureType} data type defines if a feature is required or 
@@ -84,14 +79,30 @@ or selection of features, is also a tree of features--- although the feature con
 data type has just a reference to a root feature. 
 
 \begin{code}
+data FeatureTree = Leaf Feature | Root Feature [FeatureTree]
+ deriving (Show)
+
+fnode :: FeatureTree -> Feature
+fnode (Leaf f) = f
+fonde (Root f fs) = f
+
+children :: FeatureTree -> [Feature]
+children (Leaf f) = []
+children (Root f fs) = map fnode fs 
+  
 data FeatureModel = FeatureModel {
-	fmRoot :: Root,
-        fmConstraints :: Constraints 
+	fmTree :: FeatureTree,
+        fmConstraints :: [FeatureExpression]
 } deriving (Show)
 
 data FeatureConfiguration = FeatureConfiguration {
-	fcRoot :: Root
+	fcTree :: FeatureTree
 } deriving (Show)
+
+foldFTree::  (b -> b -> b) -> (FeatureTree -> b) -> FeatureTree ->  b
+foldFTree f1 f2 (Leaf f)  = f2 (Leaf f)
+foldFTree f1 f2 (Root f []) = foldFTree f1 f2 (Leaf f) 
+foldFTree f1 f2 (Root f (x:xs)) = f1 (foldFTree f1 f2 x) (foldFTree f1 f2 (Root f xs))
 \end{code}
 
 A feature is either a concrete description of a product capability (with a 
@@ -104,30 +115,10 @@ data Feature = Feature {
 	fName :: Name, 
 	fType :: FeatureType,
 	groupType :: GroupType,
-	children :: Children,
-	properties :: Properties
+	properties :: [Property]
  } | FeatureError    
 \end{code}
 
-Bellow we present the definition of the global constraints, which can be 
-either an \texttt{implies} constraint or an \texttt{iff} constraint.  
-The \texttt{implies} constraint states that if the \texttt{LHS feature expression} holds as True, 
-the related \texttt{RHS expression}  must also be evaluated as True in a 
-feature configuration. On the other hand, the \texttt{iff} constraint states that 
-the \texttt{LHS feature expression} holds as true if, and only if, the related RHS is evalueated as true
-for a given feature configuration. 
-
-\begin{code}
-
-data ConstraintType = Implies | Iff 
- deriving (Show)
-
-data Constraint = Constraint { 
- 	constraintType :: ConstraintType, 
-        constraintLHSExp :: FeatureExpression, 
-	constraintRHSExp :: FeatureExpression
-} deriving (Show) 
-\end{code}
 
 Feature expressions are written in propositional formula, with the NOT, AND, and OR connectors. 
 Expressions are usefull for specifying constraints, as state above, but are also usefull in the 
@@ -140,7 +131,7 @@ data FeatureExpression = ConstantExpression Bool
                        | Not FeatureExpression 
                        | And FeatureExpression FeatureExpression 
                        | Or FeatureExpression FeatureExpression 
-
+            
 -- the constant expressions for representing True and False
 expTrue = ConstantExpression True
 expFalse = ConstantExpression False
@@ -150,16 +141,24 @@ Finally, we have defined some \emph{syntactic sugars} for building
 expressions, such as: 
 
 \begin{itemize}
- \item converting $p \Rightarrow q$ into $\lnot p \lor q$
+ \item operators, such as $p \Rightarrow q$ that means $Implies p q$
  \item generating an And expression from a list of expressions
  \item generating an Or expression from a list of expressions 
  \item generating an FeatureRef expression from a feature 
 \end{itemize}
 
-\begin{code}  
-
+\begin{code}
 (|=>) :: FeatureExpression -> FeatureExpression -> FeatureExpression
-e1 |=> e2 = Or (Not e1) e2
+e1 |=> e2 = Or (Not e1) e2  
+
+(<=>) :: FeatureExpression -> FeatureExpression -> FeatureExpression
+e1 <=> e2 = And (Or (Not e1) e2) (Or (Not e2) e1) 
+
+(/\) :: FeatureExpression -> FeatureExpression -> FeatureExpression
+e1 /\ e2 = And e1 e2 
+
+(\/) :: FeatureExpression -> FeatureExpression -> FeatureExpression
+e1 \/ e2 = Or e1 e2
 
 foldAnd xs = simplifyExpression (foldr And (expTrue) xs)
 foldOr xs  = simplifyExpression (foldr Or  (expFalse) xs)
@@ -192,39 +191,26 @@ satisfied in order to consider a product as a valid instance of the feature mode
 
 \begin{code}
 fmToPropositionalLogic :: FeatureModel -> [FeatureExpression]
-fmToPropositionalLogic fm =  (ref froot) : (featureToPropositionalLogic froot) ++ cExpressions               
+fmToPropositionalLogic fm = (ref f) : (foldFTree (++) (featureToPropositionalLogic) (Root f fs)) ++ cs             
  where 
-  froot = fmRoot fm
-  cExpressions = map constraintToPropositionalLogic (fmConstraints fm)
-\end{code}
+  (Root f fs) = fmTree fm
+  cs = fmConstraints fm
+  
+featureToPropositionalLogic :: FeatureTree -> [FeatureExpression]
+featureToPropositionalLogic  ft = 
+ let 
+  f  = fnode ft
+  cs = children ft 
+ in case groupType f of
+     BasicFeature       -> [(ref f) <=> (ref c) | c <- cs, fType c == Mandatory] ++
+                           [(ref c) |=> (ref f) | c <- cs, fType c == Optional]
+    
+     OrFeature          -> [(ref f) |=> (foldOr [ref x | x <- cs])]  
+    
+     AlternativeFeature -> [(ref f) |=> (foldOr [xor x (delete x cs) | x <- cs])]  
 
-\begin{code}
-featureToPropositionalLogic :: Feature -> [FeatureExpression]
-featureToPropositionalLogic  f = (featureToPL f) 
- where 
-  featureToPL f = (
-   case groupType f of
-    BasicFeature-> [(ref f) |=> (ref x) | x <- children f, fType x == Mandatory] 
-    OrFeature -> [(ref f) |=> (foldOr [ref x | x <- children f])]  
-    AlternativeFeature -> [(ref f) |=> (foldOr [xor x (delete x (children f)) | x <- children f])]  
-   ) ++ (childrenToPL f) 
-  childrenToPL f = foldr (++) [] [featureToPL c | c <- children f]
-  xor f [] = ref f
-  xor f xs = And (ref f) (foldAnd [Not (ref x) | x <- xs])
-\end{code}
-
-We also have to translate constraints to propositional logic--- or even better, to 
-\emph{Feature Expressions}. 
-
-\begin{code}
-constraintToPropositionalLogic :: Constraint -> FeatureExpression 
-constraintToPropositionalLogic c = 
- case constraintType c of 
-  Implies -> lhs |=> rhs 
-  Iff     -> And (lhs |=> rhs) (rhs |=>lhs)
- where 
-  lhs = constraintLHSExp c
-  rhs = constraintRHSExp c
+xor f [] = ref f
+xor f xs = And (ref f) (foldAnd [Not (ref x) | x <- xs])
 \end{code}
 
 Then, it was also necessary to convert the feature expressions to the Conjunctive 
@@ -258,8 +244,7 @@ We provide two implementations for converting a propositional formula to CNF. Th
 For real feature models, the Tseitin implementation must be used.
 
 %if False
-\begin{code} 
-
+\begin{code}
 toCNFExpression :: FeatureExpression -> FeatureExpression
 toCNFExpression (And e1 e2)    = And (toCNFExpression e1) (toCNFExpression e2)
 toCNFExpression (Or e1 e2)     = distributeAndOverOr e1 e2
@@ -360,8 +345,8 @@ summary :: FeatureModel -> FMSummary
 summary fm = 
  let 
    e = fmToPropositionalLogic fm
-   r = fmRoot fm
- in FMSummary (length (plainFeature r)) (length (e))
+   r = fmTree fm
+ in FMSummary (length (flatten r)) (length (e))
 
 getVars :: FeatureExpression -> [FeatureExpression] 
 getVars (And exp1 exp2)  = nub ((getVars exp1) ++ (getVars exp2))
@@ -393,16 +378,12 @@ expToLiterals fs e = map intToLiteral (expToLiterals' fs e)
 
 \begin{code}
 eval :: FeatureConfiguration -> FeatureExpression -> Bool
-eval config (FeatureRef f) = elem f [fId x | x <- plainFeature (fcRoot config)]
+eval config (FeatureRef f) = elem f [fId x | x <- flatten (fcTree config)]
 eval config (Not e) = not (eval config e)
 eval config (And e1 e2) = (eval config e1) && (eval config e2)
 eval config (Or e1 e2) = (eval config e1) || (eval config e2)
 eval _ (ConstantExpression e) = e
 
-evalConstraint :: FeatureConfiguration -> Constraint -> Bool
-evalConstraint fc c = 
- let cpl = constraintToPropositionalLogic c
- in  eval fc cpl 
 \end{code}
 
 
@@ -416,23 +397,20 @@ features. It is just an auxiliarly function that simplifies
 the definition of functions for searching features. 
 
 \begin{code}
-plainFeature :: Feature -> FeatureList
-plainFeature f = f : plainFeature' (children f)
- where 
-  plainFeature' [] = [] 
-  plainFeature' (x:xs) = (plainFeature x) ++ (plainFeature' xs)
+flatten :: FeatureTree -> [Feature]
+flatten ft = foldFTree (++) (\(Leaf f) -> [f]) ft
 \end{code}
 
-Using the \texttt{plainFeature} function, we can easly define functions 
+Using the \texttt{flatten} function, we can easly define functions 
 for searching a feature \texttt{f1} (or for checking if it exists) 
 in a feature tree \texttt{f2}. 
  
 \begin{code}
-featureExists :: Feature -> Feature -> Bool 
-featureExists  f1 f2 = elem f1 [x | x <- (plainFeature f2)]
+featureExists :: Feature -> FeatureTree -> Bool 
+featureExists  f1 ft = elem f1 (flatten ft)
 
-findFeature :: Feature -> Feature -> Feature
-findFeature f1 f2 = findFeature' f1 (plainFeature f2)  
+findFeature :: Feature -> FeatureTree -> Feature
+findFeature f1 ft = findFeature' f1 (flatten ft)  
  where 
   findFeature' f1 [] = FeatureError  
   findFeature' f1 (x:xs) = if (f1 == x) then x else findFeature' f1 xs
@@ -454,18 +432,19 @@ Notice that these functions are useful for checking if a feature
 configuration belongs to (or is a valid instance of) a feature 
 model. 
 
-\begin{code} 
+\begin{code}
+allChildrenExists :: FeatureTree -> FeatureTree -> Bool 
+allChildrenExists f1 f2 = and [elem x (cs f2) | x <- (children f1)]
+ where 
+  cs (Root f fs) = map fnode fs 
+  cs (Leaf f) = []
 
-allChildrenExists :: Feature -> Feature -> Bool 
-allChildrenExists f1 f2 = and [elem x (children f2) | x <- (children f1)]
+findChildFeature :: Feature -> FeatureTree -> Feature
+findChildFeature f1 ft = findFeatureInList f1 (children ft)
 
-findChildFeature :: Feature -> Feature -> Feature
-findChildFeature f1 f2 = findFeatureInList f1 (children f2)
-
-findFeatureInList :: Feature -> FeatureList -> Feature
+findFeatureInList :: Feature -> [Feature] -> Feature
 findFeatureInList f [] = FeatureError 
 findFeatureInList f (x:xs) = if (f == x) then x else findFeatureInList f xs
-
 \end{code}
 
 \subsection{Accessors for feature options and properties}
@@ -485,15 +464,15 @@ a string representation of the selected values of an \emph{Alternative feature}
 or \emph{Or feature}.
 
 \begin{code}
-featureOptions :: Feature -> Children 
-featureOptions feature = 
- if groupType feature == BasicFeature 
+featureOptions :: FeatureTree -> [Feature]
+featureOptions ft = 
+ if groupType (fnode ft) == BasicFeature 
   then error "The function featureOptions can not be applied to basic features"
-  else children feature 
+  else children ft
 
-featureOptionsValues :: Feature -> [String]
-featureOptionsValues feature = 
- [fName x | x <- (featureOptions feature)]
+featureOptionsValues :: FeatureTree -> [String]
+featureOptionsValues ft = map fName (featureOptions ft)
+
 \end{code}
 
 If the application developer is interested in a property of the 
@@ -503,9 +482,9 @@ this function does not expect a \emph{Basic feature} as the first argument. Othe
 an error is reported.  
 
 \begin{code}
-featureOptionsPropertyValue :: Feature -> String -> ValueList
-featureOptionsPropertyValue feature property = 
- [snd y | x <- (featureOptions feature), y <- (properties x), fst y == property]  
+featureOptionsPropertyValue :: String -> FeatureTree -> [String]
+featureOptionsPropertyValue pid ft = 
+ [snd y | x <- (featureOptions ft), y <- (properties x), fst y == pid]  
 \end{code}
  
 
@@ -513,10 +492,10 @@ featureOptionsPropertyValue feature property =
 \begin{code}
 -- 
 -- Eq instance definition is (or are)
--- placede in this point.
+-- placede at this point.
 --
 instance Eq Feature where 
- Feature id1 _ _ _ _ _  == Feature id2  _ _ _ _ _ = id1 == id2
+ Feature id1 _ _ _ _  == Feature id2 _ _ _ _  = id1 == id2
  FeatureError == FeatureError = True
  FeatureError == _ = False
  _ == FeatureError = False 
@@ -544,9 +523,8 @@ instance Eq FeatureExpression where
 -- placed in this point.
 --
 instance Show Feature where 
- show (Feature i1 n1 t1 g1 [] _) = i1   
- show (Feature i1 n1 t1 g1 (x:xs) _) = i1 ++ show [y | y<-(x:xs)]   
  show FeatureError = "Feature error" 
+ show f = fId f
 
 instance Show FeatureExpression where
   show (FeatureRef id1) = show id1
@@ -586,13 +564,14 @@ simplifyNot e
  | otherwise = Not (simplifyExpression e)
 
 essentialFeatures :: FeatureModel -> [Feature]
-essentialFeatures fm = essentialFeatures' (fmRoot fm)   
- where 
-  essentialFeatures' f = 
-   if (fType f == Mandatory) 
-    then f :  concat (map (essentialFeatures') (children f)) 
-   else 
-    []
+essentialFeatures fm = 
+ foldFTree (++) (\(Leaf f) -> if isMandatory f then [f] else []) (fmTree fm)
+
+isMandatory :: Feature -> Bool
+isMandatory f = 
+ case fType f of 
+  Mandatory -> True
+  otherwise -> False
 
 \end{code}
 %endif
