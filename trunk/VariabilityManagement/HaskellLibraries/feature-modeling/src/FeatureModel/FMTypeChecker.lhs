@@ -36,9 +36,9 @@ fmTypeChecker fm =
   [] -> Success
   xs -> Fail { errorList = errors }
  where
-  errors = if (e1) == [] then cSatisfiable else e1
-  e1 = (checkFeatureTree (fmTree fm)) ++ (checkConstraints fm) ++ (checkDuplications fm)   
-  cSatisfiable  = if (isSatisfiable fm) then [] else ["Feature model is not satisfiable."]
+  errors = if (e) == [] then checkIfSatisfiable else e
+  e = (checkFeatureTree (fmTree fm)) ++ (checkConstraints fm) ++ (checkDuplications fm)   
+  checkIfSatisfiable  = if (isSatisfiable fm) then [] else ["Feature model is not satisfiable."]
 \end{code}
 
 \subsection{Feature type checker}
@@ -129,8 +129,19 @@ checkDuplications fm =
 
 \section{Detecting bad smells}
 
+In this section we present several functions for detecting 
+feature models bad smells. 
+
+\subsection{Missing alternatives}
+this bad smell occurs when a feature A,
+defined as an \emph{Or Feature} or an \emph{Alternative Feature}, 
+declares only one child B. Detecting this bad smell might reveal a
+controversial decision of creating a group of alternatives,
+instead of declaring a mandatory relationship between A and
+B. 
 
 \begin{code}
+
 missingAlternatives :: FeatureModel -> [Feature]
 missingAlternatives fm = [ fnode f 
                          | f <- flatten (fmTree fm)
@@ -138,6 +149,109 @@ missingAlternatives fm = [ fnode f
                          , length (children f) < 2
                          ]
 
+\end{code}
+
+\subsection{Constraint imposing alternative}
+
+This bad smell occurs when a global constraint obligates
+the selection of an Alternative Feature. Since a child must
+always be selected, the other children of this relationship
+can never be selected. Detecting this kind of bad smell might
+reveal constraints that are inconsistent with the feature model
+relationships.
+
+The following types of constraints originate this kind of 
+bad smell. 
+
+\begin{code}
+checkConstraintImposingAlternative :: FeatureModel -> [(FeatureExpression, Feature)]
+checkConstraintImposingAlternative fm = 
+ let cs = [(c,constraintImposingAlternative c (fmTree fm)) | c <- fmConstraints fm]
+ in [(c,fromJust f) | (c,f) <- cs, isJust f]  
+\end{code}
+                                      
+{\bf Reference to an alternative feature}
+
+\begin{code}
+constraintImposingAlternative :: FeatureExpression -> FeatureTree -> Maybe Feature
+constraintImposingAlternative (FeatureRef r) ftree = 
+ let f = head [fnode x | x <- (flatten ftree), (fId (fnode x)) == r]
+ in if f `elem` (alternativeChildren ftree) 
+     then Just f 
+     else Nothing
+\end{code}
+
+{\bf Essential feature implying alternative feature}
+
+\begin{code}
+constraintImposingAlternative (Or (Not (FeatureRef r1)) (FeatureRef r2)) ftree = 
+ let 
+  f1 = head [fnode x | x <- (flatten ftree), (fId (fnode x)) == r1]
+  f2 = head [fnode x | x <- (flatten ftree), (fId (fnode x)) == r2]
+ in if (f1 `elem` (essentialFeatures ftree)) && (f2 `elem` alternativeChildren ftree) 
+     then Just f2 
+     else Nothing
+\end{code}
+
+{\bf Other cases are not considered as Constraint imposing alternative} 
+
+\begin{code}
+constraintImposingAlternative otherwise ftree = Nothing
+\end{code}
+
+
+\subsection{Constraint imposing optional feature}
+
+This bad smells occurs when a constraint changes the 
+semantics of a relationship, making it more restrictive. In 
+that cases, it would be better to change the relationship in the 
+feature model, since the graphical representation is easier to understand. 
+
+The following types of constraints originate this kind of 
+bad smell. 
+
+{\bf Reference to an Optional feature or reference to a child of an Or feature}
+
+\begin{code}
+checkConstraintImposingOptional :: FeatureExpression -> FeatureTree -> Maybe Feature
+checkConstraintImposingOptional (FeatureRef r) ftree = 
+ let f = head [fnode x | x <- (flatten ftree), (fId (fnode x)) == r]
+ in if (f `elem` (orChildren ftree ++ optionalFeatures ftree))  
+     then Just f 
+     else Nothing 
+\end{code}
+
+\subsection{Superimposing optional feature}
+
+This bad smells occurs when an optional feature, 
+a child of an alternative feature, or a child of an or feature 
+is superimposed by a constraint. Basically, in order to identify 
+this bad smell we have just to introduce a new constraint 
+with the negation of these features. If the feature model 
+becomes insatisfiable, the feature is superimposed by a constraint. 
+
+\begin{code}
+superimposedOptional :: FeatureModel -> [Feature]
+superimposedOptional fm = 
+ let ftree = fmTree fm
+  in 
+   [ f 
+   | f <- nub (optionalFeatures ftree ++ alternativeChildren ftree ++ orChildren ftree)
+   , not (isSatisfiable (addConstraint fm (Not (ref f))))
+   ]
+
+\end{code}
+
+\subsection{Dead features}
+
+This bad smell occurs when a feature, due to a global
+constraint, could never be selected in any of the valid
+instances of a feature model. It may happen when 
+overconstraining the model, making it difficult to understand,
+hence, suitable for introducing errors. 
+
+
+\begin{code}
 checkDeadFeatures :: FeatureModel -> [Feature]
 checkDeadFeatures fm = [ fnode f 
                        | f <- flatten (fmTree fm) 
@@ -145,16 +259,18 @@ checkDeadFeatures fm = [ fnode f
                        , not (isSatisfiable (addConstraint fm (ref (fnode f))))
                        ]
 
+
 type BadSmell = String 
 
 findBadSmells :: FeatureModel -> [BadSmell]
 findBadSmells fm = 
- if (isSatisfiable fm)
+ if ((fmTypeChecker fm == Success) && isSatisfiable fm)
   then 
    ["Expecting at least 2 children in feature " ++ show (f) | f <- missingAlternatives fm] ++
-   ["Feature " ++ show f ++ " is a dead feature" | f <- checkDeadFeatures fm]
+   ["Feature " ++ show f ++ " is a dead feature" | f <- checkDeadFeatures fm] ++ 
+   ["Constraint " ++ show c ++ " impose alternative feature " ++ show f | (c,f) <- checkConstraintImposingAlternative fm]
  else
-  ["The feature model is inconsistent (unsatisfiable)"]
+  ["The feature model is either incorrect or inconsistent (unsatisfiable)"]
 
 
 addConstraint :: FeatureModel -> FeatureExpression -> FeatureModel
@@ -163,52 +279,5 @@ addConstraint fm exp = fm { fmConstraints = exp : cs}
 
 
 
--- constraintImpliesAlternative :: FeatureModel -> [Constraint]
--- constraintImpliesAlternative fm = [ c 
---                                   | c <- fmConstraints fm
---                                   , expectedImpliesConstraint c
---                                   , c `impliesFeaturesIn` (alternativeFeatures fm)
---                                   ]  
-  
--- findAlternativeIds :: FeatureModel -> [Feature]
--- findAlternativeIds fm = [ fId (fnode c) 
---                         | c <- children f
---                         , f <- flatten (fmTree fm)   
---                         , fType (fNode f) = AlternativeFeature 
---                         ]
-
--- impliesFeaturesIn :: Constraint -> [String] -> Bool
--- impliesFeaturesIn (Or (Not e1) (FeatureRef r)) ids = r `elem` ids
--- impliesFeaturesIn _ fs = False 
-
-  
--- constraintRequiringOptional :: FeatureModel -> [BadSmell]
--- constraintRequiringOptional fm = 
---  let 
---   ecs = filter (expectedConstraint fm) (fmConstraints fm) 
---  in ["Constraint " ++ (show c) ++ " imposes optional feature." | c <- ecs, impliesFeatures (optfIds fm) c]
-
-
--- optfIds :: FeatureModel -> [String]
--- optfIds fm = [fId f | f <- plainFeature (fmRoot fm), (fType f) == Optional]
-
--- altfIds :: FeatureModel -> [String]
--- altfIds fm = 
---  map fId (concat [children f | f <- plainFeature (fmRoot fm), groupType f == AlternativeFeature]) 
-    
-
--- impliesFeatures :: [String] -> Constraint -> Bool
--- impliesFeatures altf c = 
---  let names = expNames (constraintRHSExp c)
---  in (intersect names altf) == names
-  
--- expectedImpliesConstraint :: FeatureModel -> Constraint -> Bool
--- expectedImpliesConstraint fm (Or (Not e1) e2) = 
---  let 
---   checkedConstraint = (Not e1)
---   newFeatureModel = fm { fmConstraints = [checkedConstraint] }
---  in not (isSatisfiable fmt)
- 
- 
  
 \end{code}

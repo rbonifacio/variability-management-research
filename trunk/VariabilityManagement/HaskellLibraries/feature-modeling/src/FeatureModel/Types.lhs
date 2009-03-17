@@ -246,7 +246,7 @@ in the feature expression (\text{exp}). As a consequence, it is also
 useful for checking if \texttt{fc} is a valid instance of a feature model. 
 
 We provide two implementations for converting a propositional formula to CNF. The 
-\textt{Tseitin} algorithm have a linear time, although it is not so clear. 
+\texttt{Tseitin} algorithm have a linear time, although it is not so clear. 
 For real feature models, the Tseitin implementation must be used.
 
 %if False
@@ -572,19 +572,34 @@ simplifyNot e
  | e == expFalse = expTrue
  | otherwise = Not (simplifyExpression e)
 
-essentialFeatures :: FeatureModel -> [Feature]
-essentialFeatures fm = 
- foldFTree (++) (filterMandatory) (filterMandatory) [] (fmTree fm)
+essentialFeatures :: FeatureTree -> [Feature]
+essentialFeatures ftree = 
+ foldFTree (++) (filterMandatory) (filterMandatory) [] ftree
  where 
   filterMandatory ftree = if isMandatory (fnode ftree) 
    then [fnode ftree] 
    else [] 
 
+alternativeChildren :: FeatureTree -> [Feature]
+alternativeChildren ftree = concat [children f | f <- flatten ftree, isAlternative (fnode f)]
+
+orChildren :: FeatureTree -> [Feature]
+orChildren ftree = concat [children f | f <- flatten ftree, isOrFeature (fnode f)]
+
+optionalFeatures :: FeatureTree -> [Feature]
+optionalFeatures ftree = [fnode f | f <- flatten ftree, fType (fnode f) == Optional]
+
 isMandatory :: Feature -> Bool
-isMandatory f = 
- case fType f of 
-  Mandatory -> True
-  otherwise -> False
+isMandatory FeatureError = False
+isMandatory f = (fType f) == Mandatory
+
+isAlternative :: Feature -> Bool
+isAlternative FeatureError = False
+isAlternative f = (groupType f) == AlternativeFeature
+
+isOrFeature :: Feature -> Bool
+isOrFeature FeatureError = False
+isOrFeatire f = (groupType f) == OrFeature
 
 \end{code}
 %endif
