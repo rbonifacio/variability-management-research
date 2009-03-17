@@ -17,7 +17,8 @@ import Test.HUnit
 
 fm = FeatureModel {
  fmTree = fmroot, 
- fmConstraints = c1 : c2 : ((FeatureRef "display") |=> Not (FeatureRef "wireless"))  : []
+ -- fmConstraints = c1 : c2 : ((FeatureRef "display") |=> Not (FeatureRef "wireless"))  : []
+ fmConstraints = c1 : c2 : ((FeatureRef "display") |=> (FeatureRef "li-ion")) : [] 
 }
 
 fmroot = Root cellphone [treeW, treeA, treeD]
