@@ -12,6 +12,9 @@ instance XmlPickler XmlFeature where
 
 instance XmlPickler XmlGroupFeature where 
 	xpickle = xpGroup 
+
+instance XmlPickler XmlFeatureConfiguration where
+        xpickle = xpFeatureConfiguration
 	
 uncurry5 :: (a -> b -> c -> d -> e -> f) -> (a, b, c, d, e) -> f
 uncurry5 fn (a, b, c, d, e) = fn a b c d e 
@@ -39,4 +42,12 @@ xpGroup =
 	         ( xpAttr "max" xpickle ) 
 	         ( xpList xpFeature )
 
+xpFeatureConfiguration :: PU XmlFeatureConfiguration
+xpFeatureConfiguration = 
+        xpElem "feature" $
+        xpWrap (uncurry3 XmlFeatureConfiguration, \ (XmlFeatureConfiguration cId cName cChildren) -> (cId, cName, cChildren)) $
+        xpTriple ( xpAttr "id" xpText)
+                 ( xpAttr "name" xpText)
+                 ( xpOption (xpList xpFeatureConfiguration))
+        
 \end{code}

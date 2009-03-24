@@ -2,6 +2,8 @@
 
 module FeatureModel.Parsers.FMPlugin.XmlFeatureModel where
 
+import BasicTypes
+
 import FeatureModel.Types
 
 type CMin = Int
@@ -26,16 +28,30 @@ data XmlGroupFeature = XmlGroupFeature {
 		options :: XmlGroupOptions
 	}
 	deriving(Show)  	
+
+data XmlFeatureConfiguration = XmlFeatureConfiguration {
+                cId :: Id,
+                cName :: Name, 
+                cChildren :: Maybe [XmlFeatureConfiguration] 
+       } 
+       deriving(Show)
 	
-xmlFeature2Feature :: XmlFeature -> Feature	
-xmlFeature2Feature (XmlFeature fid cmin cmax name children group) = 
- Feature fid 
-         name 
- 	(featureTypeFromCardinality cmin)
- 	(groupTypeFromXmlGroup group)
- 	(childrenFromXmlFeatureList children group)
- 	[]
- 		 
+xmlFeature2FeatureTree :: XmlFeature -> FeatureTree	
+xmlFeature2FeatureTree (XmlFeature fid cmin cmax name children group) = 
+ let
+  f  =   Feature fid name (featureTypeFromCardinality cmin) (groupTypeFromXmlGroup group) []
+  cs =  (childrenFromXmlFeatureList children group)
+ in case cs of
+     Nothing -> Leaf f 
+     Just t  -> Root f t  
+
+xml2FeatureConfiguration :: XmlFeatureConfiguration -> FeatureTree
+xml2FeatureConfiguration (XmlFeatureConfiguration i n c) = 
+ let 
+   f = Feature i n Optional BasicFeature [] 
+ in case c of   
+  Nothing -> Leaf f
+  Just cs -> Root f (map xml2FeatureConfiguration cs) 
 
 featureTypeFromCardinality :: CMin -> FeatureType	
 featureTypeFromCardinality cmin = 
@@ -50,9 +66,10 @@ groupTypeFromXmlGroup (Just (XmlGroupFeature cmin cmax options) )=
 	 then AlternativeFeature
 	 else OrFeature
 	
-childrenFromXmlFeatureList :: Maybe XmlChildren -> Maybe XmlGroupFeature -> Children
-childrenFromXmlFeatureList _  (Just (XmlGroupFeature _ _ options)) = [xmlFeature2Feature x | x <- options] 
-childrenFromXmlFeatureList (Just (children))  Nothing = [xmlFeature2Feature x | x <- children] 
+childrenFromXmlFeatureList :: Maybe XmlChildren -> Maybe XmlGroupFeature -> Maybe [FeatureTree]
+childrenFromXmlFeatureList (Just ([]))  Nothing = Nothing 
+childrenFromXmlFeatureList _  (Just (XmlGroupFeature _ _ options)) = Just [xmlFeature2FeatureTree x | x <- options] 
+childrenFromXmlFeatureList (Just cs) Nothing = Just [xmlFeature2FeatureTree x | x <- cs] 
 	 
 \end{code}	 
  	 
