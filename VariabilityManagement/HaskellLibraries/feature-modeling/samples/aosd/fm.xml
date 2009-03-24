@@ -1,0 +1,26 @@
+<feature min="1" max="1" name="eShop" type="NONE" id="eShop">
+  <feature min="0" max="1" name="ShoppingCart" type="NONE" id="shoppingCart">
+  </feature>
+  <feature min="0" max="1" name="Bonus" type="NONE" id="Bonus">
+  </feature>
+  <feature min="1" max="1" name="ShippingMethod" type="NONE" id="ShippingMethod">
+    <featureGroup min="1" max="3" id="group">
+      <feature min="0" max="1" name="Economical" type="NONE" id="Economical">
+      </feature>
+      <feature min="0" max="1" name="Fast" type="NONE" id="Fast">
+      </feature>
+      <feature min="0" max="1" name="ForeignShip" type="NONE" id="ForeignShip">
+      </feature>
+    </featureGroup>
+  </feature>
+  <feature min="1" max="1" name="SearchOptions" type="NONE" id="SearchOptions">
+    <featureGroup min="1" max="1" id="group0">
+      <feature min="0" max="1" name="Hints" type="NONE" id="Hints">
+      </feature>
+      <feature min="0" max="1" name="SimilarResults" type="NONE" id="SimilarResults">
+      </feature>
+    </featureGroup>
+  </feature>
+  <feature min="0" max="1" name="UpdateUserPreferences" type="NONE" id="UpdateUserPreferences">
+  </feature>
+</feature>
