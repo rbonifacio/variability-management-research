@@ -21,12 +21,15 @@ is a valid instance of a feature model.
 \begin{code}
 module FeatureModel.Types where 
 
+import BasicTypes
+
 import Funsat.Types
 
 import qualified Data.Set as Set
 
 import List
 import Maybe
+
 
 \end{code}
 %endif 
@@ -43,8 +46,6 @@ for building types. For instance, the data type \texttt{CheckerResult} has
 two constructors: \texttt{Success} and \texttt{Fail}.   
 
 \begin{code}
-type Id		   = String             
-type Name	   = String             
 type Root          = Feature            
 type Property      = (String, String)     
 type ErrorMessage  = String
