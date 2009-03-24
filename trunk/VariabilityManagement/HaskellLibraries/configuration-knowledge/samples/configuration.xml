@@ -1,0 +1,5 @@
+<configurationModel name="Configuration">
+ <configuration expression="eShop">
+   <transformation name="selectScenarios" args="SC01,SC02"/>
+ </configuration>
+</configurationModel>
