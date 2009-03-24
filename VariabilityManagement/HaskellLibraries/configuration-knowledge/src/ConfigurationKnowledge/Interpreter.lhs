@@ -3,16 +3,20 @@
 module ConfigurationKnowledge.Interpreter
 where
 
+import UseCaseModel.Types
+
 import ConfigurationKnowledge.Types
 import FeatureModel.Types (FeatureConfiguration, eval)
 
-build :: FeatureConfiguration -> ConfigurationKnowledge m -> m -> m
-build fc ck model = stepRefinement [(x fc) | x <- t] model
- where t = concat [transformations c| c <- ck, eval fc (expression c)]	
+build :: FeatureConfiguration -> (ConfigurationKnowledge) -> UseCaseModel -> UseCaseModel
+build fc ck splmodel = stepRefinement ts splmodel empty
+ where 
+  ts = concat [transformations c| c <- ck, eval fc (expression c)]
+  empty = splmodel { useCases = [] , aspects = []}	
 
-stepRefinement :: [(m -> m)] -> m -> m
-stepRefinement [] model = model
-stepRefinement (x:xs) model = stepRefinement xs (x model)
+stepRefinement :: [(UseCaseModel -> UseCaseModel -> UseCaseModel)] -> UseCaseModel -> UseCaseModel -> UseCaseModel
+stepRefinement [] splmodel product = product
+stepRefinement (x:xs) splmodel product = stepRefinement xs splmodel (x splmodel product)
  
 \end{code}
     

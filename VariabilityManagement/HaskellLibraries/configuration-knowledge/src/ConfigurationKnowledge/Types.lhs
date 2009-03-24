@@ -3,16 +3,19 @@
 module ConfigurationKnowledge.Types
 where
 
+import UseCaseModel.Types
+
 import FeatureModel.Types (FeatureConfiguration, FeatureExpression)
 
-type ConfigurationKnowledge m = [Configuration m]
-
-type Transformation m = FeatureConfiguration -> m -> m
+type ConfigurationKnowledge = [Configuration]
  
-data Configuration m = Configuration {
+
+type Transformation = UseCaseModel -> UseCaseModel -> UseCaseModel
+ 
+data Configuration = Configuration {
  expression :: FeatureExpression,
- transformations :: [Transformation m] 	 
-}
+ transformations :: [Transformation] 	 
+} 
 
 \end{code}
     
