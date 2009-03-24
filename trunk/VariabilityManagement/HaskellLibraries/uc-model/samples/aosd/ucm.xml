@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<useCaseModel name="user-view.target.v20071129">
+		<useCase>
+			<id>UC_01</id>
+			<name>Purchase products</name>
+			<description>This use case allows the customer to buy goods.</description>
+			
+			<flow>
+			    <id>SC01</id>
+				<description>Proceed to purchase.</description>
+				<fromSteps>START</fromSteps>
+				<toSteps>END</toSteps>
+				<step>
+					<stepId>P1</stepId>
+					<action>Fill in the requested information and select the proceed option.</action>
+					<condition> - </condition>
+					<response>Request the shipping method and address.</response>
+				</step>
+				<step>
+					<stepId>P2</stepId>
+					<action>Select one of the available shipping methods (), fill in the destination address and proceed.</action>
+					<condition> - </condition>
+					<response>Calculate the shipping costs.</response>
+				</step>
+				<step>
+					<stepId>P3</stepId>
+					<action>Confirm the purchase.</action>
+					<condition> - </condition>
+					<response>Execute the order and send a request to the Delivery System to dispatch the products. [CustomerPreferences]</response>
+				</step>
+			</flow>
+		</useCase>
+		
+		<useCase>
+			<id>UC_02</id>
+			<name>Search product</name>
+			<description>This use case allows the customer to search goods.</description>
+			
+			<flow>
+			     <id>SC02</id>
+				<description>Search goods.</description>
+				<fromSteps>START</fromSteps>
+				<toSteps>END</toSteps>
+				<step>
+					<stepId>S1</stepId>
+					<action>...</action>
+					<condition> - </condition>
+					<response>...</response>
+				</step>
+				<step>
+					<stepId>S3</stepId>
+					<action>Inform the search criteria.</action>
+					<condition> - </condition>
+					<response>Retrieve the products that satisfy the search criteria. Show a list with the resulting products.[CustomerPreferences]</response>
+				</step>
+			</flow>
+		</useCase>
+		
+		<useCase>
+			<id>UC_03</id>
+			<name>Check bonus</name>
+			<description>This use case allows the customer check her bonus.</description>
+			
+			<flow>
+			    <id>SC03</id>
+				<description>Check bonus.</description>
+				<fromSteps>START</fromSteps>
+				<toSteps>END</toSteps>
+				<step>
+					<stepId>C1</stepId>
+					<action>...</action>
+					<condition> - </condition>
+					<response>...</response>
+				</step>
+				<step>
+					<stepId>C2</stepId>
+					<action>...</action>
+					<condition> - </condition>
+					<response>...</response>
+				</step>
+			</flow>
+		</useCase>
+</useCaseModel>
