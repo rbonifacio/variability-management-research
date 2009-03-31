@@ -31,6 +31,7 @@ type Description = String
 type Action = String
 type State = String
 type Response = String
+type Flow = [Step]
 type FromStep = [StepRef] 
 type ToStep = [StepRef]
 type Annotation = String
@@ -56,7 +57,7 @@ data Scenario = Scenario {
  scId :: Id,
  scDescription :: Description,
  from :: FromStep,
- steps :: [Step], 
+ steps :: Flow, 
  to :: ToStep
 } deriving (Show, Typeable, Data) 
 
@@ -65,7 +66,7 @@ data StepRef = IdRef Id | AnnotationRef String
 	 
 data Step = Step {
  sId :: Id,  
- owner :: Scenario,
+-- owner :: Scenario,
  action :: Action,
  state ::  State,
  response :: Response, 
@@ -82,8 +83,8 @@ data AspectualUseCase = AspectualUseCase {
 } deriving (Show, Typeable, Data)
 
 data Advice = 
- BeforeAdvice { pointCut :: [StepRef], aspectualScenario :: Scenario }  | 
- AfterAdvice  { pointCut :: [StepRef], aspectualScenario :: Scenario }
+ BeforeAdvice { pointCut :: [StepRef], aspectualFlow:: Flow }  | 
+ AfterAdvice  { pointCut :: [StepRef], aspectualFlow :: Flow }
  deriving(Show, Typeable, Data) 
 
 stepListIds :: [Step] -> [String]
@@ -95,7 +96,7 @@ stepListIds xs = map sId xs
 --  
 matchAll :: UseCaseModel -> [StepRef] -> [Step]
 matchAll _ [] = []
-matchAll ucm (r:rs) = [s | s <- ss, match s r] ++ matchAll ucm rs
+matchAll ucm (r:rs) = [s | s <- ss, match r s] ++ matchAll ucm rs
  where  ss = concat [steps s | s <- (ucmScenarios ucm)] 
   
 -- 
@@ -106,9 +107,9 @@ matchAll ucm (r:rs) = [s | s <- ss, match s r] ++ matchAll ucm rs
 -- case, a step will match with an annotation ref iff the 
 -- step has the specific annotation. 
 --
-match :: Step -> StepRef -> Bool
-match step (IdRef idref) = (sId step) == idref 
-match step (AnnotationRef x) = elem x (annotations step)  
+match :: StepRef -> Step -> Bool
+match (IdRef idref) step = (sId step) == idref 
+match (AnnotationRef x) step = elem x (annotations step)  
 
 -- *************************************************************
 -- This function return all scenarios from a use case model.
@@ -130,7 +131,7 @@ findScenario i sc@(Scenario i' _ _ _ _)
              | otherwise = Nothing
 
 findStep :: Id -> Step -> Maybe Step 
-findStep i s@(Step i' _ _ _ _ _)
+findStep i s@(Step i' _ _ _ _)
          | i == i'   = Just s
          | otherwise = Nothing
 
@@ -173,7 +174,7 @@ instance Eq UseCase where
   uc1 == uc2 = ucId uc1 == ucId uc2 
  
 instance Show Step where
- show (Step i _ action state response _)  = i  ++ " " ++ action ++ " " ++ state ++ response 
+ show (Step i action state response _)  = i  ++ " " ++ action ++ " " ++ state ++ response 
 
  
 -- -- 
