@@ -14,14 +14,16 @@ import UseCaseModel.Transformations
 
 import BasicTypes
 
-c1,c2 :: Configuration
+cn1,cn2,cn3,cn4,cn5 :: Configuration
 
-c1 = Configuration (FeatureRef "eShop") [(selectScenarios ["SC01"])]
-c2 = Configuration (FeatureRef "ShippingMethod") [(bindParameter "SM" "ShippingMethod")]
+cn1 = Configuration (FeatureRef "eShop") [(selectScenarios ["SC01","SC02"])]
+cn2 = Configuration (FeatureRef "ShippingMethod") [(bindParameter "SM" "ShippingMethod")]
+cn3 = Configuration (Not (FeatureRef "ShoppingCart")) [(evaluateAspect ["ADV01"])]
+cn4 = Configuration (FeatureRef "ShoppingCar") [(evaluateAspect ["ADV02"])]
+cn5 = Configuration (FeatureRef "UpdatePreferences") [(evaluateAspect ["ADV03"])]
 
 eShopCK :: ConfigurationKnowledge
-
-eShopCK = [c1,c2]
+eShopCK = [cn1,cn2,cn3,cn4,cn5]
 
 iModel01, iModel02 :: InstanceModel
 
