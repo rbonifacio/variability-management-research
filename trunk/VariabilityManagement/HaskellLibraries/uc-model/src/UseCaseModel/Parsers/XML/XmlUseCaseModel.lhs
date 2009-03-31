@@ -34,10 +34,14 @@ data XmlAspectualUseCase = XmlAspectualUseCase {
 data XmlScenario = XmlScenario Id Description XmlFromStep XmlToStep XmlStepList
 	 deriving (Show)
 
+data XmlAdviceFlow = XmlAdviceFlow { 
+        xmlAdviceSteps ::  XmlStepList 
+ } deriving (Show)
+
 data XmlAdvice = XmlAdvice {
 	xmlAdviceType :: String,
 	xmlPointcut :: String,
-	xmlAdviceScenario :: XmlScenario	
+	xmlAdviceFlow :: XmlAdviceFlow	
  }
  deriving (Show) 
 	 
@@ -65,12 +69,12 @@ xmlAspectualUseCase2AspectualUseCase xmlAspect =
 xmlAdvice2Advice :: XmlAdvice -> Advice
 xmlAdvice2Advice xmlAdvice = 
  let 
- 	sc = xmlScenario2Scenario (xmlAdviceScenario xmlAdvice) 
+ 	flow = [xmlStep2Step s | s <- xmlAdviceSteps (xmlAdviceFlow xmlAdvice)]
  	refs = xmlStepRefs2StepRefs (xmlPointcut xmlAdvice)
- 	fn = case (xmlAdviceType xmlAdvice) of 
+ 	c = case (xmlAdviceType xmlAdvice) of 
  			"before" -> BeforeAdvice 
  			"after" -> AfterAdvice
- 	in fn refs sc		
+ 	in c refs flow		
   
 -- 
 -- the string parameter was required because the UseCase xml document 
@@ -82,12 +86,12 @@ xmlScenario2Scenario (XmlScenario sid description fromSteps toSteps steps) =
  scenario = Scenario sid 
  		     description 
  		     (xmlStepRefs2StepRefs fromSteps) 
- 		     [xmlStep2Step scenario step | step <- steps] 
+ 		     [xmlStep2Step step | step <- steps] 
  		     (xmlStepRefs2StepRefs toSteps)
  
-xmlStep2Step :: Scenario -> XmlStep -> Step
-xmlStep2Step scenario (XmlStep i a s r) = 
- Step i scenario a s r []
+xmlStep2Step :: XmlStep -> Step
+xmlStep2Step (XmlStep i a s r) = 
+ Step i a s r []
   
 -- This function is used to retreve a list of step refs 
 -- from a string. It was implemented since the use case xml 

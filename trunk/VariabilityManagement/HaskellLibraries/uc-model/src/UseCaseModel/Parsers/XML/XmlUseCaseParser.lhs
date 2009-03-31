@@ -22,6 +22,9 @@ instance XmlPickler XmlAdvice where
 instance XmlPickler XmlScenario where 
  	xpickle = xpScenario
 
+instance XmlPickler XmlAdviceFlow where 
+        xpickle = xpAdviceFlow 
+
 instance XmlPickler XmlStep where 
 	xpickle = xpStep
 	
@@ -54,7 +57,7 @@ xpAdvice :: PU XmlAdvice
 xpAdvice = 
 	xpElem "advice" $
 	xpWrap ( uncurry3 XmlAdvice, \ (XmlAdvice t p a) -> (t, p, a) )	$
-	xpTriple (xpAttr "type" xpText) (xpElem "pointcut" xpText) (xpScenario)
+	xpTriple (xpAttr "type" xpText) (xpElem "pointcut" xpText) (xpAdviceFlow)
 
 --
 -- In the current UseCase xml document, scenarios have no id.
@@ -69,6 +72,12 @@ xpScenario =
 			 (xpElem "fromSteps" xpText) 
 			 (xpElem "toSteps" xpText) 
 			 (xpList xpStep) 
+
+xpAdviceFlow :: PU XmlAdviceFlow
+xpAdviceFlow = 
+        xpElem "aspectualFlow" $
+        xpWrap (XmlAdviceFlow, \ (XmlAdviceFlow s) -> (s) ) $
+        (xpList xpStep) 
 
 xpStep :: PU XmlStep 
 xpStep = 
