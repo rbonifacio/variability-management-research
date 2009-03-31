@@ -1,0 +1,16 @@
+<feature name="eShop" type="NONE" id="eShop">
+  <feature  name="ShoppingCart" type="NONE" id="shoppingCart">
+  </feature>
+  <feature  name="Bonus" type="NONE" id="bonus">
+  </feature>
+  <feature  name="ShippingMethod" type="NONE" id="shippingMethod">
+      <feature  name="Economical" type="NONE" id="economical">
+      </feature>
+      <feature  name="Fast" type="NONE" id="fast">
+      </feature>
+  </feature>
+  <feature  name="SearchOptions" type="NONE" id="searchOptions">
+      <feature  name="Hints" type="NONE" id="hints">
+      </feature>
+  </feature>
+</feature>
