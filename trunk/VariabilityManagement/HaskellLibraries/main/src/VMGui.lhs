@@ -16,13 +16,14 @@ import System.Environment
 
 import UseCaseModel.Parsers.XML.XmlUseCaseParser
 import UseCaseModel.Parsers.XML.XmlUseCaseModel
+import UseCaseModel.Types
 
 import FeatureModel.Parsers.FMPlugin.XmlFeatureModel
 import FeatureModel.Parsers.FMPlugin.XmlFeatureParser
 import FeatureModel.Types
 
-import ConfigurationKnowledge.Parsers.XML.XmlConfigurationParser
-import ConfigurationKnowledge.Parsers.XML.XmlConfigurationKnowledge
+import UseCaseModel.Parsers.XML.XmlConfigurationParser
+import UseCaseModel.Parsers.XML.XmlConfigurationKnowledge
 import ConfigurationKnowledge.Interpreter
 
 data UseCaseDocument = UseCaseDocument { path :: String } deriving Show
@@ -167,40 +168,46 @@ main = do
    do 
       -- loading the feature model
       fmfile <- entryGetText featureModelEntry
-      print "\n Reading feature model... \n" 
+      putStrLn "Reading feature model... "
+      putStrLn "" 
       [f] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
 					, (a_trace, v_1)
 					, (a_remove_whitespace,v_1)
 					, (a_preserve_comment, v_0)
 					] fmfile )
       let ftree = xmlFeature2FeatureTree f
-      print (ftree)
-      print "\n Done. \n"
+      putStrLn $ show ftree
+      putStrLn "Done."
+      putStrLn "================================="
 
       -- loading the instance model
       instancefile <- entryGetText instanceEntry
-      print "\n Reading instance model... \n"
+      putStrLn "Reading instance model... "
+      putStrLn ""
       [i] <- runX ( xunpickleDocument xpFeatureConfiguration [ (a_validate,v_0)
 					, (a_trace, v_1)
 					, (a_remove_whitespace,v_1)
 					, (a_preserve_comment, v_0)
 					] instancefile )
       let itree = xml2FeatureConfiguration i
-      print (itree)
-      print "\n Done. \n"
+      putStrLn $ show itree
+      putStrLn "Done. "
+      putStrLn "==================================="
 
       -- loading the use case model
       ucms <- listStoreToList useCaseStore 
       let ucmfile = path (head ucms) -- TODO: we should load all documents, instead of just one
-      print "\n Reading use case model... \n"  
+      putStrLn "Reading use case model..."  
+      putStrLn ""
       [u] <- runX ( xunpickleDocument xpUseCaseModel [ (a_validate,v_0)
 					, (a_trace, v_1)
 					, (a_remove_whitespace,v_1)
 					, (a_preserve_comment, v_0)
 					] ucmfile )
       let splmodel = xmlUseCaseModel2UseCaseModel u 
-      print $ splmodel
-      print "\n Done. \n"
+      putStrLn $ show splmodel
+      putStrLn "Done."
+      putStrLn "=====================================" 
       
       -- loading the configuration knowledge
       ckfile <- entryGetText configurationEntry
@@ -211,11 +218,15 @@ main = do
 				      , (a_preserve_comment, v_0)
 				      ] ckfile )
       let ck = xml2ConfigurationKnowledge c
-      print $ c
-      print "\n Done. \n"
-      let fc = FeatureConfiguration ftree
-      let r = build fc ck splmodel 
-      print r
+      putStrLn "Done."
+      putStrLn $ "Configuration items: " ++ show (length ck)
+      putStrLn "===================================="
+      
+      -- running the build process
+      let fm = FeatureModel ftree []
+      let fc = FeatureConfiguration itree
+      let r = build fm fc ck splmodel 
+      print $ (snd r)
 
   widgetShowAll window   
   mainGUI
