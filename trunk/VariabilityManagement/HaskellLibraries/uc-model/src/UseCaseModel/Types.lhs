@@ -5,8 +5,8 @@
 
 
    This source code define the main concepts (types like 
-   use case, scenario, steps, and so on) related with 
-   the requirement variability context. Also, this code 
+   use case, scenario, steps, and so on) related to
+   the requirements variability context. Also, this code 
    implement some functions that represent the weaving 
    process of main flow and alternativ flow variability 
    mechanisms.
@@ -14,11 +14,16 @@
    Author: Rodrigo Bonifacio 
 -}
 
+{-# OPTIONS -fglasgow-exts #-}
+
 module UseCaseModel.Types where
 
 -- import Prelude hiding ( (^) )
 import List 
+
 import Maybe
+
+import Data.Generics
 
 import BasicTypes
 
@@ -38,14 +43,14 @@ data UseCaseModel = UCM {
  ucmName :: Name,  
  useCases :: [UseCase],
  aspects :: [AspectualUseCase]
-} deriving (Show)
+} deriving (Show, Typeable, Data)
 
 data UseCase = UseCase {
  ucId :: Id,  
  ucName :: Name,
  ucDescription :: Description,
  ucScenarios :: [Scenario] 
-} deriving (Show)
+} deriving (Show, Typeable, Data)
 	 
 data Scenario = Scenario {
  scId :: Id,
@@ -53,10 +58,10 @@ data Scenario = Scenario {
  from :: FromStep,
  steps :: [Step], 
  to :: ToStep
-} deriving (Show) 
+} deriving (Show, Typeable, Data) 
 
 data StepRef = IdRef Id | AnnotationRef String 
- deriving (Show)
+ deriving (Show, Typeable, Data)
 	 
 data Step = Step {
  sId :: Id,  
@@ -65,7 +70,7 @@ data Step = Step {
  state ::  State,
  response :: Response, 
  annotations :: [Annotation]
-}
+} deriving (Typeable, Data)
 
 instance Eq Step where 
  s1 == s2 = sId s1 == sId s2
@@ -74,12 +79,12 @@ data AspectualUseCase = AspectualUseCase {
  aspectId :: Id,
  aspectName :: Name,
  advices :: [Advice]
-} deriving (Show)
+} deriving (Show, Typeable, Data)
 
 data Advice = 
  BeforeAdvice { pointCut :: [StepRef], aspectualScenario :: Scenario }  | 
  AfterAdvice  { pointCut :: [StepRef], aspectualScenario :: Scenario }
- deriving(Show) 
+ deriving(Show, Typeable, Data) 
 
 stepListIds :: [Step] -> [String]
 stepListIds xs = map sId xs 
@@ -90,8 +95,8 @@ stepListIds xs = map sId xs
 --  
 matchAll :: UseCaseModel -> [StepRef] -> [Step]
 matchAll _ [] = []
-matchAll ucm (r:rs) = [s | s <- steps, match s r] ++ matchAll ucm rs
- where  steps = extractStepsFromScenarios (ucmScenarios ucm) 
+matchAll ucm (r:rs) = [s | s <- ss, match s r] ++ matchAll ucm rs
+ where  ss = concat [steps s | s <- (ucmScenarios ucm)] 
   
 -- 
 -- This function checks if a given step matches with a 
@@ -114,22 +119,52 @@ ucmScenarios ucm = concat [ucScenarios uc | uc <- useCases ucm]
 ucmSteps :: UseCaseModel -> [Step]
 ucmSteps ucm = concat [steps s | s <- ucmScenarios ucm]
 
-findUseCaseFromScenario :: [UseCase]-> Scenario -> Maybe UseCase
+findUseCase :: Id -> UseCase -> Maybe UseCase
+findUseCase i uc@(UseCase i' _ _ _)
+            | i == i'   = Just uc
+            | otherwise = Nothing   
+
+findScenario :: Id -> Scenario -> Maybe Scenario
+findScenario i sc@(Scenario i' _ _ _ _)
+             | i == i'   = Just sc
+             | otherwise = Nothing
+
+findStep :: Id -> Step -> Maybe Step 
+findStep i s@(Step i' _ _ _ _ _)
+         | i == i'   = Just s
+         | otherwise = Nothing
+
+  
+findScenarioFromStep :: [Scenario] -> Step -> Maybe Scenario
+findScenarioFromStep [] st = Nothing
+findScenarioFromStep (x:xs) st = 
+ if (length [s | s <- steps x, s == st] > 0) 
+  then Just x
+  else findScenarioFromStep xs st
+ 
+findUseCaseFromScenario :: [UseCase] -> Scenario -> Maybe UseCase
 findUseCaseFromScenario [] sc = Nothing 
-findUseCaseFromScenario (x:xs) sc = 
+findUseCaseFromScenario (x:xs) sc  = 
  if (length [s | s <- ucScenarios x, s == sc] > 0)
   then Just x
   else findUseCaseFromScenario xs sc
   
-replaceScenarioInUseCase :: UseCase -> Scenario -> UseCase
-replaceScenarioInUseCase useCase replaced = 
- let sc = ucScenarios useCase 
- in  useCase {ucScenarios = (replaced : [s | s <- sc, s /= replaced]) }   
+-- replaceStepInScenario :: Step -> Scenario -> Scenario
+-- replaceStepInScenario replaced sc =
+--  let ss = steps sc
+--  in if replaced `elem` ss 
+--      then sc { steps = replaced : [s | s <- ss, s /= replaced] }
+--      else sc
+
+-- replaceScenarioInUseCase :: UseCase -> Scenario -> UseCase
+-- replaceScenarioInUseCase useCase replaced = 
+--  let sc = ucScenarios useCase 
+--  in  useCase { ucScenarios = (replaced : [s | s <- sc, s /= replaced]) }   
  
-replaceUseCaseInUCM :: UseCaseModel -> UseCase -> UseCaseModel
-replaceUseCaseInUCM ucm replaced = 
- let ucs = useCases ucm
- in  ucm {useCases = (replaced : [u | u <- ucs, ucId u /= ucId replaced])} 
+-- replaceUseCaseInUCM :: UseCaseModel -> UseCase -> UseCaseModel
+-- replaceUseCaseInUCM ucm replaced = 
+--  let ucs = useCases ucm
+--  in  ucm { useCases = (replaced : [u | u <- ucs, ucId u /= ucId replaced])} 
 
 instance Eq Scenario where 
   s1 == s2 = scId s1 == scId s2
