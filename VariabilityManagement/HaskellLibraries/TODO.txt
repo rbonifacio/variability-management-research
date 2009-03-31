@@ -1,0 +1,2 @@
+- review the uc xml parser in order to retrieve annotations
+- review the evaluate advice transformation, in order to deal with the cases where more than one step in a flow satisfies a point cut clause.
