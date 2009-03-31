@@ -19,6 +19,7 @@ is a valid instance of a feature model.
 	
 %if False
 \begin{code}
+{-# OPTIONS -fglasgow-exts #-}
 module FeatureModel.Types where 
 
 import BasicTypes
@@ -27,6 +28,7 @@ import Funsat.Types
 
 import qualified Data.Set as Set
 
+import Data.Generics
 import List
 import Maybe
 
@@ -58,7 +60,7 @@ a feature can be either an \emph{optional} or a \emph{mandatoty} feature.
 
 \begin{code}
 data FeatureType  = Optional | Mandatory 
- deriving (Show, Eq)
+ deriving (Show, Eq, Typeable, Data)
 \end{code}
 
 Features are also classified according to the semantics of the 
@@ -71,7 +73,7 @@ requires that {\bf at least one of its child} must  be selected.
 
 \begin{code}
 data GroupType = BasicFeature | AlternativeFeature | OrFeature 
- deriving (Show, Eq)
+ deriving (Show, Eq, Typeable, Data)
 \end{code}
 
 Now we can define the feature model data type, which is basically the root of a rose tree--- whose nodes are 
@@ -81,7 +83,7 @@ data type has just a reference to a root feature.
 
 \begin{code}
 data FeatureTree = Leaf Feature | Root Feature [FeatureTree]
- deriving (Show)
+ deriving (Show, Typeable, Data)
 
 fnode :: FeatureTree -> Feature
 fnode (Leaf f) = f
@@ -94,11 +96,11 @@ children (Root f fs) = map fnode fs
 data FeatureModel = FeatureModel {
 	fmTree :: FeatureTree,
         fmConstraints :: [FeatureExpression]
-} deriving (Show)
+} deriving (Show, Typeable, Data)
 
 data FeatureConfiguration = FeatureConfiguration {
 	fcTree :: FeatureTree
-} deriving (Show)
+} deriving (Show, Typeable, Data)
 
 foldFTree::  (b -> b -> b) -> (FeatureTree -> b) -> (FeatureTree -> b) -> b -> FeatureTree ->  b
 foldFTree f1 f2 f3 f4 (Leaf f)  = f2 (Leaf f)
@@ -117,6 +119,7 @@ data Feature = Feature {
 	groupType :: GroupType,
 	properties :: [Property]
  } | FeatureError    
+ deriving (Typeable, Data)
 \end{code}
 
 
@@ -130,7 +133,8 @@ data FeatureExpression = ConstantExpression Bool
                        | FeatureRef Id 
                        | Not FeatureExpression 
                        | And FeatureExpression FeatureExpression 
-                       | Or FeatureExpression FeatureExpression 
+                       | Or FeatureExpression FeatureExpression
+ deriving (Typeable, Data) 
             
 -- the constant expressions for representing True and False
 expTrue = ConstantExpression True
