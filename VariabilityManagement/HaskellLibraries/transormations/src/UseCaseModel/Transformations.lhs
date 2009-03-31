@@ -1,5 +1,5 @@
 \begin{code}
-module UseCaseModel.Transformations 
+module UseCaseModel.Transformations -- (selectScenarios, bindParameter, evaluateAdvice)
 where
 
 import BasicTypes
@@ -18,12 +18,41 @@ selectScenarios ids spl product =
 
 bindParameter :: Id -> Id -> SPLModel -> InstanceModel -> InstanceModel
 bindParameter pid fid spl product = 
- bindParameter' product steps (unwords options) pid
+ bindParameter' steps (unwords options) pid product
  where 
   steps = [s | s <- ucmSteps (snd product), s `refers` pid]
   options = concat (map featureOptionsValues [f | f <- flatten (fcTree (fst product)), fId (fnode f) == fid]) 
-  bindParameter' p [] o pid = p
-  bindParameter' p (s:ss) o pid = bindParameter' (gReplaceStringInStep (sId s) pid o p) ss o pid 
+  bindParameter'[] o pid p = p
+  bindParameter' (s:ss) o pid p = bindParameter' ss o pid (gReplaceStringInStep (sId s) pid o p) 
+
+evaluateAspect:: [Id] -> SPLModel -> InstanceModel -> InstanceModel
+evaluateAspect ids spl product = 
+ evaluateAdvices as product
+ where 
+  as = concat [advices a | a <- aspects (snd spl), (aspectId a) `elem` ids]
+
+evaluateAdvices :: [Advice] -> InstanceModel -> InstanceModel
+evaluateAdvices [] p = p
+evaluateAdvices (x:xs) p = evaluateAdvices xs (genEvaluateAdvice x p)
+
+evaluateAdvice :: Advice -> Flow -> Flow
+evaluateAdvice a sf = 
+ evaluateAdvice' rs af sf 
+ where 
+  rs = pointCut a
+  af = aspectualFlow a
+  fn = case a of 
+        BeforeAdvice _ _-> concatBefore
+        AfterAdvice _ _-> concatAfter
+  evaluateAdvice' [] af sf = sf
+  evaluateAdvice' (x:xs) af sf = evaluateAdvice' xs af (fn (match x) af sf) 
+
+genEvaluateAdvice :: Advice -> InstanceModel -> InstanceModel  
+genEvaluateAdvice a = everywhere (mkT (evaluateAdvice a))
+
+  
+
+    
 
 refers :: Step -> Id -> Bool
 refers s pid = 
