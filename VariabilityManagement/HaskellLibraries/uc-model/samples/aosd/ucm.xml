@@ -18,7 +18,7 @@
 				</step>
 				<step>
 					<stepId>P2</stepId>
-					<action>Select one of the available shipping methods (), fill in the destination address and proceed.</action>
+					<action>Select one of the available shipping methods {SM}, fill in the destination address and proceed.</action>
 					<condition> - </condition>
 					<response>Calculate the shipping costs.</response>
 				</step>
