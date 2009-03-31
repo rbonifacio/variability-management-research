@@ -5,12 +5,14 @@ where
 
 import UseCaseModel.Types
 
-import FeatureModel.Types (FeatureConfiguration, FeatureExpression)
+import FeatureModel.Types (FeatureModel, FeatureConfiguration, FeatureExpression)
 
 type ConfigurationKnowledge = [Configuration]
- 
 
-type Transformation = UseCaseModel -> UseCaseModel -> UseCaseModel
+type SPLModel = (FeatureModel, UseCaseModel)
+type InstanceModel = (FeatureConfiguration, UseCaseModel)
+
+type Transformation = SPLModel -> InstanceModel -> InstanceModel
  
 data Configuration = Configuration {
  expression :: FeatureExpression,
