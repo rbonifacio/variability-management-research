@@ -1,4 +1,7 @@
 <configurationModel name="Configuration">
+  <configuration expression="ShippingMethod">
+   <transformation name="bindParameter" args="SM,ShippingMethod"/>
+ </configuration>
  <configuration expression="eShop">
    <transformation name="selectScenarios" args="SC01,SC02"/>
  </configuration>
