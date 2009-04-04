@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+  targetNamespace="user-view.target.v20071129" xmlns:spec="user-view.target.v20071129">
+  <!-- defines the featureId type -->
+  <xs:simpleType name="featureId">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([0-9])+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- definition of useCaseId type -->
+  <xs:simpleType name="useCaseId">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([0-9a-zA-Z_])+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- definition of id type -->
+  <xs:simpleType name="aspectId">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(([0-9])+([A-Z])+)?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="adviceId">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(([0-9])+([A-Z])+)?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="scenarioId">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(([0-9])+([A-Z])+)?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="stepId">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(([0-9])+([A-Z])+)?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- beginning of definition of type useCaseType -->
+  <xs:complexType name="useCaseType">
+    <xs:sequence>
+      <xs:element name="id" type="spec:useCaseId"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="description" type="xs:string"/>
+      <xs:element name="setup" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" name="flow">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="id" type="spec:scenarioId" minOccurs="0"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="fromSteps" type="xs:string"/>
+            <xs:element name="toSteps" type="xs:string"/>
+            <!-- beginning of definition of element step -->
+            <xs:element maxOccurs="unbounded" name="step">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="stepId" type="spec:stepId"/>
+                  <xs:element name="action" type="xs:string"/>
+                  <xs:element name="condition" type="xs:string"/>
+                  <xs:element name="setup" type="xs:string" maxOccurs="1" minOccurs="0"/>
+                  <xs:element name="response" type="xs:string"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- end of definition of type useCaseType -->
+
+  <!-- beginning of definition of type interruptionType -->
+  <xs:complexType name="aspectType">
+    <xs:sequence>
+      <xs:element name="id" type="spec:aspectId"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" name="advice">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="id" type="spec:adviceId"/>
+            <xs:element name="type" type="xs:string"/>
+            <xs:element name="pointCut" type="xs:string"/>
+            <!-- beginning of definition of element step -->
+            <xs:element maxOccurs="unbounded" name="step">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="id" type="spec:stepId"/>
+                  <xs:element name="action" type="xs:string"/>
+                  <xs:element name="condition" type="xs:string"/>
+                  <xs:element name="response" type="xs:string"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="interruptionType">
+    <xs:sequence>
+      <xs:element name="id" type="spec:useCaseId"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="description" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" name="flow">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="fromSteps" type="xs:string"/>
+            <xs:element name="toSteps" type="xs:string"/>
+            <!-- beginning of definition of element step -->
+            <xs:element maxOccurs="unbounded" name="step">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="stepId" type="spec:stepId"/>
+                  <xs:element name="action" type="xs:string"/>
+                  <xs:element name="condition" type="xs:string"/>
+                  <xs:element name="response" type="xs:string"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- end of definition of type interruptionType -->
+
+  <xs:complexType name="featureType">
+    <xs:sequence>
+      <xs:element name="featureId" type="spec:featureId"/>
+      <xs:element name="name" type="xs:string"/>
+      <!-- beginning of definition of element useCase -->
+      <xs:element maxOccurs="unbounded" name="useCase" type="spec:useCaseType"/>
+      <!-- end of definition of element useCase -->
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="aspect" type="spec:aspectType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:complexType name="phoneType">
+    <xs:sequence>
+      <xs:element name="feature" minOccurs="0" maxOccurs="unbounded" type="spec:featureType"/>
+      <xs:element name="interruption" minOccurs="0" maxOccurs="unbounded"
+        type="spec:interruptionType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <!-- definition of system phone -->
+  <xs:element name="phone" type="spec:phoneType"/>
+</xs:schema>
