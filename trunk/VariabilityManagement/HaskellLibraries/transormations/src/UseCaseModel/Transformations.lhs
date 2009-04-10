@@ -14,7 +14,7 @@
 --
 --
 -----------------------------------------------------------------------------
-module UseCaseModel.Transformations (selectScenarios, bindParameter, evaluateAdvice)
+module UseCaseModel.Transformations (selectScenarios, bindParameter, evaluateAspects)
 where
 
 import BasicTypes
@@ -60,11 +60,11 @@ bindParameter pid fid spl product =
 --   This transformation deals with the kind of variability 
 --   named 'variability in control flow'.
 
-evaluateAspect:: [Id]               -- ^ Ids of the aspects that will be evaluated  
+evaluateAspects:: [Id]               -- ^ Ids of the aspects that will be evaluated  
                  -> SPLModel        -- ^ SPL with the input use case model
                  -> InstanceModel   -- ^ current version of the product specific use case model
                  -> InstanceModel   -- ^ refined version of the pdocutc specific use case model
-evaluateAspect ids spl product = 
+evaluateAspects ids spl product = 
  evaluateAdvices as product
  where 
   as = concat [advices a | a <- aspects (snd spl), (aspectId a) `elem` ids]
