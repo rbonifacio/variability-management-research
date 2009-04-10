@@ -18,7 +18,6 @@ import Text.ParserCombinators.Parsec.Language( haskellStyle )
 import List
 
 data XmlConfigurationKnowledge = XmlConfigurationKnowledge {
-      cName :: String,
       xmlConfigurations :: [XmlConfiguration]
 } deriving(Show)  
 	
@@ -56,6 +55,8 @@ xml2Transformation t =
    "bindParameter" -> case as of 
                       [x,y] -> bindParameter x y
                       otherwise -> error "Invalid arguments to the bind parameter function"
+   
+   "evaluateAspects" -> evaluateAspects (as)
    
    otherwise -> error ("Invalid transformation: " ++ tName t)
 
