@@ -1,5 +1,18 @@
 \begin{code}
-
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  ConfigurationKnowledge.Interpreter
+-- Copyright   :  (c) Rodrigo Bonifacio 2008, 2009
+-- License     :  LGPL
+--
+-- Maintainer  :  rba2@cin.ufpe.br
+-- Stability   :  provisional
+-- Portability :  portable
+--
+-- Configuration Knowledge interpreter in Haskell.
+--
+--
+-----------------------------------------------------------------------------
 module ConfigurationKnowledge.Interpreter (build)
 where
 
