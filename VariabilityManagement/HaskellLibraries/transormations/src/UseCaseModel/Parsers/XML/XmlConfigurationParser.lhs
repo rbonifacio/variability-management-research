@@ -20,20 +20,20 @@ instance XmlPickler XmlTransformation where
 xpConfigurationKnowledge :: PU XmlConfigurationKnowledge
 xpConfigurationKnowledge =
 	xpElem "configurationModel" $
-	xpWrap ( uncurry XmlConfigurationKnowledge, \ (XmlConfigurationKnowledge n c) -> (n, c) ) $
-	xpPair ( xpAttr "name" xpText ) (xpList xpConfiguration)		 
+	xpWrap ( XmlConfigurationKnowledge, \ (XmlConfigurationKnowledge c) -> (c) ) $
+        (xpList xpConfiguration)		 
 			 
 xpConfiguration :: PU XmlConfiguration
 xpConfiguration = 	
 	xpElem "configuration" $
-	xpWrap ( uncurry XmlConfiguration, \ (XmlConfiguration e f) -> (e, f) ) $
-	xpPair ( xpAttr "expression" xpText ) ( xpList xpTransformation)
+	xpWrap ( uncurry XmlConfiguration, \ (XmlConfiguration e t) -> (e, t) ) $
+	xpPair ( xpElem "expression" xpText ) ( xpList xpTransformation)
 	
 xpTransformation :: PU XmlTransformation
 xpTransformation = 	
 	xpElem "transformation" $
 	xpWrap ( uncurry XmlTransformation, \ (XmlTransformation n a) -> (n, a) ) $
-	xpPair ( xpAttr "name" xpText ) ( xpAttr "args" xpText )
+	xpPair ( xpElem "name" xpText ) ( xpElem "args" xpText )
 
 \end{code}
 	
