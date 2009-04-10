@@ -1,4 +1,19 @@
 \begin{code}
+-----------------------------------------------------------------------------
+-- |
+-- Module      :  UseCaseModel.Parsers.XML.XmlUseCaseParser
+-- Copyright   :  (c) Rodrigo Bonifacio 2008, 2009
+-- License     :  LGPL
+--
+-- Maintainer  :  rba2@cin.ufpe.br
+-- Stability   :  provisional
+-- Portability :  portable
+--
+-- This module defines several functions for parsing 
+-- a TaRGeT xml document. We develped this module using the HXT (Haskell XML 
+-- Toolkit) library. 
+--
+-----------------------------------------------------------------------------
 module UseCaseModel.Parsers.XML.XmlUseCaseParser where
 
 import Text.XML.HXT.Arrow
@@ -6,6 +21,13 @@ import System.Environment
 
 import UseCaseModel.Parsers.XML.XmlUseCaseModel
 
+--
+-- based on the HXT library, we have to declare one instance of 
+-- XmlPickler for each element of our data structures. 
+-- 
+
+instance XmlPickler XmlPhone where 
+         xpickle = xpPhone
 
 instance XmlPickler XmlUseCaseModel where
 	xpickle = xpUseCaseModel
@@ -22,30 +44,41 @@ instance XmlPickler XmlAdvice where
 instance XmlPickler XmlScenario where 
  	xpickle = xpScenario
 
-instance XmlPickler XmlAdviceFlow where 
-        xpickle = xpAdviceFlow 
+-- instance XmlPickler XmlAdviceFlow where 
+--        xpickle = xpAdviceFlow 
 
 instance XmlPickler XmlStep where 
 	xpickle = xpStep
-	
-
 -- 
 -- necessary, if the element has more than five sub-elements or attributes.	
 --
 uncurry5 :: (a -> b -> c -> d -> e -> f) -> (a, b, c, d, e) -> f
 uncurry5 fn (a, b, c, d, e) = fn a b c d e 
 
+xpPhone :: PU XmlPhone
+xpPhone = 
+        xpElem "phone" $
+        xpWrap (XmlPhone, \ (XmlPhone ucms) -> (ucms) ) $ 
+        xpList (xpUseCaseModel)
+
 xpUseCaseModel :: PU XmlUseCaseModel
 xpUseCaseModel =
-	xpElem "useCaseModel" $
-	xpWrap ( uncurry3 XmlUCM, \ (XmlUCM n ucs aspect) -> (n, ucs, aspect) ) $
-	xpTriple ( xpAttr "name" xpText ) ( xpList xpUseCase )  ( xpList xpAspectualUseCase )
+	xpElem "feature" $ -- it should be useCaseModel, but we change to TaRGeT format.
+	xpWrap ( uncurry4 XmlUCM, \ (XmlUCM i n ucs aspect) -> (i, n, ucs, aspect) ) $
+	xp4Tuple ( xpElem "id" xpText ) 
+                 ( xpElem "name" xpText ) 
+                 ( xpList xpUseCase )  
+                 ( xpList xpAspectualUseCase )
 
 xpUseCase :: PU XmlUseCase
 xpUseCase =
 	xpElem "useCase" $
-	xpWrap ( uncurry4 XmlUseCase, \ (XmlUseCase i n d s) -> (i, n, d, s) ) $
-	xp4Tuple (xpElem "id" xpText) (xpElem "name" xpText) (xpElem "description" xpText) (xpList xpScenario)
+	xpWrap ( uncurry5 XmlUseCase, \ (XmlUseCase i n d s ss) -> (i, n, d, s, ss) ) $
+	xp5Tuple (xpElem "id" xpText) 
+                 (xpElem "name" xpText) 
+                 (xpElem "description" xpText) 
+                 (xpElem "setup" xpText) 
+                 (xpList xpScenario)
 
 xpAspectualUseCase :: PU XmlAspectualUseCase
 xpAspectualUseCase = 
@@ -56,28 +89,24 @@ xpAspectualUseCase =
 xpAdvice :: PU XmlAdvice
 xpAdvice = 
 	xpElem "advice" $
-	xpWrap ( uncurry3 XmlAdvice, \ (XmlAdvice t p a) -> (t, p, a) )	$
-	xpTriple (xpAttr "type" xpText) (xpElem "pointcut" xpText) (xpAdviceFlow)
+	xpWrap ( uncurry3 XmlAdvice, \ (XmlAdvice t p s) -> (t, p, s) )	$
+	xpTriple (xpElem "type" xpText) (xpElem "pointCut" xpText) (xpList xpStep)
 
---
--- In the current UseCase xml document, scenarios have no id.
--- This may be change in the future
----	
 xpScenario :: PU XmlScenario
 xpScenario = 
 	xpElem "flow" $
 	xpWrap ( uncurry5 XmlScenario, \ (XmlScenario i d f t s) -> (i, d, f, t, s) ) $
 	xp5Tuple (xpElem "id" xpText )
-			 (xpElem "description" xpText ) 
-			 (xpElem "fromSteps" xpText) 
-			 (xpElem "toSteps" xpText) 
-			 (xpList xpStep) 
+	         (xpElem "description" xpText ) 
+		 (xpElem "fromSteps" xpText) 
+		 (xpElem "toSteps" xpText) 
+		 (xpList xpStep) 
 
-xpAdviceFlow :: PU XmlAdviceFlow
-xpAdviceFlow = 
-        xpElem "aspectualFlow" $
-        xpWrap (XmlAdviceFlow, \ (XmlAdviceFlow s) -> (s) ) $
-        (xpList xpStep) 
+-- xpAdviceFlow :: PU XmlAdviceFlow
+-- xpAdviceFlow = 
+--         xpElem "aspectualFlow" $
+--         xpWrap (XmlAdviceFlow, \ (XmlAdviceFlow s) -> (s) ) $
+--        (xpList xpStep) 
 
 xpStep :: PU XmlStep 
 xpStep = 
