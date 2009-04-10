@@ -37,75 +37,54 @@ main = do
   -- with this reference, we can access the window widgets
   Just xml <- xmlNew "vm.glade"  
   
-  -- the main window of our application
-  -- when the main window is closed, the application finishes.
+  -- the main window of VM application
   window   <- xmlGetWidget xml castToWindow "mainWindow"
   onDestroy window mainQuit
   
   -- the configuration knowledge window
-  -- this window is used for creating new configuration models; and
-  -- for previewing existing ones.
-  ckWindow   <- xmlGetWidget xml castToWindow "ckWindow";
-
-  -- list used for rendering which use case documents 
-  -- have been added into the build process. 
-  -- this list is presented in the main window.
-  useCaseList <- xmlGetWidget xml castToTreeView "useCasesList"
-  useCaseStore <- createUseCaseStore
-  New.treeViewSetModel useCaseList useCaseStore
-  setupUseCaseView useCaseList useCaseStore
+  ckWindow   <- xmlGetWidget xml castToWindow "ckWindow"
   
-  -- list used for rendering configurations, which means 
-  -- each entry of the configuration knowledge.
-  -- this list (or tree view with a table format) is presented in the ck window
+  -- list used for rendering configurations
   ckList <- xmlGetWidget xml castToTreeView "ckList"
   ckStore <- createCKStore
   New.treeViewSetModel ckList ckStore
   setupCKView ckList ckStore
   
-  -- the entry used for handling the selected feature model.
-  featureModelEntry <- xmlGetWidget xml castToEntry "featureModelEntry"
-  instanceEntry <- xmlGetWidget xml castToEntry "instanceEntry"
-
-  configurationEntry <- xmlGetWidget xml castToEntry "configurationEntry"
+  -- different entries for feature models, feature configurations 
+  -- and configuration knowledge.
+ 
+  ucmFileChooser <- xmlGetWidget xml castToFileChooserButton "ucmFileChooser"
+  fmFileChooser  <- xmlGetWidget xml castToFileChooserButton "fmFileChooser" 
+  pcFileChooser  <- xmlGetWidget xml castToFileChooserButton "pcFileChooser" 
+  ckFileChooser  <- xmlGetWidget xml castToFileChooserButton "ckFileChooser"
+   
+  -- buttons for capturing user actions. 
+  executeButton        <- xmlGetWidget xml castToButton "executeButton"
+  ucmXmlCheckerButton  <- xmlGetWidget xml castToButton "ucmXMLCheckerButton"
+-- selectFMButton       <- xmlGetWidget xml castToButton "selectFeatureModelButton"
+-- selectInstanceButton <- xmlGetWidget xml castToButton "selectInstanceButton"
+-- selectCKButton       <- xmlGetWidget xml castToButton "selectCKButton"
+-- newCKButton          <- xmlGetWidget xml castToButton "newCKButton"
+  cancelButton         <- xmlGetWidget xml castToButton "cancelButton"
+ 
+  -- the following lines define actions related to the above buttons.
+  executeButton `onClicked` do 
+      u  <- fileChooserGetFilename ucmFileChooser
+      f  <- fileChooserGetFilename fmFileChooser
+      p  <- fileChooserGetFilename pcFileChooser
+      c  <- fileChooserGetFilename ckFileChooser
+      executeBuildingProcess (fromJust f, fromJust p, fromJust u, fromJust c) 
   
-  -- the entry used for handling feature expressions.
-  -- note: this entry is presented in the ck window
-  featureExpressionEntry <- xmlGetWidget xml castToEntry "featureExpressionEntry"
+  ucmXmlCheckerButton `onClicked` do 
+      u <- fileChooserGetFilename ucmFileChooser
+      let e = executeUcmXmlChecker (u) 
+      let (x,y) = case e of 
+                   [] -> (MessageInfo, "No error found in use case model!" )
+                   otherwise -> (MessageError, "Error: " ++ (show e))
+      showDialog window x y  
+   
+  cancelButton `onClicked` do widgetDestroy window
   
-  -- the entry used for handling transformations
-  -- note: this entry is presented in the ck window
-  transformationListEntry <- xmlGetWidget xml castToEntry "transformationListEntry"
-  
-  -- the add use case button.
-  -- this button is used for allowing the user to select 
-  -- a new use case document as being part of the build process. 
-  addUseCaseButton <- xmlGetWidget xml castToButton "addUseCaseButton"
-  addUseCaseButton `onClicked` openSelectFileDialog useCaseStore window 
-  
-  -- the select feture model button
-  -- this button is used for selecting the feature model 
-  -- used in the build process.
-  selectFMButton <- xmlGetWidget xml castToButton "selectFeatureModelButton"
-  selectFMButton `onClicked` openSelectFMDialog featureModelEntry window
-  
-  selectInstanceButton <- xmlGetWidget xml castToButton "selectInstanceButton"
-  selectInstanceButton `onClicked` openSelectInstanceDialog instanceEntry window
-
-  -- the new configuration knowledge button
-  -- this button is used for allowing the user to create a new 
-  -- configuration model.
-  newCKButton <- xmlGetWidget xml castToButton "newCKButton"
-  newCKButton `onClicked` openNewCKDialog ckWindow
-
-  selectCKButton <- xmlGetWidget xml castToButton "selectCKButton"
-  selectCKButton `onClicked` openSelectCKDialog configurationEntry window
-  
-  -- the cancel button
-  -- this button is used for canceling the build process, 
-  -- finishing the application.
-  cancelButton <- xmlGetWidget xml castToButton "cancelButton"
-  onClicked cancelButton $ do widgetDestroy window
   
   -- the check feature expression button
   -- this button is used for performing a spell checking 
@@ -163,73 +142,124 @@ main = do
   buttonQuitCK <- xmlGetWidget xml castToButton "buttonQuitCK"
   onClicked buttonQuitCK $ do widgetHide ckWindow
   
-  executeButton <- xmlGetWidget xml castToButton "executeButton"
-  onClicked executeButton $ 
-   do 
-      -- loading the feature model
-      fmfile <- entryGetText featureModelEntry
-      putStrLn "Reading feature model... "
-      putStrLn "" 
-      [f] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
-					, (a_trace, v_1)
-					, (a_remove_whitespace,v_1)
-					, (a_preserve_comment, v_0)
-					] fmfile )
-      let ftree = xmlFeature2FeatureTree f
-      putStrLn $ show ftree
-      putStrLn "Done."
-      putStrLn "================================="
-
-      -- loading the instance model
-      instancefile <- entryGetText instanceEntry
-      putStrLn "Reading instance model... "
-      putStrLn ""
-      [i] <- runX ( xunpickleDocument xpFeatureConfiguration [ (a_validate,v_0)
-					, (a_trace, v_1)
-					, (a_remove_whitespace,v_1)
-					, (a_preserve_comment, v_0)
-					] instancefile )
-      let itree = xml2FeatureConfiguration i
-      putStrLn $ show itree
-      putStrLn "Done. "
-      putStrLn "==================================="
-
-      -- loading the use case model
-      ucms <- listStoreToList useCaseStore 
-      let ucmfile = path (head ucms) -- TODO: we should load all documents, instead of just one
-      putStrLn "Reading use case model..."  
-      putStrLn ""
-      [u] <- runX ( xunpickleDocument xpUseCaseModel [ (a_validate,v_0)
-					, (a_trace, v_1)
-					, (a_remove_whitespace,v_1)
-					, (a_preserve_comment, v_0)
-					] ucmfile )
-      let splmodel = xmlUseCaseModel2UseCaseModel u 
-      putStrLn $ show splmodel
-      putStrLn "Done."
-      putStrLn "=====================================" 
-      
-      -- loading the configuration knowledge
-      ckfile <- entryGetText configurationEntry
-      print "\n Reading the configuration model... "
-      [c] <- runX ( xunpickleDocument xpConfigurationKnowledge  [ (a_validate,v_0)
-				      , (a_trace, v_1)
-				      , (a_remove_whitespace,v_1)
-				      , (a_preserve_comment, v_0)
-				      ] ckfile )
-      let ck = xml2ConfigurationKnowledge c
-      putStrLn "Done."
-      putStrLn $ "Configuration items: " ++ show (length ck)
-      putStrLn "===================================="
-      
-      -- running the build process
-      let fm = FeatureModel ftree []
-      let fc = FeatureConfiguration itree
-      let r = build fm fc ck splmodel 
-      print $ (snd r)
-
   widgetShowAll window   
   mainGUI
+
+{-------------------------------------------------------  
+ Starts the building process.
+ First, it retrieves the input models from the selected 
+ files. Then, it executes the building process. 
+--------------------------------------------------------}   
+executeBuildingProcess :: (String, String, String, String) -> IO ()
+executeBuildingProcess (fmfile, instancefile, ucmfile, ckfile)= 
+    do 
+       -- loading the feature model
+       -- fmfile <- entryGetText featureModelEntry
+       putStrLn "Reading feature model... "
+       putStrLn "" 
+       [f] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
+ 					, (a_trace, v_1)
+ 					, (a_remove_whitespace,v_1)
+ 					, (a_preserve_comment, v_0)
+ 					] fmfile )
+       let ftree = xmlFeature2FeatureTree f
+       putStrLn $ show ftree
+       putStrLn "Done."
+       putStrLn "================================="
+
+       -- loading the instance model
+       -- instancefile <- entryGetText instanceEntry
+       putStrLn "Reading instance model... "
+       putStrLn ""
+       [i] <- runX ( xunpickleDocument xpFeatureConfiguration [ (a_validate,v_0)
+ 					, (a_trace, v_1)
+ 					, (a_remove_whitespace,v_1)
+ 					, (a_preserve_comment, v_0)
+ 					] instancefile )
+       let itree = xml2FeatureConfiguration i
+       putStrLn $ show itree
+       putStrLn "Done. "
+       putStrLn "==================================="
+
+       -- loading the use case model
+       -- ucms <- listStoreToList useCaseStore 
+       -- let ucmfile = path (head ucms) -- TODO: we should load all documents, instead of just one
+       putStrLn "Reading use case model..."  
+       putStrLn ""
+       [u] <- runX ( xunpickleDocument xpUseCaseModel [ (a_validate,v_0)
+ 					, (a_trace, v_1)
+ 					, (a_remove_whitespace,v_1)
+ 					, (a_preserve_comment, v_0)
+ 					] ucmfile )
+       let splmodel = xmlUseCaseModel2UseCaseModel u
+       putStrLn $ show splmodel
+       putStrLn "Done."
+       putStrLn "=====================================" 
+      
+       -- loading the configuration knowledge
+       -- ckfile <- entryGetText configurationEntry
+       print "\n Reading the configuration model... "
+       [c] <- runX ( xunpickleDocument xpConfigurationKnowledge [ (a_validate,v_0)
+ 				      , (a_trace, v_1)
+ 				      , (a_remove_whitespace,v_1)
+ 				      , (a_preserve_comment, v_0)
+ 				      ] ckfile )
+       let ck = xml2ConfigurationKnowledge c
+       putStrLn "Done."
+       putStrLn $ "Configuration items: " ++ show (length ck)
+       putStrLn "===================================="
+       
+       -- running the build process
+       let fm = FeatureModel ftree []
+       let fc = FeatureConfiguration itree
+       let r = build fm fc ck splmodel 
+       print $ (snd r)
+
+
+targetSchema :: String
+targetSchema = "schema_aspectual-use_cases-user_view.rng" 
+
+{------------------------------------------ 
+ Check if the UCM xml file is correct. 
+ Return a list of errors. 
+-------------------------------------------}
+
+executeUcmXmlChecker :: (Maybe FilePath) -> [String]
+executeUcmXmlChecker Nothing = ["A ucm file must be selected."]
+executeUcmXmlChecker (Just f)  = []
+--  rc <- runX ( readDocument [(a_validate,v_0),
+--                             (a_relax_schema, targerSchema)
+--                            ] src
+--               >>>
+--               validateDocumentWithRelaxSchema [] targetSchema
+--               >>>
+--               writeDocument [] dst
+--               >>> 
+--               getErrStatus
+--             )
+
+
+showDialog w t  m = do
+  messageDialog <- messageDialogNew (Just w) [] t ButtonsClose m	
+  widgetShowAll messageDialog	
+  response <- dialogRun messageDialog
+  widgetHide messageDialog
+
+-- checkUseCases :: New.ListStore (UseCaseDocument) -> IO ()
+-- checkUseCases useCaseStore = do 
+--   ucms <- listStoreToList useCaseStore 
+--   let ucmfile = path (head ucms) -- TODO: we should load all documents, instead of just one
+--   putStrLn "Reading use case model..."  
+--   putStrLn ""
+--   [u] <- runX ( xunpickleDocument xpUseCaseModel [ (a_validate,v_0)
+--   				  , (a_trace, v_1)
+-- 				  , (a_remove_whitespace,v_1)
+-- 				  , (a_preserve_comment, v_0)
+--                                   , (a_issue_errors, v_1)
+-- 				  ] ucmfile )
+--  print u  
+
+ 
 
 -- Check if the new configuration is valid
 -- In order to do that, both feature expression and transformation 
@@ -245,29 +275,29 @@ checkConfiguration e t = True
 -- Opens a fileChooserDialog and defines the respective responses.
 -- If the user selects a file, this file is added to the use case document store.  
 --
-openSelectFileDialog :: New.ListStore (UseCaseDocument) -> Window -> IO ()
-openSelectFileDialog useCaseStore parentWindow = do
-  dialog <- fileChooserDialogNew
-              (Just $ "Select a XML use case document")  --dialog title
-              (Just parentWindow)                        --the parent window
-	      FileChooserActionOpen                      --the kind of dialog we want
-	      [("gtk-cancel"                             --The buttons to display
-	       ,ResponseCancel)
-	       ,("gtk-open"                                  
-	       , ResponseAccept)]
-  ffilter <- fileFilterNew
-  fileFilterSetName ffilter "XML feature model document"
-  fileFilterAddPattern ffilter "*.xml"
-  fileChooserSetFilter dialog ffilter	       
-  widgetShow dialog
-  response <- dialogRun dialog
-  case response of
-    ResponseAccept -> do Just fileName <- fileChooserGetFilename dialog
-                         let ucDoc = UseCaseDocument { path = fileName } 
-                         New.listStorePrepend useCaseStore ucDoc
-    ResponseCancel -> putStrLn "dialog canceled"
-    ResponseDeleteEvent -> putStrLn "dialog closed"
-  widgetHide dialog
+-- openSelectFileDialog :: New.ListStore (UseCaseDocument) -> Window -> IO ()
+-- openSelectFileDialog useCaseStore parentWindow = do
+--   dialog <- fileChooserDialogNew
+--               (Just $ "Select a XML use case document")  --dialog title
+--               (Just parentWindow)                        --the parent window
+-- 	      FileChooserActionOpen                      --the kind of dialog we want
+-- 	      [("gtk-cancel"                             --The buttons to display
+-- 	       ,ResponseCancel)
+-- 	       ,("gtk-open"                                  
+-- 	       , ResponseAccept)]
+--   ffilter <- fileFilterNew
+--   fileFilterSetName ffilter "XML feature model document"
+--   fileFilterAddPattern ffilter "*.xml"
+--   fileChooserSetFilter dialog ffilter	       
+--   widgetShow dialog
+--   response <- dialogRun dialog
+--   case response of
+--     ResponseAccept -> do Just fileName <- fileChooserGetFilename dialog
+--                          let ucDoc = UseCaseDocument { path = fileName } 
+--                          New.listStorePrepend useCaseStore ucDoc
+--     ResponseCancel -> putStrLn "dialog canceled"
+--     ResponseDeleteEvent -> putStrLn "dialog closed"
+--  widgetHide dialog
 
 
 
