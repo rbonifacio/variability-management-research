@@ -26,8 +26,8 @@ import UseCaseModel.Parsers.XML.XmlConfigurationParser
 import UseCaseModel.Parsers.XML.XmlConfigurationKnowledge
 import ConfigurationKnowledge.Interpreter
 
-data UseCaseDocument = UseCaseDocument { path :: String } deriving Show
 data ConfigurationData = ConfigurationData { expressionData :: String , transformationData :: String } deriving Show
+data ErrorData = ErrorData { inputModel :: String, errorDesc :: String }
  
 main :: IO ()
 main = do
@@ -49,6 +49,11 @@ main = do
   ckStore <- createCKStore
   New.treeViewSetModel ckList ckStore
   setupCKView ckList ckStore
+
+  errorList  <- xmlGetWidget xml castToTreeView "errorList"
+  errorStore <- createErrorStore
+  New.treeViewSetModel errorList errorStore
+  setupErrorView errorList errorStore
   
   -- different entries for feature models, feature configurations 
   -- and configuration knowledge.
@@ -58,32 +63,38 @@ main = do
   pcFileChooser  <- xmlGetWidget xml castToFileChooserButton "pcFileChooser" 
   ckFileChooser  <- xmlGetWidget xml castToFileChooserButton "ckFileChooser"
    
-  -- buttons for capturing user actions. 
-  executeButton        <- xmlGetWidget xml castToButton "executeButton"
-  ucmXmlCheckerButton  <- xmlGetWidget xml castToButton "ucmXMLCheckerButton"
--- selectFMButton       <- xmlGetWidget xml castToButton "selectFeatureModelButton"
--- selectInstanceButton <- xmlGetWidget xml castToButton "selectInstanceButton"
--- selectCKButton       <- xmlGetWidget xml castToButton "selectCKButton"
--- newCKButton          <- xmlGetWidget xml castToButton "newCKButton"
-  cancelButton         <- xmlGetWidget xml castToButton "cancelButton"
- 
+  -- tool buttons for capturing user actions.
+  -- name convension: 
+  -- a) fctb  - button for checking input files
+  -- b) sattb - button for checking fm satisfiability
+  -- c) fbstb - button for finding fm bad smells
+  -- d) swptb - button for start the weaving process   
+
+  fctb  <- xmlGetWidget xml castToToolButton "cftb"
+  sattb <- xmlGetWidget xml castToToolButton "sattb"
+  fbstb <- xmlGetWidget xml castToToolButton "fbstb"
+  swptb <- xmlGetWidget xml castToToolButton "swptb"
+
   -- the following lines define actions related to the above buttons.
-  executeButton `onClicked` do 
-      u  <- fileChooserGetFilename ucmFileChooser
-      f  <- fileChooserGetFilename fmFileChooser
-      p  <- fileChooserGetFilename pcFileChooser
-      c  <- fileChooserGetFilename ckFileChooser
-      executeBuildingProcess (fromJust f, fromJust p, fromJust u, fromJust c) 
+  swptb `onToolButtonClicked` do 
+       u  <- fileChooserGetFilename ucmFileChooser
+       f  <- fileChooserGetFilename fmFileChooser
+       p  <- fileChooserGetFilename pcFileChooser
+       c  <- fileChooserGetFilename ckFileChooser
+       executeBuildingProcess (fromJust f, fromJust p, fromJust u, fromJust c) 
   
-  ucmXmlCheckerButton `onClicked` do 
-      u <- fileChooserGetFilename ucmFileChooser
-      let e = executeUcmXmlChecker (u) 
-      let (x,y) = case e of 
-                   [] -> (MessageInfo, "No error found in use case model!" )
-                   otherwise -> (MessageError, "Error: " ++ (show e))
-      showDialog window x y  
-   
-  cancelButton `onClicked` do widgetDestroy window
+  fctb `onToolButtonClicked` do 
+       u <- fileChooserGetFilename ucmFileChooser
+       f <- fileChooserGetFilename fmFileChooser
+       p <- fileChooserGetFilename pcFileChooser
+       c <- fileChooserGetFilename ckFileChooser 
+       New.listStoreClear errorStore 
+       executeFileChecker u "schema_aspectual-use_cases-user_view.rng" "Use case model" errorStore
+       executeFileChecker f "schema_feature-model.rng" "Feature model" errorStore
+       executeFileChecker p "schema_feature-configuration.rng" "Instance model" errorStore
+       executeFileChecker c "schema-configuration-knowledge.rng" "Configuration knowledge" errorStore
+
+--  cancelButton `onClicked` do widgetDestroy window
   
   
   -- the check feature expression button
@@ -219,222 +230,106 @@ executeBuildingProcess (fmfile, instancefile, ucmfile, ckfile)=
 targetSchema :: String
 targetSchema = "schema_aspectual-use_cases-user_view.rng" 
 
-{------------------------------------------ 
- Check if the UCM xml file is correct. 
- Return a list of errors. 
--------------------------------------------}
+--
+-- Check if a xml input file (f) adheres to the definitions 
+-- of the schema (s). The store is updated with the list of 
+-- errors. 
+--
+executeFileChecker Nothing s m store = updateErrorStore store [(ErrorData m "Model not loaded.")]
+executeFileChecker (Just f) s m store = do { 
+  errs <- runX ( errorMsgCollect 
+                  >>> 
+                  readDocument [(a_validate, v_0)
+                               ,(a_relax_schema, s)
+                               ,(a_issue_errors, "0")                              
+                               ] f
+                  >>>
+                  getErrorMessages
+                ) ;
+  updateErrorStore store [ErrorData m (show e) | e <- errs]
+ } 
 
-executeUcmXmlChecker :: (Maybe FilePath) -> [String]
-executeUcmXmlChecker Nothing = ["A ucm file must be selected."]
-executeUcmXmlChecker (Just f)  = []
---  rc <- runX ( readDocument [(a_validate,v_0),
---                             (a_relax_schema, targerSchema)
---                            ] src
---               >>>
---               validateDocumentWithRelaxSchema [] targetSchema
---               >>>
---               writeDocument [] dst
---               >>> 
---               getErrStatus
---             )
+-- update the error store, with a list of errors to 
+-- be appendend. 
+updateErrorStore s [] = return ()
+updateErrorStore s (e:errs) = 
+ do { 
+   New.listStorePrepend s e; 
+   updateErrorStore s errs
+ }
 
-
+--
+-- an auxiliarly function to show simple dialogs
+-- args: 
+--  a) the parent window
+--  b) the dialog type
+--  c) the dialog message
 showDialog w t  m = do
   messageDialog <- messageDialogNew (Just w) [] t ButtonsClose m	
   widgetShowAll messageDialog	
   response <- dialogRun messageDialog
   widgetHide messageDialog
 
--- checkUseCases :: New.ListStore (UseCaseDocument) -> IO ()
--- checkUseCases useCaseStore = do 
---   ucms <- listStoreToList useCaseStore 
---   let ucmfile = path (head ucms) -- TODO: we should load all documents, instead of just one
---   putStrLn "Reading use case model..."  
---   putStrLn ""
---   [u] <- runX ( xunpickleDocument xpUseCaseModel [ (a_validate,v_0)
---   				  , (a_trace, v_1)
--- 				  , (a_remove_whitespace,v_1)
--- 				  , (a_preserve_comment, v_0)
---                                   , (a_issue_errors, v_1)
--- 				  ] ucmfile )
---  print u  
-
- 
-
--- Check if the new configuration is valid
--- In order to do that, both feature expression and transformation 
--- list must be well written.
-checkConfiguration :: String -> String -> Bool
-checkConfiguration e t = True 
- -- case featureExpressionParser e of
- 	-- ParseResult x -> True
- 	-- ParseError y -> False 
-
+-- 
+-- Show the dialog for specifying configuration 
+-- models. 
 --
--- Action related to addUseCaseButton
--- Opens a fileChooserDialog and defines the respective responses.
--- If the user selects a file, this file is added to the use case document store.  
---
--- openSelectFileDialog :: New.ListStore (UseCaseDocument) -> Window -> IO ()
--- openSelectFileDialog useCaseStore parentWindow = do
---   dialog <- fileChooserDialogNew
---               (Just $ "Select a XML use case document")  --dialog title
---               (Just parentWindow)                        --the parent window
--- 	      FileChooserActionOpen                      --the kind of dialog we want
--- 	      [("gtk-cancel"                             --The buttons to display
--- 	       ,ResponseCancel)
--- 	       ,("gtk-open"                                  
--- 	       , ResponseAccept)]
---   ffilter <- fileFilterNew
---   fileFilterSetName ffilter "XML feature model document"
---   fileFilterAddPattern ffilter "*.xml"
---   fileChooserSetFilter dialog ffilter	       
---   widgetShow dialog
---   response <- dialogRun dialog
---   case response of
---     ResponseAccept -> do Just fileName <- fileChooserGetFilename dialog
---                          let ucDoc = UseCaseDocument { path = fileName } 
---                          New.listStorePrepend useCaseStore ucDoc
---     ResponseCancel -> putStrLn "dialog canceled"
---     ResponseDeleteEvent -> putStrLn "dialog closed"
---  widgetHide dialog
-
-
-
---
--- Action related to selectFetureModelButton
--- Opens a fileChooserDialog and defines the respective responses.
- --  
-
-openSelectFMDialog :: Entry -> Window -> IO ()
-openSelectFMDialog fmEntry parentWindow = do
-  dialog <- fileChooserDialogNew
-              (Just $ "Select a XML feature model")    --dialog title
-              (Just parentWindow)                      --the parent window
-	      FileChooserActionOpen              		   --the kind of dialog we want
-	      [("gtk-cancel"                               --The buttons to display
-	       ,ResponseCancel)
-	       ,("gtk-open"                                  
-	       , ResponseAccept)]
-  ffilter <- fileFilterNew
-  fileFilterSetName ffilter "XML feature model document"
-  fileFilterAddPattern ffilter "*.xml"
-  fileChooserSetFilter dialog ffilter	       
-  widgetShow dialog
-  response <- dialogRun dialog
-  case response of 
-    ResponseAccept -> do Just fileName <- fileChooserGetFilename dialog
-                         entrySetText fmEntry fileName
-    ResponseCancel -> putStrLn "dialog canceled"
-    ResponseDeleteEvent -> putStrLn "dialog closed"
-  widgetHide dialog
-
-openSelectInstanceDialog :: Entry -> Window -> IO ()
-openSelectInstanceDialog instanceEntry parentWindow = do
-  dialog <- fileChooserDialogNew
-              (Just $ "Select a XML instance model")             --dialog title
-              (Just parentWindow)                                --the parent window
-	      FileChooserActionOpen              		 --the kind of dialog we want
-	      [("gtk-cancel"                                     --The buttons to display
-	       ,ResponseCancel)
-	       ,("gtk-open"                                  
-	       , ResponseAccept)]
-  ffilter <- fileFilterNew
-  fileFilterSetName ffilter "XML instance model"
-  fileFilterAddPattern ffilter "*.xml"
-  fileChooserSetFilter dialog ffilter	       
-  widgetShow dialog
-  response <- dialogRun dialog
-  case response of 
-    ResponseAccept -> do Just fileName <- fileChooserGetFilename dialog
-                         entrySetText instanceEntry fileName
-    ResponseCancel -> putStrLn "dialog canceled"
-    ResponseDeleteEvent -> putStrLn "dialog closed"
-  widgetHide dialog
-
-
-openSelectCKDialog :: Entry -> Window -> IO ()
-openSelectCKDialog ckEntry parentWindow = do
-  dialog <- fileChooserDialogNew
-              (Just $ "Select a XML configuration knowledge")    --dialog title
-              (Just parentWindow)                                --the parent window
-	      FileChooserActionOpen              		 --the kind of dialog we want
-	      [("gtk-cancel"                                     --The buttons to display
-	       ,ResponseCancel)
-	       ,("gtk-open"                                  
-	       , ResponseAccept)]
-  ffilter <- fileFilterNew
-  fileFilterSetName ffilter "XML condifuration document"
-  fileFilterAddPattern ffilter "*.xml"
-  fileChooserSetFilter dialog ffilter	       
-  widgetShow dialog
-  response <- dialogRun dialog
-  case response of 
-    ResponseAccept -> do Just fileName <- fileChooserGetFilename dialog
-                         entrySetText ckEntry fileName
-    ResponseCancel -> putStrLn "dialog canceled"
-    ResponseDeleteEvent -> putStrLn "dialog closed"
-  widgetHide dialog
-
 openNewCKDialog :: Window -> IO () 
 openNewCKDialog ckWindow = 
  do {
 	 widgetShowAll ckWindow;
  }
  
+--
+-- initilize the error tree list view. 
+-- it mainly defines the columns rendered 
+-- in the list viewer and relates such a columns
+-- to the error model. 
 -- 
--- This function configures the UseCaseView, which means:
--- - Sets the use case view presentations
--- - Defines the use case view columns
--- - Relates each column to an attribute of UseCaseDocument data type
+setupErrorView view model = 
+ do {
+  New.treeViewSetHeadersVisible view True;
+
+  renderer1 <- New.cellRendererTextNew;
+  col1 <- New.treeViewColumnNew;
+  New.treeViewColumnPackStart col1 renderer1 True;
+  New.cellLayoutSetAttributes col1 renderer1 model $ \row -> [ New.cellText := inputModel row ];
+  New.treeViewColumnSetTitle col1 "Input model";
+  New.treeViewAppendColumn view col1;
+
+  renderer2 <- New.cellRendererTextNew;
+  col2 <- New.treeViewColumnNew;
+  New.treeViewColumnPackStart col2 renderer2 True;
+  New.cellLayoutSetAttributes col2 renderer2 model $ \row -> [ New.cellText := errorDesc row ];
+  New.treeViewColumnSetTitle col2 "Description";
+  New.treeViewAppendColumn view col2;
+}
+
+--
+-- initialize the ck list view.
+-- similarly to the setpErrorView.
 -- 
-setupUseCaseView view model = do
-  New.treeViewSetHeadersVisible view True
+setupCKView view model = do { 
+  New.treeViewSetHeadersVisible view True;
 
-  renderer1 <- New.cellRendererTextNew
-  col1 <- New.treeViewColumnNew
-  New.treeViewColumnPackStart col1 renderer1 True
-  New.cellLayoutSetAttributes col1 renderer1 model $ \row -> [ New.cellText := path row ]
-  New.treeViewColumnSetTitle col1 "Use case document"
-  New.treeViewAppendColumn view col1
-
-setupCKView view model = do 
-  New.treeViewSetHeadersVisible view True
-
-  renderer1 <- New.cellRendererTextNew
-  col1 <- New.treeViewColumnNew
-  New.treeViewColumnPackStart col1 renderer1 True
-  New.cellLayoutSetAttributes col1 renderer1 model $ \row -> [ New.cellText := expressionData row ]
-  New.treeViewColumnSetTitle col1 "Feature expression"
-  New.treeViewAppendColumn view col1
+  renderer1 <- New.cellRendererTextNew;
+  col1 <- New.treeViewColumnNew;
+  New.treeViewColumnPackStart col1 renderer1 True;
+  New.cellLayoutSetAttributes col1 renderer1 model $ \row -> [ New.cellText := expressionData row ];
+  New.treeViewColumnSetTitle col1 "Feature expression";
+  New.treeViewAppendColumn view col1;
  
-  renderer2 <- New.cellRendererTextNew
-  col2 <- New.treeViewColumnNew
-  New.treeViewColumnPackStart col2 renderer2 True
-  New.cellLayoutSetAttributes col2 renderer2 model $ \row -> [ New.cellText := show (transformationData row)]
-  New.treeViewColumnSetTitle col2 "Transformations"
-  New.treeViewAppendColumn view col2
+  renderer2 <- New.cellRendererTextNew;
+  col2 <- New.treeViewColumnNew;
+  New.treeViewColumnPackStart col2 renderer2 True;
+  New.cellLayoutSetAttributes col2 renderer2 model $ \row -> [ New.cellText := show (transformationData row)];
+  New.treeViewColumnSetTitle col2 "Transformations";
+  New.treeViewAppendColumn view col2;
+}
  
-createUseCaseStore = New.listStoreNew [ ]
+-- initialize error and ck stores
+createErrorStore = New.listStoreNew [ ]
 createCKStore = New.listStoreNew [ ]
-
--- createUseCaseStore = New.listStoreNew [UseCaseDocument { path = "foo.xml" }]
-
-
---  renderer2 <- New.cellRendererTextNew
---  col2 <- New.treeViewColumnNew
---  New.treeViewColumnPackStart col2 renderer2 True
---  New.cellLayoutSetAttributes col2 renderer2 model $ \row -> [ New.cellText := show (number row) ]
---  New.treeViewColumnSetTitle col2 "Int column"
---  New.treeViewAppendColumn view col2
-
---  renderer3 <- New.cellRendererToggleNew
---  col3 <- New.treeViewColumnNew
---  New.treeViewColumnPackStart col3 renderer3 True
---  New.cellLayoutSetAttributes col3 renderer3 model $ \row -> [ New.cellToggleActive := marked row ]
---  New.treeViewColumnSetTitle col3 "Check box column"
---  New.treeViewAppendColumn view col3  
-  
 
 \end{code}
 
