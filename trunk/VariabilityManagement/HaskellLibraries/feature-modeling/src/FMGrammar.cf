@@ -1,0 +1,26 @@
+Grammar. Grammar ::= [Production] [Expression];
+
+Production. Production ::= Ident ":" [Child] ";/" ;
+
+Mandatory.  Child  ::= Ident ;
+Optional.   Child  ::= Ident "?" ;
+XorGroup.   Child  ::= "(" [Option] ")" ;
+OrGroup.    Child  ::= "(" [Option] ")+"  ;
+
+Option.  Option ::= Ident ;
+
+
+BasicExp. Expression ::= Ident ;
+Implies. Expression ::= "(" Expression "->"  Expression ")"  ";/" ;
+Iff.     Expression ::= "(" Expression "<->" Expression ")"  ";/" ;
+And.     Expression ::= "(" Expression "&"   Expression ")"  ";/" ;
+Or.      Expression ::= "(" Expression "|"   Expression ")"  ";/" ; 
+Not.     Expression ::= "!" Expression ;
+
+separator Option  "|" ;
+separator Production "" ; 
+separator Child "" ; 
+separator Expression "" ;
+
+
+
