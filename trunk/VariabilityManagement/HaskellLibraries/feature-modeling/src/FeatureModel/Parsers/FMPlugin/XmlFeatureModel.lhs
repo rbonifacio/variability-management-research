@@ -1,6 +1,6 @@
 \begin{code}
 
-module FeatureModel.Parsers.FMPlugin.XmlFeatureModel where
+module FeatureModel.Parsers.FMPlugin.XmlFeatureModel  where
 
 import BasicTypes
 
