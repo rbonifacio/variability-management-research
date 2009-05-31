@@ -10,108 +10,106 @@ import FeatureModel.Parsers.FMIde.AbsFMIde
 --  FeatureModel data type.
 
 grammarToFeatureModel :: Grammar -> FeatureModel
-grammarToFeatureModel (TGrammar (x:xs)) = 
+grammarToFeatureModel g@(TGrammar (x:xs)) = 
  case x of 
   -- we expecte a TBase production, since...
-  TBaseProduction prod ts prodName -> 
-   let 
-    gram  = TGrammar (x:xs)
-    froot = productionToFeature gram 
-   in FeatureModel { fmRoot = (productionToFeature gram Mandatory BasicFeature x), 
-                     fmConstraints = []
-                   }
+  TBaseProduction prod ts prodName -> FeatureModel { fmTree = (production2Feature g Mandatory BasicFeature x), 
+                                                     fmConstraints = []
+                                                   }
   -- the production for the root feature must be a BaseProduction
   otherwise -> error "Expecting a base production for the root feature." 
 
-productionToFeature :: Grammar -> FeatureType -> GroupType -> Production -> Feature
-productionToFeature gram ft gt (TBaseProduction prod ts prodName) = bpToFeature gram ft gt (TBaseProduction prod ts prodName)
-productionToFeature gram ft gt (TAltProduction prod os) = apToFeature gram ft gt (TAltProduction prod os)
+production2Feature :: Grammar -> FeatureType -> GroupType -> Production -> FeatureTree
+production2Feature g ft gt p@(TBaseProduction prod ts prodName) = baseProd2Feature g ft gt p
+production2Feature g ft gt p@(TAltProduction prod os) = altProd2Feature g ft gt p
 
-bpToFeature :: Grammar -> FeatureType -> GroupType -> Production -> Feature
-bpToFeature gram ft gt (TBaseProduction prod ts prodName) = 
+baseProd2Feature :: Grammar -> FeatureType -> GroupType -> Production -> FeatureTree
+baseProd2Feature g ft gt (TBaseProduction prod ts prodName) = 
  case prodName of 
   -- productions in the form A : B C :: D are transformed into the feature D [B, C] 
-  TProdName pn -> Feature {
-                    fId = idToString (pn),
-                    fName = idToString (pn),
-                    fType = ft,
-                    groupType = gt,
-                    children = [termToFeature gram t | t <- ts],
-                    properties = []
-                  } 
+  TProdName pn -> Root (Feature { fId = id2String pn,
+                                  fName = id2String pn,
+                                  fType = ft,
+                                  groupType = gt,
+                                  properties = []
+                                 }
+                       ) ([term2Feature g t | t <- ts])
+   
   -- productions in the form A : B C :: _A are transformed into the feature A [B, C] 
-  TProdNameL pn -> Feature {
-                     fId = idToString (key prod),
-                     fName = idToString (key prod),
-                     fType = ft,
-                     groupType = gt,
-                     children = [termToFeature gram t | t <- ts],
-                     properties = []
-                    } 
+  TProdNameL pn -> Root (Feature { fId = id2String (key prod),
+                                   fName = id2String (key prod),
+                                   fType = ft,
+                                   groupType = gt,
+                                   properties = []
+                                 }
+                        ) ([term2Feature g t | t <- ts])
+ 
   -- productions in the form A : B :: B_ are transformed into the feature A [B] 
-  TProdNameR pn -> Feature {
-                    fId = idToString (key prod),
-                    fName = idToString (key prod),
-                    fType = ft,
-                    groupType = gt,
-                    children = map (productionToFeature gram Mandatory AlternativeFeature) (findProduction (pn) gram) ,
-                    properties = []
-                  }       
+  TProdNameR pn -> Root ( Feature { fId = id2String (key prod),
+                                    fName = id2String (key prod),
+                                    fType = ft,
+                                    groupType = gt,
+                                    properties = []
+                                  }
+                        ) (map (production2Feature g Mandatory AlternativeFeature) (findProduction (pn) g))   
 
-apToFeature :: Grammar -> FeatureType -> GroupType -> Production -> Feature
-apToFeature gram ft gt (TAltProduction prod os) = 
- Feature { 
-  fId = idToString (key prod),
-  fName = idToString (key prod),
-  fType = ft,
-  groupType = gt,
-  children = [optionToFeature gram o | o <- os],
-  properties = []
- }
 
-termToFeature :: Grammar -> Term -> Feature
-termToFeature gram term = 
+altProd2Feature :: Grammar -> FeatureType -> GroupType -> Production -> FeatureTree
+altProd2Feature g ft gt (TAltProduction prod os) = 
+ Root (Feature { fId = id2String (key prod),
+                 fName = id2String (key prod),
+                 fType = ft,
+                 groupType = gt,
+               
+                 properties = []
+               }
+      ) ([option2Feature g o | o <- os])
+
+term2Feature :: Grammar -> Term -> FeatureTree
+term2Feature g t = 
  let 
-   fDef = termToFeatureDef term
-   ps = findProduction (key term) gram
- in case ps of 
-  -- no production related to the term
-  []  -> Feature { 
-              fId = idToString (key term),
-              fName = idToString (key term),
-              fType = fst fDef,
-              groupType = snd fDef, 
-              children = [],
+   def = term2FeatureDef t
+   prods = findProduction (key t) g
+ in case prods of 
+  -- no production related to the term. then, we return a leaf
+  []  -> Leaf Feature { 
+              fId = id2String (key t),
+              fName = id2String (key t),
+              fType = fst def,
+              groupType = snd def, 
               properties = []
          }
-  -- one production related to the term
-  [x] -> productionToFeature gram (fst fDef) (snd fDef) x
-  -- oops, more than one production with the same name
-  (x:xs) -> error ("Expecting just one production labeled as: " ++ (idToString (key x))) 
- 
-termToFeatureDef :: Term -> (FeatureType, GroupType)
-termToFeatureDef (TTerm x) = (Mandatory, BasicFeature)
-termToFeatureDef (TOptionalTerm x) = (Optional, BasicFeature)
-termToFeatureDef (TOrTerm x) = (Mandatory, OrFeature)
-termToFeatureDef (TXorTerm x) = (Mandatory, AlternativeFeature)
 
-optionToFeature :: Grammar -> Option -> Feature
-optionToFeature gram opt = 
+  -- one production related to the term. then, we should return one root 
+  [x] -> production2Feature g (fst def) (snd def) x
+
+  -- oops, more than one production with the same name
+  (x:xs) -> error ("Expecting just one production labeled as: " ++ (id2String (key x))) 
+ 
+term2FeatureDef :: Term -> (FeatureType, GroupType)
+term2FeatureDef (TTerm x) = (Mandatory, BasicFeature)
+term2FeatureDef (TOptionalTerm x) = (Optional, BasicFeature)
+term2FeatureDef (TOrTerm x) = (Mandatory, OrFeature)
+term2FeatureDef (TXorTerm x) = (Mandatory, AlternativeFeature)
+
+option2Feature :: Grammar -> Option -> FeatureTree
+option2Feature g opt = 
  let 
-  ps = findProduction (key opt) gram
- in case ps of 
+  prods = findProduction (key opt) g
+ in case prods of 
   -- first case, there is no production 
-  [] -> Feature { fId = idToString (key opt),
-                  fName = idToString (key opt),
-                  fType = Optional,
-                  groupType = BasicFeature,
-                  children = [],
-                  properties = []
-        }
+  [] -> Leaf Feature { fId = id2String (key opt),
+                       fName = id2String (key opt),
+                       fType = Optional,
+                       groupType = BasicFeature,
+                       properties = []
+                     }
+
   -- second case, there is one production
-  [x] -> productionToFeature gram Optional BasicFeature x
+  [x] -> production2Feature g Optional BasicFeature x
+
   -- oops, more than one production with the same name 
-  (x:xs) -> error ("Expecting just one production labeled as: " ++ (idToString (key x)))  
+  (x:xs) -> error ("Expecting just one production labeled as: " ++ (id2String (key x)))  
                   
 findProduction :: Ident -> Grammar -> [Production]
 findProduction i (TGrammar ps) = [p | p <- ps, ((key p) == i)] 
@@ -143,8 +141,8 @@ instance Identifier Term where
 instance Identifier Option where 
  key (TOption i) = i
 
-idToString :: Ident -> String
-idToString (Ident s) = s
+id2String :: Ident -> String
+id2String (Ident s) = s
 
 
 
