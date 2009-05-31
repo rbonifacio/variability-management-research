@@ -53,7 +53,7 @@ import FeatureModel.FMTypeChecker
 import FeatureModel.FCTypeChecker
 
 import FeatureModel.Parsers.FMPlugin.XmlFeatureParser 
-import FeatureModel.Parsers.FMPlugin.XmlFeatureModel (xmlFeature2Feature) 
+import FeatureModel.Parsers.FMPlugin.XmlFeatureModel (xmlFeature2FeatureTree) 
 
 import FeatureModel.Parsers.FMIde.FMIde2FeatureModel
 import FeatureModel.Parsers.FMIde.AbsFMIde
@@ -61,6 +61,13 @@ import FeatureModel.Parsers.FMIde.SkelFMIde
 import FeatureModel.Parsers.FMIde.ErrM
 import FeatureModel.Parsers.FMIde.LexFMIde
 import FeatureModel.Parsers.FMIde.ParFMIde
+
+import qualified FeatureModel.Parsers.FMGrammar.Grammar2FeatureModel as GFMG
+import qualified FeatureModel.Parsers.FMGrammar.LexFMGrammar as LFMG
+import qualified FeatureModel.Parsers.FMGrammar.SkelFMGrammar as SFMG
+import qualified FeatureModel.Parsers.FMGrammar.AbsFMGrammar as AFMG
+import qualified FeatureModel.Parsers.FMGrammar.ParFMGrammar as PFMG 
+import qualified FeatureModel.Parsers.FMGrammar.ErrM as EFMG
 
 import Funsat.Types
 
@@ -161,6 +168,10 @@ parseFeatureModel args = do
                let fm = translateFMIdeToFm (pGrammar (myLexer x))
                return fm
 
+   "fmgrammar" -> do 
+                   let fm = translateFMGrammarToFm (PFMG.pFMGrammar (PFMG.myLexer x))
+                   return fm 
+
    "sxfm"  -> do
                r <- parseFromFile ParsecSXFM.parseFeatureModel fn ; 
                case (r) of
@@ -173,6 +184,9 @@ parseFeatureModel args = do
 translateFMIdeToFm (Ok g)  = grammarToFeatureModel g
 translateFMIdeToFm (Bad s) = error s
 
+translateFMGrammarToFm (EFMG.Ok g) = GFMG.grammarToFeatureModel g  
+translateFMGrammarToFm (EFMG.Bad s) = error s
+
 translateFMPToFm s = 
  do
       [x] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
@@ -180,7 +194,7 @@ translateFMPToFm s =
                                       , (a_remove_whitespace,v_1)
                                       , (a_preserve_comment, v_0)
                                       ] s);
-      return FeatureModel { fmRoot = (xmlFeature2Feature x), fmConstraints = [] }
+      return FeatureModel { fmTree = (xmlFeature2FeatureTree x), fmConstraints = [] }
 
 
 data Flag = Format String 

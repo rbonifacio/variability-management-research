@@ -51,7 +51,7 @@ two constructors: \texttt{Success} and \texttt{Fail}.
 type Root          = Feature            
 type Property      = (String, String)     
 type ErrorMessage  = String
-data CheckerResult = Success | Fail { errorList :: [ErrorMessage] } deriving (Show, Eq)
+data CheckerResult = Success | Fail { errorList :: [ErrorMessage] } deriving (Show,Eq)
 \end{code}
 
 The \texttt{FeatureType} data type defines if a feature is required or 
@@ -212,13 +212,12 @@ featureToPropositionalLogic  ftree =
  let 
   f  = fnode ftree
   cs = children ftree 
- in case groupType f of
-     BasicFeature       -> [(ref f) <=> (ref c) | c <- cs, fType c == Mandatory] ++
-                           [(ref c) |=> (ref f) | c <- cs, fType c == Optional]
-    
-     OrFeature          -> [(ref f) |=> (foldOr [ref x | x <- cs])]  
-    
-     AlternativeFeature -> [(ref f) |=> (foldOr [xor x (delete x cs) | x <- cs])]  
+ in (
+      case groupType f of
+       BasicFeature       -> [(ref f) |=> (ref c) | c <- cs, fType c == Mandatory]
+       OrFeature          -> [(ref f) |=> (foldOr [ref x | x <- cs])]  
+       AlternativeFeature -> [(ref f) |=> (foldOr [xor x (delete x cs) | x <- cs])] 
+    ) ++ [(ref c) |=> (ref f) | c <- cs]  
 
 xor f [] = ref f
 xor f xs = And (ref f) (foldAnd [Not (ref x) | x <- xs])
