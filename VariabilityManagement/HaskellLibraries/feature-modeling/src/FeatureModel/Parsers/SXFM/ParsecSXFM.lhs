@@ -1,6 +1,6 @@
 \begin{code}
 
-module FeatureModel.Parsers.SXFM.ParsecSXFM
+module FeatureModel.Parsers.SXFM.ParsecSXFM (parseFeatureModel)
 where 
 
 import FeatureModel.Types 
@@ -22,22 +22,16 @@ parseFeatureModel =
       string "</feature_tree>"         ; skipMany space ;
       constraints <- parseConstraints  ; skipMany space ;
       string "</feature_model>"        ; skipMany space ;
-      return FeatureModel { fmRoot = r, fmConstraints = constraints } 
+      return FeatureModel { fmTree = r, fmConstraints = constraints } 
  }
 
-parseRootFeature :: Parser Feature 
+parseRootFeature :: Parser FeatureTree 
 parseRootFeature = 
   do { string ":r"       ; skipMany space ; 
        n <- parseName    ; skipMany space ;
        i <- option n parseId ;  
        c <- option [] (parseChildren i) ;
-       return Feature { fId = i ,
-                        fName = n ,
-                        fType = Mandatory ,
-                        groupType = BasicFeature ,
-                        children = c ,
-                        properties = []
-                      }
+       return (Root (Feature { fId = i , fName = n , fType = Mandatory , groupType = BasicFeature , properties = []}) c) 
   } 
 
 -- parseChildren :: Int -> Parser [Feature]
@@ -56,7 +50,7 @@ parseRootFeature =
 --  }
 
 
-parseChildren :: String -> Parser [Feature]
+parseChildren :: String -> Parser [FeatureTree]
 parseChildren f = 
  do { skipMany space;
       char '[' ;  
@@ -70,22 +64,17 @@ parseChildren f =
       return g ;
  }
 
-parseChild :: Parser Feature 
+parseChild :: Parser FeatureTree 
 parseChild = 
  do { t <- parseFeatureType ; skipMany space ;
       n <- parseName ; skipMany space ;
       i <- option n parseId ; skipMany space ;
-      c <- option [] (parseChildren i) ;
-      return Feature { fId = i , 
-                       fName = n ,
-                       fType = t ,
-                       groupType = BasicFeature ,
-                       children = c ,
-                       properties = []
-                     } 
+      c <- option [] (parseChildren i) ; 
+      return (createTree (Feature { fId = i , fName = n , fType = t , groupType = BasicFeature , properties = [] } ) c)  
     }
 
-parseGroup :: String -> Parser [Feature] 
+
+parseGroup :: String -> Parser [FeatureTree] 
 parseGroup n = 
  do { char '<' ; skipMany space ;
       t <- parseGroupType ; skipMany space ;
@@ -93,29 +82,16 @@ parseGroup n =
       c <- option [] (many parseOption) ;
       char ']' ; skipMany space ;
       char '>' ; skipMany space ;
-      return [Feature { fId = n ++ "_g" , 
-                        fName = n ++ "_g" ,
-                        fType = Mandatory ,
-                        groupType = t ,
-                        children = c ,
-                        properties = [] 
-                   } 
-             ] 
+      return [ (createTree (Feature { fId = n ++ "_g" ,  fName = n ++ "_g" , fType = Mandatory , groupType = t , properties = []  }) c)]
     }
 
-parseOption :: Parser Feature 
+parseOption :: Parser FeatureTree 
 parseOption = 
  do { string ":" ; skipMany space   ; 
       n <- parseName ; skipMany space ;
       i <- option n parseId ; skipMany space ;
       c <- option [] (parseChildren i) ; skipMany space ; skipMany (char '\r') ; skipMany (char '\n') ;
-      return Feature { fId = i , 
-                       fName = n ,
-                       fType = Optional ,
-                       groupType = BasicFeature ,
-                       children = c ,
-                       properties = [] 
-                     }  
+      return (createTree (Feature { fId = i , fName = n , fType = Optional , groupType = BasicFeature , properties = [] } ) c)
   }
 
 parseFeatureType :: Parser FeatureType 
@@ -139,7 +115,7 @@ parseGroupType =
  }
  
 
-parseConstraints :: Parser [Constraint]
+parseConstraints :: Parser [FeatureExpression]
 parseConstraints = 
  do 
   { string "<constraints>" ; skipMany space ;
@@ -148,7 +124,7 @@ parseConstraints =
     return cs;
   }
 
-parseConstraint :: Parser Constraint 
+parseConstraint :: Parser FeatureExpression
 parseConstraint = 
  do { string "implies" ; skipMany space; 
       char '('  ; skipMany space;
@@ -156,10 +132,7 @@ parseConstraint =
       char ',' ; skipMany space;
       rhs <- parseExp ;  skipMany space;
       char ')' ; skipMany space;
-      return Constraint { constraintType = Implies, 
-                          constraintLHSExp = lhs , 
-	                  constraintRHSExp = rhs 
-                        }
+      return (lhs |=> rhs) 
  }
 
 parseExp :: Parser FeatureExpression
@@ -229,5 +202,9 @@ run p input
                           }
             Right x  -> print x
 
+
+createTree :: Feature -> [FeatureTree] -> FeatureTree 
+createTree f [] = Leaf f
+createTree f (x:xs) = Root f (x:xs)
 
 \end{code}
