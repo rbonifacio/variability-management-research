@@ -1,26 +1,27 @@
-Grammar. Grammar ::= [Production] [Expression];
+FMGrammar. FMGrammar ::= [Production] [Expression];
 
-Production. Production ::= Ident ":" [Child] ";/" ;
+BaseProduction. Production ::= Ident ":" [Child] ";/" ;
+XorProduction. Production  ::= Ident ":" "(" [Option] ")" ";/"   ;
+OrProduction. Production   ::= Ident ":" "(" [Option] ")+" ";/"  ;  
 
-Mandatory.  Child  ::= Ident ;
-Optional.   Child  ::= Ident "?" ;
-XorGroup.   Child  ::= "(" [Option] ")" ;
-OrGroup.    Child  ::= "(" [Option] ")+"  ;
+MandatoryChild.  Child  ::= Ident ;
+OptionalChild.   Child  ::= Ident "?" ;
+
 
 Option.  Option ::= Ident ;
 
 
 BasicExp. Expression ::= Ident ;
-Implies. Expression ::= "(" Expression "->"  Expression ")"  ";/" ;
-Iff.     Expression ::= "(" Expression "<->" Expression ")"  ";/" ;
-And.     Expression ::= "(" Expression "&"   Expression ")"  ";/" ;
-Or.      Expression ::= "(" Expression "|"   Expression ")"  ";/" ; 
-Not.     Expression ::= "!" Expression ;
+ImpliesExp. Expression ::= "(" Expression "->"  Expression ")"   ;
+IffExp.     Expression ::= "(" Expression "<->" Expression ")"   ;
+AndExp.     Expression ::= "(" Expression "&"   Expression ")"   ;
+OrExp.      Expression ::= "(" Expression "|"   Expression ")"   ; 
+NotExp.     Expression ::= "!" Expression ;
 
 separator Option  "|" ;
 separator Production "" ; 
 separator Child "" ; 
-separator Expression "" ;
+separator Expression ";/" ;
 
 
 
