@@ -9,6 +9,8 @@ import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Glade
 import Graphics.UI.Gtk.ModelView as New
 
+import qualified Data.Tree as Tree
+
 import Text.XML.HXT.Arrow
 import System.Environment
 
@@ -43,17 +45,27 @@ main = do
   
   -- the configuration knowledge window
   ckWindow   <- xmlGetWidget xml castToWindow "ckWindow"
+
+  -- the feature model window
+  fmWindow <- xmlGetWidget xml castToWindow "fmWindow" 
   
   -- list used for rendering configurations
   ckList <- xmlGetWidget xml castToTreeView "ckList"
   ckStore <- createCKStore
   New.treeViewSetModel ckList ckStore
   setupCKView ckList ckStore
-
+ 
+  -- list for rendering errors
   errorList  <- xmlGetWidget xml castToTreeView "errorList"
   errorStore <- createErrorStore
   New.treeViewSetModel errorList errorStore
   setupErrorView errorList errorStore
+  
+  -- tree for rendering fm
+  featureTree <- xmlGetWidget xml castToTreeView "featureTree" 
+  featureStore <- createFeatureStore 
+  New.treeViewSetModel featureTree featureStore
+  setupFeatureView featureTree featureStore
   
   -- different entries for feature models, feature configurations 
   -- and configuration knowledge.
@@ -74,8 +86,11 @@ main = do
   sattb <- xmlGetWidget xml castToToolButton "sattb"
   fbstb <- xmlGetWidget xml castToToolButton "fbstb"
   swptb <- xmlGetWidget xml castToToolButton "swptb"
+  dfmtb <- xmlGetWidget xml castToToolButton "dfmtb"
 
   -- the following lines define actions related to the above buttons.
+
+  -- click on start the weaving process tool button
   swptb `onToolButtonClicked` do 
        u  <- fileChooserGetFilename ucmFileChooser
        f  <- fileChooserGetFilename fmFileChooser
@@ -83,6 +98,7 @@ main = do
        c  <- fileChooserGetFilename ckFileChooser
        executeBuildingProcess (fromJust f, fromJust p, fromJust u, fromJust c) 
   
+  -- click on file checker tool button
   fctb `onToolButtonClicked` do 
        u <- fileChooserGetFilename ucmFileChooser
        f <- fileChooserGetFilename fmFileChooser
@@ -93,6 +109,15 @@ main = do
        executeFileChecker f "schema_feature-model.rng" "Feature model" errorStore
        executeFileChecker p "schema_feature-configuration.rng" "Instance model" errorStore
        executeFileChecker c "schema-configuration-knowledge.rng" "Configuration knowledge" errorStore
+
+  -- click on display feature model tool button
+  dfmtb `onToolButtonClicked` do
+       f <- fileChooserGetFilename fmFileChooser
+       fm <- parseFeatureModel (fromJust f)
+       let t =  feature2TreeNode (fmTree fm) --(generateFmStore fm)
+       New.treeStoreClear featureStore 
+       New.treeStoreInsertTree featureStore [] 0 t
+       widgetShowAll fmWindow
 
 --  cancelButton `onClicked` do widgetDestroy window
   
@@ -155,6 +180,19 @@ main = do
   
   widgetShowAll window   
   mainGUI
+
+
+parseFeatureModel fmfile = 
+ do 
+  [f] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
+ 					, (a_trace, v_1)
+ 					, (a_remove_whitespace,v_1)
+ 					, (a_preserve_comment, v_0)
+ 					] fmfile );
+  let ftree = xmlFeature2FeatureTree f;
+  let fm = FeatureModel ftree [] ;
+  return fm;
+
 
 {-------------------------------------------------------  
  Starts the building process.
@@ -326,10 +364,32 @@ setupCKView view model = do {
   New.treeViewColumnSetTitle col2 "Transformations";
   New.treeViewAppendColumn view col2;
 }
+
+-- 
+-- 
+-- 
+setupFeatureView view model = do {
+  New.treeViewSetHeadersVisible view True;
+  renderer1 <- New.cellRendererTextNew;
+  col1 <- New.treeViewColumnNew;
+  New.treeViewColumnPackStart col1 renderer1 True;
+  New.cellLayoutSetAttributes col1 renderer1 model $ \row -> [ New.cellText := (fName row) ];
+  New.treeViewColumnSetTitle col1 "Feature";
+  New.treeViewAppendColumn view col1;
+}
  
 -- initialize error and ck stores
-createErrorStore = New.listStoreNew [ ]
-createCKStore = New.listStoreNew [ ]
+createErrorStore = New.listStoreNew []
+createCKStore = New.listStoreNew []
+createFeatureStore = New.treeStoreNew []
+
+generateFmStore fm = (New.treeStoreNew [feature2TreeNode (fmTree fm)])
+
+feature2TreeNode :: FeatureTree -> Tree.Tree Feature
+feature2TreeNode (Leaf f) = Tree.Node { Tree.rootLabel = f, Tree.subForest = [] }
+feature2TreeNode (Root f cs) = Tree.Node {Tree.rootLabel = f, Tree.subForest = (map feature2TreeNode cs) }
+
+
 
 \end{code}
 
