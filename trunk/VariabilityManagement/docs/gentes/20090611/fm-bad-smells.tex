@@ -81,7 +81,7 @@ constraints (relations and formulas) of the model.
 \begin{enumerate}
 \item a precise notion of type correctness
 \item some guidance for avoiding bad design decisions
-\item tools for detecting these kinds of pitfalls 
+\item tools for detecting and fixing these kinds of pitfalls 
 \end{enumerate}
 
 \end{frame}
@@ -124,7 +124,7 @@ Thomas von der Ma$\beta$en and Horst Lichter (SPFE'04)
 \begin{itemize}
 \item Recommend the development of \emph{consistency checkerers} for feature modeling.   
 \item Propose a tool that checks a {\bf small set of properties} between features and requirements.
-\item The paper focuses on irrelevant details of the tool and does not detail which properties (and how they) are checked.
+\item The paper focuses on irrelevant decisions of the tool and does not detail which properties (and how they) are checked.
 \end{itemize}
 
 \end{frame}
@@ -138,9 +138,9 @@ Krzysztof Czarnecki and Chang Hwan Peter Kim \\ (OOPSLA'05 Workshop on Software 
 \begin{itemize}
 \item Propose the use of BDDs for checking:
 \begin{itemize}
-\item constraints, propagation, satisfiability,
-\item dead features, and 
-\item computing the number of configurations
+\item constraints, propagation, satisfiability
+\item dead features
+\item the number of valid configurations
 \end{itemize}
 \end{itemize}
 
@@ -154,12 +154,31 @@ P. Trinidad and others \\ (Journal of Systems and Software, 2007)
 
 \begin{itemize}
 \item Claim for \emph{error-free} feature models
-\item Check a few properties using the Theory of Diagnosis 
+\item Check a few properties using \emph{Theory of Diagnosis} 
 \begin{itemize}
- \item dead features, 
- \item full-mandatory features, 
+ \item dead features
+ \item full-mandatory features
  \item void feature models 
 \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{In summary}
+
+\begin{itemize}
+\item Existing works focus on satisfiability issues
+\item Other properties are miss considered
+
+\begin{itemize}
+ \item correctness
+  \item legibility
+  \item redundancy
+ \end{itemize} 
+\item There is no tool for detecting and proposing feature model refactorings
+
 \end{itemize}
 
 \end{frame}
@@ -167,5 +186,38 @@ P. Trinidad and others \\ (Journal of Systems and Software, 2007)
 \section[Outline]{}
 
 \frame{\tableofcontents}
+
+\section{Bad smells}
+
+\begin{frame}
+
+\frametitle{Redundant constraint}
+
+\begin{center}
+  \includegraphics[scale=0.55]{images/fm-linux-arch.eps}
+
+$64BIT \Rightarrow ARCH$
+
+\end{center}
+
+{\bf Proposed refactoring:} remove constraint
+\end{frame}
+
+\begin{frame}
+
+\frametitle{Expecting multiple alternatives}
+
+\begin{center}
+  \includegraphics[scale=0.50]{images/berkley-db-missing-alternative.eps}
+\end{center}
+
+{\bf Proposed refactoring:} replace alternative to mandatory
+
+
+\end{frame}
+
+\section{Evaluation}
+
+\section{Next steps}
 
 \end{document}
