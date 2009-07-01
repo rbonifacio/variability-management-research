@@ -84,7 +84,7 @@ instance Print Ident where
 
 instance Print Grammar where
   prt i e = case e of
-   TGrammar productions -> prPrec i 0 (concatD [prt 0 productions])
+   TGrammar productions expressions -> prPrec i 0 (concatD [prt 0 productions , prt 0 expressions])
 
 
 instance Print Production where
@@ -132,5 +132,18 @@ instance Print Option where
    [] -> (concatD [])
    [x] -> (concatD [prt 0 x])
    x:xs -> (concatD [prt 0 x , doc (showString "|") , prt 0 xs])
+
+instance Print Expression where
+  prt i e = case e of
+   BasicExp id -> prPrec i 0 (concatD [prt 0 id])
+   OrExp expression0 expression -> prPrec i 0 (concatD [prt 0 expression0 , doc (showString "or") , prt 0 expression])
+   AndExp expression0 expression -> prPrec i 0 (concatD [prt 0 expression0 , doc (showString "and") , prt 0 expression])
+   NotExp expression -> prPrec i 0 (concatD [doc (showString "not") , prt 0 expression])
+   ImpliesExp expression0 expression -> prPrec i 0 (concatD [prt 0 expression0 , doc (showString "implies") , prt 0 expression])
+
+  prtList es = case es of
+   [] -> (concatD [])
+   [x] -> (concatD [prt 0 x])
+   x:xs -> (concatD [prt 0 x , doc (showString ";") , prt 0 xs])
 
 

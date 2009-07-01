@@ -4,7 +4,7 @@ module FeatureModel.Parsers.FMIde.AbsFMIde where
 
 newtype Ident = Ident String deriving (Eq,Ord,Show)
 data Grammar =
-   TGrammar [Production]
+   TGrammar [Production] [Expression]
   deriving (Eq,Ord,Show)
 
 data Production =
@@ -35,5 +35,13 @@ data Term =
 
 data Option =
    TOption Ident
+  deriving (Eq,Ord,Show)
+
+data Expression =
+   BasicExp Ident
+ | OrExp Expression Expression
+ | AndExp Expression Expression
+ | NotExp Expression
+ | ImpliesExp Expression Expression
   deriving (Eq,Ord,Show)
 
