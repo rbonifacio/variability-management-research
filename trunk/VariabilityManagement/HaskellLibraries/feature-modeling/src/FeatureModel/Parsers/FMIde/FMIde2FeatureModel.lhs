@@ -10,14 +10,21 @@ import FeatureModel.Parsers.FMIde.AbsFMIde
 --  FeatureModel data type.
 
 grammarToFeatureModel :: Grammar -> FeatureModel
-grammarToFeatureModel g@(TGrammar (x:xs)) = 
- case x of 
+grammarToFeatureModel g@(TGrammar (p:ps) (cs)) = 
+ case p of 
   -- we expecte a TBase production, since...
-  TBaseProduction prod ts prodName -> FeatureModel { fmTree = (production2Feature g Mandatory BasicFeature x), 
-                                                     fmConstraints = []
+  TBaseProduction prod ts prodName -> FeatureModel { fmTree = (production2Feature g Mandatory BasicFeature p), 
+                                                     fmConstraints = map constraint2Exp (cs)
                                                    }
   -- the production for the root feature must be a BaseProduction
   otherwise -> error "Expecting a base production for the root feature." 
+
+constraint2Exp :: Expression -> FeatureExpression
+constraint2Exp (BasicExp (Ident s)) = FeatureRef s
+constraint2Exp (OrExp e1 e2) = (constraint2Exp e1) \/ (constraint2Exp e2)
+constraint2Exp (AndExp e1 e2) = (constraint2Exp e1) /\ (constraint2Exp e2)
+constraint2Exp (NotExp e1) = Not (constraint2Exp e1)
+constraint2Exp (ImpliesExp e1 e2) = (constraint2Exp e1) |=> (constraint2Exp e2) 
 
 production2Feature :: Grammar -> FeatureType -> GroupType -> Production -> FeatureTree
 production2Feature g ft gt p@(TBaseProduction prod ts prodName) = baseProd2Feature g ft gt p
@@ -112,7 +119,7 @@ option2Feature g opt =
   (x:xs) -> error ("Expecting just one production labeled as: " ++ (id2String (key x)))  
                   
 findProduction :: Ident -> Grammar -> [Production]
-findProduction i (TGrammar ps) = [p | p <- ps, ((key p) == i)] 
+findProduction i (TGrammar ps cs) = [p | p <- ps, ((key p) == i)] 
 
 class Identifier a where 
  key :: a -> Ident
