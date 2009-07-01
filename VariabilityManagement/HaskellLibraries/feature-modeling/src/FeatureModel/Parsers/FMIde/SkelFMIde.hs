@@ -16,7 +16,7 @@ transIdent x = case x of
 
 transGrammar :: Grammar -> Result
 transGrammar x = case x of
-  TGrammar productions  -> failure x
+  TGrammar productions expressions  -> failure x
 
 
 transProduction :: Production -> Result
@@ -53,6 +53,15 @@ transTerm x = case x of
 transOption :: Option -> Result
 transOption x = case x of
   TOption id  -> failure x
+
+
+transExpression :: Expression -> Result
+transExpression x = case x of
+  BasicExp id  -> failure x
+  OrExp expression0 expression  -> failure x
+  AndExp expression0 expression  -> failure x
+  NotExp expression  -> failure x
+  ImpliesExp expression0 expression  -> failure x
 
 
 

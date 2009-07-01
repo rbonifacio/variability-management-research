@@ -86,7 +86,7 @@ eitherResIdent tv s = treeFind resWords
                               | s > a  = treeFind right
                               | s == a = t
 
-resWords = N
+resWords = b "not" (b "implies" (b "and" N N) N) (b "or" N N)
    where b s = B s (TS s)
 
 unescapeInitTail :: String -> String
