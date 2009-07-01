@@ -52,32 +52,9 @@ import FeatureModel.Types
 import FeatureModel.FMTypeChecker
 import FeatureModel.FCTypeChecker
 
-import FeatureModel.Parsers.FMPlugin.XmlFeatureParser 
-import FeatureModel.Parsers.FMPlugin.XmlFeatureModel (xmlFeature2FeatureTree) 
-
-import FeatureModel.Parsers.FMIde.FMIde2FeatureModel
-import FeatureModel.Parsers.FMIde.AbsFMIde
-import FeatureModel.Parsers.FMIde.SkelFMIde
-import FeatureModel.Parsers.FMIde.ErrM
-import FeatureModel.Parsers.FMIde.LexFMIde
-import FeatureModel.Parsers.FMIde.ParFMIde
-
-import qualified FeatureModel.Parsers.FMGrammar.Grammar2FeatureModel as GFMG
-import qualified FeatureModel.Parsers.FMGrammar.LexFMGrammar as LFMG
-import qualified FeatureModel.Parsers.FMGrammar.SkelFMGrammar as SFMG
-import qualified FeatureModel.Parsers.FMGrammar.AbsFMGrammar as AFMG
-import qualified FeatureModel.Parsers.FMGrammar.ParFMGrammar as PFMG 
-import qualified FeatureModel.Parsers.FMGrammar.ErrM as EFMG
+import FeatureModel.Parsers.GenericParser
 
 import Funsat.Types
-
-import  qualified FeatureModel.Parsers.SXFM.ParsecSXFM as ParsecSXFM
-
-import Text.ParserCombinators.Parsec
-import qualified Text.ParserCombinators.Parsec.Token as P
-import Text.ParserCombinators.Parsec.Language( haskellStyle )
-
-import Text.XML.HXT.Arrow
 
 import Data.Set
 
@@ -155,46 +132,20 @@ processFlags flags = do
   "find-bad-smells" -> print $ findBadSmells fmodel
   otherwise -> error $ concat ["\nunrecognized command ", (cmd args), (usageInfo header options)]
 
-
-parseFeatureModel args = do
- let fn = fm args
- x <- readFile (fn) 
- case (fmt args) of 
-   "fmp"   -> do
-               fm <- translateFMPToFm fn
-               return fm
-   
-   "fmide" -> do
-               let fm = translateFMIdeToFm (pGrammar (myLexer x))
-               return fm
-
-   "fmgrammar" -> do 
-                   let fm = translateFMGrammarToFm (PFMG.pFMGrammar (PFMG.myLexer x))
-                   return fm 
-
-   "sxfm"  -> do
-               r <- parseFromFile ParsecSXFM.parseFeatureModel fn ; 
-               case (r) of
-                 Left err  -> error (show err)
-                 Right f  -> do let fm = f
-                                return fm
-    
+parseFeatureModelFormat args = 
+  case (fmt args) of 
+   "fmp"       -> FMPlugin
+   "fmide"     -> FMIde
+   "fmgrammar" -> FMGrammar
+   "sxfm"      -> SXFM
    otherwise -> error $ concat ["\nunrecognized format ", (fmt args), (usageInfo header options)]
+ 
+parseFeatureModel args = do
+ let fileName = fm args
+ let format = parseFeatureModelFormat args
+ fm <- genericParser fileName format
+ return fm
 
-translateFMIdeToFm (Ok g)  = grammarToFeatureModel g
-translateFMIdeToFm (Bad s) = error s
-
-translateFMGrammarToFm (EFMG.Ok g) = GFMG.grammarToFeatureModel g  
-translateFMGrammarToFm (EFMG.Bad s) = error s
-
-translateFMPToFm s = 
- do
-      [x] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
-                                      , (a_trace, v_1)
-                                      , (a_remove_whitespace,v_1)
-                                      , (a_preserve_comment, v_0)
-                                      ] s);
-      return FeatureModel { fmTree = (xmlFeature2FeatureTree x), fmConstraints = [] }
 
 
 data Flag = Format String 
