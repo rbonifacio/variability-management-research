@@ -1,11 +1,15 @@
-module FeatureModel.Parsers.GenericParser
+module FeatureModel.Parsers.GenericParser (
+ parseFeatureModel, 
+ parseInstanceConfiguration, 
+ FmFormat ( FMPlugin, FMIde, FMGrammar, SXFM ) 
+)
 where 
 
 import FeatureModel.Types
 
 -- modules related to the FMPlugin parser
 import FeatureModel.Parsers.FMPlugin.XmlFeatureParser 
-import FeatureModel.Parsers.FMPlugin.XmlFeatureModel (xmlFeature2FeatureTree) 
+import FeatureModel.Parsers.FMPlugin.XmlFeatureModel (xmlFeature2FeatureTree, xml2FeatureConfiguration) 
 
 -- modules related to the FMIde parser
 import FeatureModel.Parsers.FMIde.FMIde2FeatureModel
@@ -34,7 +38,7 @@ import Text.XML.HXT.Arrow
 
 data FmFormat = FMPlugin | FMIde | FMGrammar | SXFM
 
-genericParser fileName format = do
+parseFeatureModel fileName format = do
  x <- readFile (fileName) 
  case (format) of 
   FMPlugin -> do
@@ -56,6 +60,16 @@ genericParser fileName format = do
       Right f  -> do let fm = f
                      return fm
 
+parseInstanceConfiguration fileName = 
+ do 
+   [x] <- runX ( xunpickleDocument xpFeatureConfiguration [ (a_validate,v_0)
+ 					                  , (a_trace, v_1)
+ 					                  , (a_remove_whitespace,v_1)
+ 					                  , (a_preserve_comment, v_0)
+ 					                  ] fileName)
+   let ic = xml2FeatureConfiguration x
+   return ic
+
 translateFMIdeToFm (Ok g)  = grammarToFeatureModel g
 translateFMIdeToFm (Bad s) = error s
 
@@ -64,9 +78,9 @@ translateFMGrammarToFm (EFMG.Bad s) = error s
 
 translateFMPToFm s = 
  do
-      [x] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
-                                      , (a_trace, v_1)
-                                      , (a_remove_whitespace,v_1)
-                                      , (a_preserve_comment, v_0)
-                                      ] s);
-      return FeatureModel { fmTree = (xmlFeature2FeatureTree x), fmConstraints = [] }
+   [x] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
+                                             , (a_trace, v_1)
+                                             , (a_remove_whitespace,v_1)
+                                             , (a_preserve_comment, v_0)
+                                             ] s);
+   return FeatureModel { fmTree = (xmlFeature2FeatureTree x), fmConstraints = [] }
