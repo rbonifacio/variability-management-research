@@ -1,4 +1,3 @@
-\begin{code}
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  UseCaseModel.Parsers.XML.XmlUseCaseParser
@@ -20,6 +19,16 @@ import Text.XML.HXT.Arrow
 import System.Environment
 
 import UseCaseModel.Parsers.XML.XmlUseCaseModel
+
+parseUseCaseModel fileName = 
+ do
+   [x] <- runX ( xunpickleDocument xpUseCaseModel [ (a_validate,v_0)
+ 					          , (a_trace, v_1)
+ 					          , (a_remove_whitespace,v_1)
+ 					          , (a_preserve_comment, v_0)
+ 					          ] fileName )
+   let ucmodel = xmlUseCaseModel2UseCaseModel x
+   return ucmodel  
 
 --
 -- based on the HXT library, we have to declare one instance of 
@@ -113,6 +122,6 @@ xpStep =
 	xpElem "step" $
 	xpWrap ( uncurry4 XmlStep, \ (XmlStep i a  s r) -> (i, a, s, r) ) $
 	xp4Tuple (xpElem "stepId" xpText) (xpElem "action" xpText ) (xpElem "condition" xpText) (xpElem "response" xpText)
-\end{code}
+
 	
 
