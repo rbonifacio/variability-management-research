@@ -1,4 +1,4 @@
-TGrammar. Grammar ::= [Production] ;
+TGrammar. Grammar ::= [Production] [Expression];
 
 TBaseProduction. Production ::= BaseProd [Term] "::" ProdName ";" ;
 TAltProduction.  Production ::= AltProd  [Option] ";" ;
@@ -17,9 +17,16 @@ TXorTerm.      Term ::= Ident"*" ;
 
 TOption.        Option ::= Ident ; 
 
+BasicExp. Expression ::= Ident ;
+OrExp. Expression ::= Expression "or" Expression ; 
+AndExp. Expression ::= Expression "and" Expression ;
+NotExp. Expression ::= "not" Expression ;
+ImpliesExp. Expression ::= Expression "implies" Expression ; 
+
 separator Production "" ; 
 separator Term "" ; 
 separator Option "|" ;
+separator Expression ";" ;
 
 
 

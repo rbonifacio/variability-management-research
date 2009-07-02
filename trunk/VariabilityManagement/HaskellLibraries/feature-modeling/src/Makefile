@@ -1,11 +1,11 @@
 all:
-	happy -gca FeatureModel/Parsers/SXFM/ParSXFM.y
-	alex -g FeatureModel/Parsers/SXFM/LexSXFM.x
-	(cd FeatureModel/Parsers/SXFM/; latex DocSXFM.tex; dvips DocSXFM.dvi -o DocSXFM.ps)
-	ghc --make FeatureModel/Parsers/SXFM/TestSXFM.hs -o FeatureModel/Parsers/SXFM/TestSXFM
+	happy -gca FeatureModel/Parsers/FMIde/ParFMIde.y
+	alex -g FeatureModel/Parsers/FMIde/LexFMIde.x
+	(cd FeatureModel/Parsers/FMIde/; latex DocFMIde.tex; dvips DocFMIde.dvi -o DocFMIde.ps)
+	ghc --make FeatureModel/Parsers/FMIde/TestFMIde.hs -o FeatureModel/Parsers/FMIde/TestFMIde
 clean:
-	-rm -f FeatureModel/Parsers/SXFM/*.log FeatureModel/Parsers/SXFM/*.aux FeatureModel/Parsers/SXFM/*.hi FeatureModel/Parsers/SXFM/*.o FeatureModel/Parsers/SXFM/*.dvi
-	-rm -f FeatureModel/Parsers/SXFM/DocSXFM.ps
+	-rm -f FeatureModel/Parsers/FMIde/*.log FeatureModel/Parsers/FMIde/*.aux FeatureModel/Parsers/FMIde/*.hi FeatureModel/Parsers/FMIde/*.o FeatureModel/Parsers/FMIde/*.dvi
+	-rm -f FeatureModel/Parsers/FMIde/DocFMIde.ps
 distclean: clean
-	-rm -f FeatureModel/Parsers/SXFM/DocSXFM.* FeatureModel/Parsers/SXFM/LexSXFM.* FeatureModel/Parsers/SXFM/ParSXFM.* FeatureModel/Parsers/SXFM/LayoutSXFM.* FeatureModel/Parsers/SXFM/SkelSXFM.* FeatureModel/Parsers/SXFM/PrintSXFM.* FeatureModel/Parsers/SXFM/TestSXFM.* FeatureModel/Parsers/SXFM/AbsSXFM.* FeatureModel/Parsers/SXFM/TestSXFM FeatureModel/Parsers/SXFM/ErrM.* FeatureModel/Parsers/SXFM/SharedString.* FeatureModel/Parsers/SXFM/SXFM.dtd FeatureModel/Parsers/SXFM/XMLSXFM.* Makefile*
-	-rmdir -p FeatureModel/Parsers/SXFM/
+	-rm -f FeatureModel/Parsers/FMIde/DocFMIde.* FeatureModel/Parsers/FMIde/LexFMIde.* FeatureModel/Parsers/FMIde/ParFMIde.* FeatureModel/Parsers/FMIde/LayoutFMIde.* FeatureModel/Parsers/FMIde/SkelFMIde.* FeatureModel/Parsers/FMIde/PrintFMIde.* FeatureModel/Parsers/FMIde/TestFMIde.* FeatureModel/Parsers/FMIde/AbsFMIde.* FeatureModel/Parsers/FMIde/TestFMIde FeatureModel/Parsers/FMIde/ErrM.* FeatureModel/Parsers/FMIde/SharedString.* FeatureModel/Parsers/FMIde/FMIde.dtd FeatureModel/Parsers/FMIde/XMLFMIde.* Makefile*
+	-rmdir -p FeatureModel/Parsers/FMIde/
