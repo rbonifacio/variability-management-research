@@ -1,5 +1,3 @@
-\begin{code}
-
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  UseCaseModel.Parsers.XML.XmlUseCaseModel
@@ -15,12 +13,17 @@
 -- for the TaRGeT XML document representation
 --
 -----------------------------------------------------------------------------
-module UseCaseModel.Parsers.XML.XmlUseCaseModel where
+module UseCaseModel.Parsers.XML.XmlUseCaseModel 
+
+where
 
 import List 
 
 import UseCaseModel.Types
 import BasicTypes
+
+
+ 
 
 type XmlAction = String
 type XmlState = String
@@ -147,5 +150,7 @@ xmlStepRefs2StepRefs s = map xmlStepRefs2StepRefs' refs
    case ref of 
     ('@':ss) -> AnnotationRef ss
     otherwise -> IdRef ref  
-\end{code}
+
+            
+
      
