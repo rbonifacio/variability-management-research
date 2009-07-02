@@ -5,6 +5,7 @@ module Main where
 
 import Maybe
 
+import List
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Glade
 import Graphics.UI.Gtk.ModelView as New
@@ -16,17 +17,17 @@ import System.Environment
 
 -- import FeatureExpressionParser
 
-import UseCaseModel.Parsers.XML.XmlUseCaseParser
-import UseCaseModel.Parsers.XML.XmlUseCaseModel
+-- import UseCaseModel.Parsers.XML.XmlUseCaseParser
+import UseCaseModel.Parsers.XML.XmlUseCaseParser (parseUseCaseModel)
 import UseCaseModel.Types
 
-import FeatureModel.Parsers.FMPlugin.XmlFeatureModel
-import FeatureModel.Parsers.FMPlugin.XmlFeatureParser
+import FeatureModel.Parsers.GenericParser 
+
 import FeatureModel.Types
 
-import UseCaseModel.Parsers.XML.XmlConfigurationParser
-import UseCaseModel.Parsers.XML.XmlConfigurationKnowledge
+import Transformations.Parsers.XML.XmlConfigurationParser
 import ConfigurationKnowledge.Interpreter
+import ConfigurationKnowledge.Types
 
 data ConfigurationData = ConfigurationData { expressionData :: String , transformationData :: String } deriving Show
 data ErrorData = ErrorData { inputModel :: String, errorDesc :: String }
@@ -113,8 +114,8 @@ main = do
   -- click on display feature model tool button
   dfmtb `onToolButtonClicked` do
        f <- fileChooserGetFilename fmFileChooser
-       fm <- parseFeatureModel (fromJust f)
-       let t =  feature2TreeNode (fmTree fm) --(generateFmStore fm)
+       fm <-  parseFeatureModel' (fromJust f)
+       let t = feature2TreeNode (fmTree fm) --(generateFmStore fm)
        New.treeStoreClear featureStore 
        New.treeStoreInsertTree featureStore [] 0 t
        widgetShowAll fmWindow
@@ -181,17 +182,15 @@ main = do
   widgetShowAll window   
   mainGUI
 
+supportedFmTypes = [ ("xml", FMPlugin), (".m" , FMIde) ]
 
-parseFeatureModel fmfile = 
- do 
-  [f] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
- 					, (a_trace, v_1)
- 					, (a_remove_whitespace,v_1)
- 					, (a_preserve_comment, v_0)
- 					] fmfile );
-  let ftree = xmlFeature2FeatureTree f;
-  let fm = FeatureModel ftree [] ;
-  return fm;
+parseFeatureModel' fmfile = 
+ let p = [snd t | t <- supportedFmTypes , (fst t) `isSuffixOf` fmfile]
+ in case p of 
+  [x] -> (parseFeatureModel fmfile x)
+  otherwise -> error "Error identifying the feature model type"
+
+
 
 
 {-------------------------------------------------------  
@@ -200,69 +199,17 @@ parseFeatureModel fmfile =
  files. Then, it executes the building process. 
 --------------------------------------------------------}   
 executeBuildingProcess :: (String, String, String, String) -> IO ()
-executeBuildingProcess (fmfile, instancefile, ucmfile, ckfile)= 
+executeBuildingProcess (fmFile, icFile, ucmFile, ckFile)= 
     do 
-       -- loading the feature model
-       -- fmfile <- entryGetText featureModelEntry
-       putStrLn "Reading feature model... "
-       putStrLn "" 
-       [f] <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
- 					, (a_trace, v_1)
- 					, (a_remove_whitespace,v_1)
- 					, (a_preserve_comment, v_0)
- 					] fmfile )
-       let ftree = xmlFeature2FeatureTree f
-       putStrLn $ show ftree
-       putStrLn "Done."
-       putStrLn "================================="
-
-       -- loading the instance model
-       -- instancefile <- entryGetText instanceEntry
-       putStrLn "Reading instance model... "
-       putStrLn ""
-       [i] <- runX ( xunpickleDocument xpFeatureConfiguration [ (a_validate,v_0)
- 					, (a_trace, v_1)
- 					, (a_remove_whitespace,v_1)
- 					, (a_preserve_comment, v_0)
- 					] instancefile )
-       let itree = xml2FeatureConfiguration i
-       putStrLn $ show itree
-       putStrLn "Done. "
-       putStrLn "==================================="
-
-       -- loading the use case model
-       -- ucms <- listStoreToList useCaseStore 
-       -- let ucmfile = path (head ucms) -- TODO: we should load all documents, instead of just one
-       putStrLn "Reading use case model..."  
-       putStrLn ""
-       [u] <- runX ( xunpickleDocument xpUseCaseModel [ (a_validate,v_0)
- 					, (a_trace, v_1)
- 					, (a_remove_whitespace,v_1)
- 					, (a_preserve_comment, v_0)
- 					] ucmfile )
-       let splmodel = xmlUseCaseModel2UseCaseModel u
-       putStrLn $ show splmodel
-       putStrLn "Done."
-       putStrLn "=====================================" 
-      
-       -- loading the configuration knowledge
-       -- ckfile <- entryGetText configurationEntry
-       print "\n Reading the configuration model... "
-       [c] <- runX ( xunpickleDocument xpConfigurationKnowledge [ (a_validate,v_0)
- 				      , (a_trace, v_1)
- 				      , (a_remove_whitespace,v_1)
- 				      , (a_preserve_comment, v_0)
- 				      ] ckfile )
-       let ck = xml2ConfigurationKnowledge c
-       putStrLn "Done."
-       putStrLn $ "Configuration items: " ++ show (length ck)
-       putStrLn "===================================="
-       
+       fm   <- parseFeatureModel' fmFile 
+       icTree   <- parseInstanceConfiguration icFile 
+       splModel <- parseUseCaseModel ucmFile 
+       ckModel  <- parseConfigurationKnowledge ckFile
+           
        -- running the build process
-       let fm = FeatureModel ftree []
-       let fc = FeatureConfiguration itree
-       let r = build fm fc ck splmodel 
-       print $ (snd r)
+       let fc = FeatureConfiguration icTree
+       let result = build fm fc ckModel splModel 
+       print $ iucm result
 
 
 targetSchema :: String
@@ -370,12 +317,15 @@ setupCKView view model = do {
 -- 
 setupFeatureView view model = do {
   New.treeViewSetHeadersVisible view True;
+      
   renderer1 <- New.cellRendererTextNew;
   col1 <- New.treeViewColumnNew;
   New.treeViewColumnPackStart col1 renderer1 True;
-  New.cellLayoutSetAttributes col1 renderer1 model $ \row -> [ New.cellText := (fName row) ];
-  New.treeViewColumnSetTitle col1 "Feature";
+  New.cellLayoutSetAttributes col1 renderer1 model $ \row -> [ New.cellText := (feature2cell row) ];
+  New.treeViewColumnSetTitle col1 "Name";
   New.treeViewAppendColumn view col1;
+
+  
 }
  
 -- initialize error and ck stores
@@ -389,6 +339,16 @@ feature2TreeNode :: FeatureTree -> Tree.Tree Feature
 feature2TreeNode (Leaf f) = Tree.Node { Tree.rootLabel = f, Tree.subForest = [] }
 feature2TreeNode (Root f cs) = Tree.Node {Tree.rootLabel = f, Tree.subForest = (map feature2TreeNode cs) }
 
+feature2cell f = 
+ let 
+  fn = if (fType f == Optional) 
+        then "[" ++ (fName f) ++ "]" 
+        else (fName f)  
+ in 
+  case (groupType f) of 
+   AlternativeFeature -> fn ++ " g <1-1>"  
+   OrFeature -> fn ++ " g <1-*>" 
+   otherwise -> fn
 
 
 \end{code}
