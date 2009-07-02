@@ -22,7 +22,7 @@ import ConfigurationKnowledge.Types
 import FeatureModel.Types (FeatureModel, FeatureConfiguration, eval)
 
 -- | Instantiates a product from the input models. 
---   In more details, it calls each transformation ('ts', obtained 
+--   In more details, it calls each transformation ('tasks', obtained 
 --   from the configuration knowledge 'ck') that should be applied to 
 --   the given feature configuration ('fc').
 
@@ -31,15 +31,17 @@ build :: FeatureModel                 -- ^ SPL feature model
       -> ConfigurationKnowledge       -- ^ relationships between features and transformations
       -> UseCaseModel                 -- ^ SPL use case model
       -> InstanceModel                -- ^ resulting instance of the build process
-build fm fc ck ucmodel = stepRefinement ts splmodel empty
+build fm fc ck ucmodel = stepRefinement tasks splModel emptyInstance
  where 
-  splmodel = (fm, ucmodel)
-  empty    = (fc, ucmodel { useCases = [] , aspects = [] })
-  ts       = concat [transformations c| c <- ck, eval fc (expression c)]	
+  tasks         = concat [transformations c| c <- ck, eval fc (expression c)]
+  emptyUCM      = ucmodel { useCases = [] , aspects = [] } 
+  splModel      = SPLModel fm ucmodel [] 
+  emptyInstance = InstanceModel fc emptyUCM []
+ 	
 
 stepRefinement :: [(SPLModel -> InstanceModel -> InstanceModel)] -> SPLModel -> InstanceModel -> InstanceModel
-stepRefinement [] splmodel product = product
-stepRefinement (x:xs) splmodel product = stepRefinement xs splmodel (x splmodel product)
+stepRefinement [] splModel instanceModel = instanceModel
+stepRefinement (x:xs) splModel instanceModel = stepRefinement xs splModel (x splModel instanceModel)
  
 \end{code}
     
