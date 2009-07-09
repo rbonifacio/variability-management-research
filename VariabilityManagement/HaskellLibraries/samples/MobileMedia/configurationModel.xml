@@ -1,0 +1,16 @@
+<configurationModel xmlns="ck.v20090401">
+    <configuration xmlns="">
+        <expression>MobileMedia</expression>
+        <transformation>
+            <name>selectComponent</name>
+            <args>BaseMessaging, AbstractController</args>
+        </transformation>
+    </configuration>
+    <configuration xmlns="">
+        <expression>SMSTransfer</expression>
+        <transformation>
+            <name>selectComponent</name>
+            <args>SMSAspect</args>
+        </transformation>
+    </configuration>
+</configurationModel>

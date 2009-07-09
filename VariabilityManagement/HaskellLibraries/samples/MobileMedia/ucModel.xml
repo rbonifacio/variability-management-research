@@ -1,0 +1,55 @@
+<phone xmlns="user-view.target.v20090401">
+ <feature>
+    <featureId>01</featureId>
+    <name>MobileMedia Product Line</name>
+    <useCase>
+        <id>UC01</id>
+        <name>Reproduce media</name>
+        <description>It describes the common behavior related to reproducing media.</description>
+        <setup>-</setup>
+        <flow>
+            <id>SC01</id>
+            <description>This scenario.</description>
+            
+            <fromSteps>START</fromSteps>
+            
+            <toSteps>END</toSteps>
+            
+            <step>
+                <stepId>SC01_1</stepId>
+                <action>
+                	The user selects one existing album of the supported streaming
+					contents {SC}.
+				</action>
+                <condition>-</condition>
+                <response>
+                	The MM application retrieves and
+					shows the list of supported streaming contents {SC}
+					available in the selected album.
+				</response>
+            </step>
+        </flow>
+    </useCase>
+    <aspect>
+        <id>ADV01</id>
+        <name>Buy good</name>
+        <advice>     
+            <type>Before</type>
+            <pointCut>P1</pointCut>
+            <step>
+                <stepId>B1</stepId>
+                <action>Select the buy product option. </action>
+                <condition>-</condition>
+                <response>Present the selected product. The user can change the quantity of items he
+                    wants to buy. </response>
+            </step>
+            <step>
+                <stepId>B2</stepId>
+                <action>Select the confirm option. </action>
+                <condition>-</condition>
+                <response>Request payment information. </response>
+            </step>
+        </advice>
+    </aspect>
+ </feature>
+</phone>
