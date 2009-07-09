@@ -13,22 +13,63 @@
 -- Toolkit) library. 
 --
 -----------------------------------------------------------------------------
-module UseCaseModel.Parsers.XML.XmlUseCaseParser where
+module UseCaseModel.Parsers.XML.XmlUseCaseParser -- (parseUseCaseFile, checkUseCaseFile, xpUseCaseModel)
+where
+
+import BasicTypes
+import UseCaseModel.Parsers.XML.XmlUseCaseModel
 
 import Text.XML.HXT.Arrow
 import System.Environment
 
-import UseCaseModel.Parsers.XML.XmlUseCaseModel
+-- | Parse a use case file, returning the corresponding use case model.
+--   The second parameter must have a valid XML schema. 
+--   If the input file is not well formed, a fail is reported. Otherwise, 
+--   one instance of the use case model. 
 
-parseUseCaseModel fileName = 
+parseUseCaseFile fileName schema = 
  do
-   [x] <- runX ( xunpickleDocument xpUseCaseModel [ (a_validate,v_0)
- 					          , (a_trace, v_1)
- 					          , (a_remove_whitespace,v_1)
- 					          , (a_preserve_comment, v_0)
- 					          ] fileName )
-   let ucmodel = xmlUseCaseModel2UseCaseModel x
-   return ucmodel  
+  errs <- checkUseCaseFile fileName schema
+  case errs of 
+   [] -> do 
+     ucModel <- parseUseCaseFile' fileName
+     return $ Success ucModel
+   
+   otherwise -> do
+     let errs' = concat $ map show errs
+     return $ Fail errs' 
+
+-- | Checks if a use case file is well formed, according 
+--   to the XML schema passed as the second argument. This 
+--   function returns the list of errors identified. An empty 
+--   list will be returned, if no error is found. 
+checkUseCaseFile fileName schema = 
+ do 
+   errs <- runX ( errorMsgCollect 
+                  >>> 
+                  readDocument [(a_validate, v_0)
+                               ,(a_relax_schema, schema)
+                               ,(a_issue_errors, "0")                              
+                               ] fileName
+                  >>>
+                  getErrorMessages
+                ) ;
+   return errs
+
+-- Assuming the file 'fileName' is valid, we could proceed parsing it.
+ 
+parseUseCaseFile' fileName = 
+ do
+   [x] <- runX ( xunpickleDocument xpPhone [ (a_validate,v_0)
+ 					   , (a_trace, v_1)
+ 					   , (a_remove_whitespace,v_1)
+ 					   , (a_preserve_comment, v_0)
+ 					   ] fileName )
+   let ucmodel = xmlUseCaseModel2UseCaseModel (head (ucms x))
+   return ucmodel
+      
+
+
 
 --
 -- based on the HXT library, we have to declare one instance of 
@@ -74,7 +115,7 @@ xpUseCaseModel :: PU XmlUseCaseModel
 xpUseCaseModel =
 	xpElem "feature" $ -- it should be useCaseModel, but we change to TaRGeT format.
 	xpWrap ( uncurry4 XmlUCM, \ (XmlUCM i n ucs aspect) -> (i, n, ucs, aspect) ) $
-	xp4Tuple ( xpElem "id" xpText ) 
+	xp4Tuple ( xpElem "featureId" xpText ) 
                  ( xpElem "name" xpText ) 
                  ( xpList xpUseCase )  
                  ( xpList xpAspectualUseCase )
@@ -121,7 +162,10 @@ xpStep :: PU XmlStep
 xpStep = 
 	xpElem "step" $
 	xpWrap ( uncurry4 XmlStep, \ (XmlStep i a  s r) -> (i, a, s, r) ) $
-	xp4Tuple (xpElem "stepId" xpText) (xpElem "action" xpText ) (xpElem "condition" xpText) (xpElem "response" xpText)
+	xp4Tuple (xpElem "stepId" xpText) 
+                 (xpElem "action" xpText ) 
+                 (xpElem "condition" xpText) 
+                 (xpElem "response" xpText)
 
 	
 

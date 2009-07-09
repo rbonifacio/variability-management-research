@@ -39,7 +39,7 @@ type XmlSetup = String
 
 data XmlPhone = XmlPhone {
      ucms :: [XmlUseCaseModel]
-}
+} deriving (Show)
 
 -- | The "feature" element of the TaRGeT xml document.
 data XmlUseCaseModel = XmlUCM Id Name [XmlUseCase] [XmlAspectualUseCase]
