@@ -5,7 +5,7 @@
   <widget class="GtkWindow" id="mainWindow">
     <property name="visible">True</property>
     <property name="border_width">4</property>
-    <property name="title" translatable="yes">Variability Management Environment</property>
+    <property name="title" translatable="yes">Hephaestus - Variability Management Environment</property>
     <property name="window_position">GTK_WIN_POS_CENTER_ALWAYS</property>
     <property name="default_width">600</property>
     <child>
@@ -43,13 +43,22 @@
                           </packing>
                         </child>
                         <child>
+                          <widget class="GtkLabel" id="label5">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Component model</property>
+                          </widget>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
                           <widget class="GtkLabel" id="label13">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes">Feature model</property>
                           </widget>
                           <packing>
                             <property name="fill">False</property>
-                            <property name="position">1</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                         <child>
@@ -59,7 +68,7 @@
                           </widget>
                           <packing>
                             <property name="fill">False</property>
-                            <property name="position">2</property>
+                            <property name="position">3</property>
                           </packing>
                         </child>
                         <child>
@@ -69,7 +78,7 @@
                           </widget>
                           <packing>
                             <property name="fill">False</property>
-                            <property name="position">3</property>
+                            <property name="position">4</property>
                           </packing>
                         </child>
                       </widget>
@@ -88,12 +97,20 @@
                           </widget>
                         </child>
                         <child>
+                          <widget class="GtkFileChooserButton" id="cmFileChooser">
+                            <property name="visible">True</property>
+                          </widget>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
                           <widget class="GtkFileChooserButton" id="fmFileChooser">
                             <property name="visible">True</property>
                             <property name="title" translatable="yes">Select a feature model</property>
                           </widget>
                           <packing>
-                            <property name="position">1</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                         <child>
@@ -102,7 +119,7 @@
                             <property name="title" translatable="yes">Select a product configuration</property>
                           </widget>
                           <packing>
-                            <property name="position">2</property>
+                            <property name="position">3</property>
                           </packing>
                         </child>
                         <child>
@@ -111,7 +128,7 @@
                             <property name="title" translatable="yes">Select a configuration knowledge</property>
                           </widget>
                           <packing>
-                            <property name="position">3</property>
+                            <property name="position">4</property>
                           </packing>
                         </child>
                       </widget>
@@ -137,6 +154,40 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkFrame" id="frame4">
+            <property name="visible">True</property>
+            <property name="label_xalign">0</property>
+            <child>
+              <widget class="GtkAlignment" id="alignment7">
+                <property name="visible">True</property>
+                <property name="top_padding">4</property>
+                <property name="bottom_padding">4</property>
+                <property name="left_padding">12</property>
+                <property name="right_padding">4</property>
+                <child>
+                  <widget class="GtkFileChooserButton" id="outputFileChooser">
+                    <property name="visible">True</property>
+                    <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="label6">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;b&gt;Output&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -201,7 +252,7 @@
             <child>
               <widget class="GtkToolButton" id="swptb">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Sart Weaving Process</property>
+                <property name="label" translatable="yes">Generate Products</property>
                 <property name="stock_id">gtk-media-play</property>
               </widget>
               <packing>
@@ -211,7 +262,7 @@
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -220,13 +271,18 @@
             <property name="can_focus">True</property>
             <property name="tab_vborder">0</property>
             <child>
-              <widget class="GtkTreeView" id="errorList">
+              <widget class="GtkScrolledWindow" id="scrolledwindow3">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <child>
+                  <widget class="GtkTreeView" id="errorList">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                  </widget>
+                </child>
               </widget>
-              <packing>
-                <property name="tab_fill">False</property>
-              </packing>
             </child>
             <child>
               <widget class="GtkLabel" id="label7">
@@ -256,14 +312,22 @@ Configuration knowledge</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkTextView" id="textview2">
-                    <property name="height_request">100</property>
+                  <widget class="GtkScrolledWindow" id="scrolledwindow4">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="editable">False</property>
-                    <property name="text" translatable="yes">&lt;table&gt;
+                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                    <child>
+                      <widget class="GtkTextView" id="textview2">
+                        <property name="height_request">100</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="editable">False</property>
+                        <property name="text" translatable="yes">&lt;table&gt;
 &lt;tr&gt;&lt;td&gt;teste&lt;/td&gt;&lt;td&gt;teste&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;</property>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="position">1</property>
@@ -287,7 +351,7 @@ Configuration knowledge</property>
             </child>
           </widget>
           <packing>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
       </widget>
@@ -500,6 +564,9 @@ Configuration knowledge</property>
   <widget class="GtkWindow" id="fmWindow">
     <property name="width_request">400</property>
     <property name="height_request">300</property>
+    <property name="modal">True</property>
+    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
+    <property name="destroy_with_parent">True</property>
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -525,9 +592,17 @@ Configuration knowledge</property>
                         <property name="bottom_padding">5</property>
                         <property name="right_padding">10</property>
                         <child>
-                          <widget class="GtkTreeView" id="featureTree">
+                          <widget class="GtkScrolledWindow" id="scrolledwindow1">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
+                            <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                            <child>
+                              <widget class="GtkTreeView" id="featureTree">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                              </widget>
+                            </child>
                           </widget>
                         </child>
                       </widget>
