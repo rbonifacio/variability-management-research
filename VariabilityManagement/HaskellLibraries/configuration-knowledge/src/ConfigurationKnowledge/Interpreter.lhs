@@ -29,13 +29,13 @@ import FeatureModel.Types (FeatureModel, FeatureConfiguration, eval)
 build :: FeatureModel                 -- ^ SPL feature model
       -> FeatureConfiguration         -- ^ selection of features, which characterizes the product
       -> ConfigurationKnowledge       -- ^ relationships between features and transformations
-      -> UseCaseModel                 -- ^ SPL use case model
+      -> SPLModel                     -- ^ SPL assets
       -> InstanceModel                -- ^ resulting instance of the build process
-build fm fc ck ucmodel = stepRefinement tasks splModel emptyInstance
+build fm fc ck spl = stepRefinement tasks spl emptyInstance
  where 
   tasks         = concat [transformations c| c <- ck, eval fc (expression c)]
+  ucmodel       = splUCM spl
   emptyUCM      = ucmodel { useCases = [] , aspects = [] } 
-  splModel      = SPLModel fm ucmodel [] 
   emptyInstance = InstanceModel fc emptyUCM []
  	
 
