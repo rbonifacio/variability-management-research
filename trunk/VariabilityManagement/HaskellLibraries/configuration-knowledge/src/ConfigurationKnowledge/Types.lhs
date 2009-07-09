@@ -19,20 +19,11 @@ where
 
 import Data.Generics
 
+import BasicTypes
+import ComponentModel.Types
 import UseCaseModel.Types
 
 import FeatureModel.Types (FeatureModel, FeatureConfiguration, FeatureExpression)
-
-type Key = String
-type Component = String
-
--- | A type that represents text mappings, which can be used to prepare 
---   a make file. Text mappings usually contain references to 
---   source directories, source files, or configurations files. 
---   Some of the transformations related to source code basically 
---   introduces this kind of mapping. 
-type TextFragments = [String] 
-type Mapping = (Key, Component)
 
 -- | A type that characterizes an initial representation  
 --   of a SPL. Later, we should refactor this type, 
@@ -40,7 +31,7 @@ type Mapping = (Key, Component)
 data SPLModel = SPLModel {
       splFM :: FeatureModel , 
       splUCM :: UseCaseModel, 
-      splMappings :: [Mapping] 
+      splMappings :: ComponentModel 
 } 
           
 -- | A type for instances of an SPL. Note that, in this 
@@ -50,7 +41,7 @@ data SPLModel = SPLModel {
 data InstanceModel = InstanceModel { 
       fc :: FeatureConfiguration, 
       iucm :: UseCaseModel, 
-      components :: [String] 
+      components :: [Id] 
 } deriving (Data, Typeable)
                   
 
