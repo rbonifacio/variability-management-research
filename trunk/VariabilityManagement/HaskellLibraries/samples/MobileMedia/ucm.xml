@@ -1,0 +1,69 @@
+<phone xmlns="user-view.target.v20090401">
+ <feature>
+    <featureId>01</featureId>
+    <name>MobileMedia Product Line</name>
+    <useCase>
+        <id>UC01</id>
+        <name>Reproduce media</name>
+        <description>It describes the common behavior related to reproducing media. </description>
+        <flow>
+            <id>SC01</id>
+            <description>
+            This scenario .
+			</description>
+            
+            <fromSteps>START</fromSteps>
+            
+            <toSteps>END</toSteps>
+            
+            <step>
+                <stepId>SC01_1</stepId>
+                <action>
+                	The user selects one existing album of the supported streaming
+					contents {SC}.
+				</action>
+                <condition>-</condition>
+                <response>
+                	The MM application retrieves and
+					shows the list of supported streaming contents {SC}
+					available in the selected album.
+				</response>
+            </step>
+            
+            <step>
+                <stepId>SC01_2</stepId>
+                <action>
+                	The user selects one of the available multimedia contents. 
+                </action>
+                <condition>-</condition>
+                <response>
+                	The MM application highlights the selected content.
+                </response>
+            </step>
+            
+            <step>
+                <stepId>SC01_3</stepId>
+                <action>
+                	The user selects the Reproduce option.</action>
+                <condition>-</condition>
+                <response>
+                	The MM application instantiates the suitable player for the selected
+					content type {SC}.
+                </response>
+            </step>
+            
+            <step>
+                <stepId>SC01_4</stepId>
+                <action>-</action>
+                <condition>-</condition>
+                <response>
+                	The MM application starts to reproduce the streaming content,
+					which will be playing until either the player reach the end of the
+					streaming or the user selects one of the available options 
+					( {CO} ) in the player control.
+                </response>
+            </step>
+        </flow>
+    </useCase>
+ </feature>
+</phone>

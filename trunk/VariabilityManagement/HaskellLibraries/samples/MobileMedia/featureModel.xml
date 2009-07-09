@@ -1,0 +1,77 @@
+<feature min="1" max="1" name="MobileMedia" type="NONE" id="mobileMedia">
+  <feature min="1" max="1" name="ScreenSize" type="NONE" id="screenSize">
+    <featureGroup min="1" max="1" id="group">
+      <feature min="0" max="1" name="Screen176x205" type="NONE" id="screen176x205">
+      </feature>
+      <feature min="0" max="1" name="Screen128x149" type="NONE" id="screen128x149">
+      </feature>
+      <feature min="0" max="1" name="Screen240x320" type="NONE" id="screen240x320">
+      </feature>
+      <feature min="0" max="1" name="Screen132x176" type="NONE" id="screen132x176">
+      </feature>
+    </featureGroup>
+  </feature>
+  <feature min="1" max="1" name="AlbumManagement" type="NONE" id="albumManagement">
+    <feature min="1" max="1" name="CreateAlbum" type="NONE" id="createAlbum">
+    </feature>
+    <feature min="1" max="1" name="DeleteAlbum" type="NONE" id="deleteAlbum">
+    </feature>
+  </feature>
+  <feature min="1" max="1" name="MediaManagement" type="NONE" id="mediaManagement">
+    <feature min="1" max="1" name="BasicMediaOperations" type="NONE" id="basicMediaOperations">
+      <feature min="1" max="1" name="EditMediaLabel" type="NONE" id="editMediaLabel">
+      </feature>
+      <feature min="1" max="1" name="DeleteMedia" type="NONE" id="deleteMedia">
+      </feature>
+      <feature min="1" max="1" name="CreateMedia" type="NONE" id="createMedia">
+      </feature>
+    </feature>
+    <feature min="0" max="1" name="Sort" type="NONE" id="sort">
+    </feature>
+    <feature min="0" max="1" name="CopyMedia" type="NONE" id="copyMedia">
+    </feature>
+    <feature min="0" max="1" name="Favourites" type="NONE" id="favourites">
+      <feature min="1" max="1" name="SetFavourites" type="NONE" id="setFavourites">
+      </feature>
+      <feature min="1" max="1" name="ViewFavourites" type="NONE" id="viewFavourites">
+      </feature>
+    </feature>
+    <feature min="0" max="1" name="PMContactList" type="NONE" id="pMContactList">
+    </feature>
+    <feature min="0" max="1" name="SMSTransfer" type="NONE" id="sMSTransfer">
+      <feature min="1" max="1" name="SendPhoto" type="NONE" id="sendPhoto">
+      </feature>
+      <feature min="1" max="1" name="ReceivePhoto" type="NONE" id="receivePhoto">
+      </feature>
+    </feature>
+    <feature min="0" max="1" name="Security" type="NONE" id="security">
+    </feature>
+  </feature>
+  <feature min="1" max="1" name="MediaSelection" type="NONE" id="mediaSelection">
+    <featureGroup min="1" max="3" id="group0">
+      <feature min="0" max="1" name="Video" type="NONE" id="video">
+        <feature min="1" max="1" name="PlayVideo" type="NONE" id="playVideo">
+        </feature>
+        <feature min="0" max="1" name="CaptureVideo" type="NONE" id="captureVideo">
+        </feature>
+      </feature>
+      <feature min="0" max="1" name="Music" type="NONE" id="music">
+        <feature min="1" max="1" name="PlayMusic" type="NONE" id="playMusic">
+        </feature>
+      </feature>
+      <feature min="0" max="1" name="Photo" type="NONE" id="photo">
+        <feature min="1" max="1" name="View" type="NONE" id="view">
+          <feature min="0" max="1" name="ApplyFrameToPhoto" type="NONE" id="applyFrameToPhoto">
+          </feature>
+        </feature>
+        <feature min="0" max="1" name="ViewPhotoSlideShow" type="NONE" id="slideShow">
+          <feature min="0" max="1" name="Speed" type="NONE" id="speed">
+          </feature>
+        </feature>
+        <feature min="0" max="1" name="CapturePhoto" type="NONE" id="capturePhoto">
+        </feature>
+      </feature>
+    </featureGroup>
+  </feature>
+</feature>
+
