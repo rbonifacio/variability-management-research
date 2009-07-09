@@ -5,7 +5,7 @@ import BasicTypes
 
 import ConfigurationKnowledge.Types
 
-import Transformations.SourceCode
+import Transformations.ComponentModel
 import Transformations.UseCaseModel
 
 import UseCaseModel.Types
