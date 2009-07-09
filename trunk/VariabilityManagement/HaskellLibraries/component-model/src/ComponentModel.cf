@@ -1,0 +1,9 @@
+TComponentModel. ComponentModel ::= [ComponentMapping] ;
+
+TComponentMapping. ComponentMapping ::= Ident "=>" Ident ;
+
+separator ComponentMapping ";" ;
+
+
+
+ 
