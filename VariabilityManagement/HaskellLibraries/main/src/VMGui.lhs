@@ -55,6 +55,11 @@ data GUI = GUI {
       displayFmTButton :: ToolButton
 }
 
+-- 
+-- The entry point of our applicaton. Basically, 
+-- it retrieves the GUI definition file, instantiate 
+-- a GUI model and connect it to user action events. 
+-- 
 main :: IO ()
 main = do
   initGUI
@@ -65,16 +70,20 @@ main = do
 
   connectGui gui 
 
-
+-- --------------------------------------------------------------------------
+-- Load an instance of GUI the data type.
+-- This design is based on the Real World Haskell book 
+-- --------------------------------------------------------------------------
 loadGlade f = 
  do
+   -- retrieve the GUI windows
    [w, ckw, fmw] <- mapM (xmlGetWidget f castToWindow) ["mainWindow"
                                                        ,"ckWindow"
                                                        ,"fmWindow"
                                                        ]  
    
                  
-  
+   -- retrieves the file chooser elements.
    [ucmfc, cmfc, fmfc, pcfc, ckfc, outfc]  <- mapM (xmlGetWidget f castToFileChooserButton) ["ucmFileChooser"
                                                                                             ,"cmFileChooser"
                                                                                             ,"fmFileChooser"
@@ -82,7 +91,7 @@ loadGlade f =
                                                                                             ,"ckFileChooser"
                                                                                             ,"outputFileChooser"
                                                                                             ]
-  
+   -- retrieves the tree view and list elements
    [ckl, errl, ftree] <- mapM (xmlGetWidget f castToTreeView) ["ckList"
                                                               , "errorList"
                                                               , "featureTree"
@@ -95,6 +104,7 @@ loadGlade f =
                                                                                 , "swptb"
                                                                                 , "dfmtb"
                                                                                 ]
+   -- returns the GUI instance                                                                             
    return $ GUI {
                 window      = w, 
                 ckWindow    = ckw, 
@@ -115,6 +125,9 @@ loadGlade f =
                 displayFmTButton = dfmtb
               }
 
+-- ---------------------------------------------------------
+-- Connect the GUI to the user events.
+-- ----------------------------------------------------------
 connectGui gui = 
  do
   onDestroy (window gui) mainQuit
@@ -139,16 +152,16 @@ connectGui gui =
   widgetShowAll (window gui)   
   mainGUI
 
-{-------------------------------------------------------------------          
----------------------  GUI related events --------------------------        
---------------------------------------------------------------------}
-
--- 
+-------------------------------------------------------------------------------------
+-- * GUI Events implementation 
+     
+-- ----------------------------------------------------------------------------------
 -- starts the weaving process (or product derivation process) 
 -- when the user clicks on the "generate products" button. 
---
+-- ----------------------------------------------------------------------------------
 weaveFiles gui = 
  do 
+   -- retrieve the selected files and put them on a list.
    selectedFiles <- mapM fileChooserGetFilename [ucmFChooser gui
                                                 ,cmFChooser  gui
                                                 ,fmFChooser  gui
@@ -156,16 +169,19 @@ weaveFiles gui =
                                                 ,ckFChooser  gui
                                                 ,outFChooser gui
                                                 ]
+   -- check if all files were selected....
    case selectedFiles of 
      [Just u, Just c, Just f, Just p, Just ck, Just o] -> do executeBuildingProcess (u, c, f, p, ck, o)
+   
+     -- ... if not, a message is displayed to the user 
      otherwise -> showDialog  (window gui) 
                               MessageError 
                               "Error on input files. Try checking these files before starting the weaving process."  
 
---
--- starts file checker process, updating 
--- the error list if any error is found. 
--- 
+-- ------------------------------------------------------------------------------------
+-- starts the file checker process, which updates 
+-- the error list if any error was found. 
+-- ------------------------------------------------------------------------------------
 checkFiles gui store = 
  do
    u <- fileChooserGetFilename (ucmFChooser gui)
@@ -178,6 +194,11 @@ checkFiles gui store =
    executeFileChecker p "schema_feature-configuration.rng" "Instance model" store
    executeFileChecker c "schema-configuration-knowledge.rng" "Configuration knowledge" store
 
+-- -------------------------------------------------------------------------------------
+-- displays the selectef feature model. Note, the 
+-- current implementation has a bug. It fails on the 
+-- second time a feature model is displayed. 
+-- --------------------------------------------------------------------------------------
 displayFeatureModel gui store = 
  do
    f <- fileChooserGetFilename (fmFChooser gui)
@@ -204,11 +225,9 @@ parseFeatureModel' fmfile =
 
 
 
-{-------------------------------------------------------  
- Starts the building process.
- First, it retrieves the input models from the selected 
- files. Then, it executes the building process. 
---------------------------------------------------------}   
+-- -------------------------------------------------------------------------------  
+-- Building process.
+-- --------------------------------------------------------------------------------
 executeBuildingProcess :: (String, String, String, String, String, String) -> IO ()
 executeBuildingProcess (ucmFile, cmFile, fmFile, icFile, ckFile, outFile) = 
     do 
@@ -223,6 +242,7 @@ executeBuildingProcess (ucmFile, cmFile, fmFile, icFile, ckFile, outFile) =
                         let fc  = FeatureConfiguration icTree
                         let spl = SPLModel fm ucm cm 
                         let result = build fm fc ckModel spl
+                        print $ (iucm result)
                         print $ ucmToLatex (iucm result)
                         print $ components result
         
