@@ -96,8 +96,7 @@ loadGlade f =
                                                               , "errorList"
                                                               , "featureTree"
                                                               ] 
-   
-
+   -- retrieves the tool buttons
    [fctb, sattb, fbstb, swptb, dfmtb] <- mapM (xmlGetWidget f castToToolButton) ["cftb"
                                                                                 , "sattb"
                                                                                 , "fbstb"
@@ -195,24 +194,41 @@ checkFiles gui store =
    executeFileChecker c "schema-configuration-knowledge.rng" "Configuration knowledge" store
 
 -- -------------------------------------------------------------------------------------
--- displays the selectef feature model. Note, the 
+-- displays the selected feature model. Note, the 
 -- current implementation has a bug. It fails on the 
--- second time a feature model is displayed. 
+-- second time a feature model is displayed. It might be a 
+-- gtk2HS problem. 
 -- --------------------------------------------------------------------------------------
 displayFeatureModel gui store = 
- do
-   f <- fileChooserGetFilename (fmFChooser gui)
-   case f of 
-     (Just fName) -> 
-         do 
-           fm <-  parseFeatureModel' fName
-           let t = feature2TreeNode (fmTree fm) 
-           New.treeStoreClear store 
-           New.treeStoreInsertTree store [] 0 t
-           widgetShowAll (fmWindow gui)
-     otherwise -> showDialog (window gui) 
-                             MessageError 
-                             "Please, select a feature model."
+ do 
+  f <- fileChooserGetFilename (fmFChooser gui)
+  displayFeatureModel' f gui store
+
+displayFeatureModel' (Just fName) gui store = 
+ do 
+  f <-  parseFeatureModel' fName
+  case f of 
+   Core.Success fm -> 
+       do  
+         let t = feature2TreeNode (fmTree fm) 
+         New.treeStoreClear store 
+         New.treeStoreInsertTree store [] 0 t
+         widgetShowAll (fmWindow gui)
+   Core.Fail s -> 
+       do showDialog (window gui) 
+                     MessageError 
+                     ("Error parsing feature model: " ++ s)
+
+displayFeatureModel' Nothing gui store = 
+ do showDialog (window gui) 
+               MessageError 
+               "Please, select a feature model."
+
+
+-----------------------------------------------------------
+-- auxiliarly functions for parsing feature models
+-- TODO: this version supports just fmplugin and fmide.
+-----------------------------------------------------------
 
 supportedFmTypes = [ ("xml", FMPlugin), (".m" , FMIde) ]
 
@@ -231,14 +247,14 @@ parseFeatureModel' fmfile =
 executeBuildingProcess :: (String, String, String, String, String, String) -> IO ()
 executeBuildingProcess (ucmFile, cmFile, fmFile, icFile, ckFile, outFile) = 
     do 
-       fm            <- parseFeatureModel' fmFile 
+       fmParseResult <- parseFeatureModel' fmFile 
        cmParseResult <- parseComponentModel cmFile
-       icTree        <- parseInstanceConfiguration icFile 
+       icParseResult <- parseInstanceConfiguration icFile 
        ucParseResult <- parseUseCaseFile ucmFile "schema_aspectual-use_cases-user_view.rng" 
        ckModel       <- parseConfigurationKnowledge ckFile    
         
-       case (ucParseResult, cmParseResult) of 
-        (Core.Success ucm, Core.Success cm) -> do 
+       case (fmParseResult, cmParseResult, icParseResult, ucParseResult) of 
+        (Core.Success fm, Core.Success cm, Core.Success icTree, Core.Success ucm) -> do 
                         let fc  = FeatureConfiguration icTree
                         let spl = SPLModel fm ucm cm 
                         let result = build fm fc ckModel spl
@@ -246,8 +262,8 @@ executeBuildingProcess (ucmFile, cmFile, fmFile, icFile, ckFile, outFile) =
                         print $ ucmToLatex (iucm result)
                         print $ components result
         
-        (Core.Fail s, _) -> putStrLn s
-        (_, Core.Fail s) -> putStrLn s
+        otherwise -> putStrLn "Error on input files."
+    
       	       
 targetSchema :: String
 targetSchema = "schema_aspectual-use_cases-user_view.rng" 
