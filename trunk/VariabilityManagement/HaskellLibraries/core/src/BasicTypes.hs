@@ -32,6 +32,10 @@ instance MonadPlus ParserResult where
   mplus (Fail _) y = y
   mplus x _ = x
 
+isSuccess :: ParserResult a -> Bool
+isSuccess (Success _) = True
+isSuccess (Fail _) = False
+
 -- 
 
 split :: Char -> String -> [String]
