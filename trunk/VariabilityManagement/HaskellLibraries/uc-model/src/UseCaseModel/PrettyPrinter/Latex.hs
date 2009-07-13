@@ -24,6 +24,7 @@ import UseCaseModel.Types
 ucmToLatex :: UseCaseModel -> Doc
 ucmToLatex (UCM name ucs as) = vcat [ beginDocument name
                                     , ucsToLatex ucs
+                                    , aspectsToLatex as
                                     , endDocument
                                     ]
 
@@ -49,6 +50,15 @@ ucsToLatex (x:xs) = vcat ((text "\\section{Use cases}") : (map ucToLatex (x:xs))
                          , text ("\\end{itemize}" )  
                          ] ++ (map scenarioToLatex (ucScenarios uc)))
 
+aspectsToLatex :: [AspectualUseCase] -> Doc
+aspectsToLatex [] = empty
+aspectsToLatex (x:xs)  = vcat ((text "\\section{Aspectual use cases}") : (map aspectToLatex (x:xs)))
+ where aspectToLatex a = vcat ([ text("\\subsection{Aspectual use case " ++ (aspectId a) ++ "}")
+                               , text("\\begin{itemize}")
+                               , text("\\item{\\bf Name }" ++ (aspectName a) )
+                               , text("\\end{itemize}")      
+                              ] ++ (map adviceToLatex (advices a))) 
+
 scenarioToLatex :: Scenario -> Doc
 scenarioToLatex (Scenario i d f s t) = vcat ([ text ("\\subsubsection{Scenario " ++ i ++ "}")
                                              , text ("\\begin{itemize}")
@@ -57,6 +67,16 @@ scenarioToLatex (Scenario i d f s t) = vcat ([ text ("\\subsubsection{Scenario "
                                              , text ("\\item {\\bf To steps:} " ++ (show t))
                                              , text ("\\end{itemize}")
                                              ] ++ [(flowToLatex s)])
+
+adviceToLatex :: Advice -> Doc
+adviceToLatex adv =  vcat ([ text("\\subsubsection{Advices}")
+                           , text ("\\begin{itemize}")
+                           , text ("\\item {\\bf Pointcut:} " ++ (pc adv) ++ (concat (map show (pointCut adv)) ) )
+                           , text ("\\end{itemize}")
+                           ] ++ [(flowToLatex (aspectualFlow adv))])
+ where 
+  pc (BeforeAdvice _ _) = "{\\bf before} "
+  pc (AfterAdvice _ _)  = "{\\bf after} "    
 
 flowToLatex :: Flow -> Doc
 flowToLatex [] = empty
