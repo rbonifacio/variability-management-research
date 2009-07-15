@@ -7,12 +7,11 @@ import qualified BasicTypes as Core
 
 import Maybe
 
-
 import List
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Glade
 import Graphics.UI.Gtk.ModelView as New
-
+import IO
 import qualified Data.Tree as Tree
 
 import Text.XML.HXT.Arrow
@@ -34,6 +33,15 @@ import ComponentModel.Parsers.ParserComponentModel
 
 data ConfigurationData = ConfigurationData { expressionData :: String , transformationData :: String } deriving Show
 data ErrorData = ErrorData { inputModel :: String, errorDesc :: String }
+
+targetSchema :: String
+targetSchema = "schema_aspectual-use_cases-user_view.rng" 
+
+fcSchema :: String 
+fcSchema = "schema_feature-configuration.rng"
+
+ckSchema :: String
+ckSchema = "schema-configuration-knowledge.rng"
 
 data GUI = GUI {
       window :: Window, 
@@ -170,7 +178,7 @@ weaveFiles gui =
                                                 ]
    -- check if all files were selected....
    case selectedFiles of 
-     [Just u, Just c, Just f, Just p, Just ck, Just o] -> do executeBuildingProcess (u, c, f, p, ck, o)
+     [Just u, Just c, Just f, Just p, Just ck, Just o] -> do executeBuildingProcess gui (u, c, f, p, ck, o)
    
      -- ... if not, a message is displayed to the user 
      otherwise -> showDialog  (window gui) 
@@ -188,10 +196,21 @@ checkFiles gui store =
    p <- fileChooserGetFilename (pcFChooser gui)
    c <- fileChooserGetFilename (ckFChooser gui)
    New.listStoreClear store
-   executeFileChecker u "schema_aspectual-use_cases-user_view.rng" "Use case model" store
-   executeFileChecker f "schema_feature-model.rng" "Feature model" store
-   executeFileChecker p "schema_feature-configuration.rng" "Instance model" store
-   executeFileChecker c "schema-configuration-knowledge.rng" "Configuration knowledge" store
+   executeFileChecker u targetSchema "Use case model" store
+   executeFileChecker p fcSchema "Instance model" store
+   executeFileChecker c ckSchema "Configuration knowledge" store
+   -- 
+   -- checking a feature model is a bit more trick, since we
+   -- accept different formats
+   -- 
+   case f of 
+     Just fmFileName -> do 
+            fm <- parseFeatureModel' fmFileName
+            let fmErr = case fm of 
+                          Core.Fail e -> [ErrorData "FeatureModel" e]
+                          otherwise   -> []
+            updateErrorStore store fmErr
+     otherwise -> updateErrorStore store [ErrorData "FeatureModel" "Model not loaded."]       
 
 -- -------------------------------------------------------------------------------------
 -- displays the selected feature model. Note, the 
@@ -204,6 +223,8 @@ displayFeatureModel gui store =
   f <- fileChooserGetFilename (fmFChooser gui)
   displayFeatureModel' f gui store
 
+-- here we deal with the case where the 
+-- feature model file was selected. 
 displayFeatureModel' (Just fName) gui store = 
  do 
   f <-  parseFeatureModel' fName
@@ -219,6 +240,8 @@ displayFeatureModel' (Just fName) gui store =
                      MessageError 
                      ("Error parsing feature model: " ++ s)
 
+-- here we deal with the case where the 
+-- deature model file was not selected.
 displayFeatureModel' Nothing gui store = 
  do showDialog (window gui) 
                MessageError 
@@ -228,6 +251,8 @@ displayFeatureModel' Nothing gui store =
 -----------------------------------------------------------
 -- auxiliarly functions for parsing feature models
 -- TODO: this version supports just fmplugin and fmide.
+-- TemplateHaskell may help here, creating a family of 
+-- programs that supports different parsers.
 -----------------------------------------------------------
 
 supportedFmTypes = [ ("xml", FMPlugin), (".m" , FMIde) ]
@@ -239,34 +264,61 @@ parseFeatureModel' fmfile =
   otherwise -> error "Error identifying the feature model type"
 
 
-
-
 -- -------------------------------------------------------------------------------  
--- Building process.
+-- Execute the building process.
 -- --------------------------------------------------------------------------------
-executeBuildingProcess :: (String, String, String, String, String, String) -> IO ()
-executeBuildingProcess (ucmFile, cmFile, fmFile, icFile, ckFile, outFile) = 
-    do 
-       fmParseResult <- parseFeatureModel' fmFile 
-       cmParseResult <- parseComponentModel cmFile
-       icParseResult <- parseInstanceConfiguration icFile 
-       ucParseResult <- parseUseCaseFile ucmFile "schema_aspectual-use_cases-user_view.rng" 
-       ckModel       <- parseConfigurationKnowledge ckFile    
+executeBuildingProcess :: GUI -> (String, String, String, String, String, String) -> IO ()
+executeBuildingProcess gui (ucmFile, cmFile, fmFile, icFile, ckFile, outFile) = 
+ do 
+   -- parse results that should be checked if they are Core.Success.
+   fmpr <- parseFeatureModel' fmFile 
+   cmpr <- parseComponentModel cmFile
+   icpr <- parseInstanceConfiguration icFile 
+   ucpr <- parseUseCaseFile ucmFile targetSchema
+   ckpr <- parseConfigurationKnowledge ckFile    
         
-       case (fmParseResult, cmParseResult, icParseResult, ucParseResult) of 
-        (Core.Success fm, Core.Success cm, Core.Success icTree, Core.Success ucm) -> do 
-                        let fc  = FeatureConfiguration icTree
-                        let spl = SPLModel fm ucm cm 
-                        let result = build fm fc ckModel spl
-                        print $ (iucm result)
-                        print $ ucmToLatex (iucm result)
-                        print $ components result
-        
-        otherwise -> putStrLn "Error on input files."
+   case (fmpr, cmpr, icpr, ucpr, ckpr) of 
+     (Core.Success fm, Core.Success cm, Core.Success icTree, Core.Success ucm, Core.Success ck) -> 
+         do 
+           let fc  = FeatureConfiguration icTree
+           let spl = SPLModel fm ucm cm 
+           let product = build fm fc ck spl
+           exportResult gui product
+
+     otherwise -> putStrLn "Error on input files. Try to check the input file."
     
-      	       
-targetSchema :: String
-targetSchema = "schema_aspectual-use_cases-user_view.rng" 
+-- -------------------------------------------------------------------------
+-- export the output files of a product generate from 
+-- the results of a weaving process. 
+-- ------------------------------------------------------------------------
+exportResult gui p = 
+ do
+   dir <- fileChooserGetCurrentFolder (outFChooser gui)
+   case dir of 
+     Just dpath -> do 
+         exportUcmToLatex (dpath ++ "/use-cases.tex") (iucm p)
+         exportBuildFile  (dpath ++ "/build.lst") (components p)       
+            
+     Nothing -> showDialog (window gui) 
+                MessageError 
+               "Please, select an output directory."
+
+-- -----------------------------------------------------------------------
+-- Exports a use case model as a latex document.
+-- -----------------------------------------------------------------------
+exportUcmToLatex f ucm = 
+ bracket (openFile f WriteMode)
+         hClose
+         (\h -> hPutStr h (show (ucmToLatex ucm)))
+
+-- --------------------------------------------------------------------
+-- Exports the list of components as a build file. The format of this 
+-- build file is similar to the Mobile Media build files.
+-- -------------------------------------------------------------------
+exportBuildFile f cs = 
+ bracket (openFile f WriteMode)
+         hClose
+         (\h -> hPutStr h (concat [c ++ "\n" | c <- cs]))
 
 --
 -- Check if a xml input file (f) adheres to the definitions 
