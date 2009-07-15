@@ -7,5 +7,5 @@ license:             BSD3
 license-file:        LICENSE
 author:              Rodrigo Bonifacio
 maintainer:          rbonifacio123@gmail.com
-build-Depends:       base
+build-Depends:       base, BasicTypes 
 ghc-options:         
