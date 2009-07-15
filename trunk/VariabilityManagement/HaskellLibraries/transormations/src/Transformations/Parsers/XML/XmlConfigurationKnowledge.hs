@@ -62,7 +62,7 @@ xml2Transformation t =
    
    "evaluateAspects" -> evaluateAspects (as)
    
-   "addTextFragment" -> selectComponents (as)
+   "selectComponents" -> selectComponents (as)
 
    otherwise -> error ("Invalid transformation: " ++ tName t)
 
