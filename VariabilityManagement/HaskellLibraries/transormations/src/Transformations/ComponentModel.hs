@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 -- |
--- Module      :  UseCaseModel.Transformations
+-- Module      :  Transformations.ComponentModel
 -- Copyright   :  (c) Rodrigo Bonifacio 2008, 2009
 -- License     :  LGPL
 --
@@ -8,9 +8,8 @@
 -- Stability   :  provisional
 -- Portability :  portable
 --
--- Several transformations that instantiate a product's use case model 
--- from a SPL use case model 
---
+-- Several transformations that instantiate a product build 
+-- file. 
 --
 -----------------------------------------------------------------------------
 module Transformations.ComponentModel
