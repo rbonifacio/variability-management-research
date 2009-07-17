@@ -17,13 +17,15 @@ import qualified Data.Tree as Tree
 import Text.XML.HXT.Arrow
 import System.Environment
 
+import RequirementModel.Types
+import RequirementModel.Parsers.XML.XmlRequirementParser
+
 import UseCaseModel.PrettyPrinter.Latex
 import UseCaseModel.Parsers.XML.XmlUseCaseParser (parseUseCaseFile, checkUseCaseFile)
 import UseCaseModel.Types
 
-import FeatureModel.Parsers.GenericParser 
-
 import FeatureModel.Types
+import FeatureModel.Parsers.GenericParser 
 
 import Transformations.Parsers.XML.XmlConfigurationParser
 import ConfigurationKnowledge.Interpreter
@@ -34,8 +36,11 @@ import ComponentModel.Parsers.ParserComponentModel
 data ConfigurationData = ConfigurationData { expressionData :: String , transformationData :: String } deriving Show
 data ErrorData = ErrorData { inputModel :: String, errorDesc :: String }
 
-targetSchema :: String
-targetSchema = "schema_aspectual-use_cases-user_view.rng" 
+rmSchema :: String 
+rmSchema = "schema_requirements.rng"
+
+ucSchema :: String
+ucSchema = "schema_aspectual-use_cases-user_view.rng" 
 
 fcSchema :: String 
 fcSchema = "schema_feature-configuration.rng"
@@ -47,6 +52,7 @@ data GUI = GUI {
       window :: Window, 
       ckWindow :: Window, 
       fmWindow :: Window, 
+      rmFChooser  :: FileChooserButton, 
       ucmFChooser :: FileChooserButton,
       cmFChooser  :: FileChooserButton,  
       fmFChooser  :: FileChooserButton, 
@@ -92,13 +98,14 @@ loadGlade f =
    
                  
    -- retrieves the file chooser elements.
-   [ucmfc, cmfc, fmfc, pcfc, ckfc, outfc]  <- mapM (xmlGetWidget f castToFileChooserButton) ["ucmFileChooser"
-                                                                                            ,"cmFileChooser"
-                                                                                            ,"fmFileChooser"
-                                                                                            ,"pcFileChooser"
-                                                                                            ,"ckFileChooser"
-                                                                                            ,"outputFileChooser"
-                                                                                            ]
+   [rmfc, ucmfc, cmfc, fmfc, pcfc, ckfc, outfc]  <- mapM (xmlGetWidget f castToFileChooserButton) ["rmFileChooser"
+                                                                                                  ,"ucmFileChooser"
+                                                                                                  ,"cmFileChooser"
+                                                                                                  ,"fmFileChooser"
+                                                                                                  ,"pcFileChooser"
+                                                                                                  ,"ckFileChooser"
+                                                                                                  ,"outputFileChooser"
+                                                                                                  ]
    -- retrieves the tree view and list elements
    [ckl, errl, ftree] <- mapM (xmlGetWidget f castToTreeView) ["ckList"
                                                               , "errorList"
@@ -116,6 +123,7 @@ loadGlade f =
                 window      = w, 
                 ckWindow    = ckw, 
                 fmWindow    = fmw, 
+                rmFChooser  = rmfc, 
                 ucmFChooser = ucmfc,
                 cmFChooser  = cmfc,
                 fmFChooser  = fmfc,
@@ -169,16 +177,17 @@ connectGui gui =
 weaveFiles gui = 
  do 
    -- retrieve the selected files and put them on a list.
-   selectedFiles <- mapM fileChooserGetFilename [ucmFChooser gui
-                                                ,cmFChooser  gui
-                                                ,fmFChooser  gui
-                                                ,pcFChooser  gui
-                                                ,ckFChooser  gui
-                                                ,outFChooser gui
+   selectedFiles <- mapM fileChooserGetFilename [ rmFChooser  gui
+                                                , ucmFChooser gui
+                                                , cmFChooser  gui
+                                                , fmFChooser  gui
+                                                , pcFChooser  gui
+                                                , ckFChooser  gui
+                                                , outFChooser gui
                                                 ]
    -- check if all files were selected....
    case selectedFiles of 
-     [Just u, Just c, Just f, Just p, Just ck, Just o] -> do executeBuildingProcess gui (u, c, f, p, ck, o)
+     [Just r, Just u, Just c, Just f, Just p, Just ck, Just o] -> do executeBuildingProcess gui (r, u, c, f, p, ck, o)
    
      -- ... if not, a message is displayed to the user 
      otherwise -> showDialog  (window gui) 
@@ -191,12 +200,14 @@ weaveFiles gui =
 -- ------------------------------------------------------------------------------------
 checkFiles gui store = 
  do
+   r <- fileChooserGetFilename (rmFChooser gui)
    u <- fileChooserGetFilename (ucmFChooser gui)
    f <- fileChooserGetFilename (fmFChooser  gui)
    p <- fileChooserGetFilename (pcFChooser gui)
    c <- fileChooserGetFilename (ckFChooser gui)
    New.listStoreClear store
-   executeFileChecker u targetSchema "Use case model" store
+   executeFileChecker r rmSchema "Requirement model" store
+   executeFileChecker u ucSchema "Use case model" store
    executeFileChecker p fcSchema "Instance model" store
    executeFileChecker c ckSchema "Configuration knowledge" store
    -- 
@@ -240,8 +251,8 @@ displayFeatureModel' (Just fName) gui store =
                      MessageError 
                      ("Error parsing feature model: " ++ s)
 
--- here we deal with the case where the 
--- deature model file was not selected.
+-- here we deal with the cases when the 
+-- feature model file was not selected.
 displayFeatureModel' Nothing gui store = 
  do showDialog (window gui) 
                MessageError 
@@ -267,21 +278,22 @@ parseFeatureModel' fmfile =
 -- -------------------------------------------------------------------------------  
 -- Execute the building process.
 -- --------------------------------------------------------------------------------
-executeBuildingProcess :: GUI -> (String, String, String, String, String, String) -> IO ()
-executeBuildingProcess gui (ucmFile, cmFile, fmFile, icFile, ckFile, outFile) = 
+executeBuildingProcess :: GUI -> (String, String, String, String, String, String, String) -> IO ()
+executeBuildingProcess gui (rmFile, ucmFile, cmFile, fmFile, icFile, ckFile, outFile) = 
  do 
    -- parse results that should be checked if they are Core.Success.
    fmpr <- parseFeatureModel' fmFile 
+   rmpr <- parseRequirementModel rmFile
+   ucpr <- parseUseCaseFile ucmFile ucSchema
    cmpr <- parseComponentModel cmFile
    icpr <- parseInstanceConfiguration icFile 
-   ucpr <- parseUseCaseFile ucmFile targetSchema
    ckpr <- parseConfigurationKnowledge ckFile    
         
-   case (fmpr, cmpr, icpr, ucpr, ckpr) of 
-     (Core.Success fm, Core.Success cm, Core.Success icTree, Core.Success ucm, Core.Success ck) -> 
+   case (fmpr, rmpr, ucpr, cmpr, icpr, ckpr) of 
+     (Core.Success fm, Core.Success rm, Core.Success ucm, Core.Success cm, Core.Success icTree, Core.Success ck) -> 
          do 
            let fc  = FeatureConfiguration icTree
-           let spl = SPLModel fm ucm cm 
+           let spl = SPLModel fm rm ucm cm 
            let product = build fm fc ck spl
            exportResult gui product
 
@@ -296,7 +308,7 @@ exportResult gui p =
    dir <- fileChooserGetCurrentFolder (outFChooser gui)
    case dir of 
      Just dpath -> do 
-         exportUcmToLatex (dpath ++ "/use-cases.tex") (iucm p)
+         exportUcmToLatex (dpath ++ "/use-cases.tex") (ucm p)
          exportBuildFile  (dpath ++ "/build.lst") (components p)       
             
      Nothing -> showDialog (window gui) 
