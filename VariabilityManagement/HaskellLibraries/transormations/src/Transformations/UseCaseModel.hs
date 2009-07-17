@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 -- |
--- Module      :  UseCaseModel.Transformations
+-- Module      :  Transformations.UseCaseModel
 -- Copyright   :  (c) Rodrigo Bonifacio 2008, 2009
 -- License     :  LGPL
 --
@@ -52,7 +52,7 @@ bindParameter :: Id                -- ^ formal parameter of scenarios
 bindParameter pid fid spl product = 
  bindParameter' steps (unwords options) pid product
  where 
-  steps = [s | s <- ucmSteps (iucm product), s `refers` pid]
+  steps = [s | s <- ucmSteps (ucm product), s `refers` pid]
   options = concat (map featureOptionsValues [f | f <- flatten (fcTree (fc product)), fId (fnode f) == fid]) 
   bindParameter'[] o pid p = p
   bindParameter' (s:ss) o pid p = bindParameter' ss o pid (gReplaceStringInStep (sId s) pid o p) 
@@ -138,7 +138,7 @@ addScenarioToInstance :: (Scenario, SPLModel, InstanceModel) -> InstanceModel
 addScenarioToInstance (s, spl, product) = 
  let 
   sUseCase = findUseCaseFromScenario (useCases (splUCM spl)) s
-  pUseCase = findUseCaseFromScenario (useCases (iucm product)) s
+  pUseCase = findUseCaseFromScenario (useCases (ucm product)) s
   eUseCase = (emptyUseCase sUseCase) { ucScenarios = [s] } 
  in case pUseCase of
      Nothing -> gAddUseCase eUseCase product
@@ -157,9 +157,9 @@ addOrReplaceScenario i sc uc =
 -- add or replace a use case to a use case model. this is 
 -- an auxiliarly function to the 'selectScenario' transformation.
 addOrReplaceUseCase :: UseCase -> UseCaseModel -> UseCaseModel
-addOrReplaceUseCase uc ucm = 
- let ucs = useCases ucm 
- in ucm { useCases = uc : [u | u <- ucs, u /= uc ] }
+addOrReplaceUseCase uc ucModel = 
+ let ucs = useCases ucModel 
+ in ucModel { useCases = uc : [u | u <- ucs, u /= uc ] }
 
 -- this is the generic function for adding a scenario.
 -- it follows the SYB pattern. 
