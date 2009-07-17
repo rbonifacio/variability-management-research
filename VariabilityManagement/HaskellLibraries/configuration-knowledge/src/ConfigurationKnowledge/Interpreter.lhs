@@ -11,13 +11,12 @@
 --
 -- Configuration Knowledge interpreter in Haskell.
 --
---
 -----------------------------------------------------------------------------
 module ConfigurationKnowledge.Interpreter (build)
 where
 
 import UseCaseModel.Types
-
+import RequirementModel.Types
 import ConfigurationKnowledge.Types
 import FeatureModel.Types (FeatureModel, FeatureConfiguration, eval)
 
@@ -35,8 +34,9 @@ build fm fc ck spl = stepRefinement tasks spl emptyInstance
  where 
   tasks         = concat [transformations c| c <- ck, eval fc (expression c)]
   ucmodel       = splUCM spl
-  emptyUCM      = ucmodel { useCases = [] , aspects = [] } 
-  emptyInstance = InstanceModel fc emptyUCM []
+  emptyUCM      = ucmodel { useCases = [] , aspects = [] }
+  emptyReq      = RM { reqs = [] }
+  emptyInstance = InstanceModel fc emptyReq emptyUCM []
  	
 
 stepRefinement :: [(SPLModel -> InstanceModel -> InstanceModel)] -> SPLModel -> InstanceModel -> InstanceModel

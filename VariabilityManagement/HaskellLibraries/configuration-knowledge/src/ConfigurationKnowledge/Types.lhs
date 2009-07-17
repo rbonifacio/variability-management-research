@@ -11,7 +11,6 @@
 --
 -- Configuration Knowledge in Haskell.
 --
---
 -----------------------------------------------------------------------------
 {-# OPTIONS -fglasgow-exts #-}
 module ConfigurationKnowledge.Types
@@ -22,14 +21,15 @@ import Data.Generics
 import BasicTypes
 import ComponentModel.Types
 import UseCaseModel.Types
-
+import RequirementModel.Types
 import FeatureModel.Types (FeatureModel, FeatureConfiguration, FeatureExpression)
 
 -- | A type that characterizes an initial representation  
 --   of a SPL. Later, we should refactor this type, 
 --   introducing new models, such as design, code, and tests.
 data SPLModel = SPLModel {
-      splFM :: FeatureModel , 
+      splFM  :: FeatureModel,
+      splReq :: RequirementModel,  
       splUCM :: UseCaseModel, 
       splMappings :: ComponentModel 
 } 
@@ -39,8 +39,9 @@ data SPLModel = SPLModel {
 --   configuration and a use case model. Later, other models
 --   might be introduced.
 data InstanceModel = InstanceModel { 
-      fc :: FeatureConfiguration, 
-      iucm :: UseCaseModel, 
+      fc  :: FeatureConfiguration,
+      req :: RequirementModel,   
+      ucm :: UseCaseModel, 
       components :: [Id] 
 } deriving (Data, Typeable)
                   
