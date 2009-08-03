@@ -23,30 +23,36 @@ type HappyAny = GHC.Exts.Any
 #else
 type HappyAny = forall a . a
 #endif
-happyIn6 :: (Ident) -> (HappyAbsSyn )
-happyIn6 x = unsafeCoerce# x
-{-# INLINE happyIn6 #-}
-happyOut6 :: (HappyAbsSyn ) -> (Ident)
-happyOut6 x = unsafeCoerce# x
-{-# INLINE happyOut6 #-}
-happyIn7 :: (ComponentModel) -> (HappyAbsSyn )
+happyIn7 :: (Ident) -> (HappyAbsSyn )
 happyIn7 x = unsafeCoerce# x
 {-# INLINE happyIn7 #-}
-happyOut7 :: (HappyAbsSyn ) -> (ComponentModel)
+happyOut7 :: (HappyAbsSyn ) -> (Ident)
 happyOut7 x = unsafeCoerce# x
 {-# INLINE happyOut7 #-}
-happyIn8 :: (ComponentMapping) -> (HappyAbsSyn )
+happyIn8 :: (ComponentModel) -> (HappyAbsSyn )
 happyIn8 x = unsafeCoerce# x
 {-# INLINE happyIn8 #-}
-happyOut8 :: (HappyAbsSyn ) -> (ComponentMapping)
+happyOut8 :: (HappyAbsSyn ) -> (ComponentModel)
 happyOut8 x = unsafeCoerce# x
 {-# INLINE happyOut8 #-}
-happyIn9 :: ([ComponentMapping]) -> (HappyAbsSyn )
+happyIn9 :: (ComponentMapping) -> (HappyAbsSyn )
 happyIn9 x = unsafeCoerce# x
 {-# INLINE happyIn9 #-}
-happyOut9 :: (HappyAbsSyn ) -> ([ComponentMapping])
+happyOut9 :: (HappyAbsSyn ) -> (ComponentMapping)
 happyOut9 x = unsafeCoerce# x
 {-# INLINE happyOut9 #-}
+happyIn10 :: (RelativePath) -> (HappyAbsSyn )
+happyIn10 x = unsafeCoerce# x
+{-# INLINE happyIn10 #-}
+happyOut10 :: (HappyAbsSyn ) -> (RelativePath)
+happyOut10 x = unsafeCoerce# x
+{-# INLINE happyOut10 #-}
+happyIn11 :: ([ComponentMapping]) -> (HappyAbsSyn )
+happyIn11 x = unsafeCoerce# x
+{-# INLINE happyIn11 #-}
+happyOut11 :: (HappyAbsSyn ) -> ([ComponentMapping])
+happyOut11 x = unsafeCoerce# x
+{-# INLINE happyOut11 #-}
 happyInTok :: (Token) -> (HappyAbsSyn )
 happyInTok x = unsafeCoerce# x
 {-# INLINE happyInTok #-}
@@ -56,88 +62,112 @@ happyOutTok x = unsafeCoerce# x
 
 
 happyActOffsets :: HappyAddr
-happyActOffsets = HappyA# "\x0f\x00\x0f\x00\x0f\x00\x0f\x00\x00\x00\x10\x00\x0c\x00\x0b\x00\x0b\x00\x0b\x00\x00\x00\x07\x00\x07\x00\x00\x00\x00\x00\x00\x00"#
+happyActOffsets = HappyA# "\x16\x00\x16\x00\x16\x00\x16\x00\x16\x00\x00\x00\x18\x00\x14\x00\x0f\x00\x11\x00\x0f\x00\x0f\x00\x0f\x00\x00\x00\x12\x00\x12\x00\x12\x00\x12\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"#
 
 happyGotoOffsets :: HappyAddr
-happyGotoOffsets = HappyA# "\x01\x00\x0d\x00\x09\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x05\x00\x06\x00\x00\x00\x00\x00\x00\x00"#
+happyGotoOffsets = HappyA# "\x01\x00\x10\x00\x0e\x00\x07\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x15\x00\x0c\x00\x04\x00\x0a\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"#
 
 happyDefActions :: HappyAddr
-happyDefActions = HappyA# "\xf9\xff\x00\x00\xf9\xff\x00\x00\xfc\xff\x00\x00\xf8\xff\x00\x00\x00\x00\x00\x00\xfb\xff\xf9\xff\x00\x00\xfa\xff\xf7\xff"#
+happyDefActions = HappyA# "\xf6\xff\x00\x00\x00\x00\xf6\xff\x00\x00\xfb\xff\x00\x00\xf5\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xfa\xff\x00\x00\x00\x00\xf6\xff\x00\x00\xf9\xff\xf4\xff\xf7\xff\xf8\xff"#
 
 happyCheck :: HappyAddr
-happyCheck = HappyA# "\xff\xff\x00\x00\x01\x00\x02\x00\x03\x00\x00\x00\x00\x00\x02\x00\x03\x00\x00\x00\x03\x00\x02\x00\x03\x00\x00\x00\x02\x00\x02\x00\x05\x00\x01\x00\x03\x00\xff\xff\xff\xff\xff\xff\xff\xff"#
+happyCheck = HappyA# "\xff\xff\x00\x00\x01\x00\x02\x00\x00\x00\x04\x00\x02\x00\x00\x00\x04\x00\x02\x00\x00\x00\x04\x00\x00\x00\x03\x00\x00\x00\x03\x00\x00\x00\x03\x00\x02\x00\x02\x00\x03\x00\x00\x00\x07\x00\x05\x00\x04\x00\x01\x00\xff\xff\x05\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff"#
 
 happyTable :: HappyAddr
-happyTable = HappyA# "\x00\x00\x05\x00\x09\x00\x06\x00\x0a\x00\x05\x00\x0d\x00\x06\x00\x0e\x00\x05\x00\x05\x00\x06\x00\x07\x00\x05\x00\x0c\x00\x08\x00\xff\xff\x0d\x00\x05\x00\x00\x00\x00\x00\x00\x00\x00\x00"#
+happyTable = HappyA# "\x00\x00\x06\x00\x0c\x00\x07\x00\x06\x00\x0d\x00\x07\x00\x06\x00\x13\x00\x07\x00\x09\x00\x08\x00\x09\x00\x12\x00\x09\x00\x14\x00\x06\x00\x0a\x00\x0b\x00\x0f\x00\x10\x00\x15\x00\xff\xff\x06\x00\x11\x00\x12\x00\x00\x00\x06\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"#
 
-happyReduceArr = array (3, 8) [
-	(3 , happyReduce_3),
+happyReduceArr = array (4, 11) [
 	(4 , happyReduce_4),
 	(5 , happyReduce_5),
 	(6 , happyReduce_6),
 	(7 , happyReduce_7),
-	(8 , happyReduce_8)
+	(8 , happyReduce_8),
+	(9 , happyReduce_9),
+	(10 , happyReduce_10),
+	(11 , happyReduce_11)
 	]
 
-happy_n_terms = 6 :: Int
-happy_n_nonterms = 4 :: Int
+happy_n_terms = 8 :: Int
+happy_n_nonterms = 5 :: Int
 
-happyReduce_3 = happySpecReduce_1  0# happyReduction_3
-happyReduction_3 happy_x_1
+happyReduce_4 = happySpecReduce_1  0# happyReduction_4
+happyReduction_4 happy_x_1
 	 =  case happyOutTok happy_x_1 of { (PT _ (TV happy_var_1)) -> 
-	happyIn6
+	happyIn7
 		 (Ident happy_var_1
 	)}
 
-happyReduce_4 = happySpecReduce_1  1# happyReduction_4
-happyReduction_4 happy_x_1
-	 =  case happyOut9 happy_x_1 of { happy_var_1 -> 
-	happyIn7
+happyReduce_5 = happySpecReduce_1  1# happyReduction_5
+happyReduction_5 happy_x_1
+	 =  case happyOut11 happy_x_1 of { happy_var_1 -> 
+	happyIn8
 		 (TComponentModel happy_var_1
 	)}
 
-happyReduce_5 = happySpecReduce_3  2# happyReduction_5
-happyReduction_5 happy_x_3
+happyReduce_6 = happySpecReduce_3  2# happyReduction_6
+happyReduction_6 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut6 happy_x_1 of { happy_var_1 -> 
-	case happyOut6 happy_x_3 of { happy_var_3 -> 
-	happyIn8
+	 =  case happyOut7 happy_x_1 of { happy_var_1 -> 
+	case happyOut10 happy_x_3 of { happy_var_3 -> 
+	happyIn9
 		 (TComponentMapping happy_var_1 happy_var_3
 	)}}
 
-happyReduce_6 = happySpecReduce_0  3# happyReduction_6
-happyReduction_6  =  happyIn9
-		 ([]
-	)
-
-happyReduce_7 = happySpecReduce_1  3# happyReduction_7
-happyReduction_7 happy_x_1
-	 =  case happyOut8 happy_x_1 of { happy_var_1 -> 
-	happyIn9
-		 ((:[]) happy_var_1
-	)}
+happyReduce_7 = happySpecReduce_3  3# happyReduction_7
+happyReduction_7 happy_x_3
+	happy_x_2
+	happy_x_1
+	 =  case happyOut7 happy_x_1 of { happy_var_1 -> 
+	case happyOut7 happy_x_3 of { happy_var_3 -> 
+	happyIn10
+		 (BasicFilePath happy_var_1 happy_var_3
+	)}}
 
 happyReduce_8 = happySpecReduce_3  3# happyReduction_8
 happyReduction_8 happy_x_3
 	happy_x_2
 	happy_x_1
-	 =  case happyOut8 happy_x_1 of { happy_var_1 -> 
-	case happyOut9 happy_x_3 of { happy_var_3 -> 
-	happyIn9
+	 =  case happyOut7 happy_x_1 of { happy_var_1 -> 
+	case happyOut10 happy_x_3 of { happy_var_3 -> 
+	happyIn10
+		 (ComposedFilePath happy_var_1 happy_var_3
+	)}}
+
+happyReduce_9 = happySpecReduce_0  4# happyReduction_9
+happyReduction_9  =  happyIn11
+		 ([]
+	)
+
+happyReduce_10 = happySpecReduce_1  4# happyReduction_10
+happyReduction_10 happy_x_1
+	 =  case happyOut9 happy_x_1 of { happy_var_1 -> 
+	happyIn11
+		 ((:[]) happy_var_1
+	)}
+
+happyReduce_11 = happySpecReduce_3  4# happyReduction_11
+happyReduction_11 happy_x_3
+	happy_x_2
+	happy_x_1
+	 =  case happyOut9 happy_x_1 of { happy_var_1 -> 
+	case happyOut11 happy_x_3 of { happy_var_3 -> 
+	happyIn11
 		 ((:) happy_var_1 happy_var_3
 	)}}
 
 happyNewToken action sts stk [] =
-	happyDoAction 5# notHappyAtAll action sts stk []
+	happyDoAction 7# notHappyAtAll action sts stk []
 
 happyNewToken action sts stk (tk:tks) =
 	let cont i = happyDoAction i tk action sts stk tks in
 	case tk of {
 	PT _ (TS "=>") -> cont 1#;
-	PT _ (TS ";") -> cont 2#;
-	PT _ (TV happy_dollar_dollar) -> cont 3#;
-	_ -> cont 4#;
+	PT _ (TS ".") -> cont 2#;
+	PT _ (TS "/") -> cont 3#;
+	PT _ (TS ";") -> cont 4#;
+	PT _ (TV happy_dollar_dollar) -> cont 5#;
+	_ -> cont 6#;
 	_ -> happyError' (tk:tks)
 	}
 
@@ -154,13 +184,16 @@ happyError' :: () => [(Token)] -> Err a
 happyError' = happyError
 
 pComponentModel tks = happySomeParser where
-  happySomeParser = happyThen (happyParse 0# tks) (\x -> happyReturn (happyOut7 x))
+  happySomeParser = happyThen (happyParse 0# tks) (\x -> happyReturn (happyOut8 x))
 
 pComponentMapping tks = happySomeParser where
-  happySomeParser = happyThen (happyParse 1# tks) (\x -> happyReturn (happyOut8 x))
+  happySomeParser = happyThen (happyParse 1# tks) (\x -> happyReturn (happyOut9 x))
+
+pRelativePath tks = happySomeParser where
+  happySomeParser = happyThen (happyParse 2# tks) (\x -> happyReturn (happyOut10 x))
 
 pListComponentMapping tks = happySomeParser where
-  happySomeParser = happyThen (happyParse 2# tks) (\x -> happyReturn (happyOut9 x))
+  happySomeParser = happyThen (happyParse 3# tks) (\x -> happyReturn (happyOut11 x))
 
 happySeq = happyDontSeq
 

@@ -21,7 +21,13 @@ transComponentModel x = case x of
 
 transComponentMapping :: ComponentMapping -> Result
 transComponentMapping x = case x of
-  TComponentMapping id0 id  -> failure x
+  TComponentMapping id relativepath  -> failure x
+
+
+transRelativePath :: RelativePath -> Result
+transRelativePath x = case x of
+  BasicFilePath id0 id  -> failure x
+  ComposedFilePath id relativepath  -> failure x
 
 
 

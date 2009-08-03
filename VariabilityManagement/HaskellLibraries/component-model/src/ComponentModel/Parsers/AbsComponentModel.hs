@@ -8,6 +8,11 @@ data ComponentModel =
   deriving (Eq,Ord,Show)
 
 data ComponentMapping =
-   TComponentMapping Ident Ident
+   TComponentMapping Ident RelativePath
+  deriving (Eq,Ord,Show)
+
+data RelativePath =
+   BasicFilePath Ident Ident
+ | ComposedFilePath Ident RelativePath
   deriving (Eq,Ord,Show)
 
