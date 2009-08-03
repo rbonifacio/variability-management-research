@@ -12,6 +12,7 @@ import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Glade
 import Graphics.UI.Gtk.ModelView as New
 import IO
+import System
 import qualified Data.Tree as Tree
 
 import Text.XML.HXT.Arrow
@@ -48,6 +49,12 @@ fcSchema = "schema_feature-configuration.rng"
 ckSchema :: String
 ckSchema = "schema-configuration-knowledge.rng"
 
+copy :: String
+copy = "cp " 
+
+mkdir :: String 
+mkdir = "mkdir -p " 
+
 data GUI = GUI {
       window :: Window, 
       ckWindow :: Window, 
@@ -58,6 +65,7 @@ data GUI = GUI {
       fmFChooser  :: FileChooserButton, 
       pcFChooser  :: FileChooserButton, 
       ckFChooser  :: FileChooserButton,
+      sdFChooser  :: FileChooserButton, 
       outFChooser :: FileChooserButton, 
       ckList     :: TreeView,
       errList    :: TreeView,
@@ -98,14 +106,15 @@ loadGlade f =
    
                  
    -- retrieves the file chooser elements.
-   [rmfc, ucmfc, cmfc, fmfc, pcfc, ckfc, outfc]  <- mapM (xmlGetWidget f castToFileChooserButton) ["rmFileChooser"
-                                                                                                  ,"ucmFileChooser"
-                                                                                                  ,"cmFileChooser"
-                                                                                                  ,"fmFileChooser"
-                                                                                                  ,"pcFileChooser"
-                                                                                                  ,"ckFileChooser"
-                                                                                                  ,"outputFileChooser"
-                                                                                                  ]
+   [rmfc, ucmfc, cmfc, fmfc, pcfc, ckfc, sdfc, outfc]  <- mapM (xmlGetWidget f castToFileChooserButton) ["rmFileChooser"
+                                                                                                        ,"ucmFileChooser"
+                                                                                                        ,"cmFileChooser"
+                                                                                                        ,"fmFileChooser"
+                                                                                                        ,"pcFileChooser"
+                                                                                                        ,"ckFileChooser"
+                                                                                                        ,"sdFileChooser"  
+                                                                                                        ,"outputFileChooser"
+                                                                                                        ]
    -- retrieves the tree view and list elements
    [ckl, errl, ftree] <- mapM (xmlGetWidget f castToTreeView) ["ckList"
                                                               , "errorList"
@@ -129,6 +138,7 @@ loadGlade f =
                 fmFChooser  = fmfc,
                 pcFChooser  = pcfc,
                 ckFChooser  = ckfc,
+                sdFChooser  = sdfc,
                 outFChooser = outfc,
                 ckList      = ckl,
                 errList     = errl,
@@ -300,21 +310,48 @@ executeBuildingProcess gui (rmFile, ucmFile, cmFile, fmFile, icFile, ckFile, out
      otherwise -> putStrLn "Error on input files. Try to check the input file."
     
 -- -------------------------------------------------------------------------
--- export the output files of a product generate from 
+-- export the output files of a product generated from 
 -- the results of a weaving process. 
 -- ------------------------------------------------------------------------
 exportResult gui p = 
  do
-   dir <- fileChooserGetCurrentFolder (outFChooser gui)
-   case dir of 
-     Just dpath -> do 
-         exportUcmToLatex (dpath ++ "/use-cases.tex") (ucm p)
-         exportBuildFile  (dpath ++ "/build.lst") (components p)       
+   odir        <- fileChooserGetCurrentFolder (outFChooser gui)
+   (Just sdir) <- fileChooserGetCurrentFolder (sdFChooser gui)
+   case odir of 
+     Just odpath -> do 
+         exportUcmToLatex (odpath ++ "/use-cases.tex") (ucm p)
+         exportBuildFile  (odpath ++ "/build.lst") (components p)
+         copySourceFiles odpath sdir (components p)                  
             
      Nothing -> showDialog (window gui) 
                 MessageError 
                "Please, select an output directory."
 
+-- ----------------------------------------------------------------------
+-- Copy selected source files to the output directory
+-- ----------------------------------------------------------------------
+copySourceFiles out source [] = do return ()
+copySourceFiles out source (x:xs) = 
+ do 
+  copySourceFile out source x
+  copySourceFiles out source xs
+
+copySourceFile out source f = 
+ do 
+  let l = length (Core.split '/' f)
+  let d = fst $ splitAt (l-1) (Core.split '/' f)
+  let p = concat $ map (++ "/") d   
+  let cmd =  (copy ++ (source ++ f) ++ " " ++ (out ++ p)) 
+  code <- System.system (copy ++ (source ++ "/" ++ f) ++ " " ++ (out ++ "/src/" ++ p))   
+  case code of 
+   ExitSuccess   -> print $ "[Hephaestus] -> File " ++ f ++ " exported to the output directory."
+   ExitFailure n -> do 
+    print $ "[Hepheastus] -> Creating directory " ++ (out ++ "/src/" ++ p)
+    System.system(mkdir ++ out ++ "/src/" ++ p)
+    print $ "[Hephaestus] -> Directory " ++ (out ++ "/src/" ++ p) ++ " created." 
+    System.system (copy ++ (source ++ "/" ++ f) ++ " " ++ (out ++ "/src/" ++ p))  
+    print $ "[Hephaestus] -> File " ++ f ++ " exported to the output directory." 
+              
 -- -----------------------------------------------------------------------
 -- Exports a use case model as a latex document.
 -- -----------------------------------------------------------------------
