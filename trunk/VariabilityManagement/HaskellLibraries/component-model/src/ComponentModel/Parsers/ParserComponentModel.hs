@@ -23,4 +23,8 @@ translateModel :: ComponentModel -> T.ComponentModel
 translateModel (TComponentModel cs) = map translateMapping cs 
 
 translateMapping :: ComponentMapping -> T.ComponentMapping 
-translateMapping (TComponentMapping (Ident i) (Ident c)) = (i, c)
+translateMapping (TComponentMapping (Ident i) p) = (i, path p)
+
+path :: RelativePath -> String
+path (BasicFilePath (Ident n) (Ident e)) = n ++ "." ++ e
+path (ComposedFilePath (Ident i) p ) = i ++ "/" ++ path p
