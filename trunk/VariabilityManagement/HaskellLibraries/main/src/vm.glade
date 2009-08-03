@@ -36,7 +36,7 @@
                         <child>
                           <widget class="GtkLabel" id="label9">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">Requirement Model</property>
+                            <property name="label" translatable="yes">Requirement model</property>
                           </widget>
                         </child>
                         <child>
@@ -86,6 +86,15 @@
                           <packing>
                             <property name="fill">False</property>
                             <property name="position">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label10">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Source directory</property>
+                          </widget>
+                          <packing>
+                            <property name="position">6</property>
                           </packing>
                         </child>
                       </widget>
@@ -144,6 +153,15 @@
                           </widget>
                           <packing>
                             <property name="position">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkFileChooserButton" id="sdFileChooser">
+                            <property name="visible">True</property>
+                            <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+                          </widget>
+                          <packing>
+                            <property name="position">6</property>
                           </packing>
                         </child>
                       </widget>
