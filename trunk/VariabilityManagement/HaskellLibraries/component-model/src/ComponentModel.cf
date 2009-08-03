@@ -1,9 +1,11 @@
 TComponentModel. ComponentModel ::= [ComponentMapping] ;
 
-TComponentMapping. ComponentMapping ::= Ident "=>" Ident ;
+TComponentMapping. ComponentMapping ::= Ident "=>" RelativePath ;
+
+BasicFilePath. RelativePath ::= Ident ;
+ComposedFilePath. RelativePath ::= Ident "/" RelativePath ; 
 
 separator ComponentMapping ";" ;
-
 
 
  
