@@ -381,7 +381,7 @@ executeFileChecker (Just f) s m store = do {
                   readDocument [(a_validate, v_0)
                                ,(a_relax_schema, s)
                                ,(a_issue_errors, "0")                              
-                               ] f
+                               ] (Core.createURI f)  
                   >>>
                   getErrorMessages
                 ) ;
