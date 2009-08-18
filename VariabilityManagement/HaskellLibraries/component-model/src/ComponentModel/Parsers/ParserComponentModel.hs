@@ -26,5 +26,6 @@ translateMapping :: ComponentMapping -> T.ComponentMapping
 translateMapping (TComponentMapping (Ident i) p) = (i, path p)
 
 path :: RelativePath -> String
-path (BasicFilePath (Ident n) (Ident e)) = n ++ "." ++ e
+path (BasicFilePath (Ident n)) = n
+path (BasicFilePathExt (Ident n) (Ident e)) = n ++ "." ++ e
 path (ComposedFilePath (Ident i) p ) = i ++ "/" ++ path p
