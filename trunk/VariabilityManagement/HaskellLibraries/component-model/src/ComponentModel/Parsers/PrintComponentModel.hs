@@ -98,7 +98,8 @@ instance Print ComponentMapping where
 
 instance Print RelativePath where
   prt i e = case e of
-   BasicFilePath id0 id -> prPrec i 0 (concatD [prt 0 id0 , doc (showString ".") , prt 0 id])
+   BasicFilePath id -> prPrec i 0 (concatD [prt 0 id])
+   BasicFilePathExt id0 id -> prPrec i 0 (concatD [prt 0 id0 , doc (showString ".") , prt 0 id])
    ComposedFilePath id relativepath -> prPrec i 0 (concatD [prt 0 id , doc (showString "/") , prt 0 relativepath])
 
 

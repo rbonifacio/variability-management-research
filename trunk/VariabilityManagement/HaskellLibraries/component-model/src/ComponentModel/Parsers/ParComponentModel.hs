@@ -15,7 +15,7 @@ import GHC.Exts
 import GlaExts
 #endif
 
--- parser produced by Happy Version 1.18.2
+-- parser produced by Happy Version 1.17
 
 newtype HappyAbsSyn  = HappyAbsSyn HappyAny
 #if __GLASGOW_HASKELL__ >= 607
@@ -53,10 +53,10 @@ happyIn11 x = unsafeCoerce# x
 happyOut11 :: (HappyAbsSyn ) -> ([ComponentMapping])
 happyOut11 x = unsafeCoerce# x
 {-# INLINE happyOut11 #-}
-happyInTok :: (Token) -> (HappyAbsSyn )
+happyInTok :: Token -> (HappyAbsSyn )
 happyInTok x = unsafeCoerce# x
 {-# INLINE happyInTok #-}
-happyOutTok :: (HappyAbsSyn ) -> (Token)
+happyOutTok :: (HappyAbsSyn ) -> Token
 happyOutTok x = unsafeCoerce# x
 {-# INLINE happyOutTok #-}
 
@@ -68,7 +68,7 @@ happyGotoOffsets :: HappyAddr
 happyGotoOffsets = HappyA# "\x01\x00\x10\x00\x0e\x00\x07\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x15\x00\x0c\x00\x04\x00\x0a\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"#
 
 happyDefActions :: HappyAddr
-happyDefActions = HappyA# "\xf6\xff\x00\x00\x00\x00\xf6\xff\x00\x00\xfb\xff\x00\x00\xf5\xff\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xfa\xff\x00\x00\x00\x00\xf6\xff\x00\x00\xf9\xff\xf4\xff\xf7\xff\xf8\xff"#
+happyDefActions = HappyA# "\xf5\xff\x00\x00\x00\x00\xf5\xff\x00\x00\xfb\xff\x00\x00\xf4\xff\x00\x00\xf8\xff\x00\x00\x00\x00\x00\x00\xfa\xff\x00\x00\x00\x00\xf5\xff\x00\x00\xf9\xff\xf3\xff\xf6\xff\xf7\xff"#
 
 happyCheck :: HappyAddr
 happyCheck = HappyA# "\xff\xff\x00\x00\x01\x00\x02\x00\x00\x00\x04\x00\x02\x00\x00\x00\x04\x00\x02\x00\x00\x00\x04\x00\x00\x00\x03\x00\x00\x00\x03\x00\x00\x00\x03\x00\x02\x00\x02\x00\x03\x00\x00\x00\x07\x00\x05\x00\x04\x00\x01\x00\xff\xff\x05\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff"#
@@ -76,7 +76,7 @@ happyCheck = HappyA# "\xff\xff\x00\x00\x01\x00\x02\x00\x00\x00\x04\x00\x02\x00\x
 happyTable :: HappyAddr
 happyTable = HappyA# "\x00\x00\x06\x00\x0c\x00\x07\x00\x06\x00\x0d\x00\x07\x00\x06\x00\x13\x00\x07\x00\x09\x00\x08\x00\x09\x00\x12\x00\x09\x00\x14\x00\x06\x00\x0a\x00\x0b\x00\x0f\x00\x10\x00\x15\x00\xff\xff\x06\x00\x11\x00\x12\x00\x00\x00\x06\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"#
 
-happyReduceArr = array (4, 11) [
+happyReduceArr = array (4, 12) [
 	(4 , happyReduce_4),
 	(5 , happyReduce_5),
 	(6 , happyReduce_6),
@@ -84,7 +84,8 @@ happyReduceArr = array (4, 11) [
 	(8 , happyReduce_8),
 	(9 , happyReduce_9),
 	(10 , happyReduce_10),
-	(11 , happyReduce_11)
+	(11 , happyReduce_11),
+	(12 , happyReduce_12)
 	]
 
 happy_n_terms = 8 :: Int
@@ -114,18 +115,25 @@ happyReduction_6 happy_x_3
 		 (TComponentMapping happy_var_1 happy_var_3
 	)}}
 
-happyReduce_7 = happySpecReduce_3  3# happyReduction_7
-happyReduction_7 happy_x_3
+happyReduce_7 = happySpecReduce_1  3# happyReduction_7
+happyReduction_7 happy_x_1
+	 =  case happyOut7 happy_x_1 of { happy_var_1 -> 
+	happyIn10
+		 (BasicFilePath happy_var_1
+	)}
+
+happyReduce_8 = happySpecReduce_3  3# happyReduction_8
+happyReduction_8 happy_x_3
 	happy_x_2
 	happy_x_1
 	 =  case happyOut7 happy_x_1 of { happy_var_1 -> 
 	case happyOut7 happy_x_3 of { happy_var_3 -> 
 	happyIn10
-		 (BasicFilePath happy_var_1 happy_var_3
+		 (BasicFilePathExt happy_var_1 happy_var_3
 	)}}
 
-happyReduce_8 = happySpecReduce_3  3# happyReduction_8
-happyReduction_8 happy_x_3
+happyReduce_9 = happySpecReduce_3  3# happyReduction_9
+happyReduction_9 happy_x_3
 	happy_x_2
 	happy_x_1
 	 =  case happyOut7 happy_x_1 of { happy_var_1 -> 
@@ -134,20 +142,20 @@ happyReduction_8 happy_x_3
 		 (ComposedFilePath happy_var_1 happy_var_3
 	)}}
 
-happyReduce_9 = happySpecReduce_0  4# happyReduction_9
-happyReduction_9  =  happyIn11
+happyReduce_10 = happySpecReduce_0  4# happyReduction_10
+happyReduction_10  =  happyIn11
 		 ([]
 	)
 
-happyReduce_10 = happySpecReduce_1  4# happyReduction_10
-happyReduction_10 happy_x_1
+happyReduce_11 = happySpecReduce_1  4# happyReduction_11
+happyReduction_11 happy_x_1
 	 =  case happyOut9 happy_x_1 of { happy_var_1 -> 
 	happyIn11
 		 ((:[]) happy_var_1
 	)}
 
-happyReduce_11 = happySpecReduce_3  4# happyReduction_11
-happyReduction_11 happy_x_3
+happyReduce_12 = happySpecReduce_3  4# happyReduction_12
+happyReduction_12 happy_x_3
 	happy_x_2
 	happy_x_1
 	 =  case happyOut9 happy_x_1 of { happy_var_1 -> 
@@ -180,7 +188,7 @@ happyReturn = (returnM)
 happyThen1 m k tks = (thenM) m (\a -> k a tks)
 happyReturn1 :: () => a -> b -> Err a
 happyReturn1 = \a tks -> (returnM) a
-happyError' :: () => [(Token)] -> Err a
+happyError' :: () => [Token] -> Err a
 happyError' = happyError
 
 pComponentModel tks = happySomeParser where
