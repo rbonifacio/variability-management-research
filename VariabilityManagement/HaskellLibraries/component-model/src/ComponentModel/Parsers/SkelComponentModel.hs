@@ -26,7 +26,8 @@ transComponentMapping x = case x of
 
 transRelativePath :: RelativePath -> Result
 transRelativePath x = case x of
-  BasicFilePath id0 id  -> failure x
+  BasicFilePath id  -> failure x
+  BasicFilePathExt id0 id  -> failure x
   ComposedFilePath id relativepath  -> failure x
 
 

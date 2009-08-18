@@ -12,7 +12,8 @@ data ComponentMapping =
   deriving (Eq,Ord,Show)
 
 data RelativePath =
-   BasicFilePath Ident Ident
+   BasicFilePath Ident
+ | BasicFilePathExt Ident Ident
  | ComposedFilePath Ident RelativePath
   deriving (Eq,Ord,Show)
 
