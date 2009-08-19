@@ -37,6 +37,9 @@ import ComponentModel.Parsers.ParserComponentModel
 data ConfigurationData = ConfigurationData { expressionData :: String , transformationData :: String } deriving Show
 data ErrorData = ErrorData { inputModel :: String, errorDesc :: String }
 
+fmSchema :: String 
+fmSchema = "schema_feature-model.rng"
+
 rmSchema :: String 
 rmSchema = "schema_requirements.rng"
 
@@ -281,7 +284,7 @@ supportedFmTypes = [ ("xml", FMPlugin), (".m" , FMIde) ]
 parseFeatureModel' fmfile = 
  let p = [snd t | t <- supportedFmTypes , (fst t) `isSuffixOf` fmfile]
  in case p of 
-  [x] -> (parseFeatureModel fmfile x)
+  [x] -> (parseFeatureModel (fmfile, fmSchema) x)
   otherwise -> error "Error identifying the feature model type"
 
 
@@ -381,7 +384,7 @@ executeFileChecker (Just f) s m store = do {
                   readDocument [(a_validate, v_0)
                                ,(a_relax_schema, s)
                                ,(a_issue_errors, "0")                              
-                               ] (Core.createURI f)  
+                               ] (Core.createURI f)
                   >>>
                   getErrorMessages
                 ) ;
