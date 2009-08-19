@@ -50,7 +50,7 @@ checkUseCaseFile fileName schema =
                   readDocument [(a_validate, v_0)
                                ,(a_relax_schema, schema)
                                ,(a_issue_errors, "0")                              
-                               ] fileName
+                               ] (createURI fileName)
                   >>>
                   getErrorMessages
                 ) ;
@@ -64,7 +64,7 @@ parseUseCaseFile' fileName =
  					   , (a_trace, v_1)
  					   , (a_remove_whitespace,v_1)
  					   , (a_preserve_comment, v_0)
- 					   ] fileName )
+ 					   ] (createURI fileName) )
    let ucmodel = xmlUseCaseModel2UseCaseModel (head (ucms x))
    return ucmodel
       
