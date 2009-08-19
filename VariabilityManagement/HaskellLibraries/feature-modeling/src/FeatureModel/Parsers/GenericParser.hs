@@ -43,11 +43,11 @@ data FmFormat = FMPlugin | FMIde | FMGrammar | SXFM
 -- The top most function for parsing feature models 
 -- in different formats. 
 -- 
-parseFeatureModel fileName format = do
+parseFeatureModel (fileName, schema) format = do
  x <- readFile (fileName) 
  case (format) of 
   FMPlugin -> do
-    fm <- translateFMPToFm fileName
+    fm <- translateFMPToFm (fileName, schema)
     return fm
    
   FMIde -> do
@@ -76,10 +76,10 @@ parseInstanceConfiguration fileName =
  					                  , (a_trace, v_1)
  					                  , (a_remove_whitespace,v_1)
  					                  , (a_preserve_comment, v_0)
- 					                  ] fileName)
+ 					                  ] (Core.createURI fileName) )
    case i of 
     [x] -> do return $ Core.Success (xml2FeatureConfiguration x)
-    otherwise -> return $ Core.Fail "Error parsing feature model. Try to check it before parsing."
+    otherwise -> return $ Core.Fail "Error parsing instance configuration. Try to check it before parsing."
     
 
 translateFMIdeToFm (Ok g)  = Core.Success (grammarToFeatureModel g)
@@ -88,13 +88,35 @@ translateFMIdeToFm (Bad s) = Core.Fail s
 translateFMGrammarToFm (EFMG.Ok g) = Core.Success (GFMG.grammarToFeatureModel g)  
 translateFMGrammarToFm (EFMG.Bad s) = Core.Fail s
 
-translateFMPToFm s = 
+translateFMPToFm (f,s) = 
  do
-   u <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
-                                           , (a_trace, v_1)
-                                           , (a_remove_whitespace,v_1)
-                                           , (a_preserve_comment, v_0)
-                                           ] s);
-   case u of 
-     [x] -> return $ Core.Success (FeatureModel { fmTree = (xmlFeature2FeatureTree x), fmConstraints = [] })
-     otherwise -> return $ Core.Fail "Error parsing feature model. Try to check it before parsing."
+   let uri = Core.createURI f
+   errs <- checkFMPFile (uri,s)
+   case errs of 
+     --
+     [] -> 
+         do 
+          u <- runX ( xunpickleDocument xpFeature [ (a_validate,v_0)
+                                                  , (a_trace, v_1)
+                                                  , (a_remove_whitespace,v_1)
+                                                  , (a_preserve_comment, v_0)
+                                                  ] uri);
+          case u of 
+            [x] -> return $ Core.Success (FeatureModel { fmTree = (xmlFeature2FeatureTree x), fmConstraints = [] })
+            otherwise -> return $ Core.Fail "Error parsing feature model. Try to check it before parsing."
+
+     -- errors found after checking the FMPlugin file 
+     otherwise -> return $ Core.Fail ("Error parsing feature model. " ++ (concat [show e | e <- errs]))
+
+checkFMPFile (f,s) = 
+ do
+   errs <- runX ( errorMsgCollect 
+                  >>> 
+                  readDocument [(a_validate, v_0)
+                               ,(a_relax_schema, s)
+                               ,(a_issue_errors, "0")                              
+                               ] f
+                  >>>
+                  getErrorMessages
+                ) ;
+   return errs
