@@ -32,7 +32,7 @@ parseConfigurationKnowledge fileName =
  				                          , (a_trace, v_1)
  				                          , (a_remove_whitespace,v_1)
  				                          , (a_preserve_comment, v_0)
-                                                          ] fileName )
+                                                          ] (createURI fileName) )
    case c of 
      [x] -> return $ Success (xml2ConfigurationKnowledge x)
      otherwise -> return $ Fail "Error parsing the configuration knowledge file. Try to check the input file."
