@@ -159,7 +159,8 @@ loadGlade f =
 connectGui gui = 
  do
   onDestroy (window gui) mainQuit
-  onDestroy (fmWindow gui)$ widgetHide (fmWindow gui)
+  -- onDestroy (fmWindow gui)$ widgetHide (fmWindow gui)
+  onDelete  (fmWindow gui) $ \event -> widgetHide (fmWindow gui) >> return True 
   
   ckStore <- createCKStore
   New.treeViewSetModel (ckList gui) ckStore
