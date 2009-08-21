@@ -1,0 +1,121 @@
+<feature_model name="Model_Transformation">
+<feature_tree>
+:r ModelTransformation
+	[:m TransformationRules
+		[:m LHS_RHS
+			[:o Variables
+				<:g[1,1]
+					[: Untyped
+					 : SyntacticallyTyped 
+					 : SemanticallyTyped]>]
+		  :m LHS_RHS_g	
+                        <:g[1,*]
+				[: Patterns
+					[:m Form
+						<:g[1,1]
+							[: Strings
+							 : Terms
+							 : Graphs]>
+					:m Syntax
+						<:g[1,*]
+							[: Abstract
+							 : Concrete
+								<:g[1,*]
+									[: Textual
+									 : Graphical]>]>
+					:m Typing
+						<:g[1,1]
+							[: Untyped (typ_untyped)
+							 : SyntacticallyTyped (typ_syntactically_typed)
+							 : SemanticallyTyped (typ_semantically_typed)]>]
+				: Logic
+					<:g[1,*]
+						[: NonExecutable
+						 : Executable
+							<:g[1,*]
+								[: Imperative
+								 : Declarative]>]>]>
+		:o LHS_RHS_SyntacticSeparation
+		:o Bidirectionality
+		:o Parameterization
+		:o IntermediateStructures]
+	:o RuleAapplicationScoping
+		<:g[1,*]
+			[: Source (scoping_source)
+			 : Target (target_source)]>
+	:m SourceTargetRelationship
+		<:g[1,*]
+			[: NewTarget
+			 : ExistingTarget
+				[:o InPlace
+				 :m Update
+					<:g[1,1]
+						[: Destructive
+						 : ExtensionOnly]>]]>
+	:m RuleApplicationStrategy
+		<:g[1,*]
+			[: Deterministic
+			 : NonDeterministic
+				<:g[1,*]
+					[: Concurrent
+					 : OnePoint]>
+			: Interactive]>
+	:m RuleScheduling
+		[:m Form
+			<:g[1,*]
+				[: Implicit
+				 : Explicit
+					<:g[1,1]
+						[: Internal
+						 : External]>]>
+		:m RuleSelection
+			<:g[1,*]
+				[: ExplicitCondition
+				 : NonDeterminism
+				 : ConflictResolution
+				 : Interactive]>
+		:o RuleIteration
+			<:g[1,1]
+				[: Recursion
+				 : Looping
+				 : FixpointIteration]>
+		:o Phasing]
+	:m RuleOrganization
+		[:o ModulatiryMechanisms
+		 :o ReuseMechanisms
+			<:g[1,*]
+				[: Inheritance
+				 : LogicalComposition]>
+		:m OrganizationalStructure
+			<:g[1,1]
+				[: SourceOriented
+				 : TargetOriented
+				 : Independent]>]
+	:m Tracing
+		[:o DedicatedSupport
+			[:m StorageLocation (id_storage_location)
+				<:g[1,1]
+					[: Model
+						<:g[1,*]
+							[: Source (model_source)
+							 : Target (model_target)]>
+					: Separate]>
+			:m Control
+				<:g[1,1]
+					[: Manual (id_manual)
+					 : Automatic
+						<:g[1,1]
+							[: AllRules
+							 : SelectedRules]>]>]]
+	:m Directionality
+		<:g[1,*]
+			[: Unidirectional
+			 : Bidirectional
+				<:g[1,1]
+					[: BidirectionalRules
+					 : ComplementaryPairs]>]>]
+</feature_tree>
+<constraints>
+implies(id_storage_location, id_manual)
+</constraints>
+</feature_model>

@@ -1,0 +1,72 @@
+<feature min="1" max="1" name="online-B2C-solution.emx" type="NONE" id="My Model">
+  <feature min="1" max="1" name="eCommerce" type="NONE" id="eCommerce">
+    <feature min="1" max="1" name="Storefront" type="NONE" id="storefront">
+      <feature min="1" max="1" name="Buy Path" type="NONE" id="buyPath">
+        <feature min="1" max="1" name="Shopping Cart" type="NONE" id="shoppingCart">
+        </feature>
+        <feature min="1" max="1" name="Checkout" type="NONE" id="checkout">
+          <feature min="1" max="1" name="Checkout Type" type="NONE" id="checkoutType">
+            <featureGroup min="1" max="2" id="group">
+              <feature min="0" max="1" name="Registered" type="NONE" id="registered">
+                <feature min="0" max="1" name="Quick Checkout Profile" type="NONE" id="quickCheckoutProfile">
+                </feature>
+              </feature>
+              <feature min="0" max="1" name="Guest" type="NONE" id="guest">
+              </feature>
+            </featureGroup>
+          </feature>
+        </feature>
+      </feature>
+      <feature min="1" max="1" name="Catalog" type="NONE" id="catalog">
+        <feature min="1" max="1" name="Catalog Structure" type="NONE" id="catalogStructure">
+          <feature min="0" max="1" name="Categories" type="NONE" id="categories">
+            <feature min="0" max="1" name="Multilevel" type="NONE" id="multilevel">
+            </feature>
+            <feature min="0" max="1" name="Multiple Classification" type="NONE" id="multipleClassification">
+            </feature>
+          </feature>
+          <feature min="1" max="1" name="Product Information" type="NONE" id="productInformation">
+            <feature min="1" max="1" name="Basic Information" type="NONE" id="basicInformation">
+            </feature>
+            <feature min="0" max="1" name="Detailed Description" type="NONE" id="detailedDescription">
+            </feature>
+            <feature min="0" max="1" name="Warranty Information" type="NONE" id="warrantyInformation">
+            </feature>
+            <feature min="0" max="1" name="Customer Reviews" type="NONE" id="customerReviews">
+            </feature>
+            <feature min="0" max="1" name="Associated Assets" type="NONE" id="associatedAssets">
+            </feature>
+            <feature min="1" max="1" name="Product Type" type="NONE" id="productType">
+              <featureGroup min="1" max="3" id="group0">
+                <feature min="0" max="1" name="Electronic Goods" type="NONE" id="electronicGoods">
+                </feature>
+                <feature min="0" max="1" name="Services" type="NONE" id="services">
+                </feature>
+                <feature min="0" max="1" name="Physical Goods" type="NONE" id="physicalGoods">
+                </feature>
+              </featureGroup>
+            </feature>
+          </feature>
+        </feature>
+        <feature min="0" max="1" name="Search" type="NONE" id="search">
+        </feature>
+        <feature min="1" max="1" name="Browsing" type="NONE" id="browsing">
+        </feature>
+      </feature>
+      <feature min="0" max="1" name="Registration" type="NONE" id="registration">
+      </feature>
+      <feature min="0" max="1" name="Wish Lists" type="NONE" id="wishLists">
+        <feature min="0" max="1" name="Send Wish List" type="NONE" id="sendWishList">
+        </feature>
+        <feature min="0" max="1" name="Persistent Between Sessions" type="NONE" id="persistentBetweenSessions">
+        </feature>
+      </feature>
+    </feature>
+    <feature min="1" max="1" name="Business Management" type="NONE" id="businessManagement">
+      <feature min="1" max="1" name="Order Management" type="NONE" id="orderManagement">
+      </feature>
+      <feature min="0" max="1" name="Inventory Tracking" type="NONE" id="inventoryTracking">
+      </feature>
+    </feature>
+  </feature>
+</feature>

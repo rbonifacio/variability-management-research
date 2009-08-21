@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rng:grammar xmlns:rng="http://relaxng.org/ns/structure/1.0" ns="user-view.target.v20090401" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <!-- defines the featureId type -->
+    <rng:define name="featureId">
+        <rng:data type="string">
+            <rng:param name="pattern">([0-9])+</rng:param>
+        </rng:data>
+    </rng:define>
+    <!-- definition of useCaseId type -->
+    <rng:define name="useCaseId">
+        <rng:data type="string">
+            <rng:param name="pattern">([0-9a-zA-Z_])+</rng:param>
+        </rng:data>
+    </rng:define>
+    <!-- definition of id type -->
+    <rng:define name="aspectId">
+        <rng:data type="string">
+            <rng:param name="pattern">([0-9a-zA-Z_])+</rng:param>
+        </rng:data>
+    </rng:define>
+    <rng:define name="adviceId">
+        <rng:data type="string">
+            <rng:param name="pattern">([0-9a-zA-Z_])+</rng:param>
+        </rng:data>
+    </rng:define>
+    <rng:define name="scenarioId">
+        <rng:data type="string">
+            <rng:param name="pattern">([0-9a-zA-Z_])+</rng:param>
+        </rng:data>
+    </rng:define>
+    <rng:define name="stepId">
+        <rng:data type="string">
+            <rng:param name="pattern">([0-9a-zA-Z_])+</rng:param>
+        </rng:data>
+    </rng:define>
+    <!-- beginning of definition of type useCaseType -->
+    <rng:define name="useCaseType">
+        
+        <rng:element name="id">
+            <rng:ref name="useCaseId"/>
+        </rng:element>
+        <rng:element name="name">
+            <rng:data type="string"/>
+        </rng:element>
+        <rng:element name="description">
+            <rng:data type="string"/>
+        </rng:element>
+        <rng:element name="setup">
+            <rng:data type="string"/>
+        </rng:element>
+        <rng:oneOrMore>
+            <rng:element name="flow">
+                
+                
+                <rng:element name="id">
+                    <rng:ref name="scenarioId"/>
+                </rng:element>
+                <rng:element name="description">
+                    <rng:data type="string"/>
+                </rng:element>
+                <rng:element name="fromSteps">
+                    <rng:data type="string"/>
+                </rng:element>
+                <rng:element name="toSteps">
+                    <rng:data type="string"/>
+                </rng:element>
+                <!-- beginning of definition of element step -->
+                <rng:oneOrMore>
+                    <rng:element name="step">
+                        
+                        
+                        <rng:element name="stepId">
+                            <rng:ref name="stepId"/>
+                        </rng:element>
+                        <rng:element name="action">
+                            <rng:data type="string"/>
+                        </rng:element>
+                        <rng:element name="condition">
+                            <rng:data type="string"/>
+                        </rng:element>
+                        <rng:optional>
+                            <rng:element name="setup">
+                                <rng:data type="string"/>
+                            </rng:element>
+                        </rng:optional>
+                        <rng:element name="response">
+                            <rng:data type="string"/>
+                        </rng:element>
+                        
+                        
+                    </rng:element>
+                </rng:oneOrMore>
+                
+                
+            </rng:element>
+        </rng:oneOrMore>
+        
+    </rng:define>
+    <!-- end of definition of type useCaseType -->
+    
+    <!-- beginning of definition of type interruptionType -->
+    <rng:define name="aspectType">
+        
+        <rng:element name="id">
+            <rng:ref name="aspectId"/>
+        </rng:element>
+        <rng:element name="name">
+            <rng:data type="string"/>
+        </rng:element>
+        <rng:oneOrMore>
+            <rng:element name="advice">
+                
+                
+                <rng:element name="id">
+                    <rng:ref name="adviceId"/>
+                </rng:element>
+                <rng:element name="type">
+                    <rng:data type="string"/>
+                </rng:element>
+                <rng:element name="pointCut">
+                    <rng:data type="string"/>
+                </rng:element>
+                <!-- beginning of definition of element step -->
+                <rng:oneOrMore>
+                    <rng:element name="step">
+                        
+                        
+                        <rng:element name="stepId">
+                            <rng:ref name="stepId"/>
+                        </rng:element>
+                        <rng:element name="action">
+                            <rng:data type="string"/>
+                        </rng:element>
+                        <rng:element name="condition">
+                            <rng:data type="string"/>
+                        </rng:element>
+                        <rng:element name="response">
+                            <rng:data type="string"/>
+                        </rng:element>
+                        
+                        
+                    </rng:element>
+                </rng:oneOrMore>
+                
+                
+            </rng:element>
+        </rng:oneOrMore>
+        
+    </rng:define>
+    <rng:define name="interruptionType">
+        
+        <rng:element name="id">
+            <rng:ref name="useCaseId"/>
+        </rng:element>
+        <rng:element name="name">
+            <rng:data type="string"/>
+        </rng:element>
+        <rng:element name="description">
+            <rng:data type="string"/>
+        </rng:element>
+        <rng:oneOrMore>
+            <rng:element name="flow">
+                
+                
+                <rng:element name="description">
+                    <rng:data type="string"/>
+                </rng:element>
+                <rng:element name="fromSteps">
+                    <rng:data type="string"/>
+                </rng:element>
+                <rng:element name="toSteps">
+                    <rng:data type="string"/>
+                </rng:element>
+                <!-- beginning of definition of element step -->
+                <rng:oneOrMore>
+                    <rng:element name="step">
+                        
+                        
+                        <rng:element name="stepId">
+                            <rng:ref name="stepId"/>
+                        </rng:element>
+                        <rng:element name="action">
+                            <rng:data type="string"/>
+                        </rng:element>
+                        <rng:element name="condition">
+                            <rng:data type="string"/>
+                        </rng:element>
+                        <rng:element name="response">
+                            <rng:data type="string"/>
+                        </rng:element>
+                        
+                        
+                    </rng:element>
+                </rng:oneOrMore>
+                
+                
+            </rng:element>
+        </rng:oneOrMore>
+        
+    </rng:define>
+    <!-- end of definition of type interruptionType -->
+    
+    <rng:define name="featureType">
+        
+        <rng:element name="featureId">
+            <rng:ref name="featureId"/>
+        </rng:element>
+        <rng:element name="name">
+            <rng:data type="string"/>
+        </rng:element>
+        <!-- beginning of definition of element useCase -->
+        <rng:oneOrMore>
+            <rng:element name="useCase">
+                <rng:ref name="useCaseType"/>
+            </rng:element>
+        </rng:oneOrMore>
+        <!-- end of definition of element useCase -->
+        <rng:zeroOrMore>
+            <rng:element name="aspect">
+                <rng:ref name="aspectType"/>
+            </rng:element>
+        </rng:zeroOrMore>
+        
+    </rng:define>
+    
+    
+    <rng:define name="phoneType">
+        
+        <rng:zeroOrMore>
+            <rng:element name="feature">
+                <rng:ref name="featureType"/>
+            </rng:element>
+        </rng:zeroOrMore>
+        <rng:zeroOrMore>
+            <rng:element name="interruption">
+                <rng:ref name="interruptionType"/>
+            </rng:element>
+        </rng:zeroOrMore>
+        
+    </rng:define>
+    
+    
+    <!-- definition of system phone -->
+    <rng:start>
+        <rng:ref name="phone"/>
+    </rng:start>
+    <rng:define name="phone">
+        <rng:element name="phone">
+            <rng:ref name="phoneType"/>
+        </rng:element>
+    </rng:define>
+</rng:grammar>

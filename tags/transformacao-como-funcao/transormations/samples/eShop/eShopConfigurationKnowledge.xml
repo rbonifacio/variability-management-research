@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configurationModel xmlns="ck.v20090401">
+    <configuration xmlns="">
+        <expression>eShop</expression>
+        <transformation>
+            <name>selectScenarios</name>
+            <args>SC01</args>
+        </transformation>
+        <transformation>
+            <name>selectScenarios</name>
+            <args>SC02</args>
+        </transformation>
+    </configuration>
+    <configuration xmlns="">
+        <expression>Not (And (ShoppingCart, Bonus))</expression>
+        <transformation>
+            <name>evaluateAspects</name>
+            <args>ADV01</args>
+        </transformation>
+    </configuration>
+    <configuration xmlns="">
+        <expression>And (ShoppingCart, Bonus)</expression>
+        <transformation>
+            <name>evaluateAspects</name>
+            <args>ADV02</args>
+        </transformation>
+    </configuration>
+    <configuration xmlns="">
+        <expression>ShippingMethod</expression>
+        <transformation>
+            <name>bindParameter</name>
+            <args>SM,ShippingMethod</args>
+        </transformation>
+    </configuration>
+    <configuration xmlns="">
+        <expression>UpdateUserPreferences</expression>
+        <transformation>
+            <name>evaluateAspects</name>
+            <args>ADV03</args>
+        </transformation>
+    </configuration>
+</configurationModel>

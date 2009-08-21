@@ -1,0 +1,115 @@
+<useCaseModel>
+    <name>eShop Product Line</name>
+    <useCase>
+        <id>UC01</id>
+        <name>Proceed to purchase</name>
+        <description>It describes the common behavior related to confirming a purchase. </description>
+        <flow>
+            <id>SC01</id>
+            <description>: This behavior corresponds to the last steps required to confirm a
+                purchase.</description>
+            <fromSteps>START</fromSteps>
+            <toSteps>END</toSteps>
+            <step>
+                <stepId>P1</stepId>
+                <action>Fill in the requested information.</action>
+                <condition>-</condition>
+                <response>Request the shipping method and address. </response>
+            </step>
+            <step>
+                <stepId>P2</stepId>
+                <action>Select one of the available ({SM}) shipping methods. </action>
+                <condition>-</condition>
+                <response>Calculate the Shipping costs. </response>
+            </step>
+            <step>
+                <stepId>P3</stepId>
+                <action>Confirm the purchase. </action>
+                <condition>-</condition>
+                <response>Execute the order and send a request to the Delivery System, in order to
+                    dispatch the products. @CustomerPreferences</response>
+            </step>
+        </flow>
+    </useCase>
+    <useCase>
+        <id>UC02</id>
+        <name>Search products</name>
+        <description>It describes the behavior that allows a customer to search products. </description>
+        <flow>
+            <id>UC021</id>
+            <description>Search for products</description>
+            <fromSteps>START</fromSteps>
+            <toSteps>END</toSteps>
+            <step>
+                <stepId>S1</stepId>
+                <action>Select the advanced search option. </action>
+                <condition>-</condition>
+                <response>Request the customer to inform the search criteria. </response>
+            </step>
+            <step>
+                <stepId>S2</stepId>
+                <action>Inform the search criteria. </action>
+                <condition>-</condition>
+                <response>Retrieve the products that satisfy the search criteria. Show a list
+                    with the corresponding products. @CustomerPreferences </response>
+            </step>
+        </flow>
+    </useCase>
+    <aspect>
+        <id>ADV01</id>
+        <name>Buy good</name>
+        <advice>
+            <type>Before</type>
+            <pointCut>P1</pointCut>
+            <step>
+                <stepId>B1</stepId>
+                <action>Select the buy product option. </action>
+                <condition>-</condition>
+                <response>Present the selected product. The user can change the quantity of items he
+                    wants to buy. </response>
+            </step>
+            <step>
+                <stepId>B2</stepId>
+                <action>Select the confirm option. </action>
+                <condition>-</condition>
+                <response>Request payment information. </response>
+            </step>
+        </advice>
+    </aspect>
+    <aspect>
+        <id>ADV02</id>
+        <name>Buy good with shopping cart</name>
+        <advice>
+            <type>Before</type>
+            <pointCut>P1</pointCut>
+            <step>
+                <stepId>C1</stepId>
+                <action>Select the checkout option. </action>
+                <condition>-</condition>
+                <response>Present the items in the shopping cart and the amount to be paid. The
+                    customer can remove items from his (her) shopping cart. </response>
+            </step>
+            <step>
+                <stepId>C2</stepId>
+                <action>Select the confirm option. </action>
+                <condition>-</condition>
+                <response>Request bonus and payment information. </response>
+            </step>
+        </advice>
+    </aspect>
+    <aspect>
+        <id>ADV03</id>
+        <name>Search products</name>
+        <advice>
+            <type>After</type>
+            <pointCut>@CustomerPreferences</pointCut>
+            <step>
+                <stepId>R1</stepId>
+                <action>-</action>
+                <condition>-</condition>
+                <response>Update the customer preferences based on the search results or purchased
+                    items. </response>
+            </step>
+        </advice>
+    </aspect>
+</useCaseModel>
