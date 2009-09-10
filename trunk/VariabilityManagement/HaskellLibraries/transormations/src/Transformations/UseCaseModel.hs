@@ -73,8 +73,36 @@ evaluateAspects ids spl product =
 -- evaluate a list of advices
 evaluateAdvices :: [Advice] -> InstanceModel -> InstanceModel
 evaluateAdvices [] p = p
-evaluateAdvices (x:xs) p = evaluateAdvices xs (genEvaluateAdvice x p)
+evaluateAdvices (x:xs) p = evaluateAdvices xs (evaluateAdviceP x p)--(genEvaluateAdvice x p)
 
+
+evaluateAdviceP adv p = 
+ let 
+  pucm = ucm p
+  pucs = useCases pucm
+ in p { ucm = pucm { useCases = map (evaluateAdviceU adv) pucs } }
+ 
+evaluateAdviceU adv uc =
+ let scs = ucScenarios uc
+ in uc { ucScenarios = map (evaluateAdviceS adv) scs }
+ 
+evaluateAdviceS adv s = 
+ let f = steps s
+ in s { steps = evaluateAdviceF adv f }
+
+evaluateAdviceF adv sf = 
+ let 
+  pc = pointCut adv
+  af = aspectualFlow adv   
+  fn = case adv of 
+        BeforeAdvice _ _ -> concatBefore
+        AfterAdvice  _ _ -> concatAfter  
+ in evaluateAdviceF' pc fn af sf
+
+evaluateAdviceF' [] fn af sf = sf
+evaluateAdviceF' (p:ps) fn af sf = fn (match p) af sf 
+ 
+     
 -- evaluate a single advice. This function 
 -- implements the weaving process in the lower 
 -- granularity level: a flow. 
