@@ -77,7 +77,8 @@ data GUI = GUI {
       satTButton       :: ToolButton,
       badSmellsTButton :: ToolButton,
       weavingTButton   :: ToolButton, 
-      displayFmTButton :: ToolButton
+      displayFmTButton :: ToolButton,
+      editCkTButton    :: ToolButton
 }
 
 -- 
@@ -124,12 +125,13 @@ loadGlade f =
                                                               , "featureTree"
                                                               ] 
    -- retrieves the tool buttons
-   [fctb, sattb, fbstb, swptb, dfmtb] <- mapM (xmlGetWidget f castToToolButton) ["cftb"
-                                                                                , "sattb"
-                                                                                , "fbstb"
-                                                                                , "swptb"
-                                                                                , "dfmtb"
-                                                                                ]
+   [fctb, sattb, fbstb, swptb, dfmtb, eck] <- mapM (xmlGetWidget f castToToolButton) ["cftb"
+                                                                                     , "sattb"
+                                                                                     , "fbstb"
+                                                                                     , "swptb"
+                                                                                     , "dfmtb"
+                                                                                     , "eck"
+                                                                                     ]
    -- returns the GUI instance                                                                             
    return $ GUI {
                 window      = w, 
@@ -150,7 +152,8 @@ loadGlade f =
                 satTButton  = sattb,
                 badSmellsTButton = fbstb,
                 weavingTButton = swptb, 
-                displayFmTButton = dfmtb
+                displayFmTButton = dfmtb,
+                editCkTButton = ecktb
               }
 
 -- ---------------------------------------------------------
@@ -177,6 +180,7 @@ connectGui gui =
   onToolButtonClicked (weavingTButton gui)   (weaveFiles gui)
   onToolButtonClicked (fcheckerTButton gui)  (checkFiles gui errorStore)
   onToolButtonClicked (displayFmTButton gui) (displayFeatureModel gui featureStore) 
+--  onToolButtonClicked (editCkTButton gui)    (editConfigurationKnowledge gui)
   
   widgetShowAll (window gui)   
   mainGUI
