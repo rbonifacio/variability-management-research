@@ -1,0 +1,51 @@
+<phone xmlns="user-view.target.v20090401">
+ <feature>
+    <featureId>01</featureId>
+    <name>MobileMedia Product Line</name>
+    <useCase>
+        <id>UC01</id>
+        <name>Reproduce media</name>
+        <description>It describes the common behavior related to reproducing media.</description>
+        <setup>-</setup>
+        <flow>
+            <id>SC01</id>
+            <description>This scenario allows a mobile phone user to start the reproduction of a 
+	    streaming content. It can be configured according to the supported streaming contents, 
+	    the facility of browsing through favorite media, and the available controls
+	    </description>
+            
+            <fromSteps>START</fromSteps>
+            
+            <toSteps>END</toSteps>
+            
+            <step>
+                <stepId>S1</stepId>
+                <action>The user selects one existing album of the supported streaming contents </action>
+                <condition>-</condition>
+                <response>The MM application retrieves and shows the list of supported streaming 
+		contents available in the selected album.</response>
+            </step>
+            <step>
+                <stepId>S2</stepId>
+                <action>abc</action>
+                <condition>-</condition>
+                <response>abc</response>
+            </step>
+        </flow>
+    </useCase>
+    <aspect>
+        <id>ADV01</id>
+        <name>Add Favorites</name>
+        <advice>     
+            <type>after</type>
+            <pointCut>S2</pointCut>
+            <step>
+                <stepId>A1</stepId>
+                <action>-</action>
+                <condition>-</condition>
+                <response>The MM application increments the number of times the content has been played.</response>
+            </step>
+        </advice>
+    </aspect>
+ </feature>
+</phone>

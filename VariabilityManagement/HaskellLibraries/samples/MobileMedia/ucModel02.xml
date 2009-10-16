@@ -16,7 +16,7 @@
             <toSteps>END</toSteps>
             
             <step>
-                <stepId>P1</stepId>
+                <stepId>A</stepId>
                 <action>
                 	The user selects one existing album of the supported streaming
 					contents {SC}@SC011.
@@ -28,23 +28,35 @@
 					available in the selected album.
 				</response>
             </step>
+            <step>
+                <stepId>B</stepId>
+                <action>The user selects one of the available multimedia contents</action>
+                <condition>-</condition>
+                <response>The MM application highlights the selected content.</response>
+            </step>
+	    <step>
+                <stepId>C</stepId>
+                <action>The user selects one of the available multimedia contents</action>
+                <condition>-</condition>
+                <response>The MM application highlights the selected content.</response>
+	    </step>
         </flow>
     </useCase>
     <aspect>
         <id>ADV01</id>
         <name>Buy good</name>
         <advice>     
-            <type>before</type>
-            <pointCut>P1</pointCut>
+            <type>after</type>
+            <pointCut>B</pointCut>
             <step>
-                <stepId>B1</stepId>
+                <stepId>X</stepId>
                 <action>Select the buy product option. </action>
                 <condition>-</condition>
                 <response>Present the selected product. The user can change the quantity of items he
                     wants to buy. </response>
             </step>
             <step>
-                <stepId>B2</stepId>
+                <stepId>Y</stepId>
                 <action>Select the confirm option. </action>
                 <condition>-</condition>
                 <response>Request payment information. </response>

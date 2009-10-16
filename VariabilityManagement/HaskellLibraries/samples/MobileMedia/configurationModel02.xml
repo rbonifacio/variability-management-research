@@ -1,0 +1,16 @@
+<configurationModel xmlns="ck.v20090401">
+   <configuration xmlns="">
+     <expression>mobileMedia</expression> 
+     <transformation>
+       <name>selectScenarios</name> 
+       <args>SC01</args> 
+     </transformation>
+   </configuration>
+   <configuration xmlns="">
+    <expression>mobileMedia</expression> 
+    <transformation>
+     <name>evaluateAspects</name> 
+     <args>ADV01</args> 
+    </transformation>
+   </configuration>
+</configurationModel>
