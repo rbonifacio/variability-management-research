@@ -262,6 +262,7 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -280,6 +281,7 @@
               </widget>
               <packing>
                 <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -287,6 +289,24 @@
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Generate Products</property>
                 <property name="stock_id">gtk-media-play</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkSeparatorToolItem" id="toolbutton2">
+                <property name="visible">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="ecktb">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Edit CK</property>
+                <property name="stock_id">gtk-edit</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
