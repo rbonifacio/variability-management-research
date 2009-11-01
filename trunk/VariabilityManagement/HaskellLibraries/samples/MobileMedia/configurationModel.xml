@@ -17,7 +17,11 @@
      <expression>mobileMedia</expression>
      <transformation>
        <name>selectScenarios</name>
-       <args>SC01</args>
+       <args>SC01,SC02</args>
+     </transformation>
+      <transformation>
+       <name>evaluateAspects</name>
+       <args>ADV01</args>
      </transformation>
    </configuration>
 </configurationModel>
