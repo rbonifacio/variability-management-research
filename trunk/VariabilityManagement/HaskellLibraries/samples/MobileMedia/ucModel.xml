@@ -19,7 +19,7 @@
                 <stepId>P1</stepId>
                 <action>
                 	The user selects one existing album of the supported streaming
-					contents {SC}@SC011.
+					contents {SC}.
 				</action>
                 <condition>-</condition>
                 <response>
@@ -29,6 +29,41 @@
 				</response>
             </step>
         </flow>
+        <flow>
+            <id>SC02</id>
+            <description>This scenario.....</description>
+            
+            <fromSteps>START</fromSteps>
+            
+            <toSteps>END</toSteps>
+            
+            <step>
+                <stepId>Q1</stepId>
+                <action>
+                	The user selects one existing album of the supported streaming
+					contents {SC}.
+				</action>
+                <condition>-</condition>
+                <response>
+                	The MM application retrieves and
+					shows the list of supported streaming contents {SC}
+					available in the selected album.
+				</response>
+            </step>
+              <step>
+                <stepId>Q2</stepId>
+                <action>
+                	The user selects one existing album of the supported streaming
+					contents {SC}.
+				</action>
+                <condition>-</condition>
+                <response>
+                	The MM application retrieves and
+					shows the list of supported streaming contents {SC}
+					available in the selected album.
+				</response>
+            </step>
+            </flow>
     </useCase>
     <aspect>
         <id>ADV01</id>
