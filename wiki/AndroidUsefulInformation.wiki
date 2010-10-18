@@ -1,17 +1,0 @@
-#labels Android,tips
-#This page presents some useful (sometimes, not so useful) information about Android
-
-= Some information about Android =
-
-In this twiki, we present several tips about developing in Android platform. In many cases, such tips might be very basic, being interesting only for people that are just starting the studies in this platform. Therefore, we are organizing them (the tips) in several subsections.
-
-== Basic platform tips ==
-  
-  * *Activity classes*, which define starting points of Android applications, inherity from context. In this way, they also provide services like resolving resources, obtaining access to databases and *preferences*, and so on.
-
-  * *res directory:* should contain all the non-code artifacts (i18n files, multimedia files, XML user interface layout, ...) that Android applications require. A final class *R* implements several static methods that can be used to access these resource artifacts. It is important to notice that, every time a new resouce is *correctly* added to the resource directory, the R class is automatically updated. Therefore, developers should not (or mustn't) update this class manually. 
- 
-== Basic GUI tips =
-
-
-  * In Android platform, user interfaces are composed of hierarchies of classes called Views. A View is simply a drawable object, such as a combo-list, an animation, or a text box.
