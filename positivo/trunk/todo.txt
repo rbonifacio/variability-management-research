@@ -1,0 +1,7 @@
+	<!-- 
+								<h:outputLabel for="nascimento">nascimento</h:outputLabel>
+								<h:inputText id="nascimento" value="#{usuario.nascimento}"
+									required="true">
+									<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
+								</h:inputText>
+								-->

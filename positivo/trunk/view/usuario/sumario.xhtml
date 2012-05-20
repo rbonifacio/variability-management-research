@@ -1,0 +1,67 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="../layout/template.xhtml">
+
+
+	<ui:define name="body">
+		<h1>Registro</h1>
+
+
+		<rich:panel>
+			<h:panelGrid columns="2">
+				<h:graphicImage value="/img/tablets-positivo-ypy.png" />
+				<s:div styleClass="info">
+					<h:form id="novoForm">
+						<div class="dialog">
+							<h:panelGrid columns="2" rowClasses="prop"
+								columnClasses="name,value">
+								<h:outputLabel for="nome">Nome</h:outputLabel>
+								<h:inputText id="nome" value="#{usuario.nome}" required="true" />
+
+								<h:outputLabel for="sobrenome">Sobrenome</h:outputLabel>
+								<h:inputText id="sobrenome" value="#{usuario.sobrenome}"
+									required="true" />
+
+								<h:outputLabel for="sexo">Sexo</h:outputLabel>
+								<h:selectOneRadio id="sexo" value="#{usuario.sexo}"
+									required="true">
+									<f:selectItems value="#{usuarioAction.opcoesSexo()}" />
+								</h:selectOneRadio>
+
+								<h:outputLabel for="nascimento">Nascimento:</h:outputLabel>
+								<rich:calendar datePattern = "dd/MM/yyyy"
+									value="#{usuario.nascimento}" required="true" />
+									
+								<h:outputLabel for="email">E-mail:</h:outputLabel>
+								<h:inputText id="email" value="#{usuario.email}" required="true" />
+
+								<h:outputLabel for="senha">Senha:</h:outputLabel>
+								<h:inputSecret id="senha" value="#{usuario.senha}"
+									required="true" />
+
+								<h:outputLabel for="confirmacao">Confirmacao:</h:outputLabel>
+								<h:inputSecret id="confirmacaoSenha"
+									value="#{usuario.confirmacaoSenha}" required="true" />
+									
+
+							</h:panelGrid>
+						</div>
+
+						<div class="actionButtons">
+							<h:commandButton id="submit" value="Cadastrar"
+								action="#{usuarioAction.cadastro}" />
+						</div>
+
+					</h:form>
+				</s:div>
+			</h:panelGrid>
+		</rich:panel>
+
+	</ui:define>
+</ui:composition>
