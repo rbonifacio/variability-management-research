@@ -27,19 +27,24 @@ public class DesafioPositivoFacade {
 	 * @throws Exception
 	 *             Caso algum problema tenha ocorrido.
 	 */
-	public void adicionarUsuario(Usuario usuario) throws Exception {
+	public void adicionarUsuario(Usuario usuario) throws ExcecaoUsuarioCadastrado, Exception {
 		CadastroSRV req = new CadastroSRV(usuario);
 
 		req.preparaRequisicao();
 
 		RespostaPositivo resp = req.requisitaServico();
-
+	
 		switch(resp.getCodigo()) {
-	     case 0: entityManager.persist(usuario); break;
-	     case 4: throw new Exception("Usuario jah cadastrado");
+	     case 0: persistirUsuario(usuario); break;
+	     case 4: throw new ExcecaoUsuarioCadastrado();
 	     default: throw new Exception("Problemas na inclusao do usuario.");
 		}
-		throw new Exception("Nao foi possivel adicionar o usuario");
+	}
+
+	private void persistirUsuario(Usuario usuario) {
+		entityManager.merge(usuario);
+		
+		entityManager.flush();
 	}
 
 	public Usuario autenticarUsuario(String email, String senha) throws Exception {

@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.jboss.seam.annotations.Name;
+
 /**
  * Classes que representa uma proposta 
  * submetida ao desafio Positivo para desenvolvimento 
@@ -30,6 +32,8 @@ public class Proposta {
 	private String nome;
 	
 	private String descricao;
+	
+	private String objetivos;
 	
 	@Enumerated(EnumType.ORDINAL)
 	private Categoria categoria;
@@ -101,5 +105,13 @@ public class Proposta {
 
 	public void setArquivoGUI(byte[] arquivoGUI) {
 		this.arquivoGUI = arquivoGUI;
+	}
+
+	public String getObjetivos() {
+		return objetivos;
+	}
+
+	public void setObjetivos(String objetivos) {
+		this.objetivos = objetivos;
 	} 
 }

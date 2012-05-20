@@ -25,7 +25,7 @@ public class Authenticator
     @In 
     private DesafioPositivoFacade facade;
     
-    @Out(scope=ScopeType.SESSION)
+    @Out(scope=ScopeType.SESSION, required=false)
     private Usuario usuarioLogado;
     
     public boolean authenticate()

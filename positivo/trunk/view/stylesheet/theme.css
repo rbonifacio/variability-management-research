@@ -12,8 +12,14 @@ a img {
 }
 
 h1 {
-	font-size: 1.6em;
-	margin-top: 0;
+	/*font-size: 1.6em;
+	margin-top: 0;*/
+	font-family: Ubuntu,Arial,sans-serif;
+	color: #88BF48;
+    display: block;
+    font-size: 3em;
+    margin: 0;
+    padding-top: 125px;
 }
 
 input[type=submit], input[type=button] {

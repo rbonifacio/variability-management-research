@@ -29,9 +29,9 @@
    <web:hot-deploy-filter url-pattern="*.seam"/>
 
    <!-- If you are still using JBoss 4, uncomment this to have your PU started -->
-   <!-- <persistence:entity-manager-factory name="entityManagerFactory"
+   <persistence:entity-manager-factory name="entityManagerFactory"
                       persistence-unit-name="desafioPositivo"
-                                  installed="@seamBootstrapsPu@"/>-->
+                                  installed="@seamBootstrapsPu@"/>
 
    <persistence:managed-persistence-context name="entityManager" auto-create="true"
                           entity-manager-factory="@seamEmfRef@"

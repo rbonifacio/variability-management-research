@@ -2,6 +2,7 @@ package br.unb.cdt.desafioPositivo.model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -43,18 +44,22 @@ public class Usuario {
 	
 	private Date nascimento;
 	
-	
 	@Transient
 	private String senha;
 	
 	@Transient
 	private String confirmacaoSenha;
 	
+	@Transient 
+	private Calendar dataHoraNascimento; 
+	
 	/**
 	 * Necessario, de acordo com a especificao 
 	 * JPA.
 	 */
-	public Usuario() {}
+	public Usuario() {
+		nascimento = new Date();
+	}
 
 	public Long getId() {
 		return id;
@@ -165,6 +170,15 @@ public class Usuario {
 			   "\"dataNascimento\" : " + nasimentoComoString + "," +
 			   "\"estado\" : " + "PE" + "," + 
 			   "\"status\" :  " + "A";
+	}
+
+	public Calendar getDataHoraNascimento() {
+		return dataHoraNascimento;
+	}
+
+	public void setDataHoraNascimento(Calendar dataHoraNascimento) {
+		this.dataHoraNascimento = dataHoraNascimento;
+		this.nascimento = dataHoraNascimento.getTime();
 	}
 	
 }

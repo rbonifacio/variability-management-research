@@ -17,14 +17,10 @@
         </navigation>
     </page>
     
-    <page view-id="usuario/novoUsuario.xhtml">
-    	<navigation>
-            <rule if-outcome="home">
-                <redirect view-id="/home.xhtml"/>
-            </rule>
-        </navigation>
+    <page view-id="/usuario/novoUsuario.xhtml">
+    	<begin-conversation join="true" flush-mode="manual"/>
     </page>
-
+    
     <exception class="org.jboss.seam.framework.EntityNotFoundException">
         <redirect view-id="/error.xhtml">
             <message severity="warn">Record not found</message>
