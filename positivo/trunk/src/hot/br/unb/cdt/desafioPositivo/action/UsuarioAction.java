@@ -10,6 +10,7 @@ import org.jboss.seam.faces.FacesMessages;
 
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioCadastrado;
+import br.unb.cdt.desafioPositivo.model.Estado;
 import br.unb.cdt.desafioPositivo.model.Sexo;
 import br.unb.cdt.desafioPositivo.model.Usuario;
 
@@ -26,18 +27,37 @@ public class UsuarioAction {
 	@In FacesMessages facesMessages;
 	
 
+	public SelectItem[] opcoesEstado() {
+		SelectItem[] items = new SelectItem[Estado.values().length];
+		
+		int i = 0;
+		
+		for(Estado e : Estado.values()) {
+			items[i] = new SelectItem();
+			
+			items[i].setValue(e);
+			items[i].setLabel(e.getSigla());
+			items[i].setDescription(e.getEstado());
+			
+			i++;
+		}
+		
+		return items;
+	}
+	
 	public SelectItem[] opcoesSexo() {
-		SelectItem[] items = new SelectItem[2];
-		items[0] = new SelectItem();
-		items[1] = new SelectItem();
+		SelectItem[] items = new SelectItem[Sexo.values().length];
 		
-		items[0].setValue(Sexo.MASCULINO);
-		items[0].setDescription(Sexo.MASCULINO.getDescricao());
-		items[0].setLabel("M");
+		int i = 0;
+		for(Sexo s : Sexo.values()) {
+			items[i] = new SelectItem();
 		
-		items[1].setValue(Sexo.FEMININO);
-		items[1].setDescription(Sexo.FEMININO.getDescricao());
-		items[1].setLabel("F");
+			items[i].setValue(s);
+			items[i].setLabel(s.getDescricao());
+			items[i].setDescription(s.getDescricao());
+			
+			i++;
+		}
 		
 		return items;
 	}

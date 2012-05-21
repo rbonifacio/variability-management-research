@@ -42,6 +42,9 @@ public class Usuario {
 	
 	private String email;
 	
+	@Enumerated(EnumType.ORDINAL)
+	private Estado estado; 
+	
 	private Date nascimento;
 	
 	@Transient
@@ -179,6 +182,14 @@ public class Usuario {
 	public void setDataHoraNascimento(Calendar dataHoraNascimento) {
 		this.dataHoraNascimento = dataHoraNascimento;
 		this.nascimento = dataHoraNascimento.getTime();
+	}
+
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 	
 }

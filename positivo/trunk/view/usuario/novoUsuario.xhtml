@@ -38,6 +38,11 @@
 								<rich:calendar datePattern = "dd/MM/yyyy"
 									value="#{usuario.nascimento}" required="true" />
 									
+								<h:outputLabel for="estado">Estado:</h:outputLabel>	
+								<h:selectOneMenu id="estado" defaultLabel="UF" value="#{usuario.estado}" required="true">
+									<f:selectItems value="#{usuarioAction.opcoesEstado()}"/>
+								</h:selectOneMenu>
+								
 								<h:outputLabel for="email">E-mail:</h:outputLabel>
 								<h:inputText id="email" value="#{usuario.email}" required="true" />
 

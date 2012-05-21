@@ -6,14 +6,13 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:a4j="http://richfaces.org/a4j" 
+	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:p="http://primefaces.prime.com.tr/ui"
 	template="../layout/template.xhtml">
 
 
 	<ui:define name="body">
 		<h1>Nova proposta</h1>
-
 
 		<rich:panel>
 			<h:panelGrid columns="2">
@@ -24,37 +23,40 @@
 							<h:panelGrid columns="2" rowClasses="prop"
 								columnClasses="name,value">
 								<h:outputLabel for="nome">Aplicacao:</h:outputLabel>
-								<h:inputText id="nome" value="#{proposta.nome}" required="true" />
+								<h:inputText id="nome" value="#{propostaAction.proposta.nome}" required="true" />
 
 								<h:outputLabel for="descricao">Descricao:</h:outputLabel>
-								<h:inputTextarea id="descricao" value="#{proposta.descricao}"
+								<h:inputTextarea id="descricao" value="#{propostaAction.proposta.descricao}"
 									required="true" rows="5" cols="50" />
 
 								<h:outputLabel for="objetivos">Objetivos:</h:outputLabel>
-								<h:inputTextarea id="objetivos" value="#{proposta.objetivos}"
+								<h:inputTextarea id="objetivos" value="#{propostaAction.proposta.objetivos}"
 									required="true" rows="5" cols="50" />
 
 								<h:outputLabel for="publicoAlvo">Publico alvo:</h:outputLabel>
 								<h:inputTextarea id="publicoAlvo"
-									value="#{proposta.publicoAlvo}" required="true" rows="5"
+									value="#{propostaAction.proposta.publicoAlvo}" required="true" rows="5"
 									cols="50" />
 
 								<h:outputLabel for="descricaoFuncional">Funcionalidades:</h:outputLabel>
 								<h:inputTextarea id="descricaoFuncional"
-									value="#{proposta.descricaoFuncional}" required="true" rows="5"
+									value="#{propostaAction.proposta.descricaoFuncional}" required="true" rows="5"
 									cols="50" />
 
 								<h:outputLabel for="upload">Prototipo:</h:outputLabel>
-								<p:fileUpload
-									fileUploadListener="#{fileUploadController.handleFileUpload}"
-									mode="advanced" update="messages" sizeLimit="100000"
-									allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+								<rich:fileUpload fileUploadListener="#{fileUploadBean.listener}"
+									maxFilesQuantity="1"
+									id="upload" immediateUpload="true"
+									acceptedTypes="pdf"
+									allowFlash="false">
+									<a4j:support event="onuploadcomplete" reRender="info" />
+								</rich:fileUpload>
 							</h:panelGrid>
 						</div>
 
 						<div class="actionButtons">
 							<h:commandButton id="submit" value="Cadastrar"
-								action="#{prpostaAction.cadastro}" />
+								action="#{propostaAction.cadastro}" />
 						</div>
 
 					</h:form>

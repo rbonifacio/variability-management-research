@@ -23,6 +23,7 @@ import org.jboss.seam.annotations.Name;
  */
 @Entity
 @Table(name="TB_PROPOSTA")
+@Name("proposta")
 public class Proposta {
 	
 	@Id
