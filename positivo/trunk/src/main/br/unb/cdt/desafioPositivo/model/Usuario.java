@@ -2,15 +2,17 @@ package br.unb.cdt.desafioPositivo.model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -47,14 +49,14 @@ public class Usuario {
 	
 	private Date nascimento;
 	
+	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL)
+	private List<Proposta> propostas;
+	
 	@Transient
 	private String senha;
 	
 	@Transient
 	private String confirmacaoSenha;
-	
-	@Transient 
-	private Calendar dataHoraNascimento; 
 	
 	/**
 	 * Necessario, de acordo com a especificao 
@@ -128,6 +130,28 @@ public class Usuario {
 		this.nascimento = nascimento;
 	}
 
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
+	public List<Proposta> getPropostas() {
+		return propostas;
+	}
+
+	public void setPropostas(List<Proposta> propostas) {
+		this.propostas = propostas;
+	}
+	
+	public String getNascimentoFormatado() {
+		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		return format.format(nascimento);
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -175,21 +199,6 @@ public class Usuario {
 			   "\"status\" :  " + "A";
 	}
 
-	public Calendar getDataHoraNascimento() {
-		return dataHoraNascimento;
-	}
 
-	public void setDataHoraNascimento(Calendar dataHoraNascimento) {
-		this.dataHoraNascimento = dataHoraNascimento;
-		this.nascimento = dataHoraNascimento.getTime();
-	}
-
-	public Estado getEstado() {
-		return estado;
-	}
-
-	public void setEstado(Estado estado) {
-		this.estado = estado;
-	}
 	
 }

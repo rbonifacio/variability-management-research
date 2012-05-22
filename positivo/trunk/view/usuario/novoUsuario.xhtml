@@ -21,14 +21,14 @@
 						<div class="dialog">
 							<h:panelGrid columns="2" rowClasses="prop"
 								columnClasses="name,value">
-								<h:outputLabel for="nome">Nome</h:outputLabel>
+								<h:outputLabel for="nome">Nome:</h:outputLabel>
 								<h:inputText id="nome" value="#{usuario.nome}" required="true" />
 
-								<h:outputLabel for="sobrenome">Sobrenome</h:outputLabel>
+								<h:outputLabel for="sobrenome">Sobrenome:</h:outputLabel>
 								<h:inputText id="sobrenome" value="#{usuario.sobrenome}"
 									required="true" />
 
-								<h:outputLabel for="sexo">Sexo</h:outputLabel>
+								<h:outputLabel for="sexo">Sexo:</h:outputLabel>
 								<h:selectOneRadio id="sexo" value="#{usuario.sexo}"
 									required="true">
 									<f:selectItems value="#{usuarioAction.opcoesSexo()}" />

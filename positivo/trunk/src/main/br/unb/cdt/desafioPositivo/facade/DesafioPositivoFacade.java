@@ -1,11 +1,15 @@
 package br.unb.cdt.desafioPositivo.facade;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 
+import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
 import br.unb.cdt.desafioPositivo.util.rest.AutenticacaoSRV;
 import br.unb.cdt.desafioPositivo.util.rest.CadastroSRV;
@@ -41,12 +45,24 @@ public class DesafioPositivoFacade {
 		}
 	}
 
+	/*
+	 * Persiste um novo usuario na base de dados.
+	 */
 	private void persistirUsuario(Usuario usuario) {
 		entityManager.merge(usuario);
 		
 		entityManager.flush();
 	}
 
+	/**
+	 * Autentica um usuario requisitando um servico da 
+	 * Positivo. 
+	 * 
+	 * @param email do usuario
+	 * @param senha do usuario
+	 * @return o usuario autenticado
+	 * @throws Exception caso ocorra algum problema na excecao
+	 */
 	public Usuario autenticarUsuario(String email, String senha) throws Exception {
 		AutenticacaoSRV req = new AutenticacaoSRV(email, senha);
 
@@ -62,6 +78,11 @@ public class DesafioPositivoFacade {
 		}
 	}
 
+	/*
+	 * Recupera um usuario na base de dados pelo email.
+	 * Nessa arquitetura, optamos por nao fazer uso do padrao
+	 * Data Access Objects, dada a simplicidade do projeto. 
+	 */
 	private Usuario recuperaUsuario(String email) throws Exception {
 		try {
 			return (Usuario) entityManager.createQuery(
@@ -70,5 +91,35 @@ public class DesafioPositivoFacade {
 		} catch (Exception e) {
 			throw new Exception("Problemas na consulta ao usuario");
 		}
+	}
+
+	/**
+	 * Adiciona uma proposta submetida pelo usuario logado.
+	 * 
+	 * @param usuarioLogado usuario logado no sistema
+	 * @param proposta proposta submetida
+	 */
+	public void adicionarProposta(Usuario usuarioLogado, Proposta proposta) {
+		if(usuarioLogado.getPropostas() == null) {
+			usuarioLogado.setPropostas(new ArrayList<Proposta>());
+		}
+		
+		usuarioLogado.getPropostas().add(proposta);
+		proposta.setUsuario(usuarioLogado);
+
+		entityManager.merge(usuarioLogado);
+		entityManager.flush();
+	}
+
+	/**
+	 * Utilizando contexto transacional, recupera as propostas 
+	 * submetidas pelo usuario e que podem nao ter sido previamente 
+	 * carregadas (uso da propriedade Lazy). 
+	 * 
+	 * @param usuarioLogado usuario logado no sistema
+	 * @return propostas submetidas pelo usuario
+	 */
+	public List<Proposta> recuperaPropostas(Usuario usuarioLogado) {
+		return usuarioLogado.getPropostas();
 	}
 }

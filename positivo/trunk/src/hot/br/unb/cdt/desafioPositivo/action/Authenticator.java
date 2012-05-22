@@ -11,8 +11,6 @@ import org.jboss.seam.security.Identity;
 
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
 import br.unb.cdt.desafioPositivo.model.Usuario;
-import br.unb.cdt.desafioPositivo.util.rest.AutenticacaoSRV;
-import br.unb.cdt.desafioPositivo.util.rest.RespostaPositivo;
 
 @Name("authenticator")
 public class Authenticator

@@ -8,7 +8,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.jboss.seam.annotations.Name;
@@ -35,6 +37,9 @@ public class Proposta {
 	private String descricao;
 	
 	private String objetivos;
+	
+	@ManyToOne
+	private Usuario usuario;
 	
 	@Enumerated(EnumType.ORDINAL)
 	private Categoria categoria;
@@ -114,5 +119,13 @@ public class Proposta {
 
 	public void setObjetivos(String objetivos) {
 		this.objetivos = objetivos;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	} 
 }

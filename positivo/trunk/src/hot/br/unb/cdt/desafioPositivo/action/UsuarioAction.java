@@ -7,6 +7,7 @@ import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.faces.FacesMessages;
+import org.jboss.seam.security.Identity;
 
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioCadastrado;
@@ -24,8 +25,11 @@ public class UsuarioAction {
 	@In
 	private DesafioPositivoFacade facade;
 	
-	@In FacesMessages facesMessages;
+	@In 
+	private FacesMessages facesMessages;
 	
+	@In
+	private Identity identity;
 
 	public SelectItem[] opcoesEstado() {
 		SelectItem[] items = new SelectItem[Estado.values().length];
@@ -77,5 +81,12 @@ public class UsuarioAction {
 			facesMessages.add(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage());
 			return null;
 		}
+	}
+	
+	public String autenticar() {
+		if(identity.login().equals("loggedIn")) {
+			return "sumario";
+		}
+		return "home";
 	}
 }

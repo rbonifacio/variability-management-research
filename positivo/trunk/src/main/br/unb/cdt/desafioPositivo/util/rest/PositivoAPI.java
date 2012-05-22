@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
-import org.json.JSONObject;
 
 /**
  * Classe abstrata que pode ser reusada para implementar 

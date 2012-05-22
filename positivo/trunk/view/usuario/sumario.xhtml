@@ -10,58 +10,51 @@
 
 
 	<ui:define name="body">
-		<h1>Registro</h1>
-
-
+		<h1>Dados cadastrais</h1>
 		<rich:panel>
 			<h:panelGrid columns="2">
-				<h:graphicImage value="/img/tablets-positivo-ypy.png" />
 				<s:div styleClass="info">
 					<h:form id="novoForm">
 						<div class="dialog">
 							<h:panelGrid columns="2" rowClasses="prop"
-								columnClasses="name,value">
-								<h:outputLabel for="nome">Nome</h:outputLabel>
-								<h:inputText id="nome" value="#{usuario.nome}" required="true" />
+								columnClasses="name,value" width="50%">
+								<h:outputLabel for="nome">Nome:</h:outputLabel>
+								<h:outputText id="nome" value="#{usuarioLogado.nome}" />
 
-								<h:outputLabel for="sobrenome">Sobrenome</h:outputLabel>
-								<h:inputText id="sobrenome" value="#{usuario.sobrenome}"
+								<h:outputLabel for="sobrenome">Sobrenome:</h:outputLabel>
+								<h:outputText id="sobrenome" value="#{usuarioLogado.sobrenome}"
 									required="true" />
 
-								<h:outputLabel for="sexo">Sexo</h:outputLabel>
-								<h:selectOneRadio id="sexo" value="#{usuario.sexo}"
-									required="true">
-									<f:selectItems value="#{usuarioAction.opcoesSexo()}" />
-								</h:selectOneRadio>
+								<h:outputLabel for="sexo">Sexo:</h:outputLabel>
+								<h:outputText id="sexo" value="#{usuarioLogado.sexo.descricao}" />
 
 								<h:outputLabel for="nascimento">Nascimento:</h:outputLabel>
-								<rich:calendar datePattern = "dd/MM/yyyy"
-									value="#{usuario.nascimento}" required="true" />
-									
+								<h:outputText id="nascimento"
+									value="#{usuario.nascimentoFormatado}" />
+
 								<h:outputLabel for="email">E-mail:</h:outputLabel>
-								<h:inputText id="email" value="#{usuario.email}" required="true" />
+								<h:outputText id="email" value="#{usuario.email}" />
 
-								<h:outputLabel for="senha">Senha:</h:outputLabel>
-								<h:inputSecret id="senha" value="#{usuario.senha}"
-									required="true" />
-
-								<h:outputLabel for="confirmacao">Confirmacao:</h:outputLabel>
-								<h:inputSecret id="confirmacaoSenha"
-									value="#{usuario.confirmacaoSenha}" required="true" />
-									
-
+								<h:commandButton id="submit" value="Atualizar dados..." />
 							</h:panelGrid>
 						</div>
-
-						<div class="actionButtons">
-							<h:commandButton id="submit" value="Cadastrar"
-								action="#{usuarioAction.cadastro}" />
-						</div>
-
 					</h:form>
 				</s:div>
+				<h:graphicImage value="/img/caixas-positivo.png" />
 			</h:panelGrid>
 		</rich:panel>
-
+		<h1>Propostas submetidas</h1>
+		<rich:panel rendered="#{not empty propostasSubmetidas}">
+			<rich:dataTable value="#{propostasSubmetidas}" var="prop">
+				<rich:column>
+					<f:facet name="header">Nome da proposta</f:facet>
+					<h:outputText value="#{prop.nome}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header">Descricao da proposta</f:facet>
+					<h:outputText value="#{prop.descricao}" />
+				</rich:column>
+			</rich:dataTable>
+		</rich:panel>
 	</ui:define>
 </ui:composition>

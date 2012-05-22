@@ -14,7 +14,7 @@
 
 		<rich:panel>
 			<h:panelGrid columns="2">
-				<h:graphicImage value="/img/tablets-positivo-ypy.png" />
+				<h:graphicImage value="/img/ideias-positivo.png" />
 				<s:div styleClass="info">
 					<p>
 						<strong>Submeta a sua ideia!</strong> Informe email e senha de acesso na
@@ -34,7 +34,7 @@
 						</div>
 						<div class="actionButtons">
 							<h:commandButton id="submit" value="Login"
-								action="#{identity.login}" />
+								action="#{usuarioAction.autenticar()}" />
 							<h:commandButton id="novoUsuario" value="Novo usuario"
 								action="novoUsuario" />
 						</div>

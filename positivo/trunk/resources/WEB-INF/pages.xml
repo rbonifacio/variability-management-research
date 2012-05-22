@@ -8,17 +8,27 @@
 
     <page view-id="*">
         <navigation>
-            <rule if-outcome="home">
+            <rule if-outcome="home" >
                 <redirect view-id="/home.xhtml"/>
             </rule>
             <rule if-outcome="novoUsuario">
                 <redirect view-id="/usuario/novoUsuario.xhtml"/>
             </rule>
+            <rule if-outcome="sumario">
+                <redirect view-id="/usuario/sumario.xhtml"/>
+            </rule>
         </navigation>
     </page>
     
+    <page view-id="/usuario/sumario.xhtml" action="#{propostaAction.recuperaPropostasUsuario()}" />
+
     <page view-id="/usuario/novoUsuario.xhtml">
     	<begin-conversation join="true" flush-mode="manual"/>
+    	<navigation> 
+    	 	<rule if-outcome="home">
+                <redirect view-id="/home.xhtml"/>
+          	</rule>
+        </navigation>
     </page>
     
     <exception class="org.jboss.seam.framework.EntityNotFoundException">
