@@ -84,9 +84,14 @@ public class UsuarioAction {
 	}
 	
 	public String autenticar() {
-		if(identity.login().equals("loggedIn")) {
-			return "sumario";
+		try {
+			if(identity.login().equals("loggedIn")) {
+				return "sumario";
+			}
+			return null;
+		}catch(Exception e) {
+			facesMessages.add(FacesMessage.SEVERITY_WARN, e.getLocalizedMessage());
+			return null;
 		}
-		return "home";
 	}
 }

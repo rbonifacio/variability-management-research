@@ -20,15 +20,29 @@
         </navigation>
     </page>
     
-    <page view-id="/usuario/sumario.xhtml" action="#{propostaAction.recuperaPropostasUsuario()}" />
+    <page view-id="/usuario/sumario.xhtml" action="#{propostaAction.recuperaPropostasUsuario()}">
+    	<navigation>
+    		<rule if-outcome="novaProposta">
+    			<redirect view-id="/proposta/novaProposta.xhtml"/>
+    		</rule>
+    	</navigation>
+    </page>
 
+	<page view-id="/proposta/novaProposta.xhtml">
+		<begin-conversation join="true" flush-mode="manual"/>
+	</page>
+	
     <page view-id="/usuario/novoUsuario.xhtml">
-    	<begin-conversation join="true" flush-mode="manual"/>
+    	<end-conversation before-redirect="true"/>
     	<navigation> 
     	 	<rule if-outcome="home">
                 <redirect view-id="/home.xhtml"/>
           	</rule>
         </navigation>
+    </page>
+    
+    <page view-id="/home.xhtml">
+    	<end-conversation before-redirect="true" />
     </page>
     
     <exception class="org.jboss.seam.framework.EntityNotFoundException">

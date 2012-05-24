@@ -1,7 +1,14 @@
-	<!-- 
-								<h:outputLabel for="nascimento">nascimento</h:outputLabel>
-								<h:inputText id="nascimento" value="#{usuario.nascimento}"
-									required="true">
-									<f:convertDateTime type="date" pattern="dd-MM-yyyy" />
-								</h:inputText>
-								-->
+Desenvolvimento:
+
+a) tratar aspectos de internacionalizacao (ou nacionalizacao)
+b) tratar mensagens de erro e validacao
+c) implementar mecanismo robusto para cadastro de usuario (molde INEP)
+d) Implementar alteracao e exclusao de propostas
+
+Usabilidade:
+
+* Integrar com a identidade visual do projeto
+
+Testes: 
+
+* Testar, testar, testar, testar, testar

@@ -10,11 +10,6 @@ public class AutenticacaoSRV extends PositivoAPI {
 		this.senha = senha;
 	}
 	
-//	@Override
-//	protected String parametros() {
-//    	return "\"email\" :"    +  email + "," + 
-//    	       "\"senha\" :" + senha;
-//	}
 	@Override
 	protected void atualizaParametros() {
 		req.queryParameter("email", email);

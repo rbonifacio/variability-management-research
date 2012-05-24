@@ -2,12 +2,17 @@ package br.unb.cdt.desafioPositivo.action;
 
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
+import org.jboss.seam.annotations.datamodel.DataModelSelection;
+import org.jboss.seam.faces.FacesMessages;
 
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
 import br.unb.cdt.desafioPositivo.model.Proposta;
@@ -26,14 +31,24 @@ public class PropostaAction {
 	
 	@DataModel private List<Proposta> propostasSubmetidas;
 	
-	@DataModel private Proposta propostaSelecionada; 
+	@DataModelSelection private Proposta propostaSelecionada; 
+	
+	@In 
+	private FacesMessages facesMessages;
 	
 	public PropostaAction() {
 		proposta = new Proposta();
 	}
 	
-	public void cadastro() {
-		facade.adicionarProposta(usuarioLogado, proposta);
+	public String cadastro() {
+		try{
+			facade.adicionarProposta(usuarioLogado, proposta);
+			return "sumario";
+		}
+		catch(Exception e) {
+			facesMessages.add(FacesMessage.SEVERITY_ERROR, e.getMessage());
+			return null;
+		}
 	}
 
 	public Proposta getProposta() {
@@ -62,6 +77,10 @@ public class PropostaAction {
 
 	public void setPropostaSelecionada(Proposta propostaSelecionada) {
 		this.propostaSelecionada = propostaSelecionada;
+	}
+	
+	public String novaProposta() {
+		return "novaProposta";
 	}
 	
 }

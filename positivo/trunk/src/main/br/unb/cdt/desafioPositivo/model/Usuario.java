@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.validator.Email;
+import org.hibernate.validator.Past;
 import org.jboss.seam.annotations.Name;
 
 /**
@@ -42,11 +44,13 @@ public class Usuario {
 	@Enumerated(EnumType.ORDINAL)
 	private Sexo sexo;
 	
+	@Email
 	private String email;
 	
 	@Enumerated(EnumType.ORDINAL)
 	private Estado estado; 
 	
+	@Past
 	private Date nascimento;
 	
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL)

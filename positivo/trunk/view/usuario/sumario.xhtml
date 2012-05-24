@@ -13,11 +13,12 @@
 		<h1>Dados cadastrais</h1>
 		<rich:panel>
 			<h:panelGrid columns="2">
+				<h:graphicImage value="/img/caixas-positivo.png" />
 				<s:div styleClass="info">
-					<h:form id="novoForm">
+					<h:form id="sumarioForm">
 						<div class="dialog">
 							<h:panelGrid columns="2" rowClasses="prop"
-								columnClasses="name,value" width="50%">
+								columnClasses="name,value">
 								<h:outputLabel for="nome">Nome:</h:outputLabel>
 								<h:outputText id="nome" value="#{usuarioLogado.nome}" />
 
@@ -40,7 +41,6 @@
 						</div>
 					</h:form>
 				</s:div>
-				<h:graphicImage value="/img/caixas-positivo.png" />
 			</h:panelGrid>
 		</rich:panel>
 		<h1>Propostas submetidas</h1>
@@ -56,5 +56,11 @@
 				</rich:column>
 			</rich:dataTable>
 		</rich:panel>
+		<rich:panel rendered="#{empty propostasSubmetidas}">
+			<h2>Voce ainda nao submeteu propostas. Submeta agora mesmo!</h2>
+		</rich:panel>
+		<h:form id="solicitaNovaPropostaForm">
+			<h:commandButton id="novaProposta" value="Submeter norva proposta..." action="#{propostaAction.novaProposta()}" />
+		</h:form>
 	</ui:define>
 </ui:composition>

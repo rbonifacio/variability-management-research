@@ -36,7 +36,9 @@
 
 								<h:outputLabel for="nascimento">Nascimento:</h:outputLabel>
 								<rich:calendar datePattern = "dd/MM/yyyy"
-									value="#{usuario.nascimento}" required="true" />
+									value="#{usuario.nascimento}" required="true" >
+										<s:validate/>
+								</rich:calendar>
 									
 								<h:outputLabel for="estado">Estado:</h:outputLabel>	
 								<h:selectOneMenu id="estado" defaultLabel="UF" value="#{usuario.estado}" required="true">
@@ -62,7 +64,7 @@
 							<h:commandButton id="submit" value="Cadastrar"
 								action="#{usuarioAction.cadastro}" />
 						</div>
-
+					
 					</h:form>
 				</s:div>
 			</h:panelGrid>
