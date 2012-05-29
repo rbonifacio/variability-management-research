@@ -1,0 +1,4 @@
+configurar banco de dados 
+- alterar opcoes de mapeamento para nao excluir os registros a cada deployment
+
+configurar servidor de email

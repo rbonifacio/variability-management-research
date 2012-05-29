@@ -4,7 +4,7 @@ public class AutenticacaoSRV extends PositivoAPI {
 
 	private String email;
 	private String senha;
-	
+		
 	public AutenticacaoSRV(String email, String senha) {
 		this.email = email;
 		this.senha = senha;

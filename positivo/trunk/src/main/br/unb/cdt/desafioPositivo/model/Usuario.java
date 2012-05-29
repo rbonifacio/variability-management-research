@@ -13,12 +13,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.validator.Email;
 import org.hibernate.validator.Past;
-import org.jboss.seam.annotations.Name;
+
+import br.unb.cdt.desafioPositivo.model.acesso.AcessoUsuario;
 
 /**
  * Classe que representa um proponente do 
@@ -30,7 +32,6 @@ import org.jboss.seam.annotations.Name;
  */
 @Entity
 @Table(name="TB_USUARIO")
-@Name("usuario")
 public class Usuario {
 	
 	@Id
@@ -53,14 +54,27 @@ public class Usuario {
 	@Past
 	private Date nascimento;
 	
+	private String token;
+	
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL)
 	private List<Proposta> propostas;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	private AcessoUsuario acessoUsuario;
+	
 	
 	@Transient
 	private String senha;
 	
 	@Transient
 	private String confirmacaoSenha;
+	
+	@Transient
+	@Email
+	private String confirmacaoEmail;
+	
+	@Transient
+	private String codigoConfirmacaoCadastro;
 	
 	/**
 	 * Necessario, de acordo com a especificao 
@@ -201,6 +215,38 @@ public class Usuario {
 			   "\"dataNascimento\" : " + nasimentoComoString + "," +
 			   "\"estado\" : " + "PE" + "," + 
 			   "\"status\" :  " + "A";
+	}
+
+	public AcessoUsuario getAcessoUsuario() {
+		return acessoUsuario;
+	}
+
+	public void setAcessoUsuario(AcessoUsuario acessoUsuario) {
+		this.acessoUsuario = acessoUsuario;
+	}
+
+	public String getConfirmacaoEmail() {
+		return confirmacaoEmail;
+	}
+
+	public void setConfirmacaoEmail(String confirmacaoEmail) {
+		this.confirmacaoEmail = confirmacaoEmail;
+	}
+
+	public String getCodigoConfirmacaoCadastro() {
+		return codigoConfirmacaoCadastro;
+	}
+
+	public void setCodigoConfirmacaoCadastro(String codigoConfirmacaoCadastro) {
+		this.codigoConfirmacaoCadastro = codigoConfirmacaoCadastro;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 

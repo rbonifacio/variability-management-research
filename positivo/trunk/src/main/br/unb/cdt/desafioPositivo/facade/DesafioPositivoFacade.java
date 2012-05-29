@@ -1,6 +1,8 @@
 package br.unb.cdt.desafioPositivo.facade;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -8,50 +10,121 @@ import javax.persistence.EntityManager;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.faces.Renderer;
 
 import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
+import br.unb.cdt.desafioPositivo.model.acesso.CadastroSolicitado;
+import br.unb.cdt.desafioPositivo.util.criptografia.CriptografiaUtil;
 import br.unb.cdt.desafioPositivo.util.rest.AutenticacaoSRV;
 import br.unb.cdt.desafioPositivo.util.rest.CadastroSRV;
+import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaAutenticacao;
+import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaCadastro;
 import br.unb.cdt.desafioPositivo.util.rest.RespostaPositivo;
 
 @Name("facade")
 @AutoCreate
+/**
+ * Fachada da aplicacao, disponibilizando os metodos 
+ * transacionais que permitem cadastrar usuarios e enviar propostas.
+ * 
+ * @author positivo
+ */
 public class DesafioPositivoFacade {
+
+	private static final String EMAIL_CADASTRO_USUARIO_XHTML = "/email/cadastroUsuario.xhtml";
 
 	@In
 	private EntityManager entityManager;
+	
+	@In(create=true)
+	private Renderer renderer;
 
 	/**
 	 * Adiciona um usuario no meio de persistencia e realiza uma requisicao ao
 	 * servico correspondente da positivo.
 	 * 
-	 * @param usuario
+	 * @param dto
 	 *            usuario a ser cadastrado
 	 * @throws Exception
 	 *             Caso algum problema tenha ocorrido.
 	 */
-	public void adicionarUsuario(Usuario usuario) throws ExcecaoUsuarioCadastrado, Exception {
-		CadastroSRV req = new CadastroSRV(usuario);
-
-		req.preparaRequisicao();
-
-		RespostaPositivo resp = req.requisitaServico();
-	
-		switch(resp.getCodigo()) {
-	     case 0: persistirUsuario(usuario); break;
-	     case 4: throw new ExcecaoUsuarioCadastrado();
-	     default: throw new Exception("Problemas na inclusao do usuario.");
+	public void adicionarUsuario(Usuario dto) throws ExcecaoUsuarioCadastrado, ExcecaoEnvioEmail, Exception {
+		AutenticacaoSRV autentica = new AutenticacaoSRV(dto.getEmail(), "123456");
+		
+		autentica.preparaRequisicao();
+		int resp = autentica.requisitaServico().getCodigo();
+		
+		switch(CodigoRespostaAutenticacao.fromCodigo(resp)) {
+		  case CLIENTE_NAO_ENCONTRADO:  
+			cadastraNovoUsuario(dto); 
+			break; 
+		
+		  case SENHA_INVALIDA: throw new ExcecaoUsuarioCadastrado();
+		
+		  case SUCESSO: throw new ExcecaoUsuarioCadastrado();
+		  
+		  default: throw new Exception("Nao foi possivel efetuar o cadastro."); 
 		}
 	}
 
+	/**
+	 * Confirma a solicitacao de cadastro.
+	 * @param dto dados da confirmacao de solicitacao de cadastro
+	 */
+	public void confirmarSolicitacaoCadstro(Usuario dto) throws ExcecaoUsuarioNaoEncontrado, Exception {
+		Usuario usuario = recuperaUsuario(dto.getEmail());
+		
+		if(usuario != null) {
+			usuario.setSenha(dto.getSenha());
+			
+			CadastroSRV srv = new CadastroSRV(usuario);
+			srv.preparaRequisicao();
+			RespostaPositivo resp = srv.requisitaServico();
+			
+			switch(CodigoRespostaCadastro.fromCodigo(resp.getCodigo())) {
+		  	  case SUCESSO : 
+		  		usuario.setToken(resp.getToken());
+				usuario.getAcessoUsuario().confirmarCadastro(dto.getCodigoConfirmacaoCadastro());
+				entityManager.merge(usuario);
+				entityManager.flush();
+				break;
+				
+			  case CLIENTE_JA_EXISTE: throw new ExcecaoUsuarioCadastrado();
+			
+		   	  default:  throw new Exception("Nao foi possivel confirmar o cadastro do usuario.");
+			}
+			
+		}
+		else {
+			throw new ExcecaoUsuarioNaoEncontrado();
+		}
+	}
 	/*
 	 * Persiste um novo usuario na base de dados.
 	 */
-	private void persistirUsuario(Usuario usuario) {
-		entityManager.merge(usuario);
+	private void cadastraNovoUsuario(Usuario usuario) throws ExcecaoEnvioEmail, Exception {
+//		try {
+//			renderer.render(EMAIL_CADASTRO_USUARIO_XHTML);
+//		}
+//		catch(Exception e) {
+//			throw new ExcecaoEnvioEmail("Nao foi possivel enviar o email com a solicitacao de cadastro. Tente novamente.");
+//		}
 		
+		CadastroSolicitado acesso = new CadastroSolicitado();
+		
+		acesso.setCodigoEfetivacao(geraCodigoConfirmacaoCadastro(usuario));
+		
+		usuario.setAcessoUsuario(acesso);
+		
+		entityManager.merge(usuario);
 		entityManager.flush();
+	}
+
+	private String geraCodigoConfirmacaoCadastro(Usuario usuario) throws Exception {
+		Date dataAtual = Calendar.getInstance().getTime();	
+		String codigo = CriptografiaUtil.criptografarMD5(usuario.getEmail() + dataAtual.toString());
+		return codigo;
 	}
 
 	/**
@@ -64,18 +137,34 @@ public class DesafioPositivoFacade {
 	 * @throws Exception caso ocorra algum problema na excecao
 	 */
 	public Usuario autenticarUsuario(String email, String senha) throws Exception {
-		AutenticacaoSRV req = new AutenticacaoSRV(email, senha);
+		RespostaPositivo resp = autenticarNaRedePositivo(email, senha);
 
-		req.preparaRequisicao();
-
-		RespostaPositivo resp = req.requisitaServico();
-
-		switch (resp.getCodigo()) {
-		 case 0:return recuperaUsuario(email);
-		 case 2: throw new Exception("Senha nao confere");
-		 case 3: throw new Exception("Cliente nao encontrado");
-		 default : throw new Exception("Problemas na autenticacao do usuario");
+		Usuario usuario = recuperaUsuario(email);
+		
+		if(usuario == null) {
+			throw new Exception("Cliente nao encontrado");
 		}
+		else {
+			usuario.getAcessoUsuario().autenticar(resp.getCodigo() == 0);
+		}
+		
+		switch (CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo())) {
+		 case SUCESSO: return recuperaUsuario(email);
+		
+		 case SENHA_INVALIDA: throw new Exception("Senha nao confere");
+		 
+		 case CLIENTE_NAO_ENCONTRADO: throw new Exception("Cliente nao encontrado"); 
+		 
+		 default: throw new Exception("Problemas na autenticacao do usuario");
+		}
+	}
+
+	private RespostaPositivo autenticarNaRedePositivo(String email, String senha)
+			throws Exception {
+		AutenticacaoSRV req = new AutenticacaoSRV(email, senha);
+		req.preparaRequisicao();
+		RespostaPositivo resp = req.requisitaServico();
+		return resp;
 	}
 
 	/*

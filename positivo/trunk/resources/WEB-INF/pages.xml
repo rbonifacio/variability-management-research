@@ -8,8 +8,11 @@
 
     <page view-id="*">
         <navigation>
-            <rule if-outcome="home" >
+            <rule if-outcome="home" if="#{not identity.loggedIn}">
                 <redirect view-id="/home.xhtml"/>
+            </rule>
+            <rule if-outcome="home" if="#{identity.loggedIn}">
+                <redirect view-id="/usuario/sumario.xhtml"/>
             </rule>
             <rule if-outcome="novoUsuario">
                 <redirect view-id="/usuario/novoUsuario.xhtml"/>
@@ -19,6 +22,7 @@
             </rule>
         </navigation>
     </page>
+    
     
     <page view-id="/usuario/sumario.xhtml" action="#{propostaAction.recuperaPropostasUsuario()}">
     	<navigation>
@@ -39,6 +43,10 @@
                 <redirect view-id="/home.xhtml"/>
           	</rule>
         </navigation>
+    </page>
+    
+    <page view-id="/usuario/confirmaSolicitacaoCadastro.xhtml">
+    	<end-conversation before-redirect="true" />
     </page>
     
     <page view-id="/home.xhtml">
