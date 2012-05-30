@@ -14,7 +14,8 @@ import org.jboss.seam.faces.Renderer;
 
 import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
-import br.unb.cdt.desafioPositivo.model.acesso.CadastroSolicitado;
+import br.unb.cdt.desafioPositivo.model.acesso.AcessoSolicitado;
+import br.unb.cdt.desafioPositivo.model.acesso.ExcecaoAcessoUsuario;
 import br.unb.cdt.desafioPositivo.util.criptografia.CriptografiaUtil;
 import br.unb.cdt.desafioPositivo.util.rest.AutenticacaoSRV;
 import br.unb.cdt.desafioPositivo.util.rest.CadastroSRV;
@@ -84,21 +85,33 @@ public class DesafioPositivoFacade {
 			
 			switch(CodigoRespostaCadastro.fromCodigo(resp.getCodigo())) {
 		  	  case SUCESSO : 
-		  		usuario.setToken(resp.getToken());
-				usuario.getAcessoUsuario().confirmarCadastro(dto.getCodigoConfirmacaoCadastro());
-				entityManager.merge(usuario);
-				entityManager.flush();
+		  		confirmaCadastro(dto, usuario, resp);
 				break;
 				
-			  case CLIENTE_JA_EXISTE: throw new ExcecaoUsuarioCadastrado();
-			
-		   	  default:  throw new Exception("Nao foi possivel confirmar o cadastro do usuario.");
+			  case CLIENTE_JA_EXISTE: 
+				  //existe na positivo, mas continua pendente aqui
+				  if(usuario.getSituacaoAcessoAtual().getClass().equals(AcessoSolicitado.class)) {
+					  confirmaCadastro(dto, usuario, resp);
+				  }
+				  else {
+					  throw new ExcecaoUsuarioCadastrado();
+				  }
+		   	  
+			  default:  throw new Exception("Nao foi possivel confirmar o cadastro do usuario.");
 			}
 			
 		}
 		else {
 			throw new ExcecaoUsuarioNaoEncontrado();
 		}
+	}
+
+	private void confirmaCadastro(Usuario dto, Usuario usuario,
+			RespostaPositivo resp) throws ExcecaoAcessoUsuario {
+		usuario.setToken(resp.getToken());
+		usuario.getSituacaoAcessoAtual().confirmarCadastro(dto.getCodigoConfirmacaoCadastro());
+		entityManager.merge(usuario);
+		entityManager.flush();
 	}
 	/*
 	 * Persiste um novo usuario na base de dados.
@@ -111,11 +124,12 @@ public class DesafioPositivoFacade {
 //			throw new ExcecaoEnvioEmail("Nao foi possivel enviar o email com a solicitacao de cadastro. Tente novamente.");
 //		}
 		
-		CadastroSolicitado acesso = new CadastroSolicitado();
+		AcessoSolicitado acesso = new AcessoSolicitado();
 		
+		acesso.setUsuario(usuario);
 		acesso.setCodigoEfetivacao(geraCodigoConfirmacaoCadastro(usuario));
 		
-		usuario.setAcessoUsuario(acesso);
+		usuario.getHistoricoSituacaoAcesso().add(acesso);
 		
 		entityManager.merge(usuario);
 		entityManager.flush();
@@ -145,7 +159,7 @@ public class DesafioPositivoFacade {
 			throw new Exception("Cliente nao encontrado");
 		}
 		else {
-			usuario.getAcessoUsuario().autenticar(resp.getCodigo() == 0);
+			usuario.getSituacaoAcessoAtual().autenticar(resp.getCodigo() == 0);
 		}
 		
 		switch (CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo())) {
@@ -174,10 +188,17 @@ public class DesafioPositivoFacade {
 	 */
 	private Usuario recuperaUsuario(String email) throws Exception {
 		try {
-			return (Usuario) entityManager.createQuery(
+			 @SuppressWarnings("unchecked")
+			List<Usuario> usuarios = entityManager.createQuery(
 					"FROM Usuario u where u.email = :pEmail").setParameter(
-					"pEmail", email).getSingleResult();
-		} catch (Exception e) {
+					"pEmail", email).getResultList();
+			 
+			 if(usuarios == null || usuarios.size() == 0) {
+				 return null;
+			 }
+			 else return usuarios.get(0);
+		}
+		catch (Exception e) {
 			throw new Exception("Problemas na consulta ao usuario");
 		}
 	}

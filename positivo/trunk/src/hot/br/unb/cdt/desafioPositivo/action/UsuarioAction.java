@@ -6,7 +6,6 @@ import javax.faces.model.SelectItem;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Out;
 import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.security.Identity;
 
@@ -120,6 +119,10 @@ public class UsuarioAction {
 					e.getLocalizedMessage());
 			return null;
 		}
+	}
+	
+	public String alteraSenha() {
+		return null;
 	}
 
 	public Usuario getUsuarioDto() {

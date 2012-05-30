@@ -1,18 +1,20 @@
 package br.unb.cdt.desafioPositivo.model.acesso;
 
 import java.util.Calendar;
-import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="TB_CADASTRO_SOLICITADO")
+@Table(name="TB_ACESSO_SOLICITADO")
 @DiscriminatorValue("1")
-public class CadastroSolicitado extends AcessoUsuario {
-	
-	private Date cadastroEfetivado;
+public class AcessoSolicitado extends AcessoUsuario {
+
+	private static final long serialVersionUID = 1L;
+
+	@Column(name="CODIGO_EFETIVACAO")
 	private String codigoEfetivacao;
 	
 	@Override
@@ -23,22 +25,21 @@ public class CadastroSolicitado extends AcessoUsuario {
 	@Override
 	public void confirmarCadastro(String token) throws ExcecaoAcessoUsuario {
 		if(codigoEfetivacao.equals(token)) {
-			cadastroEfetivado = Calendar.getInstance().getTime();
-			usuario.setAcessoUsuario(new AcessoAtivo());
+			dataFim = Calendar.getInstance().getTime();
+			AcessoUsuario acessoUsuario = new AcessoAtivo();
+			acessoUsuario.setUsuario(usuario);
+			usuario.getHistoricoSituacaoAcesso().add(acessoUsuario);
 		}
 		else {
 			throw new ExcecaoAcessoUsuario("Codigo de confirmacao do cadastro nao confere");
 		}
 	}
 
-	public Date getCadastroEfetivado() {
-		return cadastroEfetivado;
+	@Override
+	public void desbloquear() throws ExcecaoAcessoUsuario {
+		throw new ExcecaoAcessoUsuario("Nao e possivel desbloquear o acesso do usuario, que precisa confirmar o cadastro");
 	}
-
-	public void setCadastroEfetivado(Date cadastroEfetivado) {
-		this.cadastroEfetivado = cadastroEfetivado;
-	}
-
+	
 	public String getCodigoEfetivacao() {
 		return codigoEfetivacao;
 	}

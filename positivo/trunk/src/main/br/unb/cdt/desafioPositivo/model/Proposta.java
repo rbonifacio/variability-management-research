@@ -1,6 +1,9 @@
 package br.unb.cdt.desafioPositivo.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,8 +28,10 @@ import org.jboss.seam.annotations.Name;
 @Entity
 @Table(name="TB_PROPOSTA")
 @Name("proposta")
-public class Proposta {
+public class Proposta implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -43,10 +48,13 @@ public class Proposta {
 	@Enumerated(EnumType.ORDINAL)
 	private Categoria categoria;
 	
+	@Column(name="PUBLICO_ALVO")
 	private String publicoAlvo;
 	
+	@Column(name="DESCRICAO_FUNCIONAL")
 	private String descricaoFuncional;
 	
+	@Column(name="ARQUIVO")
 	@Basic(fetch=FetchType.LAZY)
 	@Lob
 	private byte[] arquivoGUI;

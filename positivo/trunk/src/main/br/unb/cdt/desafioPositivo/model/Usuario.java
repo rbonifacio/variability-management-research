@@ -1,7 +1,9 @@
 package br.unb.cdt.desafioPositivo.model;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -32,8 +33,10 @@ import br.unb.cdt.desafioPositivo.model.acesso.AcessoUsuario;
  */
 @Entity
 @Table(name="TB_USUARIO")
-public class Usuario {
+public class Usuario implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -59,8 +62,8 @@ public class Usuario {
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL)
 	private List<Proposta> propostas;
 	
-	@OneToOne(cascade=CascadeType.ALL)
-	private AcessoUsuario acessoUsuario;
+	@OneToMany(mappedBy="usuario",cascade=CascadeType.ALL)
+	private List<AcessoUsuario> historicoSituacaoAcesso;
 	
 	
 	@Transient
@@ -217,13 +220,7 @@ public class Usuario {
 			   "\"status\" :  " + "A";
 	}
 
-	public AcessoUsuario getAcessoUsuario() {
-		return acessoUsuario;
-	}
 
-	public void setAcessoUsuario(AcessoUsuario acessoUsuario) {
-		this.acessoUsuario = acessoUsuario;
-	}
 
 	public String getConfirmacaoEmail() {
 		return confirmacaoEmail;
@@ -249,6 +246,23 @@ public class Usuario {
 		this.token = token;
 	}
 
+	public List<AcessoUsuario> getHistoricoSituacaoAcesso() {
+		if(historicoSituacaoAcesso == null) {
+			historicoSituacaoAcesso = new ArrayList<AcessoUsuario>();
+		}
+		return historicoSituacaoAcesso;
+	}
 
+	public void setHistoricoSituacaoAcesso(List<AcessoUsuario> historicoSituacaoAcesso) {
+		this.historicoSituacaoAcesso = historicoSituacaoAcesso;
+	}
 	
+	public AcessoUsuario getSituacaoAcessoAtual() {
+		for(AcessoUsuario a: historicoSituacaoAcesso) {
+			if(a.getDataFim() == null) {
+				return a;
+			}
+		}
+		return null;
+	}
 }
