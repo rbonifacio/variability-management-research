@@ -28,6 +28,7 @@
     
     
     <page view-id="/usuario/sumario.xhtml" action="#{propostaAction.recuperaPropostasUsuario()}">
+    	<end-conversation before-redirect="true"/>
     	<navigation>
     		<rule if-outcome="novaProposta">
     			<redirect view-id="/proposta/novaProposta.xhtml"/>

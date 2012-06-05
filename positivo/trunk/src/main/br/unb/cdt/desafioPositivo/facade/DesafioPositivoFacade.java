@@ -13,6 +13,7 @@ import org.jboss.seam.annotations.Name;
 import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.faces.Renderer;
 
+import br.unb.cdt.desafioPositivo.fileUpload.FileUploadBean;
 import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
 import br.unb.cdt.desafioPositivo.model.acesso.AcessoAtivo;
@@ -44,6 +45,9 @@ public class DesafioPositivoFacade {
 
 	@In(create=true)
 	private Renderer renderer;
+	
+	@In
+	private FileUploadBean fileUploadBean;
 
 	/**
 	 * Adiciona um usuario no meio de persistencia e realiza uma requisicao ao
@@ -241,6 +245,7 @@ public class DesafioPositivoFacade {
 		}
 
 		usuarioLogado.getPropostas().add(proposta);
+		proposta.setArquivoGUI(fileUploadBean.getFiles().get(0).getData());
 		proposta.setUsuario(usuarioLogado);
 
 		entityManager.merge(usuarioLogado);

@@ -1,5 +1,8 @@
 package br.unb.cdt.desafioPositivo.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 
@@ -74,6 +77,16 @@ public class UsuarioAction {
 	public String cadastro() {
 		// TODO: validar informacoes submetidas.
 		// ou usando validadores, ou implementando um metodo para isso.
+		
+		List<String> erros = validaDadosCadastrais();
+		if(erros.size() > 0) {
+			StringBuffer buffer = new StringBuffer();
+			
+			for(String e : erros) {
+				facesMessages.add(FacesMessage.SEVERITY_ERROR, e);
+			}
+			return null;
+		}
 
 		if(usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
 			try {
@@ -98,6 +111,16 @@ public class UsuarioAction {
 			usuarioDto.setConfirmacaoSenha(null);
 			return null;
 		}
+	}
+
+	 
+	private List<String> validaDadosCadastrais() {
+		List<String> erros = new ArrayList<String>();
+		if(!usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
+			erros.add("A confirmacao de email tem que ....");
+		}
+		//TODO: novas validacoes aqui.
+		return erros;
 	}
 
 	public String confirmaSolicitacaoCadastro() {
