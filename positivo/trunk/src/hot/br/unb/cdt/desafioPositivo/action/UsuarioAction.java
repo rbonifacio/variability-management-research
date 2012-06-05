@@ -11,6 +11,7 @@ import org.jboss.seam.security.Identity;
 
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioCadastrado;
+import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioNaoEncontrado;
 import br.unb.cdt.desafioPositivo.model.Estado;
 import br.unb.cdt.desafioPositivo.model.Sexo;
 import br.unb.cdt.desafioPositivo.model.Usuario;
@@ -29,6 +30,7 @@ public class UsuarioAction {
 
 	@In
 	private Identity identity;
+
 
 	public UsuarioAction() {
 		usuarioDto = new Usuario();
@@ -73,21 +75,27 @@ public class UsuarioAction {
 		// TODO: validar informacoes submetidas.
 		// ou usando validadores, ou implementando um metodo para isso.
 
-		try {
-			facade.adicionarUsuario(usuarioDto);
-			facesMessages.add(FacesMessage.SEVERITY_INFO,
-					"Solicitacao de cadastro realizada com sucesso. Um email foi enviado para "
-							+ usuarioDto.getEmail());
-			return "home";
-		} catch (ExcecaoUsuarioCadastrado e) {
-			facesMessages.add(FacesMessage.SEVERITY_ERROR,
-					"Ja existe um usuario com o email " + usuarioDto.getEmail()
-							+ " cadastrado na rede Positivo");
-			return null;
-		} catch (Exception e) {
-			e.printStackTrace();
-			facesMessages.add(FacesMessage.SEVERITY_ERROR,
-					e.getLocalizedMessage());
+		if(usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
+			try {
+				facade.adicionarUsuario(usuarioDto);
+				facesMessages.add(FacesMessage.SEVERITY_INFO,
+						"Solicitacao de cadastro realizada com sucesso. Um email foi enviado para "
+								+ usuarioDto.getEmail());
+				return "home";
+			} catch (ExcecaoUsuarioCadastrado e) {
+				facesMessages.add(FacesMessage.SEVERITY_ERROR,
+						"Ja existe um usuario com o email " + usuarioDto.getEmail()
+						+ " cadastrado na rede Positivo");
+				return null;
+			} catch (Exception e) {
+				e.printStackTrace();
+				facesMessages.add(FacesMessage.SEVERITY_ERROR,
+						e.getLocalizedMessage());
+				return null;
+			}
+		} else {
+			facesMessages.addToControl("confirmacaoSenha", "Verifique seu e-mail.");
+			usuarioDto.setConfirmacaoSenha(null);
 			return null;
 		}
 	}
@@ -97,8 +105,8 @@ public class UsuarioAction {
 			facade.confirmarSolicitacaoCadstro(usuarioDto);
 
 			facesMessages
-					.add(FacesMessage.SEVERITY_INFO,
-							"Confirmacao de cadastro realizada. Proceda com a autenticacao.");
+			.add(FacesMessage.SEVERITY_INFO,
+					"Confirmacao de cadastro realizada. Proceda com a autenticacao.");
 			return "home";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,6 +117,7 @@ public class UsuarioAction {
 	}
 
 	public String autenticar() {
+
 		try {
 			if (identity.login().equals("loggedIn")) {
 				return "sumario";
@@ -119,11 +128,30 @@ public class UsuarioAction {
 					e.getLocalizedMessage());
 			return null;
 		}
+
 	}
-	
-	public String alteraSenha() {
-		return null;
+
+	public String recuperarSenha() {
+		try {
+			facade.recuperarSenha(usuarioDto);
+			facesMessages.add(FacesMessage.SEVERITY_INFO,
+					"Solicitação de recuperação de senha realizada com sucesso. Um e-mail foi enviado para "
+							+ usuarioDto.getEmail());
+			return "home";
+		} catch (ExcecaoUsuarioNaoEncontrado e) {
+			facesMessages.add(FacesMessage.SEVERITY_ERROR,
+					"O e-mail informado: " + usuarioDto.getEmail()
+					+ " não está cadastrado na rede Positivo.");
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			facesMessages.add(FacesMessage.SEVERITY_ERROR,
+					e.getLocalizedMessage());
+			return null;
+		}
+
 	}
+
 
 	public Usuario getUsuarioDto() {
 		return usuarioDto;
@@ -132,4 +160,5 @@ public class UsuarioAction {
 	public void setUsuarioDto(Usuario usuarioDto) {
 		this.usuarioDto = usuarioDto;
 	}
+
 }

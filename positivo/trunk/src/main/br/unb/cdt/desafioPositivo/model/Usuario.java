@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.validator.Email;
+import org.hibernate.validator.NotNull;
+import org.hibernate.validator.Length;
 import org.hibernate.validator.Past;
 
 import br.unb.cdt.desafioPositivo.model.acesso.AcessoUsuario;
@@ -95,6 +97,8 @@ public class Usuario implements Serializable {
 		this.id = id;
 	}
 
+	@NotNull
+	@Length(max=50)
 	public String getNome() {
 		return nome;
 	}
@@ -103,6 +107,8 @@ public class Usuario implements Serializable {
 		this.nome = nome;
 	}
 
+	@NotNull
+	@Length(max=50)
 	public String getSobrenome() {
 		return sobrenome;
 	}
@@ -111,6 +117,7 @@ public class Usuario implements Serializable {
 		this.sobrenome = sobrenome;
 	}
 
+	@NotNull
 	public Sexo getSexo() {
 		return sexo;
 	}
@@ -119,6 +126,7 @@ public class Usuario implements Serializable {
 		this.sexo = sexo;
 	}
 
+	@NotNull
 	public String getEmail() {
 		return email;
 	}
@@ -127,6 +135,7 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
+	@Length(min=5, max=15)
 	public String getSenha() {
 		return senha;
 	}
@@ -135,6 +144,7 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 	}
 
+	@Length(min=5, max=15)
 	public String getConfirmacaoSenha() {
 		return confirmacaoSenha;
 	}
