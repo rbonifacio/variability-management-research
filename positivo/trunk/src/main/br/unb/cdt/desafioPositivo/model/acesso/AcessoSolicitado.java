@@ -48,4 +48,9 @@ public class AcessoSolicitado extends AcessoUsuario {
 		this.codigoEfetivacao = codigoEfetivacao;
 	}
 
+	@Override
+	public void alterarSenha() throws ExcecaoAcessoUsuario {
+		throw new ExcecaoAcessoUsuario("Usuario com cadastro pendente.");	
+	}
+
 }

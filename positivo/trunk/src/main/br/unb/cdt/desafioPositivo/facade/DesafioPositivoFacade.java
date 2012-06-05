@@ -10,23 +10,22 @@ import javax.persistence.EntityManager;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.faces.Renderer;
 
 import br.unb.cdt.desafioPositivo.fileUpload.FileUploadBean;
 import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
-import br.unb.cdt.desafioPositivo.model.acesso.AcessoAtivo;
-import br.unb.cdt.desafioPositivo.model.acesso.AcessoBloqueado;
 import br.unb.cdt.desafioPositivo.model.acesso.AcessoSolicitado;
 import br.unb.cdt.desafioPositivo.model.acesso.ExcecaoAcessoUsuario;
 import br.unb.cdt.desafioPositivo.util.criptografia.CriptografiaUtil;
-import br.unb.cdt.desafioPositivo.util.rest.AtualizacaoSRV;
 import br.unb.cdt.desafioPositivo.util.rest.AutenticacaoSRV;
 import br.unb.cdt.desafioPositivo.util.rest.CadastroSRV;
 import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaAutenticacao;
 import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaCadastro;
+import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaNovaSenha;
+import br.unb.cdt.desafioPositivo.util.rest.NovaSenhaSRV;
 import br.unb.cdt.desafioPositivo.util.rest.RespostaPositivo;
+
 
 @Name("facade")
 @AutoCreate
@@ -264,37 +263,44 @@ public class DesafioPositivoFacade {
 		return usuarioLogado.getPropostas();
 	}
 
-	// Método temporário
-	private String geraSenha() {
-		return "abcdef";
+	// metodo temporario
+	private String geraSenha(Usuario dto) throws java.lang.Exception {
+	
+		String email = dto.getEmail();
+		String date = Calendar.getInstance().getTime().toString();
+		
+		String senha = CriptografiaUtil.criptografarMD5(email + date).substring(0, 6);
+		
+		return senha.toUpperCase();
 	}
 
-	public void recuperarSenha(Usuario dto) throws ExcecaoUsuarioNaoEncontrado, Exception {
-		/*
+	public void recuperarSenha(Usuario dto) throws ExcecaoAcessoUsuario, ExcecaoUsuarioNaoEncontrado, Exception {
 		Usuario usuario = recuperaUsuario(dto.getEmail());
-
+		
 		if(usuario != null) {
-			AutenticacaoSRV autentica = new AutenticacaoSRV(usuario.getEmail(), "123456");
-			autentica.preparaRequisicao();
-			int resp = autentica.requisitaServico().getCodigo();
+			usuario.getSituacaoAcessoAtual().alterarSenha();
+			
+			NovaSenhaSRV novaSenha = new NovaSenhaSRV(usuario.getToken(), geraSenha(dto));
+			novaSenha.preparaRequisicao();
+			
+			int resp = novaSenha.requisitaServico().getCodigo();
 
-			if(CodigoRespostaAutenticacao.fromCodigo(resp) == CodigoRespostaAutenticacao.CLIENTE_NAO_ENCONTRADO) { 
-				throw new ExcecaoUsuarioNaoEncontrado();
+			switch(CodigoRespostaNovaSenha.fromCodigo(resp)) {
+			  case SUCESSO: 
+				  //TODO: enviar o email com a senha
+				  break;
+			  
+			  case SENHA_INVALIDA : throw new Exception("Senha gerada invalida. Tente novamente");
+			  
+			  case CLIENTE_NAO_EXISTE: throw new ExcecaoUsuarioNaoEncontrado();
+			  
+			  case OUTROS: throw new Exception("Nao foi possivel realizar a transacao.");
 			}
-
-			AcessoAtivo acesso = new AcessoAtivo();
-			acesso.setUsuario(usuario);				
-			usuario.getHistoricoSituacaoAcesso().add(acesso);
-			if(usuario.getSituacaoAcessoAtual().getClass().equals(AcessoBloqueado.class)) {
-				usuario.setSenha(geraSenha());
-			}
-			// enviarEmail(usuario.getSenha()); // Envia um e-mail com a nova senha ou a anterior.
 			entityManager.merge(usuario);
 			entityManager.flush();
 		} else {
 			throw new ExcecaoUsuarioNaoEncontrado();
 		}
-		*/
 	}
 
 }

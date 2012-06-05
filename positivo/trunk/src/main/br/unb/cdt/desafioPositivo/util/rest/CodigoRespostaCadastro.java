@@ -14,15 +14,11 @@ public enum CodigoRespostaCadastro {
 	private Integer codigo;
 	
 	private CodigoRespostaCadastro(Integer codigo) {
-		this.setCodigo(codigo);
+		this.codigo = codigo;
 	}
 
 	public Integer getCodigo() {
 		return codigo;
-	}
-
-	public void setCodigo(Integer codigo) {
-		this.codigo = codigo;
 	}
 	
 	public static CodigoRespostaCadastro fromCodigo(Integer codigo) {

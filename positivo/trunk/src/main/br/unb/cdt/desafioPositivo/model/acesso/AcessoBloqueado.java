@@ -25,6 +25,15 @@ public class AcessoBloqueado extends AcessoUsuario {
 
 	@Override
 	public void desbloquear() throws ExcecaoAcessoUsuario {
+		realizaTransicaoAcessoAtivo();
+	}
+
+	@Override
+	public void alterarSenha() throws ExcecaoAcessoUsuario {
+		realizaTransicaoAcessoAtivo();		
+	}
+	
+	private void realizaTransicaoAcessoAtivo() {
 		dataFim = Calendar.getInstance().getTime();
 		AcessoUsuario acessoUsuario = new AcessoAtivo();
 		acessoUsuario.setUsuario(usuario);

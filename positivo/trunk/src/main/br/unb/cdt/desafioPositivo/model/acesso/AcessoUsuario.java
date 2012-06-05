@@ -71,6 +71,13 @@ public abstract class AcessoUsuario implements Serializable {
 	 * Realiza o desbloqueio do acesso de um proponente.
 	 */
 	public abstract void desbloquear() throws ExcecaoAcessoUsuario;
+	
+	/**
+	 * Realiza a alteracao de senha do usuario. 
+	 * 
+	 * @throws ExcecaoAcessoUsuario
+	 */
+	public abstract void alterarSenha() throws ExcecaoAcessoUsuario;
 
 	public Usuario getUsuario() {
 		return usuario;

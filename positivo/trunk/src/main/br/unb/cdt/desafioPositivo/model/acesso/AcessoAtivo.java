@@ -26,6 +26,9 @@ public class AcessoAtivo extends AcessoUsuario {
 	@Column(name="ULTIMO_ACESSO")
 	protected Date ultimoAcesso;
 	
+	public AcessoAtivo() {
+		tentativasInvalidas = new Integer(0);
+	}
 	@Override
 	public void autenticar(boolean autenticacao) throws ExcecaoAcessoUsuario {
 		if(autenticacao) {
@@ -51,6 +54,11 @@ public class AcessoAtivo extends AcessoUsuario {
 	@Override
 	public void desbloquear() throws ExcecaoAcessoUsuario {
 		throw new ExcecaoAcessoUsuario("Usuario com acesso ativo, nao sendo necessario o desbloqueio.");
+	}
+
+	@Override
+	public void alterarSenha() throws ExcecaoAcessoUsuario { 
+		//nao precisa ocorrer uma transicao de estado.
 	}
 
 }
