@@ -10,6 +10,7 @@ import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.faces.FacesMessages;
+import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
 
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
@@ -18,6 +19,7 @@ import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioNaoEncontrado;
 import br.unb.cdt.desafioPositivo.model.Estado;
 import br.unb.cdt.desafioPositivo.model.Sexo;
 import br.unb.cdt.desafioPositivo.model.Usuario;
+import br.unb.cdt.desafioPositivo.util.criptografia.CriptografiaUtil;
 
 @Name("usuarioAction")
 @AutoCreate
@@ -33,6 +35,9 @@ public class UsuarioAction {
 
 	@In
 	private Identity identity;
+	
+	@In
+	private Credentials credentials;
 
 
 	public UsuarioAction() {
@@ -124,6 +129,20 @@ public class UsuarioAction {
 	}
 
 	public String confirmaSolicitacaoCadastro() {
+		if(! CriptografiaUtil.verificaSenha(usuarioDto.getSenha())) {
+				facesMessages.add(FacesMessage.SEVERITY_INFO, "A senha deve conter pelo menos 8 caracteres, sendo formada por pelo menos um digito " +
+					"um caracter minusculo e um caracter maiusculo.");
+			
+			return null;
+		}
+		
+		 if(! usuarioDto.getSenha().equals(usuarioDto.getConfirmacaoSenha())) {
+				facesMessages.add(FacesMessage.SEVERITY_INFO, "A confirmacao de senha deve ser ingual a " +
+						"senha informada.");
+				
+				return null;
+		 }	
+		
 		try {
 			facade.confirmarSolicitacaoCadstro(usuarioDto);
 
@@ -140,31 +159,34 @@ public class UsuarioAction {
 	}
 
 	public String autenticar() {
-
 		try {
+			if(credentials.getUsername() == null || credentials.getPassword() == null) {
+				facesMessages.add(FacesMessage.SEVERITY_INFO, "Campos e-mail e senha sao obrigatorios");
+				
+				return null;
+			}
 			if (identity.login().equals("loggedIn")) {
 				return "sumario";
 			}
 			return null;
-		} catch (Exception e) {
-			facesMessages.add(FacesMessage.SEVERITY_WARN,
-					e.getLocalizedMessage());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
 			return null;
 		}
-
 	}
 
 	public String recuperarSenha() {
 		try {
 			facade.recuperarSenha(usuarioDto);
 			facesMessages.add(FacesMessage.SEVERITY_INFO,
-					"Solicitação de recuperação de senha realizada com sucesso. Um e-mail foi enviado para "
+					"Solicitacao de recuperacao de senha realizada com sucesso. Um e-mail foi enviado para "
 							+ usuarioDto.getEmail());
 			return "home";
 		} catch (ExcecaoUsuarioNaoEncontrado e) {
 			facesMessages.add(FacesMessage.SEVERITY_ERROR,
 					"O e-mail informado: " + usuarioDto.getEmail()
-					+ " não está cadastrado na rede Positivo.");
+					+ " nao esta cadastrado na rede Positivo.");
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();

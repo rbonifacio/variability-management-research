@@ -30,6 +30,8 @@
 
 								<h:outputLabel for="senha">senha</h:outputLabel>
 								<h:inputSecret id="senha" value="#{credentials.password}" />
+								
+								
 							</h:panelGrid>
 						</div>
 						<div class="actionButtons">
@@ -40,7 +42,7 @@
 							<h:commandButton id="recuperarSenha" value="Esqueci minha senha!"
 								action="recuperarSenha" />
 						</div>
-
+						 <rich:messages />
 					</h:form>
 				</s:div>
 			</h:panelGrid>

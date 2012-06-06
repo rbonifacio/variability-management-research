@@ -95,7 +95,7 @@ public class DesafioPositivoFacade {
 
 
 	public void alterarSenha(Usuario usuarioLogado) throws Exception {
-
+		throw new Exception("Metodo ainda nao implementado");
 	}
 
 	/**
@@ -135,13 +135,7 @@ public class DesafioPositivoFacade {
 		}
 	}
 
-	private void confirmaCadastro(Usuario dto, Usuario usuario,
-			RespostaPositivo resp) throws ExcecaoAcessoUsuario {
-		usuario.setToken(resp.getToken());
-		usuario.getSituacaoAcessoAtual().confirmarCadastro(dto.getCodigoConfirmacaoCadastro());
-		entityManager.merge(usuario);
-		entityManager.flush();
-	}
+	
 	/*
 	 * Persiste um novo usuario na base de dados.
 	 */
@@ -164,12 +158,6 @@ public class DesafioPositivoFacade {
 		entityManager.flush();
 	}
 
-	private String geraCodigoConfirmacaoCadastro(Usuario usuario) throws Exception {
-		Date dataAtual = Calendar.getInstance().getTime();	
-		String codigo = CriptografiaUtil.criptografarMD5(usuario.getEmail() + dataAtual.toString());
-		return codigo;
-	}
-
 	/**
 	 * Autentica um usuario requisitando um servico da 
 	 * Positivo. 
@@ -179,13 +167,13 @@ public class DesafioPositivoFacade {
 	 * @return o usuario autenticado
 	 * @throws Exception caso ocorra algum problema na excecao
 	 */
-	public Usuario autenticarUsuario(String email, String senha) throws Exception {
+	public Usuario autenticarUsuario(String email, String senha) throws ExcecaoFalhaAutenticacao, ExcecaoAcessoUsuario, Exception {
 		RespostaPositivo resp = autenticarNaRedePositivo(email, senha);
 
 		Usuario usuario = recuperaUsuario(email);
 
 		if(usuario == null) {
-			throw new Exception("Cliente nao encontrado");
+			throw new ExcecaoFalhaAutenticacao("Usuario ou senha invalida.");
 		}
 		else {
 			usuario.getSituacaoAcessoAtual().autenticar(resp.getCodigo() == 0);
@@ -194,41 +182,11 @@ public class DesafioPositivoFacade {
 		switch (CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo())) {
 		case SUCESSO: return recuperaUsuario(email);
 
-		case SENHA_INVALIDA: throw new Exception("Senha nao confere");
+		case SENHA_INVALIDA: throw new ExcecaoFalhaAutenticacao("Usuario ou senha invalida");
 
-		case CLIENTE_NAO_ENCONTRADO: throw new Exception("Cliente nao encontrado"); 
+		case CLIENTE_NAO_ENCONTRADO: throw new ExcecaoFalhaAutenticacao("Usuario ou senha invalida"); 
 
 		default: throw new Exception("Problemas na autenticacao do usuario");
-		}
-	}
-
-	private RespostaPositivo autenticarNaRedePositivo(String email, String senha)
-			throws Exception {
-		AutenticacaoSRV req = new AutenticacaoSRV(email, senha);
-		req.preparaRequisicao();
-		RespostaPositivo resp = req.requisitaServico();
-		return resp;
-	}
-
-	/*
-	 * Recupera um usuario na base de dados pelo email.
-	 * Nessa arquitetura, optamos por nao fazer uso do padrao
-	 * Data Access Objects, dada a simplicidade do projeto. 
-	 */
-	private Usuario recuperaUsuario(String email) throws Exception {
-		try {
-			@SuppressWarnings("unchecked")
-			List<Usuario> usuarios = entityManager.createQuery(
-					"FROM Usuario u where u.email = :pEmail").setParameter(
-							"pEmail", email).getResultList();
-
-			if(usuarios == null || usuarios.size() == 0) {
-				return null;
-			}
-			else return usuarios.get(0);
-		}
-		catch (Exception e) {
-			throw new Exception("Problemas na consulta ao usuario");
 		}
 	}
 
@@ -262,10 +220,40 @@ public class DesafioPositivoFacade {
 	public List<Proposta> recuperaPropostas(Usuario usuarioLogado) {
 		return usuarioLogado.getPropostas();
 	}
-
-	// metodo temporario
-	private String geraSenha(Usuario dto) throws java.lang.Exception {
 	
+	/*
+	 * Confirma o cadastro do usuario na base de dados local.
+	 */
+	private void confirmaCadastro(Usuario dto, Usuario usuario, RespostaPositivo resp) throws ExcecaoAcessoUsuario {
+		usuario.setToken(resp.getToken());
+		usuario.getSituacaoAcessoAtual().confirmarCadastro(dto.getCodigoConfirmacaoCadastro());
+		entityManager.merge(usuario);
+		entityManager.flush();
+	}
+
+	/*
+	 * Realiza a autenticacao na rede Positivo.
+	 */
+	private RespostaPositivo autenticarNaRedePositivo(String email, String senha) throws Exception {
+		AutenticacaoSRV req = new AutenticacaoSRV(email, senha);
+		req.preparaRequisicao();
+		RespostaPositivo resp = req.requisitaServico();
+		return resp;
+	}
+	
+	/*
+	 * Gera um codigo para ser usado na confirmacao do cadastro.
+	 */
+	private String geraCodigoConfirmacaoCadastro(Usuario usuario) throws Exception {
+		Date dataAtual = Calendar.getInstance().getTime();	
+		String codigo = CriptografiaUtil.criptografarMD5(usuario.getEmail() + dataAtual.toString());
+		return codigo;
+	}
+	
+	/*
+	 * Gera uma nova senha para o usuario, utilizando um hash.  
+	 */ 
+	private String geraSenha(Usuario dto) throws java.lang.Exception {
 		String email = dto.getEmail();
 		String date = Calendar.getInstance().getTime().toString();
 		
@@ -273,7 +261,34 @@ public class DesafioPositivoFacade {
 		
 		return senha.toUpperCase();
 	}
+	
+	/*
+	 * Recupera um usuario na base de dados pelo email.
+	 * Nessa arquitetura, optamos por nao fazer uso do padrao
+	 * Data Access Objects, dada a simplicidade do projeto. 
+	 */
+	private Usuario recuperaUsuario(String email) throws Exception {
+		try {
+			@SuppressWarnings("unchecked")
+			List<Usuario> usuarios = entityManager.createQuery(
+					"FROM Usuario u where u.email = :pEmail").setParameter(
+							"pEmail", email).getResultList();
 
+			if(usuarios == null || usuarios.size() == 0) {
+				return null;
+			}
+			else return usuarios.get(0);
+		}
+		catch (Exception e) {
+			throw new Exception("Problemas na consulta ao usuario");
+		}
+	}
+
+
+	/**
+	 * Recupera a senha do usuario, fazendo uma requisicao ao 
+	 * servico da Positivo para atualizacao de senha. 
+	 */
 	public void recuperarSenha(Usuario dto) throws ExcecaoAcessoUsuario, ExcecaoUsuarioNaoEncontrado, Exception {
 		Usuario usuario = recuperaUsuario(dto.getEmail());
 		
@@ -283,11 +298,12 @@ public class DesafioPositivoFacade {
 			NovaSenhaSRV novaSenha = new NovaSenhaSRV(usuario.getToken(), geraSenha(dto));
 			novaSenha.preparaRequisicao();
 			
-			int resp = novaSenha.requisitaServico().getCodigo();
+			RespostaPositivo resp = novaSenha.requisitaServico();
 
-			switch(CodigoRespostaNovaSenha.fromCodigo(resp)) {
+			switch(CodigoRespostaNovaSenha.fromCodigo(resp.getCodigo())) {
 			  case SUCESSO: 
 				  //TODO: enviar o email com a senha
+				  usuario.setToken(resp.getToken());
 				  break;
 			  
 			  case SENHA_INVALIDA : throw new Exception("Senha gerada invalida. Tente novamente");
