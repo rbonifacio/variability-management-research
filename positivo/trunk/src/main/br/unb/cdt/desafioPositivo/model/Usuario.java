@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -51,6 +52,7 @@ public class Usuario implements Serializable {
 	private Sexo sexo;
 	
 	@Email
+	@Column(unique=true)
 	private String email;
 	
 	@Enumerated(EnumType.ORDINAL)
