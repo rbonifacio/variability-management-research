@@ -3,6 +3,7 @@ package br.unb.cdt.desafioPositivo.action;
 import javax.faces.application.FacesMessage;
 
 import org.jboss.seam.ScopeType;
+import org.jboss.seam.Seam;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
@@ -54,4 +55,9 @@ public class Authenticator
 		} 
     }
 
+    public String logout() {
+    	identity.logout();
+    	Seam.invalidateSession();
+    	return "home"; 
+    }
 }

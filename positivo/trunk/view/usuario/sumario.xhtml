@@ -34,11 +34,10 @@
 
 								<h:outputLabel for="email">E-mail:</h:outputLabel>
 								<h:outputText id="email" value="#{usuarioLogado.email}" />
-
-								<h:commandButton id="atualizarDados" value="Atualizar dados" action="#{usuarioLogadoAction.atualizarDados()}" />
-								<h:commandButton id="novaSenha" value="Alterar senha" action="#{usuarioLogadoAction.novaSenha}" />
 							
 							</h:panelGrid>
+							    <h:commandButton id="atualizarDados" value="Atualizar dados" action="atualizarDados" />
+								<h:commandButton id="alterarSenha" value="Alterar senha" action="alterarSenha" />
 						</div>
 					</h:form>
 				</s:div>

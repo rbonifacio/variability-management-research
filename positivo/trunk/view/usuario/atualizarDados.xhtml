@@ -18,7 +18,7 @@
 			<h:panelGrid columns="2">
 				<h:graphicImage value="/img/tablets-positivo-ypy.png" />
 				<s:div styleClass="info">
-					<h:form id="novoForm">
+					<h:form id="alterarDadosForm">
 						<div class="dialog">
 							<h:panelGrid columns="2" rowClasses="prop"
 								columnClasses="name,value">
@@ -51,7 +51,7 @@
 
 						<div class="actionButtons">
 							<h:commandButton id="submit" value="Salvar"
-								action="#{usuarioLogadoAction.atualizar}" />
+								action="#{usuarioAction.atualizarDadosUsuario()}" />
 						</div>
 					
 					</h:form>

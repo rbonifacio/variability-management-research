@@ -17,7 +17,9 @@ import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
 import br.unb.cdt.desafioPositivo.model.acesso.AcessoSolicitado;
 import br.unb.cdt.desafioPositivo.model.acesso.ExcecaoAcessoUsuario;
+import br.unb.cdt.desafioPositivo.model.dto.AlteraSenhaDTO;
 import br.unb.cdt.desafioPositivo.util.criptografia.CriptografiaUtil;
+import br.unb.cdt.desafioPositivo.util.rest.AtualizacaoSRV;
 import br.unb.cdt.desafioPositivo.util.rest.AutenticacaoSRV;
 import br.unb.cdt.desafioPositivo.util.rest.CadastroSRV;
 import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaAutenticacao;
@@ -77,25 +79,84 @@ public class DesafioPositivoFacade {
 	}
 
 	/**
-	 * Atualiza os dados do usuário no meio de persistência e realiza uma requisição 
-	 * ao serviço correspondente da Positivo.
+	 * Atualiza os dados do usuario no meio de persistencia e realiza uma requisicao 
+	 * ao servico correspondente da Positivo.
 	 * 
 	 * @param dto
 	 * @throws Exception
 	 */
 	public void atualizarUsuario(Usuario usuarioLogado) throws Exception {
-		/*
-		AtualizacaoSRV srv = new AtualizacaoSRV(usuarioLogado);
-		srv.preparaRequisicao();
-		srv.requisitaServico();
-	  	entityManager.merge(usuarioLogado);
-		entityManager.flush();
-		 */
+		try {
+			Usuario usuario = recuperaUsuario(usuarioLogado.getEmail());
+			
+			if(usuario == null) {
+				throw new Exception("problemas na requisicao.");
+			}
+			
+			usuario.setNome(usuarioLogado.getNome());
+			usuario.setSobrenome(usuarioLogado.getSobrenome());
+			usuario.setEstado(usuarioLogado.getEstado());
+			usuario.setSexo(usuarioLogado.getSexo());
+			usuario.setNascimento(usuarioLogado.getNascimento());
+			
+			AtualizacaoSRV srv = new AtualizacaoSRV(usuario);
+			
+			srv.preparaRequisicao();
+			RespostaPositivo resp = srv.requisitaServico();
+			
+			switch(CodigoRespostaCadastro.fromCodigo(resp.getCodigo())) {
+			 case SUCESSO: 
+				 usuario.setToken(resp.getToken()); 
+				 entityManager.merge(usuario); 
+				 entityManager.flush();
+				 break;
+			 
+			 default: throw new Exception("problemas na requisicao"); 
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			throw new Exception("problemas na requisicao");
+		}
 	}
 
 
-	public void alterarSenha(Usuario usuarioLogado) throws Exception {
-		throw new Exception("Metodo ainda nao implementado");
+	public void alterarSenha(Usuario usuarioLogado, AlteraSenhaDTO senha) throws Exception {
+		//verifica se a senha atual informada eh a correta, procedendo 
+		//com uma autenticacao.
+		AutenticacaoSRV autenticacaoSrv = new AutenticacaoSRV(usuarioLogado.getEmail(), senha.getSenhaAtual());
+		
+		autenticacaoSrv.preparaRequisicao();
+		
+		RespostaPositivo resp = autenticacaoSrv.requisitaServico();
+		
+		switch(CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo())) {
+			case SUCESSO:
+				realizaAlteracaoSenha(usuarioLogado, senha);
+				break;
+			case SENHA_INVALIDA: throw new Exception("senha atual invalida");
+			
+			default: throw new Exception("problemas no processamento da sua requisicao");
+		}
+	}
+
+	private void realizaAlteracaoSenha(Usuario usuarioLogado, AlteraSenhaDTO senha) throws Exception {
+		Usuario usuario = recuperaUsuario(usuarioLogado.getEmail());
+		
+		NovaSenhaSRV novaSenhaSrv = new NovaSenhaSRV(usuario.getToken(), senha.getNovaSenha());
+		
+		novaSenhaSrv.preparaRequisicao();
+		
+		RespostaPositivo resp = novaSenhaSrv.requisitaServico();
+		
+		switch(CodigoRespostaNovaSenha.fromCodigo(resp.getCodigo())) {
+			case SUCESSO: 
+				usuario.setToken(resp.getToken());
+				entityManager.merge(usuario);
+				entityManager.flush();
+				break;
+			default: throw new Exception("problemas no processamento da requisicai");
+		}
 	}
 
 	/**
@@ -304,6 +365,8 @@ public class DesafioPositivoFacade {
 			  case SUCESSO: 
 				  //TODO: enviar o email com a senha
 				  usuario.setToken(resp.getToken());
+				  entityManager.merge(usuario);
+				  entityManager.flush();
 				  break;
 			  
 			  case SENHA_INVALIDA : throw new Exception("Senha gerada invalida. Tente novamente");
@@ -312,8 +375,6 @@ public class DesafioPositivoFacade {
 			  
 			  case OUTROS: throw new Exception("Nao foi possivel realizar a transacao.");
 			}
-			entityManager.merge(usuario);
-			entityManager.flush();
 		} else {
 			throw new ExcecaoUsuarioNaoEncontrado();
 		}

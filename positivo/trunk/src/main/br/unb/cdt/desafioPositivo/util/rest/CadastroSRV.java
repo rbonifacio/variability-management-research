@@ -7,7 +7,7 @@ import br.unb.cdt.desafioPositivo.model.Usuario;
 
 public class CadastroSRV extends PositivoAPI {
 
-	private Usuario usuario;
+	protected Usuario usuario;
 	
 	public CadastroSRV(Usuario usuario) {
 		this.usuario = usuario;
@@ -28,6 +28,7 @@ public class CadastroSRV extends PositivoAPI {
 		req.queryParameter("nome", usuario.getNome());
 		req.queryParameter("sobrenome", usuario.getSobrenome());
 		req.queryParameter("sexo", (usuario.getSexo().equals(Sexo.MASCULINO) ? "M" : "F"));
+		req.queryParameter("estado", usuario.getEstado().getSigla());
 		req.queryParameter("dataNascimento", (new SimpleDateFormat("dd/MM/yyyy").format(usuario.getNascimento())));	
 	}
 }

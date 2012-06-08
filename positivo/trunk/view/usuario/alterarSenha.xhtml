@@ -17,28 +17,28 @@
 			<h:panelGrid columns="2">
 				<h:graphicImage value="/img/tablets-positivo-ypy.png" />
 				<s:div styleClass="info">
-					<h:form id="confirmaSolicitacaoCadastroForm">
+					<h:form id="alterarSenha">
 						<div class="dialog">
 							<h:panelGrid columns="2" rowClasses="prop"
 								columnClasses="name,value">
 									
-								<h:outputLabel for="senhaAntiga">Senha antiga:</h:outputLabel>
-								<h:inputSecret id="senhaAntiga"
-									value="#{usuarioLogadoAction.senhaAntiga}" required="true" />
+								<h:outputLabel for="senhaAtual">Senha atual:</h:outputLabel>
+								<h:inputSecret id="senhaAtual"
+									value="#{alteraSenhaDTO.senhaAtual}"  />
 									
 								<h:outputLabel for="novaSenha">Nova senha:</h:outputLabel>
 								<h:inputSecret id="novaSenha"
-									value="#{usuarioLogadoAction.novaSenha}" required="true" />
+									value="#{alteraSenhaDTO.novaSenha}" required="true" />
 									
-								<h:outputLabel for="confirmacaoSenha">Confirmação de senha:</h:outputLabel>
+								<h:outputLabel for="confirmacaoSenha">Confirmacao de senha:</h:outputLabel>
 								<h:inputSecret id="confirmacaoSenha"
-									value="#{usuarioLogadoAction.confirmacaoNovaSenha}" required="true" />
+									value="#{alteraSenhaDTO.confirmacaoNovaSenha}" required="true" />
 							</h:panelGrid>
 						</div>
 
 						<div class="actionButtons">
-							<h:commandButton id="submit" value="Confirmar solicitação"
-								action="#{usuarioLogadoAction.alterarSenha}" />
+							<h:commandButton id="submit" value="Confirmar alteracao"
+								action="#{usuarioAction.alterarSenha()}" />
 						</div>
 
 					</h:form>
