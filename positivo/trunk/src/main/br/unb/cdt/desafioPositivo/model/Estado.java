@@ -3,29 +3,29 @@ package br.unb.cdt.desafioPositivo.model;
 public enum Estado {
 	AC(1, "AC", "Acre"), // Acre
 	AL(2, "AL", "Alagoas"), // Alagoas
-	AP(3, "AP", "Amap‡"), // Amap‡
+	AP(3, "AP", "AmapÃ¡"), // Amapï¿½
 	AM(4, "AM", "Amazonas"), // Amazonas
 	BA(5, "BA", "Bahia"), // Bahia
-	CE(6, "CE", "Cear‡"), // Cear‡
+	CE(6, "CE", "CearÃ¡"), // Cearï¿½
 	DF(7, "DF", "Distrito Federal"), // Distrito Federal
-	ES(8, "ES", "Esp’rito Santo"), // Esp’rito Santo
-	GO(9, "GO", "Goi‡s"), // Goi‡s
-	MA(10, "MA", "Maranh‹o"), // Maranh‹o
+	ES(8, "ES", "EspÃ­rito Santo"), // Espï¿½rito Santo
+	GO(9, "GO", "GoiÃ¡s"), // Goiï¿½s
+	MA(10, "MA", "MaranhÃ£o"), // Maranhï¿½o
 	MT(11, "MT", "Mato Grosso"), // Mato Grosso
 	MS(12, "MS", "Mato Grosso do Sul"), // Mato Grosso do Sul
 	MG(13, "MG", "Minas Gerais"), // Minas Gerais
-	PA(14, "PA", "Par‡"), // Par‡
-	PB(15, "PB", "Para’ba"), // Para’ba
-	PR(16, "PR", "Paran‡"), // Paran‡
+	PA(14, "PA", "ParÃ¡"), // Parï¿½
+	PB(15, "PB", "ParaÃ­ba"), // Paraï¿½ba
+	PR(16, "PR", "ParanÃ¡"), // Paranï¿½
 	PE(17, "PE", "Pernambuco"), // Pernambuco
-	PI(18, "PI", "Piau’"), // Piau’
+	PI(18, "PI", "PiauÃ­"), // Piauï¿½
 	RR(19, "RR", "Roraima"), // Roraima
-	RO(20, "RO", "Rond™nia"), // Rond™nia
+	RO(20, "RO", "RondÃ´nia"), // Rondï¿½nia
 	RJ(21, "RJ", "Rio de Janeiro"), // Rio de Janeiro
 	RN(22, "RN", "Rio Grande do Norte"), // Rio Grande do Norte
 	RS(23, "RJ", "Rio de Janeiro"), // Rio Grande do Sul
 	SC(24, "SC", "Santa Catarina"), // Santa Catarina
-	SP(25, "SP", "S‹o Paulo"), // S‹o Paulo
+	SP(25, "SP", "SÃ£o Paulo"), // Sï¿½o Paulo
 	SE(26, "SE", "Sergipe"), // Sergipe
 	TO(27, "TO", "Tocantins"); // Tocantins
 

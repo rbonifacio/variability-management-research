@@ -39,6 +39,9 @@
     		<rule if-outcome="alterarSenha">
     			<redirect view-id="/usuario/alterarSenha.xhtml" />
     		</rule>
+    		<rule if-outcome="editarProposta">
+    			<redirect view-id="/proposta/editarProposta.xhtml" />
+    		</rule>
     	</navigation>
     </page>
 

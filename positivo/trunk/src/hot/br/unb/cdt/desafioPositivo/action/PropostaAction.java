@@ -6,6 +6,7 @@ import javax.faces.application.FacesMessage;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
+import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
@@ -29,9 +30,12 @@ public class PropostaAction {
 	
 	@In private DesafioPositivoFacade facade; 
 	
-	@DataModel private List<Proposta> propostasSubmetidas;
+	@DataModel
+	private List<Proposta> propostasSubmetidas;
 	
-	@DataModelSelection private Proposta propostaSelecionada; 
+	@DataModelSelection
+	@Out(required=false)
+	private Proposta propostaSelecionada; 
 	
 	@In 
 	private FacesMessages facesMessages;
@@ -59,6 +63,7 @@ public class PropostaAction {
 		this.proposta = proposta;
 	}
 	
+	@Factory("propostasSubmetidas") 
 	public void recuperaPropostasUsuario() {
 		setPropostas(facade.recuperaPropostas(usuarioLogado));
 	}
@@ -81,6 +86,34 @@ public class PropostaAction {
 	
 	public String novaProposta() {
 		return "novaProposta";
+	}
+	
+	public String editarProposta() {
+		return "editarProposta";
+	}
+	
+	public String editar() {
+		try {
+			//facade.editarProposta(propostaSelecionada);
+			return "sumario";
+		} catch(Exception e) {
+			facesMessages.add(FacesMessage.SEVERITY_ERROR, "Erro ao excluir proposta.");
+			return null;
+		}
+	}
+	
+	public void excluir() {
+		try {
+			/*
+			 * Descomentar as linhas abaixo quando o método excluirProposta() estiver funcionando.
+			 */
+			//facade.excluirProposta(propostaSelecionada);
+			//propostasSubmetidas.remove(propostaSelecionada);
+			propostaSelecionada = null;
+			facesMessages.add(FacesMessage.SEVERITY_INFO, "Proposta excluída com sucesso.");
+		} catch(Exception e) {
+			facesMessages.add(FacesMessage.SEVERITY_ERROR, "Erro ao excluir proposta.");
+		}
 	}
 	
 }

@@ -44,6 +44,7 @@
 			</h:panelGrid>
 		</rich:panel>
 		<h1>Propostas submetidas</h1>
+		<h:form>
 		<rich:panel rendered="#{not empty propostasSubmetidas}">
 			<rich:dataTable value="#{propostasSubmetidas}" var="prop">
 				<rich:column>
@@ -54,8 +55,14 @@
 					<f:facet name="header">Descricao da proposta</f:facet>
 					<h:outputText value="#{prop.descricao}" />
 				</rich:column>
+				<rich:column>
+					<h:commandLink value="Editar" action="#{propostaAction.editarProposta}" />
+					<h:outputText value="   " />
+					<h:commandLink value="Excluir" action="#{propostaAction.excluir}" />
+				</rich:column>
 			</rich:dataTable>
 		</rich:panel>
+		</h:form>
 		<rich:panel rendered="#{empty propostasSubmetidas}">
 			<h2>Voce ainda nao submeteu propostas. Submeta agora mesmo!</h2>
 		</rich:panel>
