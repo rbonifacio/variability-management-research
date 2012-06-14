@@ -48,6 +48,7 @@ public class DesafioPositivoFacade {
 
 	@In
 	private FileUploadBean fileUploadBean;
+	
 
 	/**
 	 * Adiciona um usuario no meio de persistencia e realiza uma requisicao ao
@@ -289,7 +290,7 @@ public class DesafioPositivoFacade {
 		proposta.setArquivoGUI(fileUploadBean.getFiles().get(0).getData());
 		proposta.setUsuario(usuarioLogado);
 
-		entityManager.merge(usuarioLogado);
+		usuarioLogado = entityManager.merge(usuarioLogado);
 		entityManager.flush();
 	}
 
@@ -433,6 +434,7 @@ public class DesafioPositivoFacade {
 			throw new Exception("Problemas na recuperação da proposta");
 		}
 	}
+	
 	
 	public void editarProposta(Proposta propostaSelecionada) throws Exception {
 		Proposta proposta = recuperaProposta(propostaSelecionada.getId());

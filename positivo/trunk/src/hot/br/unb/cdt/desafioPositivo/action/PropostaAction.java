@@ -20,7 +20,7 @@ import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
 
 @Name("propostaAction")
-@Scope(ScopeType.SESSION)
+@Scope(ScopeType.CONVERSATION)
 @AutoCreate
 public class PropostaAction {
 
