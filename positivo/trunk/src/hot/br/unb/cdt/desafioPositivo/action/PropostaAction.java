@@ -20,7 +20,7 @@ import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
 
 @Name("propostaAction")
-@Scope(ScopeType.CONVERSATION)
+@Scope(ScopeType.SESSION)
 @AutoCreate
 public class PropostaAction {
 
@@ -34,7 +34,6 @@ public class PropostaAction {
 	private List<Proposta> propostasSubmetidas;
 	
 	@DataModelSelection
-	@Out(required=false)
 	private Proposta propostaSelecionada; 
 	
 	@In 
@@ -45,8 +44,8 @@ public class PropostaAction {
 	}
 	
 	public String cadastro() {
-		try{
-			facade.adicionarProposta(usuarioLogado, proposta);
+		try {
+			//facade.adicionarProposta(usuarioLogado, proposta);
 			return "sumario";
 		}
 		catch(Exception e) {
@@ -94,10 +93,10 @@ public class PropostaAction {
 	
 	public String editar() {
 		try {
-			//facade.editarProposta(propostaSelecionada);
+			facade.editarProposta(propostaSelecionada);
 			return "sumario";
 		} catch(Exception e) {
-			facesMessages.add(FacesMessage.SEVERITY_ERROR, "Erro ao excluir proposta.");
+			facesMessages.add(FacesMessage.SEVERITY_ERROR, "Erro ao editar proposta.");
 			return null;
 		}
 	}

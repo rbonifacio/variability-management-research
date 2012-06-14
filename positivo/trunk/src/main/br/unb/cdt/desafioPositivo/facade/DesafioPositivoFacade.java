@@ -416,9 +416,38 @@ public class DesafioPositivoFacade {
 	public void excluirProposta(Proposta propostaSelecionada) {
 		entityManager.remove(propostaSelecionada);
 	}
+	
+	private Proposta recuperaProposta(Long id) throws Exception {
+		try {
+			@SuppressWarnings("unchecked")
+			List<Proposta> propostas = entityManager
+					.createQuery("FROM Proposta p where p.id = :pId")
+					.setParameter("pId", id).getResultList();
 
-	public void editarProposta(Proposta propostaSelecionada) {
-		entityManager.refresh(propostaSelecionada);
+			if (propostas == null || propostas.size() == 0) {
+				return null;
+			} else
+				return propostas.get(0);
+		} catch (Exception e) {
+			throw new Exception("Problemas na recuperação da proposta");
+		}
+	}
+	
+	
+	public void editarProposta(Proposta propostaSelecionada) throws Exception {
+		Proposta proposta = recuperaProposta(propostaSelecionada.getId());
+		if(proposta == null) {
+			throw new Exception("Problemas na requisição.");
+		}
+
+		proposta.setNome(propostaSelecionada.getNome());
+		proposta.setDescricao(propostaSelecionada.getDescricao());
+		proposta.setObjetivos(propostaSelecionada.getObjetivos());
+		proposta.setPublicoAlvo(propostaSelecionada.getPublicoAlvo());
+		proposta.setDescricaoFuncional(propostaSelecionada.getDescricaoFuncional());
+		
+		entityManager.merge(proposta);
+		entityManager.flush();
 	}
 
 }
