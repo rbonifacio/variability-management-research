@@ -46,6 +46,7 @@ public class PropostaAction {
 	public String cadastro() {
 		try {
 			facade.adicionarProposta(usuarioLogado, proposta);
+			proposta = null;
 			return "sumario";
 		}
 		catch(Exception e) {
@@ -94,7 +95,6 @@ public class PropostaAction {
 	public String editar() {
 		try {
 			facade.editarProposta(propostaSelecionada);
-			proposta = null;
 			return "sumario";
 		} catch(Exception e) {
 			facesMessages.add(FacesMessage.SEVERITY_ERROR, "Erro ao editar proposta.");
@@ -108,7 +108,7 @@ public class PropostaAction {
 			 * Descomentar as linhas abaixo quando o método excluirProposta() estiver funcionando.
 			 */
 			facade.excluirProposta(propostaSelecionada);
-			//propostasSubmetidas.remove(propostaSelecionada);
+			propostasSubmetidas.remove(propostaSelecionada);
 			propostaSelecionada = null;
 			facesMessages.add(FacesMessage.SEVERITY_INFO, "Proposta excluída com sucesso.");
 		} catch(Exception e) {
