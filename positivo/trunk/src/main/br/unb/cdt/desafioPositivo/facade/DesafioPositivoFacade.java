@@ -413,8 +413,9 @@ public class DesafioPositivoFacade {
 		}
 	}
 
-	public void excluirProposta(Proposta propostaSelecionada) {
-		entityManager.remove(propostaSelecionada);
+	public void excluirProposta(Proposta propostaSelecionada) throws Exception {
+		Proposta proposta = recuperaProposta(propostaSelecionada.getId());
+		entityManager.remove(proposta);
 	}
 	
 	private Proposta recuperaProposta(Long id) throws Exception {
@@ -432,7 +433,6 @@ public class DesafioPositivoFacade {
 			throw new Exception("Problemas na recuperação da proposta");
 		}
 	}
-	
 	
 	public void editarProposta(Proposta propostaSelecionada) throws Exception {
 		Proposta proposta = recuperaProposta(propostaSelecionada.getId());
