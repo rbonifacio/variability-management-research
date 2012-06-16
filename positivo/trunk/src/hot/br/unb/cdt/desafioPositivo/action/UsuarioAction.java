@@ -103,21 +103,14 @@ public class UsuarioAction {
 		if (usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
 			try {
 				facade.adicionarUsuario(usuarioDto);
-				facesMessages.add(FacesMessage.SEVERITY_INFO,
-						"Solicitacao de cadastro realizada com sucesso. Um email foi enviado para "
-								+ usuarioDto.getEmail());
+				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO, "positivo.solicitacaoCadastro", usuarioDto.getEmail());
 				return "home";
 			} catch (ExcecaoUsuarioCadastrado e) {
-				facesMessages.add(
-						FacesMessage.SEVERITY_ERROR,
-						"Ja existe um usuario com o email "
-								+ usuarioDto.getEmail()
-								+ " cadastrado na rede Positivo");
+				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR, "positivo.emailExistente", usuarioDto.getEmail());
 				return null;
 			} catch (Exception e) {
 				e.printStackTrace();
-				facesMessages.add(FacesMessage.SEVERITY_ERROR,
-						e.getLocalizedMessage());
+				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"validator.email");
 				return null;
 			}
 		} else {
@@ -145,11 +138,13 @@ public class UsuarioAction {
 
 		try {
 			facade.confirmarSolicitacaoCadstro(usuarioDto);
-
-			facesMessages.add(FacesMessage.SEVERITY_INFO, "Confirmacao de cadastro realizada. Proceda com a autenticacao.");
+			
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.confirmacaoCadastroRealizada");
 			return "home";
 		} catch (Exception e) {
 			e.printStackTrace();
+			// que erro é este? ass: Willian----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			// resposta: ???
 			facesMessages.add(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage());
 			return null;
 		}
@@ -160,19 +155,12 @@ public class UsuarioAction {
 		boolean senhaValida = true;
 
 		if (!CriptografiaUtil.verificaSenha(usuarioDto.getSenha())) {
-			facesMessages
-					.add(FacesMessage.SEVERITY_INFO,
-							"A senha deve conter pelo menos 8 caracteres, sendo formada por pelo menos um digito "
-									+ "um caracter minusculo e um caracter maiusculo.");
-
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.senhaInvalida");
 			senhaValida = false;
 		}
 
 		if (!usuarioDto.getSenha().equals(usuarioDto.getConfirmacaoSenha())) {
-			facesMessages.add(FacesMessage.SEVERITY_INFO,
-					"A confirmacao de senha deve ser ingual a "
-							+ "senha informada.");
-
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.confirmacaoSenhaInvalida");
 			senhaValida = false;
 		}
 		return senhaValida;
@@ -182,9 +170,7 @@ public class UsuarioAction {
 		try {
 			if (credentials.getUsername() == null
 					|| credentials.getPassword() == null) {
-				facesMessages.add(FacesMessage.SEVERITY_INFO,
-						"Campos e-mail e senha sao obrigatorios");
-
+				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.loginAutenticacaoCamposObrigatorios");
 				return null;
 			}
 			if (identity.login().equals("loggedIn")) {
@@ -200,18 +186,15 @@ public class UsuarioAction {
 	public String recuperarSenha() {
 		try {
 			facade.recuperarSenha(usuarioDto);
-			facesMessages
-					.add(FacesMessage.SEVERITY_INFO,
-							"Solicitacao de recuperacao de senha realizada com sucesso. Um e-mail foi enviado para "
-									+ usuarioDto.getEmail());
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.recuperarSenhaSucesso", usuarioDto.getEmail());
 			return "home";
 		} catch (ExcecaoUsuarioNaoEncontrado e) {
-			facesMessages.add(FacesMessage.SEVERITY_ERROR,
-					"O e-mail informado: " + usuarioDto.getEmail()
-							+ " nao esta cadastrado na rede Positivo.");
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.recuperarSenhaEmailInexistente", usuarioDto.getEmail());
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
+			// que erro é este? ass: Willian----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			// resposta: ???
 			facesMessages.add(FacesMessage.SEVERITY_ERROR,
 					e.getLocalizedMessage());
 			return null;
@@ -222,10 +205,12 @@ public class UsuarioAction {
 	public String atualizarDadosUsuario() {
 		try {
 			facade.atualizarUsuario(usuarioLogado);
-			facesMessages.add(FacesMessage.SEVERITY_INFO, "Atualizacao dos dados realizada com sucesso");
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.atualizacaoDadosSucesso");
 			return "sumario";
 		}
 		catch(Exception e) {
+			// que erro é este? ass: Willian----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			// resposta: ???
 			facesMessages.add(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage());
 			return null;
 		}
@@ -234,10 +219,12 @@ public class UsuarioAction {
 	public String alterarSenha() {
 		try {
 			facade.alterarSenha(usuarioLogado, alteraSenhaDTO);
-			facesMessages.add(FacesMessage.SEVERITY_INFO, "Atualizacao da senha realizada com sucesso");
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.atualizacaoSenhaSucesso");
 			return "sumario";
 		}
 		catch(Exception e) {
+			// que erro é este? ass: Willian----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			// resposta: ???
 			facesMessages.add(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage());
 			return null;
 		}
