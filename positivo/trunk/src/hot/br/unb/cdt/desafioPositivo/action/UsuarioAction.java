@@ -103,10 +103,10 @@ public class UsuarioAction {
 		if (usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
 			try {
 				facade.adicionarUsuario(usuarioDto);
-				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO, "positivo.solicitacaoCadastro", usuarioDto.getEmail());
+				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO, "positivo.usuarioAction.solicitacaoCadastro", usuarioDto.getEmail());
 				return "home";
 			} catch (ExcecaoUsuarioCadastrado e) {
-				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR, "positivo.emailExistente", usuarioDto.getEmail());
+				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR, "positivo.usuarioAction.emailExistente", usuarioDto.getEmail());
 				return null;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -139,7 +139,7 @@ public class UsuarioAction {
 		try {
 			facade.confirmarSolicitacaoCadstro(usuarioDto);
 			
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.confirmacaoCadastroRealizada");
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.usuarioAction.confirmacaoCadastroRealizada");
 			return "home";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -155,12 +155,12 @@ public class UsuarioAction {
 		boolean senhaValida = true;
 
 		if (!CriptografiaUtil.verificaSenha(usuarioDto.getSenha())) {
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.senhaInvalida");
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.usuarioAction.senhaInvalida");
 			senhaValida = false;
 		}
 
 		if (!usuarioDto.getSenha().equals(usuarioDto.getConfirmacaoSenha())) {
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.confirmacaoSenhaInvalida");
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.usuarioAction.confirmacaoSenhaInvalida");
 			senhaValida = false;
 		}
 		return senhaValida;
@@ -170,7 +170,7 @@ public class UsuarioAction {
 		try {
 			if (credentials.getUsername() == null
 					|| credentials.getPassword() == null) {
-				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.loginAutenticacaoCamposObrigatorios");
+				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.usuarioAction.loginAutenticacaoCamposObrigatorios");
 				return null;
 			}
 			if (identity.login().equals("loggedIn")) {
@@ -186,10 +186,10 @@ public class UsuarioAction {
 	public String recuperarSenha() {
 		try {
 			facade.recuperarSenha(usuarioDto);
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.recuperarSenhaSucesso", usuarioDto.getEmail());
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.usuarioAction.recuperarSenhaSucesso", usuarioDto.getEmail());
 			return "home";
 		} catch (ExcecaoUsuarioNaoEncontrado e) {
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.recuperarSenhaEmailInexistente", usuarioDto.getEmail());
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.usuarioAction.recuperarSenhaEmailInexistente", usuarioDto.getEmail());
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -205,7 +205,7 @@ public class UsuarioAction {
 	public String atualizarDadosUsuario() {
 		try {
 			facade.atualizarUsuario(usuarioLogado);
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.atualizacaoDadosSucesso");
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.usuarioAction.atualizacaoDadosSucesso");
 			return "sumario";
 		}
 		catch(Exception e) {
@@ -219,7 +219,7 @@ public class UsuarioAction {
 	public String alterarSenha() {
 		try {
 			facade.alterarSenha(usuarioLogado, alteraSenhaDTO);
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.atualizacaoSenhaSucesso");
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.usuarioAction.atualizacaoSenhaSucesso");
 			return "sumario";
 		}
 		catch(Exception e) {

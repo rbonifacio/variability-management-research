@@ -97,7 +97,7 @@ public class PropostaAction {
 			facade.editarProposta(propostaSelecionada);
 			return "sumario";
 		} catch(Exception e) {
-			facesMessages.add(FacesMessage.SEVERITY_ERROR, "Erro ao editar proposta.");
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.propostaAction.editarPropostaErro");
 			return null;
 		}
 	}
@@ -110,9 +110,9 @@ public class PropostaAction {
 			facade.excluirProposta(propostaSelecionada);
 			propostasSubmetidas.remove(propostaSelecionada);
 			propostaSelecionada = null;
-			facesMessages.add(FacesMessage.SEVERITY_INFO, "Proposta excluída com sucesso.");
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.propostaAction.excluirPropostaSucesso");
 		} catch(Exception e) {
-			facesMessages.add(FacesMessage.SEVERITY_ERROR, "Erro ao excluir proposta.");
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.propostaAction.excluirPropostaErro");
 		}
 	}
 	

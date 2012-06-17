@@ -46,11 +46,15 @@ public class Authenticator
     	}
     	catch(ExcecaoAcessoUsuario e) {
     		facesMessages.add(FacesMessage.SEVERITY_INFO, e.getLocalizedMessage());
+    		// que erro é este? ass: Willian----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			// resposta: ???
     		e.printStackTrace();
     		return false;
     	}
     	catch (Exception e) {
     		e.printStackTrace();
+    		// que erro é este? ass: Willian----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			// resposta: ???
     		return false;
 		} 
     }
