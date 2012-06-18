@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
+import org.jboss.seam.annotations.Out;
 import org.jboss.seam.faces.Renderer;
 
 import br.unb.cdt.desafioPositivo.fileUpload.FileUploadBean;
@@ -276,7 +277,7 @@ public class DesafioPositivoFacade {
 	/**
 	 * Adiciona uma proposta submetida pelo usuario logado.
 	 * 
-	 * @param usuarioLogado
+	 * @param usuario
 	 *            usuario logado no sistema
 	 * @param proposta
 	 *            proposta submetida
@@ -290,8 +291,14 @@ public class DesafioPositivoFacade {
 		proposta.setArquivoGUI(fileUploadBean.getFiles().get(0).getData());
 		proposta.setUsuario(usuarioLogado);
 
-		usuarioLogado = entityManager.merge(usuarioLogado);
+		Usuario u = entityManager.merge(usuarioLogado);
 		entityManager.flush();
+		
+		int index = usuarioLogado.getPropostas().indexOf(proposta);
+		Proposta antiga = usuarioLogado.getPropostas().get(index);
+		Proposta atualizada = u.getPropostas().get(index);
+		
+		antiga.setId(atualizada.getId());
 	}
 
 	/**
