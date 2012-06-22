@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.validator.AssertTrue;
 import org.hibernate.validator.Email;
 import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Length;
@@ -51,7 +52,7 @@ public class Usuario implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	private Sexo sexo;
 	
-	@Email
+	@Email(message="positivo.validacao.email")
 	@Column(unique=true)
 	private String email;
 	
@@ -77,7 +78,6 @@ public class Usuario implements Serializable {
 	private String confirmacaoSenha;
 	
 	@Transient
-	@Email
 	private String confirmacaoEmail;
 	
 	@Transient
@@ -276,5 +276,10 @@ public class Usuario implements Serializable {
 			}
 		}
 		return null;
+	}
+	
+	@AssertTrue(message="positivo.confirmacao.email.invalido")
+	public boolean validaConfirmacaoEmail() {
+		return email.equals(confirmacaoEmail);
 	}
 }

@@ -6,16 +6,22 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 
+import org.hibernate.validator.InvalidStateException;
+import org.hibernate.validator.InvalidValue;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.faces.FacesMessages;
+import org.jboss.seam.international.StatusMessages;
 import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
+
+import com.sun.facelets.tag.jstl.core.ForEachHandler;
 
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioCadastrado;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioNaoEncontrado;
+import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
 import br.unb.cdt.desafioPositivo.model.Estado;
 import br.unb.cdt.desafioPositivo.model.Sexo;
 import br.unb.cdt.desafioPositivo.model.Usuario;
@@ -90,47 +96,51 @@ public class UsuarioAction {
 		// TODO: validar informacoes submetidas.
 		// ou usando validadores, ou implementando um metodo para isso.
 
-		List<String> erros = validaDadosCadastrais();
-		if (erros.size() > 0) {
-			StringBuffer buffer = new StringBuffer();
+//		List<String> erros = validaDadosCadastrais();
+//		if (erros.size() > 0) {
+//			StringBuffer buffer = new StringBuffer();
+//
+//			for (String e : erros) {
+//				StatusMessages.instance().addFromResourceBundle(e);
+//			}
+//			return null;
+//		}
 
-			for (String e : erros) {
-				facesMessages.add(FacesMessage.SEVERITY_ERROR, e);
-			}
+		try {
+			facade.adicionarUsuario(usuarioDto);
+			StatusMessages.instance().addFromResourceBundle("positivo.usuarioAction.solicitacaoCadastro", usuarioDto.getEmail());
+			return "home";
+		} catch (ExcecaoUsuarioCadastrado e) {
+			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR, "positivo.usuarioAction.emailExistente", usuarioDto.getEmail());
+			return null;
+		} 
+		catch(InvalidStateException e) {
+			notificaErrosValidacao(e);
 			return null;
 		}
-
-		if (usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
-			try {
-				facade.adicionarUsuario(usuarioDto);
-				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO, "positivo.usuarioAction.solicitacaoCadastro", usuarioDto.getEmail());
-				return "home";
-			} catch (ExcecaoUsuarioCadastrado e) {
-				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR, "positivo.usuarioAction.emailExistente", usuarioDto.getEmail());
-				return null;
-			} catch (Exception e) {
-				e.printStackTrace();
-				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"validator.email");
-				return null;
-			}
-		} else {
-			facesMessages.addToControl("confirmacaoSenha",
-					"Verifique seu e-mail.");
-			usuarioDto.setConfirmacaoSenha(null);
+		catch (Exception e) {
+			e.printStackTrace();
+			StatusMessages.instance().addFromResourceBundle(Mensagens.ERRO_GENERICO);
 			return null;
+		}
+		
+	}
+
+	private void notificaErrosValidacao(InvalidStateException e) {
+		for(InvalidValue v: e.getInvalidValues()) {
+			StatusMessages.instance().addFromResourceBundle(v.getMessage(), v.getValue());
 		}
 	}
 
 	private List<String> validaDadosCadastrais() {
 		List<String> erros = new ArrayList<String>();
 		if (!usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
-			erros.add("A confirmacao de email tem que ....");
+			erros.add("positivo.usuarioAction.confirmacao.email.diferente");
 		}
-		// TODO: novas validacoes aqui.
+		
 		return erros;
 	}
 
-	@SuppressWarnings("deprecation")
 	public String confirmaSolicitacaoCadastro() {
 		if (!validaSenhaConfirmacaoCadastro()) {
 			return null;
@@ -139,18 +149,20 @@ public class UsuarioAction {
 		try {
 			facade.confirmarSolicitacaoCadstro(usuarioDto);
 			
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.usuarioAction.confirmacaoCadastroRealizada");
+			StatusMessages.instance().addFromResourceBundle(Mensagens.USUARIO_CONFIRMA_SOLICITACAO_CADASTRO);
 			return "home";
-		} catch (Exception e) {
+		} catch(ExcecaoUsuarioNaoEncontrado e) {
 			e.printStackTrace();
-			// que erro é este? ass: Willian----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			// resposta: ???
-			facesMessages.add(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage());
+			StatusMessages.instance().addFromResourceBundle(Mensagens.USUARIO_NAO_ENCONTRADO);
+			return null;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			StatusMessages.instance().addFromResourceBundle(Mensagens.ERRO_GENERICO);
 			return null;
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private boolean validaSenhaConfirmacaoCadastro() {
 		boolean senhaValida = true;
 

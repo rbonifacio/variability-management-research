@@ -7,10 +7,12 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
+import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.faces.Renderer;
 
 import br.unb.cdt.desafioPositivo.fileUpload.FileUploadBean;
@@ -30,6 +32,7 @@ import br.unb.cdt.desafioPositivo.util.rest.NovaSenhaSRV;
 import br.unb.cdt.desafioPositivo.util.rest.RespostaPositivo;
 
 @Name("facade")
+@Scope(ScopeType.CONVERSATION)
 @AutoCreate
 /**
  * Fachada da aplicacao, disponibilizando os metodos 
@@ -177,8 +180,7 @@ public class DesafioPositivoFacade {
 	 * @param dto
 	 *            dados da confirmacao de solicitacao de cadastro
 	 */
-	public void confirmarSolicitacaoCadstro(Usuario dto)
-			throws ExcecaoUsuarioNaoEncontrado, Exception {
+	public void confirmarSolicitacaoCadstro(Usuario dto) throws ExcecaoUsuarioNaoEncontrado, Exception {
 		Usuario usuario = recuperaUsuario(dto.getEmail());
 
 		if (usuario != null) {
@@ -215,8 +217,7 @@ public class DesafioPositivoFacade {
 	/*
 	 * Persiste um novo usuario na base de dados.
 	 */
-	private void cadastraNovoUsuario(Usuario usuario) throws ExcecaoEnvioEmail,
-			Exception {
+	private void cadastraNovoUsuario(Usuario usuario) throws ExcecaoEnvioEmail, Exception {
 		// try {
 		// renderer.render(EMAIL_CADASTRO_USUARIO_XHTML);
 		// }
