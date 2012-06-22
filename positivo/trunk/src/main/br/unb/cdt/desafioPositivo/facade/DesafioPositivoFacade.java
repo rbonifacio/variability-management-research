@@ -22,6 +22,7 @@ import br.unb.cdt.desafioPositivo.model.acesso.AcessoSolicitado;
 import br.unb.cdt.desafioPositivo.model.acesso.ExcecaoAcessoUsuario;
 import br.unb.cdt.desafioPositivo.model.dto.AlteraSenhaDTO;
 import br.unb.cdt.desafioPositivo.util.criptografia.CriptografiaUtil;
+import br.unb.cdt.desafioPositivo.util.email.EmailUtil;
 import br.unb.cdt.desafioPositivo.util.rest.AtualizacaoSRV;
 import br.unb.cdt.desafioPositivo.util.rest.AutenticacaoSRV;
 import br.unb.cdt.desafioPositivo.util.rest.CadastroSRV;
@@ -42,13 +43,13 @@ import br.unb.cdt.desafioPositivo.util.rest.RespostaPositivo;
  */
 public class DesafioPositivoFacade {
 
-	private static final String EMAIL_CADASTRO_USUARIO_XHTML = "/email/cadastroUsuario.xhtml";
+	private static final String EMAIL_CADASTRO_USUARIO_XHTML = "WEB-INF/cadastroUsuario.xhtml";
 
 	@In
 	private EntityManager entityManager;
 
-	@In(create = true)
-	private Renderer renderer;
+	@In
+	private EmailUtil emailUtil;
 
 	@In
 	private FileUploadBean fileUploadBean;
@@ -218,13 +219,7 @@ public class DesafioPositivoFacade {
 	 * Persiste um novo usuario na base de dados.
 	 */
 	private void cadastraNovoUsuario(Usuario usuario) throws ExcecaoEnvioEmail, Exception {
-		// try {
-		// renderer.render(EMAIL_CADASTRO_USUARIO_XHTML);
-		// }
-		// catch(Exception e) {
-		// throw new
-		// ExcecaoEnvioEmail("Nao foi possivel enviar o email com a solicitacao de cadastro. Tente novamente.");
-		// }
+		emailUtil.sendEmail(EMAIL_CADASTRO_USUARIO_XHTML);
 
 		AcessoSolicitado acesso = new AcessoSolicitado();
 
