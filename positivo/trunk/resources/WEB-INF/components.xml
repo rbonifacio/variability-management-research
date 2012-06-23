@@ -54,6 +54,12 @@
 
    <mail:mail-session host="localhost" port="25"/>
    
+   <!--mail:mail-session host="smtp.gmail.com" port="587" 
+   username="rbonifacio@gmail.com" password="blah"/ -->
+   
+   <!-- mail:mail-session session-jndi-name="java:/Mail"/ -->
+   
+   
    <web:multipart-filter create-temp-files="true" max-request-size="1000000" url-pattern="/*"/>
 
    <!-- For use with jBPM pageflow or process management -->

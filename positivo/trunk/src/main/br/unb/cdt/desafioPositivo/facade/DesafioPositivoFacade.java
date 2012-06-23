@@ -219,7 +219,7 @@ public class DesafioPositivoFacade {
 	 * Persiste um novo usuario na base de dados.
 	 */
 	private void cadastraNovoUsuario(Usuario usuario) throws ExcecaoEnvioEmail, Exception {
-		emailUtil.sendEmail(EMAIL_CADASTRO_USUARIO_XHTML);
+		emailUtil.sendEmail("rodrigo.bonifacio@uol.com.br", "rbonifacio123@gmail.com", "Desafio Positivo: cadastro realizado", "blah, blah, blah" + usuario.getCodigoConfirmacaoCadastro());
 
 		AcessoSolicitado acesso = new AcessoSolicitado();
 
