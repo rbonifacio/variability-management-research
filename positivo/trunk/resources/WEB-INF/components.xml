@@ -53,6 +53,8 @@
    </event>
 
    <mail:mail-session host="localhost" port="25"/>
+   
+   <web:multipart-filter create-temp-files="true" max-request-size="1000000" url-pattern="/*"/>
 
    <!-- For use with jBPM pageflow or process management -->
    <!--

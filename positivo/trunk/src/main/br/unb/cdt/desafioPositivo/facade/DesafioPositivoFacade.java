@@ -284,7 +284,7 @@ public class DesafioPositivoFacade {
 		}
 
 		usuarioLogado.getPropostas().add(proposta);
-		proposta.setArquivoGUI(fileUploadBean.getFiles().get(0).getData());
+		//proposta.setArquivoGUI(fileUploadBean.getFiles().get(0).getData());
 		proposta.setUsuario(usuarioLogado);
 
 		Usuario u = entityManager.merge(usuarioLogado);

@@ -278,7 +278,7 @@ public class Usuario implements Serializable {
 		return null;
 	}
 	
-	@AssertTrue(message="positivo.confirmacao.email.invalido")
+	//@AssertTrue(message="positivo.confirmacao.email.invalido")
 	public boolean validaConfirmacaoEmail() {
 		return email.equals(confirmacaoEmail);
 	}

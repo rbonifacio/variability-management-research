@@ -49,6 +49,10 @@
 		<begin-conversation join="true" flush-mode="manual"/>
 	</page>
 	
+	<page view-id="/proposta/editarProposta.xhtml">
+		<begin-conversation join="true" flush-mode="manual"/>
+	</page>
+	
 	<page view-id="/usuario/atualizarDados.xhtml" >
 		<begin-conversation join="true" flush-mode="manual" />
 	</page>
