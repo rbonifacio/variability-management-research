@@ -3,6 +3,7 @@ package br.unb.cdt.desafioPositivo.util.email;
 import java.util.Properties;
 
 import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -19,20 +20,23 @@ import br.unb.cdt.desafioPositivo.facade.ExcecaoEnvioEmail;
 @Scope(ScopeType.CONVERSATION)
 @AutoCreate
 public class EmailUtil {
-
-//	@In(create=true)
-//	private Renderer renderer;
 	
 	public void sendEmail(String from, String to, String subject, String body) throws Exception {
 		try {
 			//renderer.render(template);
 			
-			Properties properties = System.getProperties();
-			
-			properties.setProperty("mail.smtp.host", "localhost");
-			properties.setProperty("mail.smtp.port", "25");
-			
-			Session session = Session.getDefaultInstance(properties);
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+			props.put("mail.smtp.host", "smtp.gmail.com");
+			props.put("mail.smtp.port", "587");
+				
+			Session session = Session.getInstance(props,
+					  new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication("desafiopositivoandroid@gmail.com", "android@0!2");
+						}
+					  });
 			
 			MimeMessage message = new MimeMessage(session);
 			
