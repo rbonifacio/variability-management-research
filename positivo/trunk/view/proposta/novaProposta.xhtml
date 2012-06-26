@@ -12,7 +12,7 @@
 
 
 	<ui:define name="body">
-		<h1>Nova proposta</h1>
+	<h1>#{messages['positivo.novaProposta.heading']}</h1>
 
 		<rich:panel>
 			<h:panelGrid columns="2">
@@ -22,36 +22,35 @@
 						<div class="dialog">
 							<h:panelGrid columns="2" rowClasses="prop"
 								columnClasses="name,value">
-								<h:outputLabel for="nome">Aplicacao:</h:outputLabel>
+								<h:outputLabel for="nome" value="#{messages['positivo.novaProposta.nome']}" />
 								<h:inputText id="nome" value="#{propostaAction.proposta.nome}" required="true" />
 
-								<h:outputLabel for="descricao">Descricao:</h:outputLabel>
+								<h:outputLabel for="descricao" value="#{messages['positivo.novaProposta.descricao']}" />
 								<h:inputTextarea id="descricao" value="#{propostaAction.proposta.descricao}"
 									required="true" rows="3" cols="50" />
 
-								<h:outputLabel for="objetivos">Objetivos:</h:outputLabel>
+								<h:outputLabel for="objetivos" value="#{messages['positivo.novaProposta.objetivos']}" />
 								<h:inputTextarea id="objetivos" value="#{propostaAction.proposta.objetivos}"
 									required="true" rows="3" cols="50" />
 
-								<h:outputLabel for="publicoAlvo">Publico alvo:</h:outputLabel>
+								<h:outputLabel for="publicoAlvo" value="#{messages['positivo.novaProposta.publicoAlvo']}" />
 								<h:inputTextarea id="publicoAlvo"
 									value="#{propostaAction.proposta.publicoAlvo}" required="true" rows="3"
 									cols="50" />
 
-								<h:outputLabel for="descricaoFuncional">Funcionalidades:</h:outputLabel>
+								<h:outputLabel for="descricaoFuncional" value="#{messages['positivo.novaProposta.descricaoFuncional']}" />
 								<h:inputTextarea id="descricaoFuncional"
 									value="#{propostaAction.proposta.descricaoFuncional}" required="true" rows="3"
 									cols="50" />
-
-								<h:outputLabel for="upload">Prototipo:</h:outputLabel>
+								
+								<h:outputLabel for="prototipo" value="#{messages['positivo.novaProposta.prototipo']}" />
 								<s:fileUpload data="#{propostaAction.proposta.arquivoGUI}"/>
-
+								
 							</h:panelGrid>
 						</div>
 
 						<div class="actionButtons">
-							<h:commandButton id="submit" value="Cadastrar"
-								action="#{propostaAction.cadastro}" />
+							<h:commandButton id="submit" value="#{messages['positivo.novaProposta.cadastrar']}" action="#{propostaAction.cadastro}" />
 						</div>
 
 					</h:form>

@@ -313,6 +313,7 @@ public class DesafioPositivoFacade {
 	public List<Proposta> recuperaPropostas(Usuario usuarioLogado) {
 		return usuarioLogado.getPropostas();
 	}
+	
 
 	/*
 	 * Confirma o cadastro do usuario na base de dados local.

@@ -11,7 +11,7 @@
 
 
 	<ui:define name="body">
-		<h1>Atualizar Dados</h1>
+	<h1>#{messages['positivo.atualizarDados.heading']}</h1>
 		
 
 		<rich:panel>
@@ -23,26 +23,26 @@
 							<h:panelGrid columns="2" rowClasses="prop"
 								columnClasses="name,value">
 
-								<h:outputLabel for="nome">Nome:</h:outputLabel>
+								<h:outputLabel for="nome" value="#{messages['positivo.novoUsuario.nome']}:" />
 								<h:inputText id="nome" value="#{usuarioLogado.nome}" required="true" />
 
-								<h:outputLabel for="sobrenome">Sobrenome:</h:outputLabel>
+								<h:outputLabel for="sobrenome" value="#{messages['positivo.novoUsuario.sobrenome']}:" />
 								<h:inputText id="sobrenome" value="#{usuarioLogado.sobrenome}"
 									required="true" />
 
-								<h:outputLabel for="sexo">Sexo:</h:outputLabel>
+								<h:outputLabel for="sexo" value="#{messages['positivo.novoUsuario.sexo']}:" />
 								<h:selectOneRadio id="sexo" value="#{usuarioLogado.sexo}"
 									required="true">
 									<f:selectItems value="#{usuarioAction.opcoesSexo()}" />
 								</h:selectOneRadio>
 
-								<h:outputLabel for="nascimento">Nascimento:</h:outputLabel>
+								<h:outputLabel for="nascimento" value="#{messages['positivo.novoUsuario.nascimento']}:" />
 								<rich:calendar datePattern = "dd/MM/yyyy"
 									value="#{usuarioLogado.nascimento}" required="true" >
 										<s:validate/>
 								</rich:calendar>
 									
-								<h:outputLabel for="estado">Estado:</h:outputLabel>	
+								<h:outputLabel for="estado" value="#{messages['positivo.novoUsuario.estado']}:" />
 								<h:selectOneMenu id="estado" defaultLabel="UF" value="#{usuarioLogado.estado}" required="true">
 									<f:selectItems value="#{usuarioAction.opcoesEstado()}"/>
 								</h:selectOneMenu>
@@ -50,7 +50,7 @@
 						</div>
 
 						<div class="actionButtons">
-							<h:commandButton id="submit" value="Salvar"
+							<h:commandButton id="submit" value="#{messages['positivo.atualizarDados.salvar']}"
 								action="#{usuarioAction.atualizarDadosUsuario()}" />
 						</div>
 					
