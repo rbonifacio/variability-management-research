@@ -11,11 +11,8 @@ import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
-import org.jboss.seam.faces.Renderer;
 
-import br.unb.cdt.desafioPositivo.fileUpload.FileUploadBean;
 import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
 import br.unb.cdt.desafioPositivo.model.acesso.AcessoSolicitado;
@@ -43,17 +40,14 @@ import br.unb.cdt.desafioPositivo.util.rest.RespostaPositivo;
  */
 public class DesafioPositivoFacade {
 
-	private static final String EMAIL_CADASTRO_USUARIO_XHTML = "WEB-INF/cadastroUsuario.xhtml";
-
 	@In
 	private EntityManager entityManager;
 
-	@In
+	@In(create=true)
 	private EmailUtil emailUtil;
-
-	@In
-	private FileUploadBean fileUploadBean;
 	
+	@In(create=true)
+	private String urlConfirmacaoCadastro;
 
 	/**
 	 * Adiciona um usuario no meio de persistencia e realiza uma requisicao ao
@@ -219,19 +213,29 @@ public class DesafioPositivoFacade {
 	 * Persiste um novo usuario na base de dados.
 	 */
 	private void cadastraNovoUsuario(Usuario usuario) throws ExcecaoEnvioEmail, Exception {
-		emailUtil.sendEmail("rbonifacio@cic.unb.br", "rbonifacio123@gmail.com", "Desafio Positivo: cadastro realizado", "blah, blah, blah" + usuario.getCodigoConfirmacaoCadastro());
-
 		AcessoSolicitado acesso = new AcessoSolicitado();
 
 		acesso.setUsuario(usuario);
 		acesso.setCodigoEfetivacao(geraCodigoConfirmacaoCadastro(usuario));
-
+		
+		emailUtil.enviarEmail(new String[] {usuario.getEmail()} , "Solicitação de cadastro", mensagemCadastro(usuario, acesso.getCodigoEfetivacao()));
+	
 		usuario.getHistoricoSituacaoAcesso().add(acesso);
 
 		entityManager.merge(usuario);
 		entityManager.flush();
 	}
 
+	private String mensagemCadastro(Usuario usuario, String codigoAtivacao) {
+		return "Prezado " + usuario.getNome() + 
+				", \n \n \n" + 
+			   "Para confirmar o seu acesso ao sistema, acesse a URL " + urlConfirmacaoCadastro + 
+			   "\n \n \n e entre com o seguinte codigo: \n \n \n" + codigoAtivacao + 
+			   "\n \n \n" +
+			   "Atenciosamente, \n" +
+			   "Coordenacao do desafio positivo. ";
+	}
+	
 	/**
 	 * Autentica um usuario requisitando um servico da Positivo.
 	 * 
@@ -388,16 +392,18 @@ public class DesafioPositivoFacade {
 
 		if (usuario != null) {
 			usuario.getSituacaoAcessoAtual().alterarSenha();
+			String novaSenha = geraSenha(dto);
+			
+			NovaSenhaSRV servico = new NovaSenhaSRV(usuario.getToken(),
+					novaSenha);
+			
+			servico.preparaRequisicao();
 
-			NovaSenhaSRV novaSenha = new NovaSenhaSRV(usuario.getToken(),
-					geraSenha(dto));
-			novaSenha.preparaRequisicao();
-
-			RespostaPositivo resp = novaSenha.requisitaServico();
+			RespostaPositivo resp = servico.requisitaServico();
 
 			switch (CodigoRespostaNovaSenha.fromCodigo(resp.getCodigo())) {
 			case SUCESSO:
-				// TODO: enviar o email com a senha
+				emailUtil.enviarEmail(new String[] {usuario.getEmail()}, "Alteracao senha", mensagemAlteracaoSenha(usuario, novaSenha));
 				usuario.setToken(resp.getToken());
 				entityManager.merge(usuario);
 				entityManager.flush();
@@ -415,6 +421,16 @@ public class DesafioPositivoFacade {
 		} else {
 			throw new ExcecaoUsuarioNaoEncontrado();
 		}
+	}
+
+	private String mensagemAlteracaoSenha(Usuario usuario, String novaSenha) {
+		return "Prezado "  + usuario.getNome() + 
+				"\n \n \n" +
+				"Voce pode acessar o sistema usando a seguinte senha: " +
+				"\n \n \n" +  novaSenha +
+				"\n \n \n" +
+				"Atenciosamente, \n" +
+				"Coordenacao do desafio positivo." ;
 	}
 
 	public void excluirProposta(Proposta propostaSelecionada) throws Exception {

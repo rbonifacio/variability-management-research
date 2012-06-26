@@ -9,48 +9,139 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.jboss.seam.ScopeType;
-import org.jboss.seam.annotations.AutoCreate;
-import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Scope;
-
 import br.unb.cdt.desafioPositivo.facade.ExcecaoEnvioEmail;
-
-@Name("emailUtil")
-@Scope(ScopeType.CONVERSATION)
-@AutoCreate
+/**
+ * Componente SEAM utilizado para o envio de emails.
+ * 
+ * A configuracao desse componente eh feita com o 
+ * uso do arquivo components.xml. Necessario ajustar 
+ * nos momentos de deployment e producao.
+ * 
+ * @author rbonifacio
+ */
 public class EmailUtil {
 	
-	public void sendEmail(String from, String to, String subject, String body) throws Exception {
-		try {
-			//renderer.render(template);
-			
+	/* configuracao padrao do componente */
+	
+	private boolean desenvolvimento = true;
+	private String autorizacao = "true";
+	private String tls = "true";
+	private String host = "smtp.gmail.com";
+	private String porta = "587";
+	private String usuario = "desafiopositivoandroid@gmail.com";
+	private String senha = "android@0!2";
+	private String[] listaInternaDestinatarios = new String[] { "desafiopositivoandroid@gmail.com" };
+	
+	/**
+	 * Realiza o envio do email. 
+	 * @param destino - destinatario da mensagem
+	 * @param assunto - assunto da mensagem 
+	 * @param corpo - corpo da mensagem
+	 * @throws Exception
+	 */
+	public void enviarEmail(String[] listaDestinatarios, String assunto, String corpo) throws Exception {
+		try {	
 			Properties props = new Properties();
-			props.put("mail.smtp.auth", "true");
-			props.put("mail.smtp.starttls.enable", "true");
-			props.put("mail.smtp.host", "smtp.gmail.com");
-			props.put("mail.smtp.port", "587");
+			props.put("mail.smtp.auth", autorizacao);
+			props.put("mail.smtp.starttls.enable", tls);
+			props.put("mail.smtp.host", host);
+			props.put("mail.smtp.port", porta);
 				
 			Session session = Session.getInstance(props,
 					  new javax.mail.Authenticator() {
 						protected PasswordAuthentication getPasswordAuthentication() {
-							return new PasswordAuthentication("desafiopositivoandroid@gmail.com", "android@0!2");
+							return new PasswordAuthentication(usuario, senha);
 						}
 					  });
 			
+			session.setDebug(desenvolvimento);
+			
 			MimeMessage message = new MimeMessage(session);
 			
-			message.setFrom(new InternetAddress(from));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-			message.setSubject(subject);
-			message.setText(body);
+			message.setFrom(new InternetAddress(usuario));
 			
-			Transport.send(message);
+			populaListaDestinatarios(message, desenvolvimento ? listaInternaDestinatarios : listaDestinatarios);
 			
-			System.out.println("[EmailUtil] message sent");
+			message.setSubject(assunto);
+			message.setText(corpo);
+			
+			Transport.send(message);	  
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ExcecaoEnvioEmail(
 					"Nao foi possivel enviar o email com a solicitacao de cadastro. Tente novamente.");
 		}
+	}
+
+	private void populaListaDestinatarios(MimeMessage message, String[] listaDestinatarios) throws Exception{
+		for(String destinatario: listaDestinatarios) {
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
+		}
+	}
+	public boolean isDesenvolvimento() {
+		return desenvolvimento;
+	}
+
+	public void setDesenvolvimento(boolean desenvolvimento) {
+		this.desenvolvimento = desenvolvimento;
+	}
+
+	
+
+	
+	public String getAutorizacao() {
+		return autorizacao;
+	}
+
+	public void setAutorizacao(String autorizacao) {
+		this.autorizacao = autorizacao;
+	}
+
+	public String getTls() {
+		return tls;
+	}
+
+	public void setTls(String tls) {
+		this.tls = tls;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public String getPorta() {
+		return porta;
+	}
+
+	public void setPorta(String porta) {
+		this.porta = porta;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public String[] getListaInternaDestinatarios() {
+		return listaInternaDestinatarios;
+	}
+
+	public void setListaInternaDestinatarios(String[] listaInternaDestinatarios) {
+		this.listaInternaDestinatarios = listaInternaDestinatarios;
 	}
 }

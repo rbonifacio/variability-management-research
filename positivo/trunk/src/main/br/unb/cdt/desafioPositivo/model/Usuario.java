@@ -19,10 +19,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.validator.AssertTrue;
 import org.hibernate.validator.Email;
-import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Length;
+import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Past;
 
 import br.unb.cdt.desafioPositivo.model.acesso.AcessoUsuario;

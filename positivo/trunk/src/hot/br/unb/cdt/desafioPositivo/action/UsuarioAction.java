@@ -16,8 +16,6 @@ import org.jboss.seam.international.StatusMessages;
 import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
 
-import com.sun.facelets.tag.jstl.core.ForEachHandler;
-
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioCadastrado;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioNaoEncontrado;
@@ -111,7 +109,7 @@ public class UsuarioAction {
 			StatusMessages.instance().addFromResourceBundle("positivo.usuarioAction.solicitacaoCadastro", usuarioDto.getEmail());
 			return "home";
 		} catch (ExcecaoUsuarioCadastrado e) {
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR, "positivo.usuarioAction.emailExistente", usuarioDto.getEmail());
+			StatusMessages.instance().addFromResourceBundle("positivo.usuarioAction.emailExistente", usuarioDto.getEmail());
 			return null;
 		} 
 		catch(InvalidStateException e) {

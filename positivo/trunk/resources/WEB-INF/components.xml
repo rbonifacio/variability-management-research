@@ -69,5 +69,22 @@
       <bpm:pageflow-definitions></bpm:pageflow-definitions>
    </bpm:jbpm>
    -->
+   
+   <component name="emailUtil" scope="event" class="br.unb.cdt.desafioPositivo.util.email.EmailUtil">
+    <property name="desenvolvimento">true</property> 
+   	<property name="autorizacao">true</property>
+   	<property name="tls">true</property>
+   	<property name="host">smtp.gmail.com</property>
+   	<property name="porta">587</property>
+   	<property name="listaInternaDestinatarios">
+   	 <value>desafiopositivoandroid@gmail.com</value>
+   	 <value>rbonifacio123@gmail.com</value>
+   	</property>
+   	<property name="usuario">desafiopositivoandroid@gmail.com</property>
+   	<property name="senha">android@0!2</property>
+   </component>
+   
+   <factory name="urlConfirmacaoCadastro" value="http://localhost:8080/desafioPositivo/usuario/confirmaSolicitacaoCadastro.seam"/>
+   
 
 </components>
