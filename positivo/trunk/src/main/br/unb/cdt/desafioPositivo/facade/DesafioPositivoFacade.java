@@ -218,7 +218,7 @@ public class DesafioPositivoFacade {
 		acesso.setUsuario(usuario);
 		acesso.setCodigoEfetivacao(geraCodigoConfirmacaoCadastro(usuario));
 		
-		emailUtil.enviarEmail(new String[] {usuario.getEmail()} , "Solicitação de cadastro", mensagemCadastro(usuario, acesso.getCodigoEfetivacao()));
+		emailUtil.enviarEmail(new String[] {usuario.getEmail()} , "Solicitacao de cadastro", mensagemCadastro(usuario, acesso.getCodigoEfetivacao()));
 	
 		usuario.getHistoricoSituacaoAcesso().add(acesso);
 
