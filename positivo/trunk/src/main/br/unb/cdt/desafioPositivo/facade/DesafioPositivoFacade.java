@@ -13,6 +13,7 @@ import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
 
+import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
 import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
 import br.unb.cdt.desafioPositivo.model.acesso.AcessoSolicitado;
@@ -78,7 +79,7 @@ public class DesafioPositivoFacade {
 			throw new ExcecaoUsuarioCadastrado();
 
 		default:
-			throw new Exception("Nao foi possivel efetuar o cadastro.");
+			throw new Exception(Mensagens.EXP_CADASTRO);
 		}
 	}
 
@@ -94,7 +95,7 @@ public class DesafioPositivoFacade {
 			Usuario usuario = recuperaUsuario(usuarioLogado.getEmail());
 
 			if (usuario == null) {
-				throw new Exception("problemas na requisicao.");
+				throw new Exception(Mensagens.EXP_REQUISICAO);
 			}
 
 			usuario.setNome(usuarioLogado.getNome());
@@ -116,11 +117,11 @@ public class DesafioPositivoFacade {
 				break;
 
 			default:
-				throw new Exception("problemas na requisicao");
+				throw new Exception(Mensagens.EXP_REQUISICAO);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("problemas na requisicao");
+			throw new Exception(Mensagens.EXP_REQUISICAO);
 		}
 	}
 
@@ -140,10 +141,10 @@ public class DesafioPositivoFacade {
 			realizaAlteracaoSenha(usuarioLogado, senha);
 			break;
 		case SENHA_INVALIDA:
-			throw new Exception("senha atual invalida");
+			throw new Exception(Mensagens.EXP_SENHA);
 
 		default:
-			throw new Exception("problemas no processamento da sua requisicao");
+			throw new Exception(Mensagens.EXP_REQUISICAO);
 		}
 	}
 
@@ -165,7 +166,7 @@ public class DesafioPositivoFacade {
 			entityManager.flush();
 			break;
 		default:
-			throw new Exception("problemas no processamento da requisicai");
+			throw new Exception(Mensagens.EXP_REQUISICAO);
 		}
 	}
 
@@ -200,8 +201,7 @@ public class DesafioPositivoFacade {
 				}
 
 			default:
-				throw new Exception(
-						"Nao foi possivel confirmar o cadastro do usuario.");
+				throw new Exception(Mensagens.EXP_CONFIRMACAO_CADASTRO);
 			}
 
 		} else {
@@ -218,7 +218,7 @@ public class DesafioPositivoFacade {
 		acesso.setUsuario(usuario);
 		acesso.setCodigoEfetivacao(geraCodigoConfirmacaoCadastro(usuario));
 		
-		emailUtil.enviarEmail(new String[] {usuario.getEmail()} , "Solicitacao de cadastro", mensagemCadastro(usuario, acesso.getCodigoEfetivacao()));
+		emailUtil.enviarEmail(new String[] {usuario.getEmail()} , Mensagens.FACADE_NOVO_USUARIO, mensagemCadastro(usuario, acesso.getCodigoEfetivacao()));
 	
 		usuario.getHistoricoSituacaoAcesso().add(acesso);
 
@@ -227,6 +227,13 @@ public class DesafioPositivoFacade {
 	}
 
 	private String mensagemCadastro(Usuario usuario, String codigoAtivacao) {
+		return Mensagens.MSG_WELCOME + ", " + usuario.getNome() + 
+				", \n \n \n" + 
+				Mensagens.MSG_BODY + ": \n \n \n" + codigoAtivacao +
+				"\n \n \n" +
+				Mensagens.MSG_END + ", \n" +
+				Mensagens.MSG_ATT + ".";
+		/*		
 		return "Prezado " + usuario.getNome() + 
 				", \n \n \n" + 
 			   "Para confirmar o seu acesso ao sistema, acesse a URL " + urlConfirmacaoCadastro + 
@@ -234,6 +241,7 @@ public class DesafioPositivoFacade {
 			   "\n \n \n" +
 			   "Atenciosamente, \n" +
 			   "Coordenacao do desafio positivo. ";
+		*/
 	}
 	
 	/**
@@ -254,7 +262,7 @@ public class DesafioPositivoFacade {
 		Usuario usuario = recuperaUsuario(email);
 
 		if (usuario == null) {
-			throw new ExcecaoFalhaAutenticacao("Usuario ou senha invalida.");
+			throw new ExcecaoFalhaAutenticacao(Mensagens.EXP_USUARIO_SENHA);
 		} else {
 			usuario.getSituacaoAcessoAtual().autenticar(resp.getCodigo() == 0);
 		}
@@ -264,13 +272,13 @@ public class DesafioPositivoFacade {
 			return recuperaUsuario(email);
 
 		case SENHA_INVALIDA:
-			throw new ExcecaoFalhaAutenticacao("Usuario ou senha invalida");
+			throw new ExcecaoFalhaAutenticacao(Mensagens.EXP_USUARIO_SENHA);
 
 		case CLIENTE_NAO_ENCONTRADO:
-			throw new ExcecaoFalhaAutenticacao("Usuario ou senha invalida");
+			throw new ExcecaoFalhaAutenticacao(Mensagens.EXP_USUARIO_SENHA);
 
 		default:
-			throw new Exception("Problemas na autenticacao do usuario");
+			throw new Exception(Mensagens.EXP_AUTENTICACAO);
 		}
 	}
 
@@ -379,7 +387,7 @@ public class DesafioPositivoFacade {
 			} else
 				return usuarios.get(0);
 		} catch (Exception e) {
-			throw new Exception("Problemas na consulta ao usuario");
+			throw new Exception(Mensagens.EXP_CONSULTA_USUARIO);
 		}
 	}
 
@@ -404,20 +412,20 @@ public class DesafioPositivoFacade {
 
 			switch (CodigoRespostaNovaSenha.fromCodigo(resp.getCodigo())) {
 			case SUCESSO:
-				emailUtil.enviarEmail(new String[] {usuario.getEmail()}, "Alteracao senha", mensagemAlteracaoSenha(usuario, novaSenha));
+				emailUtil.enviarEmail(new String[] {usuario.getEmail()}, Mensagens.FACADE_ALTERA_SENHA, mensagemAlteracaoSenha(usuario, novaSenha));
 				usuario.setToken(resp.getToken());
 				entityManager.merge(usuario);
 				entityManager.flush();
 				break;
 
 			case SENHA_INVALIDA:
-				throw new Exception("Senha gerada invalida. Tente novamente");
+				throw new Exception(Mensagens.EXP_SENHA_GERADA_INVALIDA);
 
 			case CLIENTE_NAO_EXISTE:
 				throw new ExcecaoUsuarioNaoEncontrado();
 
 			case OUTROS:
-				throw new Exception("Nao foi possivel realizar a transacao.");
+				throw new Exception(Mensagens.EXP_TRANSACAO);
 			}
 		} else {
 			throw new ExcecaoUsuarioNaoEncontrado();
@@ -425,13 +433,21 @@ public class DesafioPositivoFacade {
 	}
 
 	private String mensagemAlteracaoSenha(Usuario usuario, String novaSenha) {
-		return "Prezado "  + usuario.getNome() + 
+		return Mensagens.MSG_WELCOME + ", " + usuario.getNome() + 
+				", \n \n \n" + 
+				Mensagens.MSG_BODY_SENHA + ": \n \n \n" + novaSenha +
 				"\n \n \n" +
-				"Voce pode acessar o sistema usando a seguinte senha: " +
+				Mensagens.MSG_END + ", \n" +
+				Mensagens.MSG_ATT + ".";
+		/*
+		return "Prezado, "  + usuario.getNome() + 
+				"\n \n \n" +
+				"Você pode acessar o sistema usando a seguinte senha: " +
 				"\n \n \n" +  novaSenha +
 				"\n \n \n" +
 				"Atenciosamente, \n" +
-				"Coordenacao do desafio positivo." ;
+				"Coordenação do Desafio Positivo." ;
+		*/
 	}
 
 	public void excluirProposta(Proposta propostaSelecionada) throws Exception {
@@ -451,7 +467,7 @@ public class DesafioPositivoFacade {
 			} else
 				return propostas.get(0);
 		} catch (Exception e) {
-			throw new Exception("Problemas na recuperação da proposta");
+			throw new Exception(Mensagens.EXP_RECUPERA_PROPOSTA);
 		}
 	}
 	
@@ -459,7 +475,7 @@ public class DesafioPositivoFacade {
 	public void editarProposta(Proposta propostaSelecionada) throws Exception {
 		Proposta proposta = recuperaProposta(propostaSelecionada.getId());
 		if(proposta == null) {
-			throw new Exception("Problemas na requisição.");
+			throw new Exception(Mensagens.EXP_REQUISICAO);
 		}
 
 		proposta.setNome(propostaSelecionada.getNome());

@@ -14,8 +14,11 @@ import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.datamodel.DataModelSelection;
 import org.jboss.seam.faces.FacesMessages;
+import org.jboss.seam.international.StatusMessage;
+import org.jboss.seam.international.StatusMessages;
 
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
+import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
 import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
 
@@ -50,7 +53,7 @@ public class PropostaAction {
 			return "sumario";
 		}
 		catch(Exception e) {
-			facesMessages.add(FacesMessage.SEVERITY_ERROR, e.getMessage());
+			StatusMessages.instance().add(StatusMessage.Severity.ERROR, e.getMessage());
 			return null;
 		}
 	}
@@ -97,7 +100,7 @@ public class PropostaAction {
 			facade.editarProposta(propostaSelecionada);
 			return "sumario";
 		} catch(Exception e) {
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.propostaAction.editarPropostaErro");
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.EDITAR_PROPOSTA_ERRO);
 			return null;
 		}
 	}
@@ -110,9 +113,9 @@ public class PropostaAction {
 			facade.excluirProposta(propostaSelecionada);
 			propostasSubmetidas.remove(propostaSelecionada);
 			propostaSelecionada = null;
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.propostaAction.excluirPropostaSucesso");
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.EXCLUIR_PROPOSTA_SUCESSO);
 		} catch(Exception e) {
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.propostaAction.excluirPropostaErro");
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.EXCLUIR_PROPOSTA_ERRO);
 		}
 	}
 	

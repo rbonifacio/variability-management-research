@@ -9,6 +9,8 @@ import org.jboss.seam.annotations.Logger;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Out;
 import org.jboss.seam.faces.FacesMessages;
+import org.jboss.seam.international.StatusMessage;
+import org.jboss.seam.international.StatusMessages;
 import org.jboss.seam.log.Log;
 import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
@@ -45,16 +47,12 @@ public class Authenticator
 			return true;
     	}
     	catch(ExcecaoAcessoUsuario e) {
-    		facesMessages.add(FacesMessage.SEVERITY_INFO, e.getLocalizedMessage());
-    		// que erro é este? ass: Willian----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			// resposta: ???
+    		StatusMessages.instance().add(StatusMessage.Severity.INFO, e.getLocalizedMessage());
     		e.printStackTrace();
     		return false;
     	}
     	catch (Exception e) {
     		e.printStackTrace();
-    		// que erro é este? ass: Willian----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			// resposta: ???
     		return false;
 		} 
     }

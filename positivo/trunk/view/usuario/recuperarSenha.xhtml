@@ -11,7 +11,7 @@
 
 
 	<ui:define name="body">
-		<h1>Registro</h1>
+	<h1>#{messages['positivo.recuperarSenha.heading']}</h1>
 		
 
 		<rich:panel>
@@ -23,14 +23,14 @@
 							<h:panelGrid columns="2" rowClasses="prop"
 								columnClasses="name,value">
 								
-								<h:outputLabel for="email">E-mail:</h:outputLabel>
+								<h:outputLabel for="email" value="#{messages['positivo.recuperarSenha.email']}" />
 								<h:inputText id="email" value="#{usuarioAction.usuarioDto.email}" required="true" />
 
 							</h:panelGrid>
 						</div>
 
 						<div class="actionButtons">
-							<h:commandButton id="submit" value="Recuperar senha"
+							<h:commandButton id="submit" value="#{messages['positivo.recuperarSenha.recuperar']}"
 								action="#{usuarioAction.recuperarSenha}" />
 						</div>
 					

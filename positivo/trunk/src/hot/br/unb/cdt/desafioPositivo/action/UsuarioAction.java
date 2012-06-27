@@ -12,6 +12,7 @@ import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.faces.FacesMessages;
+import org.jboss.seam.international.StatusMessage;
 import org.jboss.seam.international.StatusMessages;
 import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
@@ -106,10 +107,10 @@ public class UsuarioAction {
 
 		try {
 			facade.adicionarUsuario(usuarioDto);
-			StatusMessages.instance().addFromResourceBundle("positivo.usuarioAction.solicitacaoCadastro", usuarioDto.getEmail());
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.SOLICITACAO_CADASTRO, usuarioDto.getEmail());
 			return "home";
 		} catch (ExcecaoUsuarioCadastrado e) {
-			StatusMessages.instance().addFromResourceBundle("positivo.usuarioAction.emailExistente", usuarioDto.getEmail());
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.EMAIL_EXISTENTE, usuarioDto.getEmail());
 			return null;
 		} 
 		catch(InvalidStateException e) {
@@ -118,7 +119,7 @@ public class UsuarioAction {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			StatusMessages.instance().addFromResourceBundle(Mensagens.ERRO_GENERICO);
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.ERRO_GENERICO);
 			return null;
 		}
 		
@@ -133,7 +134,7 @@ public class UsuarioAction {
 	private List<String> validaDadosCadastrais() {
 		List<String> erros = new ArrayList<String>();
 		if (!usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
-			erros.add("positivo.usuarioAction.confirmacao.email.diferente");
+			erros.add(Mensagens.CONFIRMACAO_EMAIL_DIFERENTE);
 		}
 		
 		return erros;
@@ -146,17 +147,16 @@ public class UsuarioAction {
 
 		try {
 			facade.confirmarSolicitacaoCadstro(usuarioDto);
-			
-			StatusMessages.instance().addFromResourceBundle(Mensagens.USUARIO_CONFIRMA_SOLICITACAO_CADASTRO);
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.USUARIO_CONFIRMA_SOLICITACAO_CADASTRO);
 			return "home";
 		} catch(ExcecaoUsuarioNaoEncontrado e) {
 			e.printStackTrace();
-			StatusMessages.instance().addFromResourceBundle(Mensagens.USUARIO_NAO_ENCONTRADO);
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.USUARIO_NAO_ENCONTRADO);
 			return null;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			StatusMessages.instance().addFromResourceBundle(Mensagens.ERRO_GENERICO);
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.ERRO_GENERICO);
 			return null;
 		}
 	}
@@ -165,12 +165,12 @@ public class UsuarioAction {
 		boolean senhaValida = true;
 
 		if (!CriptografiaUtil.verificaSenha(usuarioDto.getSenha())) {
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.usuarioAction.senhaInvalida");
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.SENHA_INVALIDA);
 			senhaValida = false;
 		}
 
 		if (!usuarioDto.getSenha().equals(usuarioDto.getConfirmacaoSenha())) {
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.usuarioAction.confirmacaoSenhaInvalida");
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.SENHA_INVALIDA);
 			senhaValida = false;
 		}
 		return senhaValida;
@@ -180,7 +180,7 @@ public class UsuarioAction {
 		try {
 			if (credentials.getUsername() == null
 					|| credentials.getPassword() == null) {
-				facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.usuarioAction.loginAutenticacaoCamposObrigatorios");
+				StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.AUTENTICACAO_CAMPOS_OBRIGATORIOS);
 				return null;
 			}
 			if (identity.login().equals("loggedIn")) {
@@ -196,17 +196,14 @@ public class UsuarioAction {
 	public String recuperarSenha() {
 		try {
 			facade.recuperarSenha(usuarioDto);
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.usuarioAction.recuperarSenhaSucesso", usuarioDto.getEmail());
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.RECUPERAR_SENHA_SUCESSO, usuarioDto.getEmail());
 			return "home";
 		} catch (ExcecaoUsuarioNaoEncontrado e) {
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_ERROR,"positivo.usuarioAction.recuperarSenhaEmailInexistente", usuarioDto.getEmail());
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.RECUPERAR_SENHA_INEXISTENTE, usuarioDto.getEmail());
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			// que erro é este? ass: Willian----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			// resposta: ???
-			facesMessages.add(FacesMessage.SEVERITY_ERROR,
-					e.getLocalizedMessage());
+			StatusMessages.instance().add(StatusMessage.Severity.ERROR, e.getLocalizedMessage());
 			return null;
 		}
 
@@ -215,13 +212,11 @@ public class UsuarioAction {
 	public String atualizarDadosUsuario() {
 		try {
 			facade.atualizarUsuario(usuarioLogado);
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.usuarioAction.atualizacaoDadosSucesso");
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.ATUALIZAR_DADOS_SUCESSO);
 			return "sumario";
 		}
 		catch(Exception e) {
-			// que erro é este? ass: Willian----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			// resposta: ???
-			facesMessages.add(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage());
+			StatusMessages.instance().add(StatusMessage.Severity.ERROR, e.getLocalizedMessage());
 			return null;
 		}
 	}
@@ -229,13 +224,11 @@ public class UsuarioAction {
 	public String alterarSenha() {
 		try {
 			facade.alterarSenha(usuarioLogado, alteraSenhaDTO);
-			facesMessages.addFromResourceBundle(FacesMessage.SEVERITY_INFO,"positivo.usuarioAction.atualizacaoSenhaSucesso");
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.ATUALIZAR_SENHA_SUCESSO);
 			return "sumario";
 		}
 		catch(Exception e) {
-			// que erro é este? ass: Willian----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			// resposta: ???
-			facesMessages.add(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage());
+			StatusMessages.instance().add(StatusMessage.Severity.ERROR, e.getLocalizedMessage());
 			return null;
 		}
 		

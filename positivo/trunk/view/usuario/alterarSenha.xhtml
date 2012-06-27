@@ -10,7 +10,7 @@
 
 
 	<ui:define name="body">
-		<h1>Alteração de Senha</h1>
+	<h1>#{messages['positivo.alterarSenha.heading']}</h1>
 
 
 		<rich:panel>
@@ -22,22 +22,22 @@
 							<h:panelGrid columns="2" rowClasses="prop"
 								columnClasses="name,value">
 									
-								<h:outputLabel for="senhaAtual">Senha atual:</h:outputLabel>
+								<h:outputLabel for="senhaAtual" value="#{messages['positivo.alterarSenha.senhaAtual']}" />
 								<h:inputSecret id="senhaAtual"
 									value="#{alteraSenhaDTO.senhaAtual}"  />
 									
-								<h:outputLabel for="novaSenha">Nova senha:</h:outputLabel>
+								<h:outputLabel for="novaSenha" value="#{messages['positivo.alterarSenha.novaSenha']}" />
 								<h:inputSecret id="novaSenha"
 									value="#{alteraSenhaDTO.novaSenha}" required="true" />
 									
-								<h:outputLabel for="confirmacaoSenha">Confirmacao de senha:</h:outputLabel>
+								<h:outputLabel for="confirmacaoSenha" value="#{messages['positivo.alterarSenha.confirmacaoSenha']}" />
 								<h:inputSecret id="confirmacaoSenha"
 									value="#{alteraSenhaDTO.confirmacaoNovaSenha}" required="true" />
 							</h:panelGrid>
 						</div>
 
 						<div class="actionButtons">
-							<h:commandButton id="submit" value="Confirmar alteracao"
+							<h:commandButton id="submit" value="#{messages['positivo.alterarSenha.confirmarAlteracao']}"
 								action="#{usuarioAction.alterarSenha()}" />
 						</div>
 

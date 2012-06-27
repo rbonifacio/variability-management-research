@@ -10,7 +10,7 @@
 
 
 	<ui:define name="body">
-		<h1>Confirma solicitacao de cadastro</h1>
+	<h1>#{messages['positivo.confirmaSolicitacaoCadastro.heading']}</h1>
 
 
 		<rich:panel>
@@ -21,25 +21,25 @@
 						<div class="dialog">
 							<h:panelGrid columns="2" rowClasses="prop"
 								columnClasses="name,value">
-								<h:outputLabel for="email">E-mail:</h:outputLabel>
+								<h:outputLabel for="email" value="#{messages['positivo.confirmaSolicitacaoCadastro.email']}" />
 								<h:inputText id="email" value="#{usuarioAction.usuarioDto.email}" required="true" />
 
-								<h:outputLabel for="codigoConfirmacaoCadastro">Codigo:</h:outputLabel>
+								<h:outputLabel for="codigoConfirmacaoCadastro" value="#{messages['positivo.confirmaSolicitacaoCadastro.codigo']}" />
 								<h:inputText id="codigoConfirmacaoCadastro"
 									value="#{usuarioAction.usuarioDto.codigoConfirmacaoCadastro}" required="true" />
 									
-								<h:outputLabel for="senha">Senha:</h:outputLabel>
+								<h:outputLabel for="senha" value="#{messages['positivo.confirmaSolicitacaoCadastro.senha']}" />
 								<h:inputSecret id="senha"
 									value="#{usuarioAction.usuarioDto.senha}" required="true" />
 									
-								<h:outputLabel for="confirmacaoSenha">Confirmacao:</h:outputLabel>
+								<h:outputLabel for="confirmacaoSenha" value="#{messages['positivo.confirmaSolicitacaoCadastro.confirmacaoSenha']}" />
 								<h:inputSecret id="confirmacaoSenha"
 									value="#{usuarioAction.usuarioDto.confirmacaoSenha}" required="true" />
 							</h:panelGrid>
 						</div>
 
 						<div class="actionButtons">
-							<h:commandButton id="submit" value="Confirma solicitacao"
+							<h:commandButton id="submit" value="#{messages['positivo.confirmaSolicitacaoCadastro.confirma']}"
 								action="#{usuarioAction.confirmaSolicitacaoCadastro}" />
 						</div>
 

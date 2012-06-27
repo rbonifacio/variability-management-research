@@ -5,27 +5,23 @@
 	<m:from name="Positivo" address="rbonifacio@unb.br" />
 	<m:to name="#{usuario.nome} #{usuario.sobrenome}">rodrigo.bonifacio@uol.com.br</m:to>
 
-	<m:subject>Cadastro efetivado com sucesso</m:subject>
-
-
+	<m:subject>#{messages['positivo.cadastroUsuario.welcome']}</m:subject>
 
 	<m:body>
 
 		<p>
-			<h:outputText value="Prezado #{usuario.nome}" />,
+		<h:outputText value="#{messages['positivo.cadastroUsuario.welcome']}" />,
 		</p>
 
 		<p>
-			Para confirmar o seu registro, acesse a URL e entre com o codigo de acesso<a
-				href="http://labs.jboss.com/jbossseam">http://labs.jboss.com/jbossseam</a>.
+		#{messages['positivo.cadastroUsuario.body']}<a
+			href="#{messages['positivo.cadastroUsuario.link']}">#{messages['positivo.cadastroUsuario.link']}</a>.
 		</p>
 
-		<p>Atenciosamente,</p>
+		<p>#{messages['positivo.cadastroUsuario.att']}</p>
 
-		<p>Blah</p>
+		<p>Fulano.</p>
 
 	</m:body>
-
-
 
 </m:message>
