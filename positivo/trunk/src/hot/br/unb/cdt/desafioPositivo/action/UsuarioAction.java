@@ -20,6 +20,8 @@ import org.jboss.seam.security.Identity;
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioCadastrado;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioNaoEncontrado;
+import br.unb.cdt.desafioPositivo.facade.ExcecaoSenhaInvalida;
+import br.unb.cdt.desafioPositivo.facade.ExcecaoSenhaDiferente;
 import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
 import br.unb.cdt.desafioPositivo.model.Estado;
 import br.unb.cdt.desafioPositivo.model.Sexo;
@@ -141,39 +143,40 @@ public class UsuarioAction {
 	}
 
 	public String confirmaSolicitacaoCadastro() {
-		if (!validaSenhaConfirmacaoCadastro()) {
-			return null;
-		}
-
 		try {
+			validaSenhaConfirmacaoCadastro();
 			facade.confirmarSolicitacaoCadstro(usuarioDto);
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.USUARIO_CONFIRMA_SOLICITACAO_CADASTRO);
-			return "home";
+			StatusMessages.instance().addFromResourceBundle(Mensagens.USUARIO_CONFIRMA_SOLICITACAO_CADASTRO);
 		} catch(ExcecaoUsuarioNaoEncontrado e) {
 			e.printStackTrace();
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.USUARIO_NAO_ENCONTRADO);
+			StatusMessages.instance().addFromResourceBundle(Mensagens.USUARIO_NAO_ENCONTRADO);
 			return null;
-		}
-		catch (Exception e) {
+		} catch(ExcecaoSenhaInvalida e){
 			e.printStackTrace();
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.ERRO_GENERICO);
+			StatusMessages.instance().addFromResourceBundle(Mensagens.SENHA_INVALIDA);
+			return null;
+		} catch(ExcecaoSenhaDiferente e){
+			e.printStackTrace();
+			StatusMessages.instance().addFromResourceBundle(Mensagens.SENHA_DIFERENTE);
+			return null;
+		}catch (Exception e) {
+			e.printStackTrace();
+			StatusMessages.instance().addFromResourceBundle(Mensagens.ERRO_GENERICO);
 			return null;
 		}
+		return "home";
 	}
-
-	private boolean validaSenhaConfirmacaoCadastro() {
+	
+	private void validaSenhaConfirmacaoCadastro() throws ExcecaoSenhaInvalida, ExcecaoSenhaDiferente {
 		boolean senhaValida = true;
 
 		if (!CriptografiaUtil.verificaSenha(usuarioDto.getSenha())) {
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.SENHA_INVALIDA);
-			senhaValida = false;
+			throw new ExcecaoSenhaInvalida();
 		}
 
 		if (!usuarioDto.getSenha().equals(usuarioDto.getConfirmacaoSenha())) {
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.SENHA_INVALIDA);
-			senhaValida = false;
+			throw new ExcecaoSenhaDiferente();
 		}
-		return senhaValida;
 	}
 
 	public String autenticar() {
