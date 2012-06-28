@@ -147,6 +147,7 @@ public class UsuarioAction {
 			validaSenhaConfirmacaoCadastro();
 			facade.confirmarSolicitacaoCadstro(usuarioDto);
 			StatusMessages.instance().addFromResourceBundle(Mensagens.USUARIO_CONFIRMA_SOLICITACAO_CADASTRO);
+			return "home";
 		} catch(ExcecaoUsuarioNaoEncontrado e) {
 			e.printStackTrace();
 			StatusMessages.instance().addFromResourceBundle(Mensagens.USUARIO_NAO_ENCONTRADO);
@@ -164,7 +165,6 @@ public class UsuarioAction {
 			StatusMessages.instance().addFromResourceBundle(Mensagens.ERRO_GENERICO);
 			return null;
 		}
-		return "home";
 	}
 	
 	private void validaSenhaConfirmacaoCadastro() throws ExcecaoSenhaInvalida, ExcecaoSenhaDiferente {
@@ -226,15 +226,34 @@ public class UsuarioAction {
 	
 	public String alterarSenha() {
 		try {
+			validaSenhaAlteracaoSenha();
 			facade.alterarSenha(usuarioLogado, alteraSenhaDTO);
 			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.ATUALIZAR_SENHA_SUCESSO);
 			return "sumario";
-		}
-		catch(Exception e) {
+		}catch(ExcecaoSenhaInvalida e){
+			e.printStackTrace();
+			StatusMessages.instance().addFromResourceBundle(Mensagens.SENHA_INVALIDA);
+			return null;
+		} catch(ExcecaoSenhaDiferente e){
+			e.printStackTrace();
+			StatusMessages.instance().addFromResourceBundle(Mensagens.SENHA_DIFERENTE);
+			return null;
+		} catch(Exception e) {
 			StatusMessages.instance().add(StatusMessage.Severity.ERROR, e.getLocalizedMessage());
 			return null;
 		}
-		
+	}
+	
+	private void validaSenhaAlteracaoSenha() throws ExcecaoSenhaInvalida, ExcecaoSenhaDiferente {
+		boolean senhaValida = true;
+
+		if (!CriptografiaUtil.verificaSenha(alteraSenhaDTO.getNovaSenha())) {
+			throw new ExcecaoSenhaInvalida();
+		}
+
+		if (!alteraSenhaDTO.getNovaSenha().equals(alteraSenhaDTO.getConfirmacaoNovaSenha())) {
+			throw new ExcecaoSenhaDiferente();
+		}
 	}
 
 	public Usuario getUsuarioDto() {
