@@ -1,0 +1,41 @@
+<rich:toolBar xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich">
+	<rich:toolBarGroup>
+		<h:form>
+			<h:panelGroup>
+			 		<h:commandLink rendered="${not disabled and rendered}" action="#{backingBean[action]}" style="${style}" styleClass="${styleClass}">
+ 		    <h:graphicImage rendered="${not disabled}" url="${icon}" alt="${title}" title="${title}"  style="border:0px"/>
+ 			<h:outputText value="#{textLink}"/>
+ 			<ui:insert />
+ 		</h:commandLink>
+ 				<h:commandLink action="#{localeSelector.selectLanguage('pt')}">
+ 					<h:graphicImage url="/img/ico_brasil.gif" alt="#{messages['positivo.menu.portugues']}" title="#{messages['positivo.menu.portugues']}" />
+ 				</h:commandLink>
+ 				<h:outputText value="  " />
+ 				<h:commandLink action="#{localeSelector.selectLanguage('en')}">
+ 					 <h:graphicImage url="/img/ico_usa.png" alt="#{messages['positivo.menu.ingles']}" title="#{messages['positivo.menu.ingles']}" />
+ 				</h:commandLink>
+			</h:panelGroup>
+		</h:form>
+		
+		<h:outputText value="#{projectName}:" />
+		<s:link id="menuHomeId" view="/home.xhtml" value="Home"
+			propagation="none" />
+		<s:link id="sumario" view="/usuario/sumario.xhtml" value="#{messages['positivo.menu.sumario']}"
+			propagation="none" rendered="#{identity.loggedIn}" />
+
+	</rich:toolBarGroup>
+	<!-- @newMenuItem@ -->
+	<rich:toolBarGroup location="right">
+		<h:outputText id="menuWelcomeId"
+			value="#{messages['positivo.layout.logado']}: #{credentials.username}"
+			rendered="#{identity.loggedIn}" />
+		<s:link id="menuLogoutId" action="#{authenticator.logout()}"
+			value="#{messages['positivo.layout.deslogar']}"
+			rendered="#{identity.loggedIn}" propagation="none" />
+	</rich:toolBarGroup>
+</rich:toolBar>

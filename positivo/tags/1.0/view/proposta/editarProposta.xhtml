@@ -1,0 +1,62 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../layout/template.xhtml">
+
+
+	<ui:define name="body">
+	<h1>#{messages['positivo.editarProposta.heading']}</h1>
+
+		<rich:panel>
+			<h:panelGrid columns="2">
+				<h:graphicImage value="/img/caract-positivo-ypy.png" />
+				<s:div styleClass="info">
+					<h:form id="novaPropostaForm">
+						<div class="dialog">
+							<h:panelGrid columns="2" rowClasses="prop"
+								columnClasses="name,value">
+								<h:outputLabel for="nome" value="#{messages['positivo.editarProposta.nome']}" />
+								<h:inputText id="nome" value="#{propostaAction.propostaSelecionada.nome}" required="true" />
+
+								<h:outputLabel for="descricao" value="#{messages['positivo.editarProposta.descricao']}" />
+								<h:inputTextarea id="descricao" value="#{propostaAction.propostaSelecionada.descricao}"
+									required="true" rows="3" cols="50" />
+
+								<h:outputLabel for="objetivos" value="#{messages['positivo.editarProposta.objetivos']}" />
+								<h:inputTextarea id="objetivos" value="#{propostaAction.propostaSelecionada.objetivos}"
+									required="true" rows="3" cols="50" />
+
+								<h:outputLabel for="publicoAlvo" value="#{messages['positivo.editarProposta.publicoAlvo']}" />
+								<h:inputTextarea id="publicoAlvo"
+									value="#{propostaAction.propostaSelecionada.publicoAlvo}" required="true" rows="3"
+									cols="50" />
+
+								<h:outputLabel for="descricaoFuncional" value="#{messages['positivo.editarProposta.descricaoFuncional']}" />
+								<h:inputTextarea id="descricaoFuncional"
+									value="#{propostaAction.propostaSelecionada.descricaoFuncional}" required="true" rows="3"
+									cols="50" />
+
+								<h:outputLabel for="prototipo" value="#{messages['positivo.editarProposta.prototipo']}" />
+								<s:fileUpload data="#{propostaAction.proposta.arquivoGUI}" label="#{messages['positivo.editarProposta.enviar']}"/>	
+								
+							</h:panelGrid>
+						</div>
+
+						<div class="actionButtons">
+							<h:commandButton id="submit" value="#{messages['positivo.editarProposta.editar']}" action="#{propostaAction.editar}" />
+						</div>
+
+					</h:form>
+				</s:div>
+			</h:panelGrid>
+		</rich:panel>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,50 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="../layout/template.xhtml">
+
+
+	<ui:define name="body">
+	<h1>#{messages['positivo.alterarSenha.heading']}</h1>
+
+
+		<rich:panel>
+			<h:panelGrid columns="2">
+				<h:graphicImage value="/img/tablets-positivo-ypy.png" />
+				<s:div styleClass="info">
+					<h:form id="alterarSenha">
+						<div class="dialog">
+							<h:panelGrid columns="2" rowClasses="prop"
+								columnClasses="name,value">
+									
+								<h:outputLabel for="senhaAtual" value="#{messages['positivo.alterarSenha.senhaAtual']}" />
+								<h:inputSecret id="senhaAtual"
+									value="#{alteraSenhaDTO.senhaAtual}"  />
+									
+								<h:outputLabel for="novaSenha" value="#{messages['positivo.alterarSenha.novaSenha']}" />
+								<h:inputSecret id="novaSenha"
+									value="#{alteraSenhaDTO.novaSenha}" required="true" />
+									
+								<h:outputLabel for="confirmacaoSenha" value="#{messages['positivo.alterarSenha.confirmacaoSenha']}" />
+								<h:inputSecret id="confirmacaoSenha"
+									value="#{alteraSenhaDTO.confirmacaoNovaSenha}" required="true" />
+							</h:panelGrid>
+						</div>
+
+						<div class="actionButtons">
+							<h:commandButton id="submit" value="#{messages['positivo.alterarSenha.confirmarAlteracao']}"
+								action="#{usuarioAction.alterarSenha()}" />
+						</div>
+
+					</h:form>
+				</s:div>
+			</h:panelGrid>
+		</rich:panel>
+
+	</ui:define>
+</ui:composition>

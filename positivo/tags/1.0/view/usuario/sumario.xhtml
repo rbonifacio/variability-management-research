@@ -1,0 +1,77 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="../layout/template.xhtml">
+
+
+	<ui:define name="body">
+	<h1>#{messages['positivo.sumario.heading']}</h1>
+		<rich:panel>
+			<h:panelGrid columns="2">
+				<h:graphicImage value="/img/caixas-positivo.png" />
+				<s:div styleClass="info">
+					<h:form id="sumarioForm">
+						<div class="dialog">
+							<h:panelGrid columns="2" rowClasses="prop"
+								columnClasses="name,value">
+								<h:outputLabel for="nome" value="#{messages['positivo.sumario.nome']}:" />
+								<h:outputText id="nome" value="#{usuarioLogado.nome}:" />
+
+								<h:outputLabel for="sobrenome" value="#{messages['positivo.sumario.sobrenome']}:" />
+								<h:outputText id="sobrenome" value="#{usuarioLogado.sobrenome}"
+									required="true" />
+
+								<h:outputLabel for="sexo" value="#{messages['positivo.sumario.sexo']}:" />
+								<h:outputText id="sexo" value="#{usuarioLogado.sexo.descricao}" />
+
+								<h:outputLabel for="nascimento" value="#{messages['positivo.sumario.nascimento']}:" />
+								<h:outputText id="nascimento" value="#{usuarioLogado.nascimentoFormatado}" />
+
+								<h:outputLabel for="email" value="#{messages['positivo.sumario.email']}:" />
+								<h:outputText id="email" value="#{usuarioLogado.email}" />
+							
+							</h:panelGrid>
+							    <h:commandButton id="atualizarDados" value="#{messages['positivo.sumario.atualizarDados']}" action="atualizarDados" />
+								<h:commandButton id="alterarSenha" value="#{messages['positivo.sumario.alterarSenha']}" action="alterarSenha" />
+						</div>
+					</h:form>
+				</s:div>
+			</h:panelGrid>
+		</rich:panel>
+		<h1>#{messages['positivo.sumario.heading2']}</h1>
+		<h:form>
+		<rich:panel rendered="#{not empty propostasSubmetidas}">
+			<rich:dataTable value="#{propostasSubmetidas}" var="prop">
+				<rich:column>
+					<f:facet name="header" value="#{messages['positivo.sumario.nomeProposta']}" />
+					<h:outputText value="#{prop.nome}" />
+				</rich:column>
+				<rich:column>
+					<f:facet name="header" value="#{messages['positivo.sumario.descricaoProposta']}" />
+					<h:outputText value="#{prop.descricao}" />
+				</rich:column>
+				<rich:column>
+					<h:commandLink action="#{propostaAction.editarProposta}">
+						<h:graphicImage url="/img/edit_icon.png" alt="#{messages['positivo.sumario.editar']}" title="#{messages['positivo.sumario.editar']}" />
+					</h:commandLink>
+					<h:outputText value="   " />
+					<h:commandLink action="#{propostaAction.excluir}">
+						<h:graphicImage url="/img/delete_icon.png" alt="#{messages['positivo.sumario.excluir']}" title="#{messages['positivo.sumario.excluir']}" />
+					</h:commandLink>
+				</rich:column>
+			</rich:dataTable>
+		</rich:panel>
+		</h:form>
+		<rich:panel rendered="#{empty propostasSubmetidas}">
+			<h2>#{messages['positivo.sumario.submetaPropostas']}</h2>
+		</rich:panel>
+		<h:form id="solicitaNovaPropostaForm">
+			<h:commandButton id="novaProposta" value="#{messages['positivo.sumario.novaProposta']}" action="#{propostaAction.novaProposta()}" />
+		</h:form>
+	</ui:define>
+</ui:composition>

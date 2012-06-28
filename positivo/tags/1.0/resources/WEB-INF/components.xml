@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns="http://jboss.com/products/seam/components"
+            xmlns:core="http://jboss.com/products/seam/core"
+            xmlns:persistence="http://jboss.com/products/seam/persistence"
+            xmlns:drools="http://jboss.com/products/seam/drools"
+            xmlns:bpm="http://jboss.com/products/seam/bpm"
+            xmlns:security="http://jboss.com/products/seam/security"
+            xmlns:mail="http://jboss.com/products/seam/mail"
+            xmlns:web="http://jboss.com/products/seam/web"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation=
+                "http://jboss.com/products/seam/core http://jboss.com/products/seam/core-2.2.xsd
+                 http://jboss.com/products/seam/persistence http://jboss.com/products/seam/persistence-2.2.xsd
+                 http://jboss.com/products/seam/drools http://jboss.com/products/seam/drools-2.2.xsd
+                 http://jboss.com/products/seam/bpm http://jboss.com/products/seam/bpm-2.2.xsd
+                 http://jboss.com/products/seam/security http://jboss.com/products/seam/security-2.2.xsd
+                 http://jboss.com/products/seam/mail http://jboss.com/products/seam/mail-2.2.xsd
+                 http://jboss.com/products/seam/web http://jboss.com/products/seam/web-2.2.xsd
+                 http://jboss.com/products/seam/components http://jboss.com/products/seam/components-2.2.xsd">
+
+   <core:init debug="@debug@" jndi-pattern="@jndiPattern@"/>
+
+   <core:manager concurrent-request-timeout="500"
+                 conversation-timeout="120000"
+                 conversation-id-parameter="cid"
+                 parent-conversation-id-parameter="pid"/>
+
+   <!-- Make sure this URL pattern is the same as that used by the Faces Servlet -->
+   <web:hot-deploy-filter url-pattern="*.seam"/>
+
+   <!-- If you are still using JBoss 4, uncomment this to have your PU started -->
+   <persistence:entity-manager-factory name="entityManagerFactory"
+                      persistence-unit-name="desafioPositivo"
+                                  installed="@seamBootstrapsPu@"/>
+
+   <persistence:managed-persistence-context name="entityManager" auto-create="true"
+                          entity-manager-factory="@seamEmfRef@"
+                      persistence-unit-jndi-name="@puJndiName@"/>
+
+   <drools:rule-base name="securityRules">
+      <drools:rule-files><value>/security.drl</value></drools:rule-files>
+   </drools:rule-base>
+
+   <security:rule-based-permission-resolver security-rules="#{securityRules}"/>
+
+   <security:identity authenticate-method="#{authenticator.authenticate}" remember-me="true"/>
+
+   <event type="org.jboss.seam.security.notLoggedIn">
+      <action execute="#{redirect.captureCurrentView}"/>
+   </event>
+   <event type="org.jboss.seam.security.loginSuccessful">
+      <action execute="#{redirect.returnToCapturedView}"/>
+   </event>
+
+   <mail:mail-session host="localhost" port="25"/>
+   
+   <!--mail:mail-session host="smtp.gmail.com" port="587" 
+   username="rbonifacio@gmail.com" password="blah"/ -->
+   
+   <!-- mail:mail-session session-jndi-name="java:/Mail"/ -->
+   
+   
+   <web:multipart-filter create-temp-files="true" max-request-size="1000000" url-pattern="/*"/>
+
+   <!-- For use with jBPM pageflow or process management -->
+   <!--
+   <bpm:jbpm>
+      <bpm:process-definitions></bpm:process-definitions>
+      <bpm:pageflow-definitions></bpm:pageflow-definitions>
+   </bpm:jbpm>
+   -->
+   
+   <component name="emailUtil" scope="event" class="br.unb.cdt.desafioPositivo.util.email.EmailUtil">
+    <property name="desenvolvimento">true</property> 
+   	<property name="autorizacao">true</property>
+   	<property name="tls">true</property>
+   	<property name="host">smtp.gmail.com</property>
+   	<property name="porta">587</property>
+   	<property name="listaInternaDestinatarios">
+   	 <value>desafiopositivoandroid@gmail.com</value>
+   	 <value>rbonifacio123@gmail.com</value>
+   	</property>
+   	<property name="usuario">desafiopositivoandroid@gmail.com</property>
+   	<property name="senha">android@0!2</property>
+   </component>
+   
+   <factory name="urlConfirmacaoCadastro" value="http://localhost:8080/desafioPositivo/usuario/confirmaSolicitacaoCadastro.seam"/>
+   
+
+</components>
