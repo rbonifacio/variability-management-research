@@ -11,20 +11,21 @@
 
 
 	<ui:define name="body">
+	
+	<div class="corpo" style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; height:580px; padding: 15px 0 0 150px">	
+	
 	<h1>#{messages['positivo.recuperarSenha.heading']}</h1>
-		
-
-		<rich:panel>
-			<h:panelGrid columns="2">
-				<h:graphicImage value="/img/tablets-positivo-ypy.png" />
+				<h:panelGrid columns="2">
 				<s:div styleClass="info">
 					<h:form id="novoForm">
+						<fieldset>
+						<legend>#{messages['positivo.recuperarSenha.heading']}</legend>
 						<div class="dialog">
 							<h:panelGrid columns="2" rowClasses="prop"
 								columnClasses="name,value">
 								
 								<h:outputLabel for="email" value="#{messages['positivo.recuperarSenha.email']}" />
-								<h:inputText id="email" value="#{usuarioAction.usuarioDto.email}" required="true" />
+								<h:inputText id="email" value="#{usuarioAction.usuarioDto.email}" required="true" class="input_medio" />
 
 							</h:panelGrid>
 						</div>
@@ -33,12 +34,11 @@
 							<h:commandButton id="submit" value="#{messages['positivo.recuperarSenha.recuperar']}"
 								action="#{usuarioAction.recuperarSenha}" />
 						</div>
-					
+						</fieldset>
 					</h:form>
 					<h:messages />
 				</s:div>
-			</h:panelGrid>
-		</rich:panel>
-
+				</h:panelGrid>
+	</div>	
 	</ui:define>
 </ui:composition>

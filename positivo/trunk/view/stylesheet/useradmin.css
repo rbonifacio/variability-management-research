@@ -1,3 +1,4 @@
+
 input.newuser {
   background: url(../img/btnnewuser.png) top left no-repeat;
   height: 39px;
@@ -88,16 +89,6 @@ div.status-false {
 table.useradmin, div.useradmin {
   width: 500px;
 }
-
-/*
-table.useradmin tr.odd {
-  background-color: #FFFFFF;
-}
-
-table.useradmin tr.even {
-  background-color: #E9F5FF;
-}
-*/
 
 td.enabled {
   text-align: center;

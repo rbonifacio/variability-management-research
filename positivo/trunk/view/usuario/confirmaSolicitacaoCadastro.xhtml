@@ -10,43 +10,42 @@
 
 
 	<ui:define name="body">
+	<div class="corpo" style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; height:690px; padding: 15px 0 0 150px">
+		
 	<h1>#{messages['positivo.confirmaSolicitacaoCadastro.heading']}</h1>
-
-
-		<rich:panel>
-			<h:panelGrid columns="2">
-				<h:graphicImage value="/img/tablets-positivo-ypy.png" />
+				<h:panelGrid columns="2">
 				<s:div styleClass="info">
 					<h:form id="confirmaSolicitacaoCadastroForm">
+						<fieldset>
+						<legend>#{messages['positivo.confirmaSolicitacaoCadastro.heading']}</legend>
 						<div class="dialog">
 							<h:panelGrid columns="2" rowClasses="prop"
 								columnClasses="name,value">
 								<h:outputLabel for="email" value="#{messages['positivo.confirmaSolicitacaoCadastro.email']}" />
-								<h:inputText id="email" value="#{usuarioAction.usuarioDto.email}" required="true" />
+								<h:inputText id="email" value="#{usuarioAction.usuarioDto.email}" required="true" class="input_medio"/>
 
 								<h:outputLabel for="codigoConfirmacaoCadastro" value="#{messages['positivo.confirmaSolicitacaoCadastro.codigo']}" />
 								<h:inputText id="codigoConfirmacaoCadastro"
-									value="#{usuarioAction.usuarioDto.codigoConfirmacaoCadastro}" required="true" />
+									value="#{usuarioAction.usuarioDto.codigoConfirmacaoCadastro}" required="true" class="input_grande"/>
 									
 								<h:outputLabel for="senha" value="#{messages['positivo.confirmaSolicitacaoCadastro.senha']}" />
 								<h:inputSecret id="senha"
-									value="#{usuarioAction.usuarioDto.senha}" required="true" />
+									value="#{usuarioAction.usuarioDto.senha}" required="true" class="input_medio" />
 									
 								<h:outputLabel for="confirmacaoSenha" value="#{messages['positivo.confirmaSolicitacaoCadastro.confirmacaoSenha']}" />
 								<h:inputSecret id="confirmacaoSenha"
-									value="#{usuarioAction.usuarioDto.confirmacaoSenha}" required="true" />
+									value="#{usuarioAction.usuarioDto.confirmacaoSenha}" required="true" class="input_medio" />
 							</h:panelGrid>
 						</div>
 
 						<div class="actionButtons">
-							<h:commandButton id="submit" value="#{messages['positivo.confirmaSolicitacaoCadastro.confirma']}"
+							<h:commandButton class="commandButton" id="submit" value="#{messages['positivo.confirmaSolicitacaoCadastro.confirma']}"
 								action="#{usuarioAction.confirmaSolicitacaoCadastro}" />
 						</div>
-
+					</fieldset>	
 					</h:form>
 				</s:div>
-			</h:panelGrid>
-		</rich:panel>
-
+				</h:panelGrid>
+	</div>
 	</ui:define>
 </ui:composition>

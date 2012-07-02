@@ -11,60 +11,87 @@
 
 
 	<ui:define name="body">
-	<h1>#{messages['positivo.novoUsuario.heading']}</h1>
-		
-
-		<rich:panel>
-			<h:panelGrid columns="2">
-				<h:graphicImage value="/img/tablets-positivo-ypy.png" />
-				<s:div styleClass="info">
-					<h:form id="novoForm">
-						<div class="dialog">
-							<h:panelGrid columns="2" rowClasses="prop"
-								columnClasses="name,value">
-
-								<h:outputLabel for="nome" value="#{messages['positivo.novoUsuario.nome']}:" />
-								<h:inputText id="nome" value="#{usuarioAction.usuarioDto.nome}" required="true" />
-
-								<h:outputLabel for="sobrenome" value="#{messages['positivo.novoUsuario.sobrenome']}:" />
-								<h:inputText id="sobrenome" value="#{usuarioAction.usuarioDto.sobrenome}"
-									required="true" />
-
-								<h:outputLabel for="sexo" value="#{messages['positivo.novoUsuario.sexo']}:" />
-								<h:selectOneRadio id="sexo" value="#{usuarioAction.usuarioDto.sexo}"
-									required="true">
-									<f:selectItems value="#{usuarioAction.opcoesSexo()}" />
-								</h:selectOneRadio>
-
-								<h:outputLabel for="nascimento" value="#{messages['positivo.novoUsuario.nascimento']}:" />
-								<rich:calendar datePattern = "dd/MM/yyyy"
-									value="#{usuarioAction.usuarioDto.nascimento}" required="true" >
-										<s:validate/>
-								</rich:calendar>
-									
-								<h:outputLabel for="estado" value="#{messages['positivo.novoUsuario.estado']}:" />
-								<h:selectOneMenu id="estado" defaultLabel="UF" value="#{usuarioAction.usuarioDto.estado}" required="true">
-									<f:selectItems value="#{usuarioAction.opcoesEstado()}"/>
-								</h:selectOneMenu>
-								
-								<h:outputLabel for="email" value="#{messages['positivo.novoUsuario.email']}:" />
-								<h:inputText id="email" value="#{usuarioAction.usuarioDto.email}" required="true" />
-
-								<h:outputLabel for="confirmacaoEmail" value="#{messages['positivo.novoUsuario.confirmacaoEmail']}:" />
-								<h:inputText id="confirmacaoEmail" value="#{usuarioAction.usuarioDto.confirmacaoEmail}" required="true" />
-							</h:panelGrid>
-						</div>
-
-						<div class="actionButtons">
-							<h:commandButton id="submit" value="#{messages['positivo.novoUsuario.cadastrar']}"
-								action="#{usuarioAction.cadastro}" />
-						</div>
+	
+	<div class="corpo" style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height:690px; padding: 15px 0 0 0">	
+				
+				<h:panelGrid columns="2">
+					<s:div styleClass="info">
 					
-					</h:form>
-					<h:messages />
-				</s:div>
-			</h:panelGrid>
-		</rich:panel>
+					    <h:form id="loginForm">
+					           <fieldset>
+							   <legend>#{messages['positivo.login.usuario.cadastrado']}</legend>
+					            <div class="dialog">
+					            
+					                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+					                
+					                    <h:outputLabel for="username">#{messages['positivo.login.usuario']}</h:outputLabel>
+					                    <h:inputText id="username" value="#{credentials.username}" class="input_grande" />
+					                    <h:outputLabel for="password">#{messages['positivo.login.senha']}</h:outputLabel>
+					                    <h:inputSecret id="password" value="#{credentials.password}" class="input_grande" /> 
+					                </h:panelGrid>
+					                
+					            </div>						      
+								</fieldset>
+					        <div class="actionButtons">
+								<ui:insert name="actionButtons"/>
+								
+					            <h:commandButton class="commandButton" id="submit" value="#{messages['positivo.login.login']}"  action="#{identity.login}"/>
+								<h:commandButton class="commandButton" id="recuperarSenha" value="#{messages['positivo.home.recuperarSenha']}" action="recuperarSenha" />
+					        </div>
+					
+					    </h:form>
+		    			
+		    			<rich:separator/>
+		    				
+						<h:form id="novoForm">
+							<fieldset>
+							<legend>#{messages['positivo.novoUsuario.quero.cadastrar']}</legend>
+							<div class="dialog">
+							
+								<h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
+								
+									<h:outputLabel for="nome" value="#{messages['positivo.novoUsuario.nome']}:" />
+									<h:inputText id="nome" value="#{usuarioAction.usuarioDto.nome}" required="true" class="input_grande"/>
+								
+									<h:outputLabel for="sobrenome" value="#{messages['positivo.novoUsuario.sobrenome']}:" />
+								    <h:inputText id="sobrenome" value="#{usuarioAction.usuarioDto.sobrenome}" required="true" class="input_grande"/>
+									
+	
+									<h:outputLabel for="sexo" value="#{messages['positivo.novoUsuario.sexo']}:" />
+									<h:selectOneRadio id="sexo" value="#{usuarioAction.usuarioDto.sexo}" required="true">
+										<f:selectItems value="#{usuarioAction.opcoesSexo()}" />
+									</h:selectOneRadio>
+								
+									<h:outputLabel for="nascimento" value="#{messages['positivo.novoUsuario.nascimento']}:" />
+									<rich:calendar datePattern = "dd/MM/yyyy" value="#{usuarioAction.usuarioDto.nascimento}" required="true" >
+										<s:validate/>
+									</rich:calendar>
+									
+									<h:outputLabel for="estado" value="#{messages['positivo.novoUsuario.estado']}:" />
+									<h:selectOneMenu id="estado" defaultLabel="UF" value="#{usuarioAction.usuarioDto.estado}" required="true" class="select">
+										<f:selectItems value="#{usuarioAction.opcoesEstado()}"/>
+									</h:selectOneMenu>
+									
+									<h:outputLabel for="email" value="#{messages['positivo.novoUsuario.email']}:" />
+									<h:inputText id="email" value="#{usuarioAction.usuarioDto.email}" required="true" class="input_grande"/>
 
+									<h:outputLabel for="confirmacaoEmail" value="#{messages['positivo.novoUsuario.confirmacaoEmail']}:" />
+									<h:inputText id="confirmacaoEmail" value="#{usuarioAction.usuarioDto.confirmacaoEmail}" required="true" class="inpu_grande"/>
+								
+								</h:panelGrid>
+								
+							</div>
+							</fieldset>
+							<div class="actionButtons">
+								<h:commandButton id="submit" value="#{messages['positivo.novoUsuario.cadastrar']}" action="#{usuarioAction.cadastro}" />
+							</div>
+						
+						</h:form>
+						
+						<h:messages />
+						
+					</s:div>
+					</h:panelGrid>
+	       	</div>
 	</ui:define>
 </ui:composition>

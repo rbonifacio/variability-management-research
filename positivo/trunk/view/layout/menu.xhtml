@@ -20,6 +20,12 @@
  					 <h:graphicImage url="/img/ico_usa.png" alt="#{messages['positivo.menu.ingles']}" title="#{messages['positivo.menu.ingles']}" />
  				</h:commandLink>
 			</h:panelGroup>
+			
+			<s:link id="sobre" view="/home.xhtml" value="Sobre" propagation="none"/>
+        	<s:link id="regulamento" view="/home.xhtml" value="Regulamento" propagation="none"/>
+        	<s:link id="inscricao" view="/home.xhtml" value="Inscri‹o" propagation="none"/>
+        	<s:link id="contato" view="/home.xhtml" value="Contato" propagation="none"/>
+        
 		</h:form>
 		
 		<h:outputText value="#{projectName}:" />
@@ -34,6 +40,8 @@
 		<h:outputText id="menuWelcomeId"
 			value="#{messages['positivo.layout.logado']}: #{credentials.username}"
 			rendered="#{identity.loggedIn}" />
+		<s:link id="menuLoginId" view="/login.xhtml" value="Login" rendered="#{not identity.loggedIn}" propagation="none"/>
+		
 		<s:link id="menuLogoutId" action="#{authenticator.logout()}"
 			value="#{messages['positivo.layout.deslogar']}"
 			rendered="#{identity.loggedIn}" propagation="none" />

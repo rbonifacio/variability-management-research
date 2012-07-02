@@ -11,24 +11,24 @@
 
 
 	<ui:define name="body">
+	<div class="corpo" style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; height:580px; padding: 15px 0 0 150px">	
 	<h1>#{messages['positivo.atualizarDados.heading']}</h1>
 		
-
-		<rich:panel>
-			<h:panelGrid columns="2">
-				<h:graphicImage value="/img/tablets-positivo-ypy.png" />
+				<h:panelGrid columns="2">
 				<s:div styleClass="info">
 					<h:form id="alterarDadosForm">
+						<fieldset>
+						<legend>#{messages['positivo.recuperarSenha.heading']}</legend>
 						<div class="dialog">
 							<h:panelGrid columns="2" rowClasses="prop"
 								columnClasses="name,value">
 
 								<h:outputLabel for="nome" value="#{messages['positivo.novoUsuario.nome']}:" />
-								<h:inputText id="nome" value="#{usuarioLogado.nome}" required="true" />
+								<h:inputText id="nome" value="#{usuarioLogado.nome}" required="true" class="input_grande"/>
 
 								<h:outputLabel for="sobrenome" value="#{messages['positivo.novoUsuario.sobrenome']}:" />
 								<h:inputText id="sobrenome" value="#{usuarioLogado.sobrenome}"
-									required="true" />
+									required="true" class="input_grande"/>
 
 								<h:outputLabel for="sexo" value="#{messages['positivo.novoUsuario.sexo']}:" />
 								<h:selectOneRadio id="sexo" value="#{usuarioLogado.sexo}"
@@ -53,12 +53,12 @@
 							<h:commandButton id="submit" value="#{messages['positivo.atualizarDados.salvar']}"
 								action="#{usuarioAction.atualizarDadosUsuario()}" />
 						</div>
-					
+					</fieldset>
 					</h:form>
 					<h:messages />
 				</s:div>
-			</h:panelGrid>
-		</rich:panel>
-
+				</h:panelGrid>
+			
+	</div>
 	</ui:define>
 </ui:composition>
