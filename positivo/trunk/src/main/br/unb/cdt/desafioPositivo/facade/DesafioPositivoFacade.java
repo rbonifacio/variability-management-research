@@ -12,6 +12,7 @@ import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.ui.util.cdk.Messages;
 
 import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
 import br.unb.cdt.desafioPositivo.model.Proposta;
@@ -49,7 +50,7 @@ public class DesafioPositivoFacade {
 	
 	@In(create=true)
 	private String urlConfirmacaoCadastro;
-
+	
 	/**
 	 * Adiciona um usuario no meio de persistencia e realiza uma requisicao ao
 	 * servico correspondente da positivo.
@@ -227,12 +228,12 @@ public class DesafioPositivoFacade {
 	}
 
 	private String mensagemCadastro(Usuario usuario, String codigoAtivacao) {
-		return Mensagens.MSG_WELCOME + ", " + usuario.getNome() + 
+		return  Messages.getMessage(Mensagens.MSG_WELCOME) + ", " + usuario.getNome() + 
 				", \n \n \n" + 
-				Mensagens.MSG_BODY + ": \n \n \n" + codigoAtivacao +
+				Messages.getMessage(Mensagens.MSG_BODY) + ": \n \n \n" + codigoAtivacao +
 				"\n \n \n" +
-				Mensagens.MSG_END + ", \n" +
-				Mensagens.MSG_ATT + ".";
+				Messages.getMessage(Mensagens.MSG_END) + ", \n" +
+				Messages.getMessage(Mensagens.MSG_ATT) + ".";
 		/*		
 		return "Prezado " + usuario.getNome() + 
 				", \n \n \n" + 
