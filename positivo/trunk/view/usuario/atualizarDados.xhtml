@@ -6,57 +6,70 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:a="http://richfaces.org/a4j"
-	template="../layout/template.xhtml">
+	xmlns:a="http://richfaces.org/a4j" template="../layout/template.xhtml">
 
 
 	<ui:define name="body">
-	<div class="corpo" style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height:690px; padding: 15px 0 0 0">	 	
-				<h:panelGrid columns="2">
+		<div class="corpo"
+			style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 690px; padding: 15px 0 0 0">
+			<h:panelGrid columns="2">
 				<s:div styleClass="info">
+					<h:messages />
 					<h:form id="alterarDadosForm">
 						<fieldset>
-						<legend>#{messages['positivo.atualizarDados.heading']}</legend>
-						<div class="dialog">
-							<h:panelGrid columns="2" rowClasses="prop"
-								columnClasses="name,value">
+							<legend>#{messages['positivo.atualizarDados.heading']}</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
 
-								<h:outputLabel for="nome" value="#{messages['positivo.novoUsuario.nome']}:" />
-								<h:inputText id="nome" value="#{usuarioLogado.nome}" required="true" class="input_grande"/>
+									<h:outputLabel for="nome"
+										value="#{messages['positivo.novoUsuario.nome']}:" />
+									<h:inputText id="nome" value="#{usuarioLogado.nome}"
+										required="true" class="input_grande" />
 
-								<h:outputLabel for="sobrenome" value="#{messages['positivo.novoUsuario.sobrenome']}:" />
-								<h:inputText id="sobrenome" value="#{usuarioLogado.sobrenome}"
-									required="true" class="input_grande"/>
+									<h:outputLabel for="sobrenome"
+										value="#{messages['positivo.novoUsuario.sobrenome']}:" />
+									<h:inputText id="sobrenome" value="#{usuarioLogado.sobrenome}"
+										required="true" class="input_grande" />
 
-								<h:outputLabel for="sexo" value="#{messages['positivo.novoUsuario.sexo']}:" />
-								<h:selectOneRadio id="sexo" value="#{usuarioLogado.sexo}"
-									required="true">
-									<f:selectItems value="#{usuarioAction.opcoesSexo()}" />
-								</h:selectOneRadio>
+									<h:outputLabel for="sexo"
+										value="#{messages['positivo.novoUsuario.sexo']}:" />
+									<h:selectOneRadio id="sexo" value="#{usuarioLogado.sexo}"
+										required="true">
+										<f:selectItems value="#{usuarioAction.opcoesSexo()}" />
+									</h:selectOneRadio>
 
-								<h:outputLabel for="nascimento" value="#{messages['positivo.novoUsuario.nascimento']}:" />
-								<rich:calendar datePattern = "dd/MM/yyyy"
-									value="#{usuarioLogado.nascimento}" required="true" >
-										<s:validate/>
-								</rich:calendar>
-									
-								<h:outputLabel for="estado" value="#{messages['positivo.novoUsuario.estado']}:" />
-								<h:selectOneMenu id="estado" defaultLabel="UF" value="#{usuarioLogado.estado}" required="true">
-									<f:selectItems value="#{usuarioAction.opcoesEstado()}"/>
-								</h:selectOneMenu>
-							</h:panelGrid>
-						</div>
+									<h:outputLabel for="nascimento"
+										value="#{messages['positivo.novoUsuario.nascimento']}:" />
+									<rich:calendar datePattern="dd/MM/yyyy"
+										value="#{usuarioLogado.nascimento}" required="true">
+										<s:validate />
+									</rich:calendar>
 
-						<div class="actionButtons">
-							<h:commandButton id="submit" value="#{messages['positivo.atualizarDados.salvar']}"
-								action="#{usuarioAction.atualizarDadosUsuario()}" />
-						</div>
-					</fieldset>
+									<h:outputLabel for="estado"
+										value="#{messages['positivo.novoUsuario.estado']}:" />
+									<h:selectOneMenu id="estado" defaultLabel="UF"
+										value="#{usuarioLogado.estado}" required="true">
+										<f:selectItems value="#{usuarioAction.opcoesEstado()}" />
+									</h:selectOneMenu>
+								</h:panelGrid>
+							</div>
+
+							<div class="actionButtons">
+								<h:commandButton id="submit"
+									value="#{messages['positivo.atualizarDados.salvar']}"
+									action="#{usuarioAction.atualizarDadosUsuario()}" />
+								
+								<h:commandButton id="cancel"
+									value="#{messages['positivo.cancelar']}"
+									action="cancelar" />	
+							</div>
+						</fieldset>
 					</h:form>
-					<h:messages />
+
 				</s:div>
-				</h:panelGrid>
-			
-	</div>
+			</h:panelGrid>
+
+		</div>
 	</ui:define>
 </ui:composition>

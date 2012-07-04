@@ -12,51 +12,64 @@
 
 
 	<ui:define name="body">
-	<h1>#{messages['positivo.novaProposta.heading']}</h1>
-
-		<rich:panel>
+		<div class="corpo"
+			style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 690px; padding: 15px 0 0 0">
 			<h:panelGrid columns="2">
-				<h:graphicImage value="/img/caract-positivo-ypy.png" />
 				<s:div styleClass="info">
-					<h:form id="novaPropostaForm" enctype="multipart/form-data">
-						<div class="dialog">
-							<h:panelGrid columns="2" rowClasses="prop"
-								columnClasses="name,value">
-								<h:outputLabel for="nome" value="#{messages['positivo.novaProposta.nome']}" />
-								<h:inputText id="nome" value="#{propostaAction.proposta.nome}" required="true" />
+					<h:messages />
+					<h:form id="alterarDadosForm">
+						<fieldset>
+							<legend>#{messages['positivo.novaProposta.heading']}</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+									<h:outputLabel for="nome"
+										value="#{messages['positivo.novaProposta.nome']}:" />
+									<h:inputText id="nome" value="#{propostaAction.proposta.nome}"
+										required="true" class="input_grande"/>
 
-								<h:outputLabel for="descricao" value="#{messages['positivo.novaProposta.descricao']}" />
-								<h:inputTextarea id="descricao" value="#{propostaAction.proposta.descricao}"
-									required="true" rows="3" cols="50" />
+									<h:outputLabel for="descricao"
+										value="#{messages['positivo.novaProposta.descricao']}:" />
+									<h:inputTextarea id="descricao"
+										value="#{propostaAction.proposta.descricao}" required="true"
+										 class="textarea_perso"/>
 
-								<h:outputLabel for="objetivos" value="#{messages['positivo.novaProposta.objetivos']}" />
-								<h:inputTextarea id="objetivos" value="#{propostaAction.proposta.objetivos}"
-									required="true" rows="3" cols="50" />
+									<h:outputLabel for="objetivos"
+										value="#{messages['positivo.novaProposta.objetivos']}:" />
+									<h:inputTextarea id="objetivos"
+										value="#{propostaAction.proposta.objetivos}" required="true"
+										class="textarea_perso" />
 
-								<h:outputLabel for="publicoAlvo" value="#{messages['positivo.novaProposta.publicoAlvo']}" />
-								<h:inputTextarea id="publicoAlvo"
-									value="#{propostaAction.proposta.publicoAlvo}" required="true" rows="3"
-									cols="50" />
+									<h:outputLabel for="publicoAlvo"
+										value="#{messages['positivo.novaProposta.publicoAlvo']}:" />
+									<h:inputTextarea id="publicoAlvo"
+										value="#{propostaAction.proposta.publicoAlvo}" required="true"
+										class="textarea_perso" />
 
-								<h:outputLabel for="descricaoFuncional" value="#{messages['positivo.novaProposta.descricaoFuncional']}" />
-								<h:inputTextarea id="descricaoFuncional"
-									value="#{propostaAction.proposta.descricaoFuncional}" required="true" rows="3"
-									cols="50" />
-								
-								<h:outputLabel for="prototipo" value="#{messages['positivo.novaProposta.prototipo']}" />
-								<s:fileUpload data="#{propostaAction.proposta.arquivoGUI}"/>
-								
-							</h:panelGrid>
-						</div>
+									<h:outputLabel for="descricaoFuncional"
+										value="#{messages['positivo.novaProposta.descricaoFuncional']}:" />
+									<h:inputTextarea id="descricaoFuncional"
+										value="#{propostaAction.proposta.descricaoFuncional}"
+										required="true" class="textarea_perso" />
 
-						<div class="actionButtons">
-							<h:commandButton id="submit" value="#{messages['positivo.novaProposta.cadastrar']}" action="#{propostaAction.cadastro}" />
-						</div>
+									<h:outputLabel for="prototipo"
+										value="#{messages['positivo.novaProposta.prototipo']}:" />
+									<s:fileUpload data="#{propostaAction.proposta.arquivoGUI}" />
 
+								</h:panelGrid>
+							</div>
+
+							<div class="actionButtons">
+								<h:commandButton id="submit"
+									value="#{messages['positivo.novaProposta.cadastrar']}"
+									action="#{propostaAction.cadastro}" />
+							</div>
+						</fieldset>
 					</h:form>
+
 				</s:div>
 			</h:panelGrid>
-		</rich:panel>
 
+		</div>
 	</ui:define>
 </ui:composition>

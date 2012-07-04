@@ -12,51 +12,71 @@
 
 
 	<ui:define name="body">
-	<h1>#{messages['positivo.editarProposta.heading']}</h1>
-
-		<rich:panel>
+		<div class="corpo"
+			style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 690px; padding: 15px 0 0 0">
 			<h:panelGrid columns="2">
-				<h:graphicImage value="/img/caract-positivo-ypy.png" />
 				<s:div styleClass="info">
-					<h:form id="novaPropostaForm">
-						<div class="dialog">
-							<h:panelGrid columns="2" rowClasses="prop"
-								columnClasses="name,value">
-								<h:outputLabel for="nome" value="#{messages['positivo.editarProposta.nome']}" />
-								<h:inputText id="nome" value="#{propostaAction.propostaSelecionada.nome}" required="true" />
+					<h:messages />
+					<h:form id="alterarDadosForm">
+						<fieldset>
+							<legend>#{messages['positivo.sumario.alterarSenha']}</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+									<h:outputLabel for="nome"
+										value="#{messages['positivo.editarProposta.nome']}" />
+									<h:inputText id="nome"
+										value="#{propostaAction.propostaSelecionada.nome}"
+										required="true" class="input_grande" />
 
-								<h:outputLabel for="descricao" value="#{messages['positivo.editarProposta.descricao']}" />
-								<h:inputTextarea id="descricao" value="#{propostaAction.propostaSelecionada.descricao}"
-									required="true" rows="3" cols="50" />
+									<h:outputLabel for="descricao"
+										value="#{messages['positivo.editarProposta.descricao']}" />
+									<h:inputTextarea id="descricao"
+										value="#{propostaAction.propostaSelecionada.descricao}"
+										required="true" class="textarea_perso" />
 
-								<h:outputLabel for="objetivos" value="#{messages['positivo.editarProposta.objetivos']}" />
-								<h:inputTextarea id="objetivos" value="#{propostaAction.propostaSelecionada.objetivos}"
-									required="true" rows="3" cols="50" />
+									<h:outputLabel for="objetivos"
+										value="#{messages['positivo.editarProposta.objetivos']}" />
+									<h:inputTextarea id="objetivos"
+										value="#{propostaAction.propostaSelecionada.objetivos}"
+										required="true" class="textarea_perso" />
 
-								<h:outputLabel for="publicoAlvo" value="#{messages['positivo.editarProposta.publicoAlvo']}" />
-								<h:inputTextarea id="publicoAlvo"
-									value="#{propostaAction.propostaSelecionada.publicoAlvo}" required="true" rows="3"
-									cols="50" />
+									<h:outputLabel for="publicoAlvo"
+										value="#{messages['positivo.editarProposta.publicoAlvo']}" />
+									<h:inputTextarea id="publicoAlvo"
+										value="#{propostaAction.propostaSelecionada.publicoAlvo}"
+										required="true" class="textarea_perso" />
 
-								<h:outputLabel for="descricaoFuncional" value="#{messages['positivo.editarProposta.descricaoFuncional']}" />
-								<h:inputTextarea id="descricaoFuncional"
-									value="#{propostaAction.propostaSelecionada.descricaoFuncional}" required="true" rows="3"
-									cols="50" />
+									<h:outputLabel for="descricaoFuncional"
+										value="#{messages['positivo.editarProposta.descricaoFuncional']}" />
+									<h:inputTextarea id="descricaoFuncional"
+										value="#{propostaAction.propostaSelecionada.descricaoFuncional}"
+										required="true" class="textarea_perso" />
 
-								<h:outputLabel for="prototipo" value="#{messages['positivo.editarProposta.prototipo']}" />
-								<s:fileUpload data="#{propostaAction.proposta.arquivoGUI}" label="#{messages['positivo.editarProposta.enviar']}"/>	
-								
-							</h:panelGrid>
-						</div>
+									<h:outputLabel for="prototipo"
+										value="#{messages['positivo.editarProposta.prototipo']}" />
+									<s:fileUpload data="#{propostaAction.proposta.arquivoGUI}"
+										label="#{messages['positivo.editarProposta.enviar']}" />
 
-						<div class="actionButtons">
-							<h:commandButton id="submit" value="#{messages['positivo.editarProposta.editar']}" action="#{propostaAction.editar}" />
-						</div>
+								</h:panelGrid>
+							</div>
 
+							<div class="actionButtons">
+								<h:commandButton id="submit"
+									value="#{messages['positivo.editarProposta.editar']}"
+									action="#{propostaAction.editar}" />
+									
+								<h:commandButton id="cancel"
+									value="#{messages['positivo.cancelar']}"
+									action="cancelar" />		
+							</div>
+
+						</fieldset>
 					</h:form>
+
 				</s:div>
 			</h:panelGrid>
-		</rich:panel>
 
+		</div>
 	</ui:define>
 </ui:composition>

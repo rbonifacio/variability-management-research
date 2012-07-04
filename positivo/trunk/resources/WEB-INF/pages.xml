@@ -14,6 +14,12 @@
             <rule if-outcome="home" if="#{identity.loggedIn}">
                 <redirect view-id="/usuario/sumario.xhtml"/>
             </rule>
+            <rule if-outcome="cancelar" if="#{not identity.loggedIn}">
+                <redirect view-id="/home.xhtml"/>
+            </rule>
+            <rule if-outcome="cancelar" if="#{identity.loggedIn}">
+                <redirect view-id="/usuario/sumario.xhtml"/>
+            </rule>
             <rule if-outcome="novoUsuario">
                 <redirect view-id="/usuario/novoUsuario.xhtml"/>
             </rule>

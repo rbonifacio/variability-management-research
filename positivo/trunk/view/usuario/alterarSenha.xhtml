@@ -11,17 +11,12 @@
 
 	<ui:define name="body">
 
-		<div
-			style="background: url(../img/positivo/meu_cadastro_bg.png) no-repeat; min-height: 620px">
-
-			<div style="float: left; margin: 25px 0 0 0; margin-left: 200px">
-				<ui:include src="../menutop.xhtml"></ui:include>
-			</div>
-
-			<div
-				style="float: left; width: 500px; height: 500px; margin: 25px; margin-left: 125px;">
+		<div class="corpo"
+			style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 690px; padding: 15px 0 0 0">
+			<h:panelGrid columns="2">
 				<s:div styleClass="info">
-					<h:form id="alterarSenha">
+					<h:messages />
+					<h:form id="alterarDadosForm">
 						<fieldset>
 							<legend>#{messages['positivo.sumario.alterarSenha']}</legend>
 							<div class="dialog">
@@ -44,25 +39,21 @@
 										value="#{alteraSenhaDTO.confirmacaoNovaSenha}" required="true" />
 								</h:panelGrid>
 							</div>
-							<div style="float: left; margin: -80px 0 0 500px;">
-								<a href=""><h:graphicImage
-										value="/img/positivo/icones/help.png" /> </a>
-							</div>
-
 							<div class="actionButtons">
-								<h:commandButton class="commandButton" id="submit"
-									value="#{messages['positivo.alterarSenha.confirmarAlteracao']}"
-									action="#{usuarioAction.alterarSenha()}" />
-
-								<h:commandButton class="commandButton" id="salvar"
+								<h:commandButton id="submit"
+									value="#{messages['positivo.atualizarDados.salvar']}"
+									action="#{usuarioAction.atualizarDadosUsuario()}" />
+									
+								<h:commandButton id="cancel"
 									value="#{messages['positivo.cancelar']}"
-									action="usuarioAction.cadastro" />
+									action="cancelar" />		
 							</div>
 						</fieldset>
 					</h:form>
+
 				</s:div>
-				
-			</div>
+			</h:panelGrid>
+
 		</div>
 	</ui:define>
 </ui:composition>
