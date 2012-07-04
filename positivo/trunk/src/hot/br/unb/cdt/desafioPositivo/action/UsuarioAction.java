@@ -3,9 +3,9 @@ package br.unb.cdt.desafioPositivo.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 
+import org.ajax4jsf.Messages;
 import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.jboss.seam.annotations.AutoCreate;
@@ -18,10 +18,10 @@ import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
 
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
+import br.unb.cdt.desafioPositivo.facade.ExcecaoSenhaDiferente;
+import br.unb.cdt.desafioPositivo.facade.ExcecaoSenhaInvalida;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioCadastrado;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioNaoEncontrado;
-import br.unb.cdt.desafioPositivo.facade.ExcecaoSenhaInvalida;
-import br.unb.cdt.desafioPositivo.facade.ExcecaoSenhaDiferente;
 import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
 import br.unb.cdt.desafioPositivo.model.Estado;
 import br.unb.cdt.desafioPositivo.model.Sexo;
@@ -83,8 +83,8 @@ public class UsuarioAction {
 			items[i] = new SelectItem();
 
 			items[i].setValue(s);
-			items[i].setLabel(s.getDescricao());
-			items[i].setDescription(s.getDescricao());
+			items[i].setLabel(s.getDescricao());//Messages.getMessage(s.getDescricao()));
+			items[i].setDescription(s.getDescricao());//Messages.getMessage(s.getDescricao()));
 
 			i++;
 		}

@@ -10,41 +10,60 @@
 
 
 	<ui:define name="body">
-	<h1>#{messages['positivo.alterarSenha.heading']}</h1>
 
+		<div
+			style="background: url(../img/positivo/meu_cadastro_bg.png) no-repeat; min-height: 620px">
 
-		<rich:panel>
-			<h:panelGrid columns="2">
-				<h:graphicImage value="/img/tablets-positivo-ypy.png" />
+			<div style="float: left; margin: 25px 0 0 0; margin-left: 200px">
+				<ui:include src="../menutop.xhtml"></ui:include>
+			</div>
+
+			<div
+				style="float: left; width: 500px; height: 500px; margin: 25px; margin-left: 125px;">
 				<s:div styleClass="info">
 					<h:form id="alterarSenha">
-						<div class="dialog">
-							<h:panelGrid columns="2" rowClasses="prop"
-								columnClasses="name,value">
-									
-								<h:outputLabel for="senhaAtual" value="#{messages['positivo.alterarSenha.senhaAtual']}" />
-								<h:inputSecret id="senhaAtual"
-									value="#{alteraSenhaDTO.senhaAtual}"  />
-									
-								<h:outputLabel for="novaSenha" value="#{messages['positivo.alterarSenha.novaSenha']}" />
-								<h:inputSecret id="novaSenha"
-									value="#{alteraSenhaDTO.novaSenha}" required="true" />
-									
-								<h:outputLabel for="confirmacaoSenha" value="#{messages['positivo.alterarSenha.confirmacaoSenha']}" />
-								<h:inputSecret id="confirmacaoSenha"
-									value="#{alteraSenhaDTO.confirmacaoNovaSenha}" required="true" />
-							</h:panelGrid>
-						</div>
+						<fieldset>
+							<legend>#{messages['positivo.sumario.alterarSenha']}</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
 
-						<div class="actionButtons">
-							<h:commandButton id="submit" value="#{messages['positivo.alterarSenha.confirmarAlteracao']}"
-								action="#{usuarioAction.alterarSenha()}" />
-						</div>
+									<h:outputLabel for="senhaAtual"
+										value="#{messages['positivo.alterarSenha.senhaAtual']}" />
+									<h:inputSecret id="senhaAtual"
+										value="#{alteraSenhaDTO.senhaAtual}" />
 
+									<h:outputLabel for="novaSenha"
+										value="#{messages['positivo.alterarSenha.novaSenha']}" />
+									<h:inputSecret id="novaSenha"
+										value="#{alteraSenhaDTO.novaSenha}" required="true" />
+
+									<h:outputLabel for="confirmacaoSenha"
+										value="#{messages['positivo.alterarSenha.confirmacaoSenha']}" />
+									<h:inputSecret id="confirmacaoSenha"
+										value="#{alteraSenhaDTO.confirmacaoNovaSenha}" required="true" />
+								</h:panelGrid>
+							</div>
+							<div style="float: left; margin: -80px 0 0 500px;">
+								<a href=""><h:graphicImage
+										value="/img/positivo/icones/help.png" /> </a>
+							</div>
+
+							<div class="actionButtons">
+								<h:commandButton class="commandButton" id="submit"
+									value="#{messages['positivo.alterarSenha.confirmarAlteracao']}"
+									action="#{usuarioAction.alterarSenha()}" />
+
+								<h:commandButton class="commandButton" id="salvar"
+									value="#{messages['positivo.cancelar']}"
+									action="usuarioAction.cadastro" />
+							</div>
+						</fieldset>
 					</h:form>
 				</s:div>
-			</h:panelGrid>
+				
+			</div>
+		</div>
 		</rich:panel>
-
 	</ui:define>
 </ui:composition>

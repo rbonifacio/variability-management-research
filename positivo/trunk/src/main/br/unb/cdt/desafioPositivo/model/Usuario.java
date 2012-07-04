@@ -87,6 +87,7 @@ public class Usuario implements Serializable {
 	 * JPA.
 	 */
 	public Usuario() {
+		sexo = Sexo.MASCULINO;
 		nascimento = new Date();
 	}
 

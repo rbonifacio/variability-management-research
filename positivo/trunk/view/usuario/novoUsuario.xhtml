@@ -16,7 +16,7 @@
 				
 				<h:panelGrid columns="2">
 					<s:div styleClass="info">
-					
+						<h:messages />	
 					    <h:form id="loginForm">
 					           <fieldset>
 							   <legend>#{messages['positivo.login.usuario.cadastrado']}</legend>
@@ -41,8 +41,8 @@
 					
 					    </h:form>
 		    			
-		    			<rich:separator/>
-		    				
+		    			<rich:spacer height="15" />
+		    			
 						<h:form id="novoForm">
 							<fieldset>
 							<legend>#{messages['positivo.novoUsuario.quero.cadastrar']}</legend>
@@ -63,7 +63,7 @@
 									</h:selectOneRadio>
 								
 									<h:outputLabel for="nascimento" value="#{messages['positivo.novoUsuario.nascimento']}:" />
-									<rich:calendar datePattern = "dd/MM/yyyy" value="#{usuarioAction.usuarioDto.nascimento}" required="true" >
+									<rich:calendar id="nascimento" datePattern = "dd/MM/yyyy" value="#{usuarioAction.usuarioDto.nascimento}" required="true" >
 										<s:validate/>
 									</rich:calendar>
 									
@@ -76,7 +76,7 @@
 									<h:inputText id="email" value="#{usuarioAction.usuarioDto.email}" required="true" class="input_grande"/>
 
 									<h:outputLabel for="confirmacaoEmail" value="#{messages['positivo.novoUsuario.confirmacaoEmail']}:" />
-									<h:inputText id="confirmacaoEmail" value="#{usuarioAction.usuarioDto.confirmacaoEmail}" required="true" class="inpu_grande"/>
+									<h:inputText id="confirmacaoEmail" value="#{usuarioAction.usuarioDto.confirmacaoEmail}" required="true" class="input_grande"/>
 								
 								</h:panelGrid>
 								
@@ -87,9 +87,6 @@
 							</div>
 						
 						</h:form>
-						
-						<h:messages />
-						
 					</s:div>
 					</h:panelGrid>
 	       	</div>

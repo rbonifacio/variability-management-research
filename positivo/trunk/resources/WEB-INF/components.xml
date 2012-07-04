@@ -24,6 +24,12 @@
                  conversation-timeout="120000"
                  conversation-id-parameter="cid"
                  parent-conversation-id-parameter="pid"/>
+                 
+   <core:resource-loader>
+    <core:bundle-names>
+        <value>messages</value>
+    </core:bundle-names>
+   </core:resource-loader>              
 
    <!-- Make sure this URL pattern is the same as that used by the Faces Servlet -->
    <web:hot-deploy-filter url-pattern="*.seam"/>

@@ -346,6 +346,12 @@ div.info {
 	padding-top: 30px;
 }
 
+div.sumario {
+	font-size: 1.2em;
+	padding-left:200px;
+	padding-top: 30px;
+}
+
 div.novoUsuario {
 	font-size: 1.2em;
 	padding-left:100px;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 
@@ -12,6 +13,7 @@ import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.core.ResourceBundle;
 import org.jboss.seam.ui.util.cdk.Messages;
 
 import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
@@ -50,6 +52,9 @@ public class DesafioPositivoFacade {
 	
 	@In(create=true)
 	private String urlConfirmacaoCadastro;
+	
+	@In
+	private Map<String, String> messages;
 	
 	/**
 	 * Adiciona um usuario no meio de persistencia e realiza uma requisicao ao
@@ -228,12 +233,13 @@ public class DesafioPositivoFacade {
 	}
 
 	private String mensagemCadastro(Usuario usuario, String codigoAtivacao) {
-		return  Messages.getMessage(Mensagens.MSG_WELCOME) + ", " + usuario.getNome() + 
+		return  messages.get(Mensagens.MSG_WELCOME) + ", " + usuario.getNome() + 
 				", \n \n \n" + 
-				Messages.getMessage(Mensagens.MSG_BODY) + ": \n \n \n" + codigoAtivacao +
+				messages.get(Mensagens.MSG_BODY) + "\n\n\n" + urlConfirmacaoCadastro + " \n \n \n" + 
+				messages.get(Mensagens.MSG_ACCESS_CODE) + "\n\n\n" + codigoAtivacao +
 				"\n \n \n" +
-				Messages.getMessage(Mensagens.MSG_END) + ", \n" +
-				Messages.getMessage(Mensagens.MSG_ATT) + ".";
+				messages.get(Mensagens.MSG_END) + ", \n" +
+				messages.get(Mensagens.MSG_ATT) + ".";
 		/*		
 		return "Prezado " + usuario.getNome() + 
 				", \n \n \n" + 
