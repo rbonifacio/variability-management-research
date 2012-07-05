@@ -40,8 +40,6 @@ public class PropostaAction {
 	@DataModelSelection
 	private Proposta propostaSelecionada; 
 	
-	@In 
-	private FacesMessages facesMessages;
 	
 	public PropostaAction() {
 		proposta = new Proposta();
@@ -61,7 +59,7 @@ public class PropostaAction {
 	 * proposta corresponde ao bean proposta.
 	 */
 	public String cadastro() {
-		List<String> erros = validaDadosCadastrais();
+		List<String> erros = validaDadosCadastrais(proposta);
 		
 		if(! erros.isEmpty()) {
 			populaMensagensErro(erros);
@@ -82,7 +80,7 @@ public class PropostaAction {
 	/*
 	 * Valida os dados cadastrais da proposta.
 	 */
-	private List<String> validaDadosCadastrais() {
+	private List<String> validaDadosCadastrais(Proposta proposta) {
 		List<String> erros = new ArrayList<String>();
 		
 		if(proposta.getNome() == null || proposta.getNome().equals("")) {
@@ -104,9 +102,7 @@ public class PropostaAction {
 			erros.add("positivo.novaProposta.publicoAlvoEmBranco");
 		}
 		
-		if(proposta.getArquivoGUI() == null || proposta.getArquivoGUI().length == 0) {
-			erros.add("positivo.novaProposta.prototipo");
-		}
+		
 		return erros;
 	}
 
@@ -120,7 +116,7 @@ public class PropostaAction {
 	 * Confirma as alteracoes dos dados da proposta.
 	 */
 	public String editar() {
-		List<String> erros = validaDadosCadastrais();
+		List<String> erros = validaDadosCadastrais(propostaSelecionada);
 		
 		if(! erros.isEmpty()) {
 			populaMensagensErro(erros);

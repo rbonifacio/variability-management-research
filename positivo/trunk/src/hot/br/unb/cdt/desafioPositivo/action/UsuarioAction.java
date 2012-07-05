@@ -283,11 +283,11 @@ public class UsuarioAction {
 	private List<String> validarDadosAtualizacao() {
 		List<String> erros = new ArrayList<String>();
 		
-		if(usuarioDto.getNome() == null || usuarioDto.getNome().equals("")) {
+		if(usuarioLogado.getNome() == null || usuarioLogado.getNome().equals("")) {
 			erros.add("positivo.novoUsuario.nome.obrigatorio");
 		}
 		
-		if(usuarioDto.getSobrenome() == null || usuarioDto.getSobrenome().equals("")) {
+		if(usuarioLogado.getSobrenome() == null || usuarioLogado.getSobrenome().equals("")) {
 			erros.add("positivo.novoUsuario.sobrenome.obrigatorio");
 		}
 		
