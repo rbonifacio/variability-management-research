@@ -38,17 +38,17 @@
 									<h:inputSecret id="confirmacaoSenha"
 										value="#{alteraSenhaDTO.confirmacaoNovaSenha}" required="true" />
 								</h:panelGrid>
-							</div>
-							<div class="actionButtons">
+							</div>							
+						</fieldset>
+						<div class="actionButtons">
 								<h:commandButton id="submit"
 									value="#{messages['positivo.atualizarDados.salvar']}"
 									action="#{usuarioAction.atualizarDadosUsuario()}" />
 									
 								<h:commandButton id="cancel"
 									value="#{messages['positivo.cancelar']}"
-									action="cancelar" />		
+									action="cancelar"  immediate="true" />		
 							</div>
-						</fieldset>
 					</h:form>
 
 				</s:div>

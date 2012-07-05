@@ -13,6 +13,8 @@ public class Mensagens {
 	public static final String EMAIL_EXISTENTE = "positivo.usuarioAction.emailExistente";
 	public static final String CONFIRMACAO_EMAIL_DIFERENTE = "positivo.usuarioAction.confirmacao.email.diferente";
 	public static final String AUTENTICACAO_CAMPOS_OBRIGATORIOS = "positivo.usuarioAction.loginAutenticacaoCamposObrigatorios";
+	public static final String FALHA_AUTENTICACAO="positivo.login.usuario.falha.login";
+			 
 	public static final String RECUPERAR_SENHA_SUCESSO = "positivo.usuarioAction.recuperarSenhaSucesso";
 	public static final String RECUPERAR_SENHA_INEXISTENTE = "positivo.usuarioAction.recuperarSenhaEmailInexistente";
 	public static final String ATUALIZAR_DADOS_SUCESSO = "positivo.usuarioAction.atualizacaoDadosSucesso";

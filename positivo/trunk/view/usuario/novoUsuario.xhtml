@@ -24,9 +24,9 @@
 					            
 					                <h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
 					                
-					                    <h:outputLabel for="username">#{messages['positivo.login.usuario']}</h:outputLabel>
+					                    <h:outputLabel for="username">#{messages['positivo.login.usuario']}:</h:outputLabel>
 					                    <h:inputText id="username" value="#{credentials.username}" class="input_grande" />
-					                    <h:outputLabel for="password">#{messages['positivo.login.senha']}</h:outputLabel>
+					                    <h:outputLabel for="password">#{messages['positivo.login.senha']}:</h:outputLabel>
 					                    <h:inputSecret id="password" value="#{credentials.password}" class="input_grande" /> 
 					                </h:panelGrid>
 					                
@@ -51,32 +51,32 @@
 								<h:panelGrid columns="2" rowClasses="prop" columnClasses="name,value">
 								
 									<h:outputLabel for="nome" value="#{messages['positivo.novoUsuario.nome']}:" />
-									<h:inputText id="nome" value="#{usuarioAction.usuarioDto.nome}" required="true" class="input_grande"/>
+									<h:inputText id="nome" value="#{usuarioAction.usuarioDto.nome}" class="input_grande"/>
 								
 									<h:outputLabel for="sobrenome" value="#{messages['positivo.novoUsuario.sobrenome']}:" />
-								    <h:inputText id="sobrenome" value="#{usuarioAction.usuarioDto.sobrenome}" required="true" class="input_grande"/>
+								    <h:inputText id="sobrenome" value="#{usuarioAction.usuarioDto.sobrenome}" class="input_grande"/>
 									
 	
 									<h:outputLabel for="sexo" value="#{messages['positivo.novoUsuario.sexo']}:" />
-									<h:selectOneRadio id="sexo" value="#{usuarioAction.usuarioDto.sexo}" required="true">
+									<h:selectOneRadio id="sexo" value="#{usuarioAction.usuarioDto.sexo}" >
 										<f:selectItems value="#{usuarioAction.opcoesSexo()}" />
 									</h:selectOneRadio>
 								
 									<h:outputLabel for="nascimento" value="#{messages['positivo.novoUsuario.nascimento']}:" />
-									<rich:calendar id="nascimento" datePattern = "dd/MM/yyyy" value="#{usuarioAction.usuarioDto.nascimento}" required="true" >
+									<rich:calendar id="nascimento" datePattern = "dd/MM/yyyy" value="#{usuarioAction.usuarioDto.nascimento}" >
 										<s:validate/>
 									</rich:calendar>
 									
 									<h:outputLabel for="estado" value="#{messages['positivo.novoUsuario.estado']}:" />
-									<h:selectOneMenu id="estado" defaultLabel="UF" value="#{usuarioAction.usuarioDto.estado}" required="true" class="select">
+									<h:selectOneMenu id="estado" defaultLabel="UF" value="#{usuarioAction.usuarioDto.estado}"  class="select">
 										<f:selectItems value="#{usuarioAction.opcoesEstado()}"/>
 									</h:selectOneMenu>
 									
 									<h:outputLabel for="email" value="#{messages['positivo.novoUsuario.email']}:" />
-									<h:inputText id="email" value="#{usuarioAction.usuarioDto.email}" required="true" class="input_grande"/>
+									<h:inputText id="email" value="#{usuarioAction.usuarioDto.email}"  class="input_grande"/>
 
 									<h:outputLabel for="confirmacaoEmail" value="#{messages['positivo.novoUsuario.confirmacaoEmail']}:" />
-									<h:inputText id="confirmacaoEmail" value="#{usuarioAction.usuarioDto.confirmacaoEmail}" required="true" class="input_grande"/>
+									<h:inputText id="confirmacaoEmail" value="#{usuarioAction.usuarioDto.confirmacaoEmail}" class="input_grande"/>
 								
 								</h:panelGrid>
 								

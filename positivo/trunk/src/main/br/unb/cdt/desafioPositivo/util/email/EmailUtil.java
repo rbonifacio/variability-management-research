@@ -1,6 +1,8 @@
 package br.unb.cdt.desafioPositivo.util.email;
 
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
@@ -20,6 +22,9 @@ import br.unb.cdt.desafioPositivo.facade.ExcecaoEnvioEmail;
  * @author rbonifacio
  */
 public class EmailUtil {
+	
+	private static final String EMAIL_PATTERN =  "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
 	
 	/* configuracao padrao do componente */
 	
@@ -86,7 +91,11 @@ public class EmailUtil {
 		this.desenvolvimento = desenvolvimento;
 	}
 
-	
+	public boolean verificaEmailValido(String email) {
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = pattern.matcher(email);
+		return matcher.matches();
+	}
 
 	
 	public String getAutorizacao() {

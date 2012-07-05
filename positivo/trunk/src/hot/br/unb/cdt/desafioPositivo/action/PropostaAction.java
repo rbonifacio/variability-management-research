@@ -57,6 +57,8 @@ public class PropostaAction {
 			return null;
 		}
 	}
+	
+	
 
 	public Proposta getProposta() {
 		return proposta;

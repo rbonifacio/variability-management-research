@@ -37,13 +37,12 @@
 				<s:div styleClass="info">
 					<h:messages />
 					<h:form id="sumarioForm">
-						<fieldset>
-							<div class="dialog">
-								<h:panelGrid columns="2" rowClasses="prop"
-									columnClasses="name,value">
-									<h:outputLabel for="nome"
-										value="#{messages['positivo.sumario.nome']}:" />
-									<h:outputText id="nome" value="#{usuarioLogado.nome}:" />
+						<div class="dialog">
+							<h:panelGrid columns="2" rowClasses="prop"
+								columnClasses="name,value">
+								<h:outputLabel for="nome"
+									value="#{messages['positivo.sumario.nome']}:" />
+								<h:outputText id="nome" value="#{usuarioLogado.nome}" />
 
 									<h:outputLabel for="sobrenome"
 										value="#{messages['positivo.sumario.sobrenome']}:" />
@@ -89,52 +88,46 @@
 									cellpadding="0" cellspacing="0" width="800" border="0"
 									columnClasses="col1,col2,col3,col4">
 
-									<rich:column>
-										<f:facet name="header">
-											<h:outputText
-												value="#{messages['positivo.sumario.nomeProposta']}" />
-										</f:facet>
-										<h:outputText value="#{prop.nome}" />
-									</rich:column>
-
-									<rich:column>
-										<f:facet name="header">
-											<h:outputText
-												value="#{messages['positivo.sumario.desricaoProposta']}" />
-										</f:facet>
-										<h:outputText value="#{prop.descricao}" />
-									</rich:column>
-
-									<rich:column>
-										<f:facet name="header">
-											<h:outputText/>
-										</f:facet>
-										<h:commandLink action="#{propostaAction.editarProposta}">
-											<h:graphicImage url="/img/edit_icon.png"
-												alt="#{messages['positivo.sumario.editar']}"
-												title="#{messages['positivo.sumario.editar']}" />
-										</h:commandLink>
-										<h:outputText value="   " />
-										<h:commandLink action="#{propostaAction.excluir}">
-											<h:graphicImage url="/img/delete_icon.png"
-												alt="#{messages['positivo.sumario.excluir']}"
-												title="#{messages['positivo.sumario.excluir']}" />
-										</h:commandLink>
-									</rich:column>
-								</rich:dataTable>
-							</rich:panel>
-						</fieldset>
-					</h:form>
-					<rich:panel rendered="#{empty propostasSubmetidas}">
-						<h2>#{messages['positivo.sumario.submetaPropostas']}</h2>
-					</rich:panel>
-					<h:form id="solicitaNovaPropostaForm">
-						<h:commandButton id="novaProposta"
-							value="#{messages['positivo.sumario.novaProposta']}"
-							action="#{propostaAction.novaProposta()}" />
-					</h:form>
-				</s:div>
-			</h:panelGrid>
-		</div>
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="#{messages['positivo.sumario.nomeProposta']}" />
+						</f:facet>
+						<h:outputText value="#{prop.nome}" />
+					</rich:column>
+					
+					<rich:column>
+						<f:facet name="header">positivo.sumario.desricaoProposta
+								<h:outputText value="#{messages['positivo.sumario.desricaoProposta']}" />
+						</f:facet>
+						<h:outputText value="#{prop.descricao}" />
+					</rich:column>
+					
+					<rich:column>
+						<f:facet name="header">
+							<h:outputText value="#{messages['positivo.sumario.opcoes.proposta']}" /> 
+						</f:facet>
+						<h:commandLink action="#{propostaAction.editarProposta}">
+							<h:graphicImage url="/img/edit_icon.png"
+								alt="#{messages['positivo.sumario.editar']}"
+								title="#{messages['positivo.sumario.editar']}" />
+						</h:commandLink>
+						<h:outputText value="   " />
+						<h:commandLink action="#{propostaAction.excluir}">
+							<h:graphicImage url="/img/delete_icon.png"
+								alt="#{messages['positivo.sumario.excluir']}"
+								title="#{messages['positivo.sumario.excluir']}" />
+						</h:commandLink>
+					</rich:column>
+				</rich:dataTable>
+			</rich:panel>
+		</h:form>
+		<rich:panel rendered="#{empty propostasSubmetidas}">
+			<h2>#{messages['positivo.sumario.submetaPropostas']}</h2>
+		</rich:panel>
+		<h:form id="solicitaNovaPropostaForm">
+			<h:commandButton id="novaProposta"
+				value="#{messages['positivo.sumario.novaProposta']}"
+				action="#{propostaAction.novaProposta()}" />
+		</h:form>
 	</ui:define>
 </ui:composition>

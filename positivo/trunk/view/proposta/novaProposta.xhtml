@@ -26,13 +26,13 @@
 									<h:outputLabel for="nome"
 										value="#{messages['positivo.novaProposta.nome']}:" />
 									<h:inputText id="nome" value="#{propostaAction.proposta.nome}"
-										required="true" class="input_grande"/>
+										required="true" class="input_grande" />
 
 									<h:outputLabel for="descricao"
 										value="#{messages['positivo.novaProposta.descricao']}:" />
 									<h:inputTextarea id="descricao"
 										value="#{propostaAction.proposta.descricao}" required="true"
-										 class="textarea_perso"/>
+										class="textarea_perso" />
 
 									<h:outputLabel for="objetivos"
 										value="#{messages['positivo.novaProposta.objetivos']}:" />
@@ -58,13 +58,17 @@
 
 								</h:panelGrid>
 							</div>
-
-							<div class="actionButtons">
-								<h:commandButton id="submit"
-									value="#{messages['positivo.novaProposta.cadastrar']}"
-									action="#{propostaAction.cadastro}" />
-							</div>
 						</fieldset>
+						<div class="actionButtons">
+							<h:commandButton id="submit"
+								value="#{messages['positivo.novaProposta.cadastrar']}"
+								action="#{propostaAction.cadastro}" />
+								
+								<h:commandButton id="cancel"
+									value="#{messages['positivo.cancelar']}"
+									action="cancelar"  immediate="true" />	
+						</div>
+
 					</h:form>
 
 				</s:div>
