@@ -26,52 +26,33 @@
 									<h:outputLabel for="nome"
 										value="#{messages['positivo.novaProposta.nome']}:" />
 									<h:inputText id="nome" value="#{propostaAction.proposta.nome}"
-										required="true" class="input_grande"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
-										<f:validateLength maximum="255" />
-									</h:inputText>
-
+										class="input_grande" />
+									
 									<h:outputLabel for="descricao"
 										value="#{messages['positivo.novaProposta.descricao']}:" />
 									<h:inputTextarea id="descricao"
 										value="#{propostaAction.proposta.descricao}" required="true"
-										class="textarea_perso"
-										requiredMessage="#{messages['positivo.novaProposta.descricaoEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.descricaoTamanho']}:">
-										<f:validateLength maximum="255" />
-									</h:inputTextarea>
-
+										class="textarea_perso" />
+									
 									<h:outputLabel for="objetivos"
 										value="#{messages['positivo.novaProposta.objetivos']}:" />
 									<h:inputTextarea id="objetivos"
 										value="#{propostaAction.proposta.objetivos}" required="true"
-										class="textarea_perso"
-										requiredMessage="#{messages['positivo.novaProposta.objetivosEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.objetivosTamanho']}:">
-										<f:validateLength maximum="255" />
-									</h:inputTextarea>
+										class="textarea_perso" />
 
 									<h:outputLabel for="publicoAlvo"
 										value="#{messages['positivo.novaProposta.publicoAlvo']}:" />
 									<h:inputTextarea id="publicoAlvo"
-										value="#{propostaAction.proposta.publicoAlvo}" required="true"
-										class="textarea_perso"
-										requiredMessage="#{messages['positivo.novaProposta.publicoAlvoEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.publicoAlvoTamanho']}:">
-										<f:validateLength maximum="255" />
-									</h:inputTextarea>
+										value="#{propostaAction.proposta.publicoAlvo}" 
+										class="textarea_perso" />
+									
 
 									<h:outputLabel for="descricaoFuncional"
 										value="#{messages['positivo.novaProposta.descricaoFuncional']}:" />
 									<h:inputTextarea id="descricaoFuncional"
 										value="#{propostaAction.proposta.descricaoFuncional}"
-										required="true" class="textarea_perso"
-										requiredMessage="#{messages['positivo.novaProposta.descricaoFuncionalEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.descricaoFuncionalTamanho']}:">
-										<f:validateLength maximum="255" />
-									</h:inputTextarea>
-
+										class="textarea_perso" />
+										
 									<h:outputLabel for="prototipo"
 										value="#{messages['positivo.novaProposta.prototipo']}:" />
 									<s:fileUpload data="#{propostaAction.proposta.arquivoGUI}" />

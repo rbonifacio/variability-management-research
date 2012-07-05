@@ -27,31 +27,31 @@
 										value="#{messages['positivo.editarProposta.nome']}" />
 									<h:inputText id="nome"
 										value="#{propostaAction.propostaSelecionada.nome}"
-										required="true" class="input_grande" />
+										 class="input_grande" />
 
 									<h:outputLabel for="descricao"
 										value="#{messages['positivo.editarProposta.descricao']}" />
 									<h:inputTextarea id="descricao"
 										value="#{propostaAction.propostaSelecionada.descricao}"
-										required="true" class="textarea_perso" />
+										 class="textarea_perso" />
 
 									<h:outputLabel for="objetivos"
 										value="#{messages['positivo.editarProposta.objetivos']}" />
 									<h:inputTextarea id="objetivos"
 										value="#{propostaAction.propostaSelecionada.objetivos}"
-										required="true" class="textarea_perso" />
+										 class="textarea_perso" />
 
 									<h:outputLabel for="publicoAlvo"
 										value="#{messages['positivo.editarProposta.publicoAlvo']}" />
 									<h:inputTextarea id="publicoAlvo"
 										value="#{propostaAction.propostaSelecionada.publicoAlvo}"
-										required="true" class="textarea_perso" />
+										class="textarea_perso" />
 
 									<h:outputLabel for="descricaoFuncional"
 										value="#{messages['positivo.editarProposta.descricaoFuncional']}" />
 									<h:inputTextarea id="descricaoFuncional"
 										value="#{propostaAction.propostaSelecionada.descricaoFuncional}"
-										required="true" class="textarea_perso" />
+										 class="textarea_perso" />
 
 									<h:outputLabel for="prototipo"
 										value="#{messages['positivo.editarProposta.prototipo']}" />
@@ -60,8 +60,8 @@
 
 								</h:panelGrid>
 							</div>
-
-							<div class="actionButtons">
+						</fieldset>
+						<div class="actionButtons">
 								<h:commandButton id="submit"
 									value="#{messages['positivo.editarProposta.editar']}"
 									action="#{propostaAction.editar}" />
@@ -70,8 +70,6 @@
 									value="#{messages['positivo.cancelar']}"
 									action="cancelar" immediate="true" />	
 							</div>
-
-						</fieldset>
 					</h:form>
 
 				</s:div>
