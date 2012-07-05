@@ -96,13 +96,9 @@ public class UsuarioAction {
 	 * dos dados submetidos em usuarioDto.
 	 */
 	public String cadastro() {
-
 		List<String> erros = validarDadosCadastrais();
 		if(! erros.isEmpty()) {
-			
-			for(String e : erros) {
-				StatusMessages.instance().addFromResourceBundle(e);
-			}
+			populaMensagensErro(erros);
 			return null;
 		}
 		
@@ -120,6 +116,12 @@ public class UsuarioAction {
 			return null;
 		}
 		
+	}
+	
+	private void populaMensagensErro(List<String> erros) {
+		for(String e : erros) {
+			StatusMessages.instance().addFromResourceBundle(e);
+		}
 	}
 
 	/*
@@ -153,9 +155,7 @@ public class UsuarioAction {
 		List<String> erros = validarDadosConfirmacao();
 		
 		if(!erros.isEmpty()) {
-			for(String e : erros) {
-				StatusMessages.instance().addFromResourceBundle(e);
-			}
+			populaMensagensErro(erros);
 			return null;
 		}
 		
@@ -259,6 +259,11 @@ public class UsuarioAction {
 	 * bean usuarioLogado.
 	 */
 	public String atualizarDadosUsuario() {
+		List<String> erros = validarDadosAtualizacao();
+		if(! erros.isEmpty()) {
+			populaMensagensErro(erros);
+			return null;
+		}
 		try {
 			facade.atualizarUsuario(usuarioLogado);
 			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.ATUALIZAR_DADOS_SUCESSO);
@@ -270,6 +275,25 @@ public class UsuarioAction {
 		}
 	}
 	
+	/*
+	 * Valida os dados da atualizacao do cadastro do usuario. 
+	 * TODO: posteriormente, esse metodo podera ser refatorado, pois parte da validacao eh 
+	 * a mesma do cadastro.
+	 */
+	private List<String> validarDadosAtualizacao() {
+		List<String> erros = new ArrayList<String>();
+		
+		if(usuarioDto.getNome() == null || usuarioDto.getNome().equals("")) {
+			erros.add("positivo.novoUsuario.nome.obrigatorio");
+		}
+		
+		if(usuarioDto.getSobrenome() == null || usuarioDto.getSobrenome().equals("")) {
+			erros.add("positivo.novoUsuario.sobrenome.obrigatorio");
+		}
+		
+		return erros;
+	}
+
 	/**
 	 * Metodo que possibilita a alteracao de senha do usuario. As informacoes 
 	 * ficam encapsuladas nos beans usuarioLogado e alteraSenhaDTO. 
@@ -301,5 +325,4 @@ public class UsuarioAction {
 	public void setUsuarioDto(Usuario usuarioDto) {
 		this.usuarioDto = usuarioDto;
 	}
-
 }
