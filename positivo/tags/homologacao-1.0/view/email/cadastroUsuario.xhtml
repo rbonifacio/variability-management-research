@@ -1,0 +1,27 @@
+<m:message xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:m="http://jboss.com/products/seam/mail"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<m:from name="Positivo" address="rbonifacio@unb.br" />
+	<m:to name="#{usuario.nome} #{usuario.sobrenome}">rodrigo.bonifacio@uol.com.br</m:to>
+
+	<m:subject>#{messages['positivo.cadastroUsuario.welcome']}</m:subject>
+
+	<m:body>
+
+		<p>
+		<h:outputText value="#{messages['positivo.cadastroUsuario.welcome']}" />,
+		</p>
+
+		<p>
+		#{messages['positivo.cadastroUsuario.body']}<a
+			href="#{messages['positivo.cadastroUsuario.link']}">#{messages['positivo.cadastroUsuario.link']}</a>.
+		</p>
+
+		<p>#{messages['positivo.cadastroUsuario.att']}</p>
+
+		<p>Fulano.</p>
+
+	</m:body>
+
+</m:message>
