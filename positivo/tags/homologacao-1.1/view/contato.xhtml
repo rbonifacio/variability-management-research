@@ -1,0 +1,72 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+	
+		<div class="corpo" style="background: url(img/positivo/contato.png) no-repeat; min-height:558px;">
+		
+		<table width="" height="720" border="0" cellpadding="0" cellspacing="10" style="margin: 0px 0 0 220px"> 
+	     
+			<tr>
+					<td valign="top" style=" padding:70px;">		
+				
+						<h:panelGrid columns="1">
+							
+							<s:div styleClass="info">
+							
+								<h:form id="contactForm">
+									   
+									   
+									<div>
+											<h:panelGrid columns="1" rowClasses="prop" columnClasses="name,value">
+											
+												<h:outputLabel for="name">Nome:</h:outputLabel>
+												<h:inputText id="name" value="#{name}" class="input_medio" />
+												<h:outputLabel for="email">E-mail:</h:outputLabel>
+												<h:inputText id="email" value="#{email}" class="input_medio" />
+												<h:outputLabel for="subject">Assunto:</h:outputLabel>
+												<h:inputText id="subject" value="#{subject}" class="input_medio" />
+												<h:outputLabel for="message">Menssagem:</h:outputLabel>
+												<h:inputTextarea id="message" value="#{message}" class="textarea_medio" />	
+
+											</h:panelGrid>
+											
+
+										<div style=" margin:-270px 0 0 200px; ">
+											<h:panelGrid columns="1" rowClasses="prop" columnClasses="name,value">
+											
+												<strong>TELEFONE:</strong><br  />
+												(xx) 0000-0000<br />
+												<strong>E-MAIL:</strong><br  />
+												xxxxxxxxxxxx@.com.br<br />
+												
+											</h:panelGrid>
+											
+										</div>											
+									
+										<div class="actionButtons" style="margin:165px 0 0 -7px;">
+											<h:commandButton class="commandButton" id="submit" value=" Enviar "  action="#{a}"/>
+											<h:commandButton class="commandButton" id="clear" value=" Limpar "  action="#{a}"/>
+										</div>									
+									
+									</div>
+							
+								</h:form>
+					
+							</s:div>
+							
+						</h:panelGrid>
+				
+					</td>
+			</tr>
+		</table>
+		</div>
+		
+	</ui:define>
+</ui:composition>

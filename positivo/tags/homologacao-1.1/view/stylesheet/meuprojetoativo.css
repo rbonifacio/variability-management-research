@@ -1,0 +1,13 @@
+@charset "iso-8859-2";
+/* CSS Document */
+
+#novoProjeto a {
+  background:url(../img/positivo/menu/novoProjetoAtivo.png) no-repeat!important;
+}
+
+.teste {
+	background:#000000;
+	width:200px;
+	height:100px;
+	border: solid red 1px;
+}
