@@ -42,25 +42,32 @@ public class Usuario implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="ID")
 	private Long id;
 	
+	@Column(name="NOME")
 	private String nome;
 	
+	@Column(name="SOBRENOME")
 	private String sobrenome;
 	
 	@Enumerated(EnumType.ORDINAL)
+	@Column(name="SEXO")
 	private Sexo sexo;
 	
 	@Email(message="positivo.validacao.email")
-	@Column(unique=true)
+	@Column(unique=true, name="EMAIL")
 	private String email;
 	
 	@Enumerated(EnumType.ORDINAL)
+	@Column(name="ESTADO")
 	private Estado estado; 
 	
 	@Past
+	@Column(name="NASCIMENTO")
 	private Date nascimento;
 	
+	@Column(name="TOKEN")
 	private String token;
 	
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL)

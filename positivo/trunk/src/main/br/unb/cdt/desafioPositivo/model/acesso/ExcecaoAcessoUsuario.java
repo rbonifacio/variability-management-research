@@ -7,12 +7,6 @@ package br.unb.cdt.desafioPositivo.model.acesso;
  * @author rbonifacio
  */
 public class ExcecaoAcessoUsuario extends Exception {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	public ExcecaoAcessoUsuario(String message) {
 		super(message);
 	}

@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import org.jboss.seam.annotations.Name;
 
@@ -35,19 +34,23 @@ public class Proposta implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="ID")
 	private Long id;
 
-	@Column(unique=true)
+	@Column(name="NOME", unique=true)
 	private String nome;
 	
+	@Column(name="DESCRICAO")
 	private String descricao;
 	
+	@Column(name="OBJETIVOS")
 	private String objetivos;
 	
 	@ManyToOne
 	private Usuario usuario;
 	
 	@Enumerated(EnumType.ORDINAL)
+	@Column(name="CATEGORIA")
 	private Categoria categoria;
 	
 	@Column(name="PUBLICO_ALVO")

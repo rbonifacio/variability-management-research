@@ -4,7 +4,7 @@
     <!-- Give user a chance to override without editing this file or typing -D -->
     <property file="${basedir}/build.properties" />
 
-    <property name="profile" value="dev" />
+    <property name="profile" value="prod" />
     <property file="build-${profile}.properties" />
 
     <!-- set global properties for this build -->

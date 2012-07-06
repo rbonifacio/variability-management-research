@@ -7,7 +7,7 @@
              
    <persistence-unit name="desafioPositivo" transaction-type="JTA">
       <provider>org.hibernate.ejb.HibernatePersistence</provider>
-      <jta-data-source>PositivoDS</jta-data-source>
+      <jta-data-source>java:/PositivoDS</jta-data-source>
       <properties>
          <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
          <property name="hibernate.hbm2ddl.auto" value="validate"/>

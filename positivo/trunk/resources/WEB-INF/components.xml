@@ -90,7 +90,7 @@
    	<property name="senha">android@0!2</property>
    </component>
    
-   <factory name="urlConfirmacaoCadastro" value="http://localhost:8080/desafioPositivo/usuario/confirmaSolicitacaoCadastro.seam"/>
+   <factory name="urlConfirmacaoCadastro" value="http://164.41.57.27:8080/desafioPositivo/usuario/confirmaSolicitacaoCadastro.seam"/>
    
 
 </components>
