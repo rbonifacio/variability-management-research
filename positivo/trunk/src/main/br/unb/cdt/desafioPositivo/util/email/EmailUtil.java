@@ -77,6 +77,41 @@ public class EmailUtil {
 					"Nao foi possivel enviar o email com a solicitacao de cadastro. Tente novamente.");
 		}
 	}
+	
+	public void enviarEmailContato(String[] listaDestinatarios, String assunto, String corpo) throws Exception {
+		try {	
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", autorizacao);
+			props.put("mail.smtp.starttls.enable", tls);
+			props.put("mail.smtp.host", host);
+			props.put("mail.smtp.port", porta);
+				
+			Session session = Session.getInstance(props,
+					  new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication(usuario, senha);
+						}
+					  });
+			
+			session.setDebug(desenvolvimento);
+			
+			MimeMessage message = new MimeMessage(session);
+			
+			message.setFrom(new InternetAddress(usuario));
+			
+			populaListaDestinatarios(message, desenvolvimento ? listaInternaDestinatarios : listaDestinatarios);
+			
+			message.setSubject(assunto);
+			message.setText(corpo);
+			
+			Transport.send(message);	  
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ExcecaoEnvioEmail(
+					"Nao foi possivel enviar o email com a solicitacao de cadastro. Tente novamente.");
+		}
+	}
+	
 
 	private void populaListaDestinatarios(MimeMessage message, String[] listaDestinatarios) throws Exception{
 		for(String destinatario: listaDestinatarios) {

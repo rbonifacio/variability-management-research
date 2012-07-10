@@ -4,6 +4,14 @@
 body{ margin:0; padding:0; font:13px tahoma; color:#555; background: #eaeaea }
 h2{ font-size:16px; }
 
+/*********************************************CSS para letras, alteracoes rapidas. Refatorar isso******************************************************/
+#loginForm label, #novoForm label{
+	font-size: 14px;
+	font-weight: bold;
+	font: Arial;
+	color: #275975 ;
+}
+
 
 /********************************************************** TOPO ****************************************************************/
 #topoFixo{  margin:auto; width:100%; background: url(../img/positivo/bg_topo.png) repeat-x; }
@@ -340,11 +348,20 @@ img.errors {
 	height:40px
 }
 
+/*Conteudo a Direita*/
 div.info {
 	font-size: 1.2em;
 	padding-left:640px;
 	padding-top: 30px;
 }
+
+/*Conteudo a Esquerda*/
+div.info2{
+	font-size: 1.2em;
+	padding-left: 150px;
+	padding-top: 30px;
+}
+
 
 div.sumario {
 	font-size: 1.2em;
