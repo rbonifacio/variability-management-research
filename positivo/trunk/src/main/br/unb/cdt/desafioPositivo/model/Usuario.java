@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.validator.Digits;
 import org.hibernate.validator.Email;
 import org.hibernate.validator.Length;
 import org.hibernate.validator.NotNull;
@@ -51,6 +52,21 @@ public class Usuario implements Serializable {
 	@Column(name="SOBRENOME")
 	private String sobrenome;
 	
+	@Column(name="CPF")
+	private String cpf;
+	
+	@Column(name="RG")
+	private String rg;
+	
+	@Column(name="CEP")
+	private String cep;
+	
+	@Column(name="BAIRRO")
+	private String bairro;
+	
+	@Column(name="ENDERECO")
+	private String endereco;
+	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name="SEXO")
 	private Sexo sexo;
@@ -75,7 +91,6 @@ public class Usuario implements Serializable {
 	
 	@OneToMany(mappedBy="usuario",cascade=CascadeType.ALL)
 	private List<AcessoUsuario> historicoSituacaoAcesso;
-	
 	
 	@Transient
 	private String senha;
@@ -127,6 +142,25 @@ public class Usuario implements Serializable {
 	}
 
 	@NotNull
+	@Length(min=11, max=11)
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	@NotNull
+	public String getRg() {
+		return rg;
+	}
+
+	public void setRg(String rg) {
+		this.rg = rg;
+	}
+
+	@NotNull
 	public Sexo getSexo() {
 		return sexo;
 	}
@@ -136,6 +170,7 @@ public class Usuario implements Serializable {
 	}
 
 	@NotNull
+	@Email
 	public String getEmail() {
 		return email;
 	}
@@ -240,7 +275,6 @@ public class Usuario implements Serializable {
 	}
 
 
-
 	public String getConfirmacaoEmail() {
 		return confirmacaoEmail;
 	}
@@ -288,5 +322,29 @@ public class Usuario implements Serializable {
 	//@AssertTrue(message="positivo.confirmacao.email.invalido")
 	public boolean validaConfirmacaoEmail() {
 		return email.equals(confirmacaoEmail);
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
 	}
 }

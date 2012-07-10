@@ -440,21 +440,21 @@ public class DesafioPositivoFacade {
 	}
 
 	private String mensagemAlteracaoSenha(Usuario usuario, String novaSenha) {
+		/*
 		return Mensagens.MSG_WELCOME + ", " + usuario.getNome() + 
 				", \n \n \n" + 
 				Mensagens.MSG_BODY_SENHA + ": \n \n \n" + novaSenha +
 				"\n \n \n" +
 				Mensagens.MSG_END + ", \n" +
 				Mensagens.MSG_ATT + ".";
-		/*
-		return "Prezado, "  + usuario.getNome() + 
+				*/
+		
+		return  messages.get(Mensagens.MSG_WELCOME) + ", " + usuario.getNome() + 
+				", \n \n \n" + 
+				messages.get(Mensagens.MSG_BODY_SENHA) + "\n\n\n" + novaSenha + 
 				"\n \n \n" +
-				"Você pode acessar o sistema usando a seguinte senha: " +
-				"\n \n \n" +  novaSenha +
-				"\n \n \n" +
-				"Atenciosamente, \n" +
-				"Coordenação do Desafio Positivo." ;
-		*/
+				messages.get(Mensagens.MSG_END) + ", \n" +
+				messages.get(Mensagens.MSG_ATT) + ".";
 	}
 
 	public void excluirProposta(Proposta propostaSelecionada) throws Exception {

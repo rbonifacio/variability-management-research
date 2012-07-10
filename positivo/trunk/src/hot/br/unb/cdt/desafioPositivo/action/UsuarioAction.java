@@ -34,15 +34,15 @@ public class UsuarioAction {
 
 	private Usuario usuarioDto;
 
-	@In(create=true)
+	@In(create = true)
 	private EmailUtil emailUtil;
-	
-	@In(required=false)
+
+	@In(required = false)
 	private Usuario usuarioLogado;
-	
+
 	@In
 	private AlteraSenhaDTO alteraSenhaDTO;
-	
+
 	@In
 	private DesafioPositivoFacade facade;
 
@@ -92,59 +92,128 @@ public class UsuarioAction {
 	}
 
 	/**
-	 * Realiza o cadastro do usuario, inicialmente fazend o uma validacao 
-	 * dos dados submetidos em usuarioDto.
+	 * Realiza o cadastro do usuario, inicialmente fazend o uma validacao dos
+	 * dados submetidos em usuarioDto.
 	 */
 	public String cadastro() {
 		List<String> erros = validarDadosCadastrais();
-		if(! erros.isEmpty()) {
+		if (!erros.isEmpty()) {
 			populaMensagensErro(erros);
 			return null;
 		}
-		
+
 		try {
 			facade.adicionarUsuario(usuarioDto);
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.SOLICITACAO_CADASTRO, usuarioDto.getEmail());
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.INFO,
+					Mensagens.SOLICITACAO_CADASTRO, usuarioDto.getEmail());
 			return "home";
 		} catch (ExcecaoUsuarioCadastrado e) {
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.EMAIL_EXISTENTE, usuarioDto.getEmail());
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.ERROR, Mensagens.EMAIL_EXISTENTE,
+					usuarioDto.getEmail());
 			return null;
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.ERRO_GENERICO);
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.ERROR, Mensagens.ERRO_GENERICO);
 			return null;
 		}
-		
+
 	}
-	
+
 	private void populaMensagensErro(List<String> erros) {
-		for(String e : erros) {
+		for (String e : erros) {
 			StatusMessages.instance().addFromResourceBundle(e);
 		}
 	}
 
+	private boolean validaCPF(String stringCPF) {
+		int i, soma1, soma2, digito1, digito2;
+
+		if (stringCPF.length() != 11)
+			return false;
+
+		if ((stringCPF.equals("00000000000"))
+				|| (stringCPF.equals("11111111111"))
+				|| (stringCPF.equals("22222222222"))
+				|| (stringCPF.equals("33333333333"))
+				|| (stringCPF.equals("44444444444"))
+				|| (stringCPF.equals("55555555555"))
+				|| (stringCPF.equals("66666666666"))
+				|| (stringCPF.equals("77777777777"))
+				|| (stringCPF.equals("88888888888"))
+				|| (stringCPF.equals("99999999999")))
+			return false;
+
+		// Calcula o primeiro dígito
+		soma1 = 0;
+		for (i = 0; i <= 8; i++)
+			soma1 = soma1 + Integer.parseInt(stringCPF.substring(i, i + 1))
+					* (10 - i);
+
+		if (soma1 % 11 < 2)
+			digito1 = 0;
+		else
+			digito1 = 11 - (soma1 % 11);
+
+		// Calcula o segundo dígito
+		soma2 = 0;
+		for (i = 0; i <= 9; i++)
+			soma2 = soma2 + Integer.parseInt(stringCPF.substring(i, i + 1))
+					* (11 - i);
+
+		if (soma2 % 11 < 2)
+			digito2 = 0;
+		else
+			digito2 = 11 - (soma2 % 11);
+
+		if ((digito1 == Integer.parseInt(stringCPF.substring(9, 10)))
+				&& (digito2 == Integer.parseInt(stringCPF.substring(10))))
+			return true;
+
+		return false;
+
+	}
+
 	/*
-	 * Metodo que verifica se a confirmacao de email 
-	 * eh valida.
+	 * Metodo que verifica se a confirmacao de email eh valida.
 	 */
 	private List<String> validarDadosCadastrais() {
 		List<String> erros = new ArrayList<String>();
-		if(usuarioDto.getNome() == null || usuarioDto.getNome().equals("")) {
+		if (usuarioDto.getNome() == null || usuarioDto.getNome().equals("")) {
 			erros.add("positivo.novoUsuario.nome.obrigatorio");
 		}
-		
-		if(usuarioDto.getSobrenome() == null || usuarioDto.getSobrenome().equals("")) {
+
+		if (usuarioDto.getSobrenome() == null
+				|| usuarioDto.getSobrenome().equals("")) {
 			erros.add("positivo.novoUsuario.sobrenome.obrigatorio");
 		}
 		
-		if(usuarioDto.getEmail() == null || usuarioDto.getConfirmacaoEmail() == null) {
+		if(!validaCPF(usuarioDto.getCpf())) {
+			erros.add("O CPF é inválido");
+		}
+
+		if (usuarioDto.getEmail() == null
+				|| usuarioDto.getConfirmacaoEmail() == null) {
 			erros.add("positivo.novoUsuario.confirmacao.email.obrigatorio");
 		}
-		
-		if(! (emailUtil.verificaEmailValido(usuarioDto.getEmail()) && usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail()))) {
+
+		if (!emailUtil.verificaEmailValido(usuarioDto.getEmail())) {
 			erros.add("positivo.novoUsuario.email.confirmacao.invalida");
 		}
+				
+		if(!usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
+			erros.add("O e-mail e a confirmação de e-mail devem ser iguais");
+		}
+		
+		for(int i=0; i<usuarioDto.getCep().length(); i++) {
+			if(!Character.isDigit(usuarioDto.getCep().charAt(i))) {
+				erros.add("CEP inválido");
+				break;
+			}
+		}
+		
 		return erros;
 	}
 
@@ -153,50 +222,57 @@ public class UsuarioAction {
 	 */
 	public String confirmaSolicitacaoCadastro() {
 		List<String> erros = validarDadosConfirmacao();
-		
-		if(!erros.isEmpty()) {
+
+		if (!erros.isEmpty()) {
 			populaMensagensErro(erros);
 			return null;
 		}
-		
+
 		try {
 			facade.confirmarSolicitacaoCadstro(usuarioDto);
-			StatusMessages.instance().addFromResourceBundle(Mensagens.USUARIO_CONFIRMA_SOLICITACAO_CADASTRO);
+			StatusMessages.instance().addFromResourceBundle(
+					Mensagens.USUARIO_CONFIRMA_SOLICITACAO_CADASTRO);
 			return "home";
-		} catch(ExcecaoUsuarioNaoEncontrado e) {
+		} catch (ExcecaoUsuarioNaoEncontrado e) {
 			e.printStackTrace();
-			StatusMessages.instance().addFromResourceBundle(Mensagens.USUARIO_NAO_ENCONTRADO);
+			StatusMessages.instance().addFromResourceBundle(
+					Mensagens.USUARIO_NAO_ENCONTRADO);
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			StatusMessages.instance().addFromResourceBundle(Mensagens.ERRO_GENERICO);
+			StatusMessages.instance().addFromResourceBundle(
+					Mensagens.ERRO_GENERICO);
 			return null;
 		}
 	}
-	
+
 	/*
-	 * Valida os dados da confirmacao de cadastro, retornando uma lista 
-	 * com os erros identificados; ou uma lista vazia caso nenhum erro 
-	 * tenha sido identificado.
+	 * Valida os dados da confirmacao de cadastro, retornando uma lista com os
+	 * erros identificados; ou uma lista vazia caso nenhum erro tenha sido
+	 * identificado.
 	 */
 	private List<String> validarDadosConfirmacao() {
 		List<String> erros = new ArrayList<String>();
-		if(usuarioDto.getEmail() == null || (!emailUtil.verificaEmailValido(usuarioDto.getEmail()))) {
+		if (usuarioDto.getEmail() == null
+				|| (!emailUtil.verificaEmailValido(usuarioDto.getEmail()))) {
 			erros.add("positivo.confirmaSolicitacaoCadastro.email.obrigatorio");
 		}
-		
-		if(usuarioDto.getCodigoConfirmacaoCadastro() == null || usuarioDto.getCodigoConfirmacaoCadastro().equals("")) {
+
+		if (usuarioDto.getCodigoConfirmacaoCadastro() == null
+				|| usuarioDto.getCodigoConfirmacaoCadastro().equals("")) {
 			erros.add("positivo.confirmaSolicitacaoCadastro.codigo.obrigatorio");
 		}
-		
-		if(! (CriptografiaUtil.verificaSenha(usuarioDto.getSenha()) && usuarioDto.getSenha().equals(usuarioDto.getConfirmacaoSenha()))) {
+
+		if (!(CriptografiaUtil.verificaSenha(usuarioDto.getSenha()) && usuarioDto
+				.getSenha().equals(usuarioDto.getConfirmacaoSenha()))) {
 			erros.add("positivo.confirmaSolicitacaoCadastro.senha.obrigatorio");
 		}
 
 		return erros;
 	}
-	
-	private void verificaSenhasInformadas(String senha, String confirmacao) throws ExcecaoSenhaInvalida, ExcecaoSenhaDiferente {
+
+	private void verificaSenhasInformadas(String senha, String confirmacao)
+			throws ExcecaoSenhaInvalida, ExcecaoSenhaDiferente {
 		if (!CriptografiaUtil.verificaSenha(senha)) {
 			throw new ExcecaoSenhaInvalida();
 		}
@@ -207,117 +283,136 @@ public class UsuarioAction {
 	}
 
 	/**
-	 * Realiza a autenticacao do usuario. As informacoes de autenticacao
-	 * (email, senha) estao disponiveis no objeto injetado credentials.
+	 * Realiza a autenticacao do usuario. As informacoes de autenticacao (email,
+	 * senha) estao disponiveis no objeto injetado credentials.
 	 */
 	public String autenticar() {
 		try {
 			if (credentials.getUsername() == null
 					|| credentials.getPassword() == null) {
-				StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.AUTENTICACAO_CAMPOS_OBRIGATORIOS);
+				StatusMessages.instance().addFromResourceBundle(
+						StatusMessage.Severity.INFO,
+						Mensagens.AUTENTICACAO_CAMPOS_OBRIGATORIOS);
 				return null;
 			}
-			
+
 			if (identity.login().equals("loggedIn")) {
 				return "sumario";
-			}
-			else {
-				StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.FALHA_AUTENTICACAO);
+			} else {
+				StatusMessages.instance().addFromResourceBundle(
+						StatusMessage.Severity.INFO,
+						Mensagens.FALHA_AUTENTICACAO);
 				return null;
 			}
 		} catch (Exception e) {
 			StatusMessages.instance().clear();
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.FALHA_AUTENTICACAO);
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.INFO, Mensagens.FALHA_AUTENTICACAO);
 			e.printStackTrace();
 			return null;
 		}
 	}
 
 	/**
-	 * Metodo que possibilita re recuperacao da senha do usuario. As informacoes 
+	 * Metodo que possibilita re recuperacao da senha do usuario. As informacoes
 	 * necessarios sao encapsuladas no bean usuarioDto
 	 */
 	public String recuperarSenha() {
 		try {
 			facade.recuperarSenha(usuarioDto);
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.RECUPERAR_SENHA_SUCESSO, usuarioDto.getEmail());
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.INFO,
+					Mensagens.RECUPERAR_SENHA_SUCESSO, usuarioDto.getEmail());
 			return "home";
 		} catch (ExcecaoUsuarioNaoEncontrado e) {
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.RECUPERAR_SENHA_INEXISTENTE, usuarioDto.getEmail());
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.ERROR,
+					Mensagens.RECUPERAR_SENHA_INEXISTENTE,
+					usuarioDto.getEmail());
 			return null;
 		} catch (Exception e) {
-			StatusMessages.instance().add(StatusMessage.Severity.ERROR, e.getLocalizedMessage());
+			StatusMessages.instance().add(StatusMessage.Severity.ERROR,
+					e.getLocalizedMessage());
 			e.printStackTrace();
 			return null;
 		}
 
 	}
-	
+
 	/**
-	 * Metodo que permite a atualizacao dos dados do usuario. 
-	 * As informacoes submetidas na atualizacao ficam encapsulada no 
-	 * bean usuarioLogado.
+	 * Metodo que permite a atualizacao dos dados do usuario. As informacoes
+	 * submetidas na atualizacao ficam encapsulada no bean usuarioLogado.
 	 */
 	public String atualizarDadosUsuario() {
 		List<String> erros = validarDadosAtualizacao();
-		if(! erros.isEmpty()) {
+		if (!erros.isEmpty()) {
 			populaMensagensErro(erros);
 			return null;
 		}
 		try {
 			facade.atualizarUsuario(usuarioLogado);
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.ATUALIZAR_DADOS_SUCESSO);
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.INFO,
+					Mensagens.ATUALIZAR_DADOS_SUCESSO);
 			return "sumario";
-		}
-		catch(Exception e) {
-			StatusMessages.instance().add(StatusMessage.Severity.ERROR, e.getLocalizedMessage());
+		} catch (Exception e) {
+			StatusMessages.instance().add(StatusMessage.Severity.ERROR,
+					e.getLocalizedMessage());
 			return null;
 		}
 	}
-	
+
 	/*
-	 * Valida os dados da atualizacao do cadastro do usuario. 
-	 * TODO: posteriormente, esse metodo podera ser refatorado, pois parte da validacao eh 
-	 * a mesma do cadastro.
+	 * Valida os dados da atualizacao do cadastro do usuario. TODO:
+	 * posteriormente, esse metodo podera ser refatorado, pois parte da
+	 * validacao eh a mesma do cadastro.
 	 */
 	private List<String> validarDadosAtualizacao() {
 		List<String> erros = new ArrayList<String>();
-		
-		if(usuarioLogado.getNome() == null || usuarioLogado.getNome().equals("")) {
+
+		if (usuarioLogado.getNome() == null
+				|| usuarioLogado.getNome().equals("")) {
 			erros.add("positivo.novoUsuario.nome.obrigatorio");
 		}
-		
-		if(usuarioLogado.getSobrenome() == null || usuarioLogado.getSobrenome().equals("")) {
+
+		if (usuarioLogado.getSobrenome() == null
+				|| usuarioLogado.getSobrenome().equals("")) {
 			erros.add("positivo.novoUsuario.sobrenome.obrigatorio");
 		}
-		
+
 		return erros;
 	}
 
 	/**
-	 * Metodo que possibilita a alteracao de senha do usuario. As informacoes 
-	 * ficam encapsuladas nos beans usuarioLogado e alteraSenhaDTO. 
+	 * Metodo que possibilita a alteracao de senha do usuario. As informacoes
+	 * ficam encapsuladas nos beans usuarioLogado e alteraSenhaDTO.
 	 */
 	public String alterarSenha() {
 		try {
-			verificaSenhasInformadas(alteraSenhaDTO.getNovaSenha(), alteraSenhaDTO.getConfirmacaoNovaSenha());
+			verificaSenhasInformadas(alteraSenhaDTO.getNovaSenha(),
+					alteraSenhaDTO.getConfirmacaoNovaSenha());
 			facade.alterarSenha(usuarioLogado, alteraSenhaDTO);
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, Mensagens.ATUALIZAR_SENHA_SUCESSO);
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.INFO,
+					Mensagens.ATUALIZAR_SENHA_SUCESSO);
 			return "sumario";
-		}catch(ExcecaoSenhaInvalida e){
+		} catch (ExcecaoSenhaInvalida e) {
 			e.printStackTrace();
-			StatusMessages.instance().addFromResourceBundle(Mensagens.SENHA_INVALIDA);
+			StatusMessages.instance().addFromResourceBundle(
+					Mensagens.SENHA_INVALIDA);
 			return null;
-		} catch(ExcecaoSenhaDiferente e){
+		} catch (ExcecaoSenhaDiferente e) {
 			e.printStackTrace();
-			StatusMessages.instance().addFromResourceBundle(Mensagens.SENHA_DIFERENTE);
+			StatusMessages.instance().addFromResourceBundle(
+					Mensagens.SENHA_DIFERENTE);
 			return null;
-		} catch(Exception e) {
-			StatusMessages.instance().add(StatusMessage.Severity.ERROR, e.getLocalizedMessage());
+		} catch (Exception e) {
+			StatusMessages.instance().add(StatusMessage.Severity.ERROR,
+					e.getLocalizedMessage());
 			return null;
 		}
 	}
-	
+
 	public Usuario getUsuarioDto() {
 		return usuarioDto;
 	}
