@@ -190,19 +190,39 @@ public class UsuarioAction {
 			erros.add("positivo.novoUsuario.sobrenome.obrigatorio");
 		}
 		
-		if(!validaCPF(usuarioDto.getCpf())) {
+		if(usuarioDto.getCpf() == null
+				|| usuarioDto.getCpf().equals("")) {
+			erros.add("Necessário informar o CPF");
+		} else if(!validaCPF(usuarioDto.getCpf())) {
 			erros.add("O CPF é inválido");
 		}
-
-		if (usuarioDto.getEmail() == null
-				|| usuarioDto.getConfirmacaoEmail() == null) {
-			erros.add("positivo.novoUsuario.confirmacao.email.obrigatorio");
+		
+		if(usuarioDto.getRg() == null
+				|| usuarioDto.getRg().equals("")) {
+			erros.add("Necessário informar o RG");
 		}
-
-		if (!emailUtil.verificaEmailValido(usuarioDto.getEmail())) {
+		
+		if(usuarioDto.getBairro() == null
+				|| usuarioDto.getBairro().equals("")) {
+			erros.add("Necessário informar o bairro");
+		}
+		
+		if(usuarioDto.getEndereco() == null
+				|| usuarioDto.getEndereco().equals("")) {
+			erros.add("Necessário informar o endereço");
+		}
+		
+		if (usuarioDto.getEmail() == null
+				|| usuarioDto.getConfirmacaoEmail() == null
+				|| usuarioDto.getEmail() == ""
+				|| usuarioDto.getConfirmacaoEmail() == "") {
+			erros.add("positivo.novoUsuario.confirmacao.email.obrigatorio");
+		} else if(!usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
+			erros.add("O e-mail e a confirmação de e-mail devem ser iguais");
+		} else if (!emailUtil.verificaEmailValido(usuarioDto.getEmail())) {
 			erros.add("positivo.novoUsuario.email.confirmacao.invalida");
 		}
-				
+		
 		if(!usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
 			erros.add("O e-mail e a confirmação de e-mail devem ser iguais");
 		}
