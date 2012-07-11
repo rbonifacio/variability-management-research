@@ -43,6 +43,20 @@
 		</rich:modalPanel>
 		<!-- _conteudo_default -->
 		<div class="corpo" style="background: url(../img/positivo/bg.png) no-repeat; height: 690px; padding: 15px 0 0 0">
+			
+			<h:form>
+			<s:div styleClass="menu_logado">
+				<ul class="menu_logado_li"> 
+					<li><a href="../proposta/novaProposta.seam">Nova Proposta</a></li>
+					<li><a href="../proposta/minhaProposta.seam">Minhas Propostas</a></li>
+					<li><a href="sumario.seam">Sumario</a></li>
+					<li><a href="alterarSenha.seam">Alterar Senha</a></li>
+					<li><h:commandButton value="#{messages['positivo.logout']}"
+							action="#{authenticator.logout()}" /></li>
+				</ul>
+			</s:div>
+			</h:form>
+				
 			<h:panelGrid columns="2">
 				<s:div styleClass="info2">
 					<!-- Sumario forma, nomes -->

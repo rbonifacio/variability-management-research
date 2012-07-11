@@ -14,20 +14,30 @@ h2{ font-size:16px; }
 div.info { 	float:right; font-size: 1.2em; 	padding-left:640px; padding-top: 30px; } /*Conteudo texto a Direita*/
 div.info2{  float:left; font-size: 1.2em; 	padding-left: 150px; padding-top: 30px;} /*Conteudo texto a Esquerda*/
 
-div.conteudo_img_direita { 	float:right; padding-top: 150px; padding-left: 50px; }  /*Conteudo imagem a direita*/
-div.conteudo_img_esquerda {  float:left; padding-top: 150px; padding-left: 140px; } /*Conteudo imagem a esquerda*/
+div.conteudo_img_direita  {	float:right; padding-top: 150px; padding-left: 50px; }  /*Conteudo imagem a direita*/
+div.conteudo_img_esquerda { float:left; padding-top: 150px; padding-left: 140px; } /*Conteudo imagem a esquerda*/
 
 div.menu_logado {width:70%; margin-left: 175px; margin-right: auto; padding-top:15px;}
 
 ul.menu_logado_li { margin:0; padding:0; }
 ul.menu_logado_li li { list-style:none; display:inline; }
-ul.menu_logado_li li a { 
+ul.menu_logado_li li a{ 
 	font: bold 12px/24px arial, helvetica, sans-aerif;	padding-top:10px; float:left;
 	text-decoration: none; text-align:center;
 	background: url(../img/positivo/menu/logado/01.gif) repeat-x; 
 	width:150px;  height:40px;	
 	display:block;	color:#fff
-} 
+}
+
+ul.menu_logado_li li input{ 
+	font: bold 12px/24px arial, helvetica, sans-aerif;	padding-top:10px; float:left;
+	text-decoration: none; text-align:center;
+	background: url(../img/positivo/menu/logado/01.gif) repeat-x; 
+	width:150px;  height:40px;	
+	display:block;	color:#fff
+}
+
+
 ul.menu_logado_li a:hover{ 
 	background: url(../img/positivo/menu/logado/02.gif) repeat-x;  color:#fff;
 	border-color:#000 #fafafa #fafafa #000; 

@@ -12,8 +12,18 @@
 
 
 	<ui:define name="body">
-		<div class="corpo"
-			style="background: url(img/positivo/bg.jpg) no-repeat; min-height: 690px; padding: 15px 0 0 0">
+		<div class="corpo" style="background: url(img/positivo/bg.jpg) no-repeat; min-height: 690px; padding: 15px 0 0 0">
+			
+			<s:div styleClass="menu_logado">
+				<ul class="menu_logado_li"> 
+					<li><a href="novaProposta.seam">Nova Proposta</a></li>
+					<li><a href="minhaProposta.seam">Minhas Propostas</a></li>
+					<li><a href="../usuario/sumario.seam">Sumario</a></li>
+					<li><a href="../usuario/alterarSenha.seam">Alterar Senha</a></li>
+					<li><a href="">Sair</a></li>
+				</ul>
+			</s:div>
+			
 			<h:panelGrid columns="2">
 				<s:div styleClass="info2">
 					<h:messages />
