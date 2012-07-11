@@ -1,0 +1,28 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<div class="corpo"
+			style="background: url(img/positivo/inicio.png) no-repeat; min-height: 673px; margin: 0 0 -20px 0; z-index: 2;">
+			
+			<rich:modalPanel id="msgs" autosized="true"
+				showWhenRendered="#{facesContext.maximumSeverity !=null}" width="350">
+				<f:facet name="header">    
+            		<h:outputText value="Desafio Positivo" />    
+        		</f:facet> 
+				<h:messages/>
+				
+				<a:commandButton onclick="Richfaces.hideModalPanel('msgs');" value="Ocultar" />
+			</rich:modalPanel>
+		</div>
+
+	</ui:define>
+</ui:composition>

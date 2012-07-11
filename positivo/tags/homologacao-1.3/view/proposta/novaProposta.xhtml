@@ -1,0 +1,116 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../layout/template.xhtml">
+
+
+	<ui:define name="body">
+		<div class="corpo" style="background: url(../img/positivo/bg.png) no-repeat; min-height: 690px; padding: 15px 0 0 0">
+			
+			<h:form>
+			<s:div styleClass="menu_logado">
+				<ul class="menu_logado_li"> 
+					<li><a href="novaProposta.seam">Nova Proposta</a></li>
+					<li><a href="minhaProposta.seam">Minhas Propostas</a></li>
+					<li><a href="../usuario/sumario.seam">Sumario</a></li>
+					<li><a href="../usuario/alterarSenha.seam">Alterar Senha</a></li>
+					<li><h:commandButton value="#{messages['positivo.logout']}"
+							action="#{authenticator.logout()}" /></li>
+				</ul>
+			</s:div>
+			</h:form>
+			
+			<h:panelGrid columns="2">
+				<s:div styleClass="info2">
+					<h:messages />
+					<h:form id="novaPropostaForm">
+						<fieldset>
+							<legend>#{messages['positivo.novaProposta.heading']}</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+									<h:outputLabel for="nome"
+										value="#{messages['positivo.novaProposta.nome']}:" />
+									<h:inputText id="nome" value="#{propostaAction.proposta.nome}"
+										required="true" class="input_grande"
+										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
+										validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
+										<f:validateLength maximum="255" />
+									</h:inputText>
+
+									<h:outputLabel for="descricao"
+										value="#{messages['positivo.novaProposta.descricao']}:" />
+									<h:inputTextarea id="descricao"
+										value="#{propostaAction.proposta.descricao}" required="true"
+										class="textarea_perso"
+										requiredMessage="#{messages['positivo.novaProposta.descricaoEmBranco']}:"
+										validatorMessage="#{messages['positivo.novaProposta.descricaoTamanho']}:">
+										<f:validateLength maximum="255" />
+									</h:inputTextarea>
+
+									<h:outputLabel for="objetivos"
+										value="#{messages['positivo.novaProposta.objetivos']}:" />
+									<h:inputTextarea id="objetivos"
+										value="#{propostaAction.proposta.objetivos}" required="true"
+										class="textarea_perso"
+										requiredMessage="#{messages['positivo.novaProposta.objetivosEmBranco']}:"
+										validatorMessage="#{messages['positivo.novaProposta.objetivosTamanho']}:">
+										<f:validateLength maximum="255" />
+									</h:inputTextarea>
+
+									<h:outputLabel for="publicoAlvo"
+										value="#{messages['positivo.novaProposta.publicoAlvo']}:" />
+									<h:inputTextarea id="publicoAlvo"
+										value="#{propostaAction.proposta.publicoAlvo}" required="true"
+										class="textarea_perso"
+										requiredMessage="#{messages['positivo.novaProposta.publicoAlvoEmBranco']}:"
+										validatorMessage="#{messages['positivo.novaProposta.publicoAlvoTamanho']}:">
+										<f:validateLength maximum="255" />
+									</h:inputTextarea>
+
+									<h:outputLabel for="descricaoFuncional"
+										value="#{messages['positivo.novaProposta.descricaoFuncional']}:" />
+									<h:inputTextarea id="descricaoFuncional"
+										value="#{propostaAction.proposta.descricaoFuncional}"
+										required="true" class="textarea_perso"
+										requiredMessage="#{messages['positivo.novaProposta.descricaoFuncionalEmBranco']}:"
+										validatorMessage="#{messages['positivo.novaProposta.descricaoFuncionalTamanho']}:">
+										<f:validateLength maximum="255" />
+									</h:inputTextarea>
+
+									<h:outputLabel for="prototipo"
+										value="#{messages['positivo.novaProposta.prototipo']}:" />
+									<s:fileUpload data="#{propostaAction.proposta.arquivoGUI}" />
+								</h:panelGrid>
+							</div>
+						</fieldset>
+						<div class="actionButtons">
+							<h:commandButton id="submit"
+								value="#{messages['positivo.novaProposta.cadastrar']}"
+								action="#{propostaAction.cadastro}" />
+
+							<h:commandButton id="cancel"
+								value="#{messages['positivo.cancelar']}" action="cancelar"
+								immediate="true" />
+						</div>
+
+					</h:form>
+
+				</s:div>
+				
+				<s:div styleClass="conteudo_img_direita">
+					<img src="../img/positivo/tablets_direita.png" />
+				</s:div>
+				
+			</h:panelGrid>
+
+		</div>
+	</ui:define>
+</ui:composition>
