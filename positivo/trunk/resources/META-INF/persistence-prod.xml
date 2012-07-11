@@ -7,7 +7,7 @@
              
    <persistence-unit name="desafioPositivo" transaction-type="JTA">
       <provider>org.hibernate.ejb.HibernatePersistence</provider>
-      <jta-data-source>java:/PositivoDS</jta-data-source>
+      <jta-data-source>PositivoDS</jta-data-source>
       <properties>
          <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
          <property name="hibernate.hbm2ddl.auto" value="validate"/>
@@ -15,7 +15,6 @@
          <property name="hibernate.format_sql" value="true"/>
          <property name="jboss.entity.manager.factory.jndi.name" value="java:/desafioPositivoEntityManagerFactory"/>
          <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
-         
       </properties>
    </persistence-unit>
     
