@@ -24,6 +24,7 @@
 .col3 {
 	width: 20px;
 }
+
 .col4 {
 	width: 420px;
 }
@@ -40,102 +41,120 @@
 			<a:commandButton onclick="Richfaces.hideModalPanel('msgs');"
 				value="Ocultar" />
 		</rich:modalPanel>
-
-		<div class="corpo" style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; height:690px; padding: 15px 0 0 150px">
+		<!-- _conteudo_default -->
+		<div class="corpo" style="background: url(../img/positivo/bg.png) no-repeat; height: 690px; padding: 15px 0 0 0">
 			<h:panelGrid columns="2">
-				<s:div styleClass="sumario">
+				<s:div styleClass="info2">
+					<!-- Sumario forma, nomes -->
 					<h:form id="sumarioForm">
-						<div class="dialog">
-							<h:panelGrid columns="2" rowClasses="prop"
-								columnClasses="name,value">
-								<h:outputLabel for="nome"
-									value="#{messages['positivo.sumario.nome']}:" />
-								<h:outputText id="nome" value="#{usuarioLogado.nome}" />
+						<fieldset>
+							<legend>Sumario</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+									<h:outputLabel for="nome"
+										value="#{messages['positivo.sumario.nome']}:" />
+									<h:outputText id="nome" value="#{usuarioLogado.nome}" />
 
-								<h:outputLabel for="sobrenome"
-									value="#{messages['positivo.sumario.sobrenome']}:" />
-								<h:outputText id="sobrenome" value="#{usuarioLogado.sobrenome}"
-									required="true" />
+									<h:outputLabel for="sobrenome"
+										value="#{messages['positivo.sumario.sobrenome']}:" />
+									<h:outputText id="sobrenome" value="#{usuarioLogado.sobrenome}"
+										required="true" />
 
-								<h:outputLabel for="sexo"
-									value="#{messages['positivo.sumario.sexo']}:" />
-								<h:outputText id="sexo" value="#{usuarioLogado.sexo.descricao}" />
+									<h:outputLabel for="sexo"
+										value="#{messages['positivo.sumario.sexo']}:" />
+									<h:outputText id="sexo" value="#{usuarioLogado.sexo.descricao}" />
 
-								<h:outputLabel for="nascimento"
-									value="#{messages['positivo.sumario.nascimento']}:" />
-								<h:outputText id="nascimento"
-									value="#{usuarioLogado.nascimentoFormatado}" />
+									<h:outputLabel for="nascimento"
+										value="#{messages['positivo.sumario.nascimento']}:" />
+									<h:outputText id="nascimento"
+										value="#{usuarioLogado.nascimentoFormatado}" />
 
-								<h:outputLabel for="email"
-									value="#{messages['positivo.sumario.email']}:" />
-								<h:outputText id="email" value="#{usuarioLogado.email}" />
+									<h:outputLabel for="email"
+										value="#{messages['positivo.sumario.email']}:" />
+									<h:outputText id="email" value="#{usuarioLogado.email}" />
 
-							</h:panelGrid>
-							<h:commandButton id="atualizarDados"
-								value="#{messages['positivo.sumario.atualizarDados']}"
-								action="atualizarDados" />
-							<h:commandButton id="alterarSenha"
-								value="#{messages['positivo.sumario.alterarSenha']}"
-								action="alterarSenha" />
-								
-								<h:commandButton id="logout"
-								value="#{messages['positivo.logout']}"
-								action="#{authenticator.logout()}"/>	
-						</div>
+								</h:panelGrid>
+							</div>
+						</fieldset>
+						<h:commandButton id="atualizarDados"
+							value="#{messages['positivo.sumario.atualizarDados']}"
+							action="atualizarDados" />
+						<h:commandButton id="alterarSenha"
+							value="#{messages['positivo.sumario.alterarSenha']}"
+							action="alterarSenha" />
+						<h:commandButton id="logout"
+							value="#{messages['positivo.logout']}"
+							action="#{authenticator.logout()}" />
 					</h:form>
-					
-					<h1>#{messages['positivo.sumario.heading2']}</h1>
-		<h:form>
-			<rich:panel rendered="#{not empty propostasSubmetidas}">
-				<rich:dataTable value="#{propostasSubmetidas}" var="prop"
-					onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
-					onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
-					cellpadding="0" cellspacing="0" width="580" border="0"  columnClasses="col1,col2,col3,col4">
 
-					<rich:column>
-						<f:facet name="header">
-							<h:outputText value="#{messages['positivo.sumario.nomeProposta']}" />
-						</f:facet>
-						<h:outputText value="#{prop.nome}" />
-					</rich:column>
-					
-					<rich:column>
-						<f:facet name="header">
-								<h:outputText value="#{messages['positivo.sumario.descricao']}" />
-						</f:facet>
-						<h:outputText value="#{prop.descricao}" />
-					</rich:column>
-					
-					<rich:column>
-						<f:facet name="header">
-							<h:outputText value="#{messages['positivo.sumario.opcoes.proposta']}" /> 
-						</f:facet>
-						<h:commandLink action="#{propostaAction.editarProposta}">
-							<h:graphicImage url="/img/edit_icon.png"
-								alt="#{messages['positivo.sumario.editar']}"
-								title="#{messages['positivo.sumario.editar']}" />
-						</h:commandLink>
-						<h:outputText value="   " />
-						<h:commandLink action="#{propostaAction.excluir}">
-							<h:graphicImage url="/img/delete_icon.png"
-								alt="#{messages['positivo.sumario.excluir']}"
-								title="#{messages['positivo.sumario.excluir']}" />
-						</h:commandLink>
-					</rich:column>
-				</rich:dataTable>
-			</rich:panel>
-		</h:form>
-		<rich:panel rendered="#{empty propostasSubmetidas}">
-			<h2>#{messages['positivo.sumario.submetaPropostas']}</h2>
-		</rich:panel>
-		<h:form id="solicitaNovaPropostaForm">
-			<h:commandButton id="novaProposta"
-				value="#{messages['positivo.sumario.novaProposta']}"
-				action="#{propostaAction.novaProposta()}" />
-		</h:form>
+					<h1>#{messages['positivo.sumario.heading2']}</h1>
+					<h:form>
+						<rich:panel rendered="#{not empty propostasSubmetidas}">
+							<rich:dataTable value="#{propostasSubmetidas}" var="prop"
+								onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+								onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+								cellpadding="0" cellspacing="0" width="580" border="0"
+								columnClasses="col1,col2,col3,col4">
+
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText
+											value="#{messages['positivo.sumario.nomeProposta']}" />
+									</f:facet>
+									<h:outputText value="#{prop.nome}" />
+								</rich:column>
+
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText
+											value="#{messages['positivo.sumario.descricao']}" />
+									</f:facet>
+									<h:outputText value="#{prop.descricao}" />
+								</rich:column>
+
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText
+											value="#{messages['positivo.sumario.opcoes.proposta']}" />
+									</f:facet>
+									<h:commandLink action="#{propostaAction.editarProposta}">
+										<h:graphicImage url="/img/edit_icon.png"
+											alt="#{messages['positivo.sumario.editar']}"
+											title="#{messages['positivo.sumario.editar']}" />
+									</h:commandLink>
+									<h:outputText value="   " />
+									<h:commandLink action="#{propostaAction.excluir}">
+										<h:graphicImage url="/img/delete_icon.png"
+											alt="#{messages['positivo.sumario.excluir']}"
+											title="#{messages['positivo.sumario.excluir']}" />
+									</h:commandLink>
+								</rich:column>
+							</rich:dataTable>
+						</rich:panel>
+					</h:form>
+
+					<!-- painel de propostas -->
+					<rich:panel rendered="#{empty propostasSubmetidas}">
+						<h2>#{messages['positivo.sumario.submetaPropostas']}</h2>
+					</rich:panel>
+
+					<!-- Nova proposta botao -->
+					<h:form id="solicitaNovaPropostaForm">
+						<h:commandButton id="novaProposta"
+							value="#{messages['positivo.sumario.novaProposta']}"
+							action="#{propostaAction.novaProposta()}" />
+					</h:form>
 				</s:div>
+				
+				<s:div styleClass="conteudo_img_direita">
+					<img src="../img/positivo/tablets_direita.png" />
+				</s:div>
+				
+				
 			</h:panelGrid>
-			
+
 		</div>
 	</ui:define>
+	
 </ui:composition>
