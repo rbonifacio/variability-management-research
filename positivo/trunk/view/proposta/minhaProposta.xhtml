@@ -1,0 +1,91 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../layout/template.xhtml">
+
+
+	<ui:define name="body">
+		<div class="corpo"
+			style="background: url(img/positivo/bg.jpg) no-repeat; min-height: 690px; padding: 15px 0 0 0">
+			<h:panelGrid columns="2">
+				<s:div styleClass="info2">
+					<h:messages />
+					<s:div>
+					<h1>#{messages['positivo.sumario.heading2']}</h1>
+					<h:form>
+						<rich:panel rendered="#{not empty propostasSubmetidas}">
+							<rich:dataTable value="#{propostasSubmetidas}" var="prop"
+								onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+								onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+								cellpadding="0" cellspacing="0" width="580" border="0"
+								columnClasses="col1,col2,col3,col4">
+
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText
+											value="#{messages['positivo.sumario.nomeProposta']}" />
+									</f:facet>
+									<h:outputText value="#{prop.nome}" />
+								</rich:column>
+
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText
+											value="#{messages['positivo.sumario.descricao']}" />
+									</f:facet>
+									<h:outputText value="#{prop.descricao}" />
+								</rich:column>
+
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText
+											value="#{messages['positivo.sumario.opcoes.proposta']}" />
+									</f:facet>
+									<h:commandLink action="#{propostaAction.editarProposta}">
+										<h:graphicImage url="/img/edit_icon.png"
+											alt="#{messages['positivo.sumario.editar']}"
+											title="#{messages['positivo.sumario.editar']}" />
+									</h:commandLink>
+									<h:outputText value="   " />
+									<h:commandLink action="#{propostaAction.excluir}">
+										<h:graphicImage url="/img/delete_icon.png"
+											alt="#{messages['positivo.sumario.excluir']}"
+											title="#{messages['positivo.sumario.excluir']}" />
+									</h:commandLink>
+								</rich:column>
+							</rich:dataTable>
+						</rich:panel>
+					</h:form>
+
+					<!-- painel de propostas -->
+					<rich:panel rendered="#{empty propostasSubmetidas}">
+						<h2>#{messages['positivo.sumario.submetaPropostas']}</h2>
+					</rich:panel>
+
+					<!-- Nova proposta botao -->
+					<h:form id="solicitaNovaPropostaForm">
+						<h:commandButton id="novaProposta"
+							value="#{messages['positivo.sumario.novaProposta']}"
+							action="#{propostaAction.novaProposta()}" />
+					</h:form>
+				
+				</s:div>
+
+				</s:div>
+				
+				<s:div styleClass="conteudo_img_direita">
+					<img src="../img/positivo/tablets_direita.png" />
+				</s:div>
+				
+			</h:panelGrid>
+
+		</div>
+	</ui:define>
+</ui:composition>

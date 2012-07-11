@@ -5,29 +5,34 @@ body{ margin:0; padding:0; font:13px tahoma; color:#555; background: #eaeaea }
 h2{ font-size:16px; }
 
 /*********************************************CSS para letras, alteracoes rapidas. Refatorar isso******************************************************/
-#loginForm label, #novoForm label, #contatoForm label, #sumarioForm label{
-	font-size: 14px;
-	font-weight: bold;
-	font: Arial;
-	color: #275975 ;
+#loginForm label, #novoForm label, #contatoForm label, #sumarioForm label, #alterarDadosForm label{
+	font-size: 14px; 	font-weight: bold;	font: Arial;	color: #275975 ;
 }
 
 #contatoForm textarea{ max-width:300px; width:300px; height:230px; max-height:230px; }
 
+div.info { 	float:right; font-size: 1.2em; 	padding-left:640px; padding-top: 30px; } /*Conteudo texto a Direita*/
+div.info2{  float:left; font-size: 1.2em; 	padding-left: 150px; padding-top: 30px;} /*Conteudo texto a Esquerda*/
 
-/******************************************ESTRUTURA CENTRAL*****************************************************/
+div.conteudo_img_direita { 	float:right; padding-top: 150px; padding-left: 50px; }  /*Conteudo imagem a direita*/
+div.conteudo_img_esquerda {  float:left; padding-top: 150px; padding-left: 140px; } /*Conteudo imagem a esquerda*/
 
-/*Conteudo texto a Direita*/
-div.info { 	float:right; font-size: 1.2em; 	padding-left:640px; padding-top: 30px; }
+div.menu_logado {width:70%; margin-left: 175px; margin-right: auto; padding-top:15px;}
 
-/*Conteudo texto a Esquerda*/
-div.info2{  float:left; font-size: 1.2em; 	padding-left: 150px; padding-top: 30px;}
+ul.menu_logado_li { margin:0; padding:0; }
+ul.menu_logado_li li { list-style:none; display:inline; }
+ul.menu_logado_li li a { 
+	font: bold 12px/24px arial, helvetica, sans-aerif;	padding-top:10px; float:left;
+	text-decoration: none; text-align:center;
+	background: url(../img/positivo/menu/logado/01.gif) repeat-x; 
+	width:150px;  height:40px;	
+	display:block;	color:#fff
+} 
+ul.menu_logado_li a:hover{ 
+	background: url(../img/positivo/menu/logado/02.gif) repeat-x;  color:#fff;
+	border-color:#000 #fafafa #fafafa #000; 
+}
 
-/*Conteudo imagem a direita*/
-div.conteudo_img_direita { 	float:right; padding-top: 150px; padding-left: 50px; }
-
-/*Conteudo imagem a esquerda*/
-div.conteudo_img_esquerda {  float:left; padding-top: 150px; padding-left: 140px; }
 
 /********************************************************** TOPO ****************************************************************/
 #topoFixo{  margin:auto; width:100%; background: url(../img/positivo/bg_topo.png) repeat-x; }
