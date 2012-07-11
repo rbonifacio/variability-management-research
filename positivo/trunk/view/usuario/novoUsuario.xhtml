@@ -49,8 +49,8 @@
 										value="#{messages['positivo.novoUsuario.nome']}:" />
 									<h:inputText id="nome" value="#{usuarioAction.usuarioDto.nome}"
 										required="true" class="input_grande"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
+										requiredMessage="#{messages['positivo.novoUsuario.nomeEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.nomeTamanho']}:">
 										<f:validateLength maximum="50" />
 									</h:inputText>
 
@@ -59,16 +59,16 @@
 									<h:inputText id="sobrenome"
 										value="#{usuarioAction.usuarioDto.sobrenome}" required="true"
 										class="input_grande"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
+										requiredMessage="#{messages['positivo.novoUsuario.sobrenomeEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.sobrenomeTamanho']}:">
 										<f:validateLength maximum="50" />
 									</h:inputText>
 
 									<h:outputLabel for="cpf" value="CPF:" />
 									<h:inputText id="cpf" value="#{usuarioAction.usuarioDto.cpf}"
 										required="true" class="input_grande"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
+										requiredMessage="#{messages['positivo.novoUsuario.cpfEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.cpfTamanho']}:">
 										<f:validateLength maximum="11" />
 										<f:validateLength minimum="11" />
 									</h:inputText>
@@ -76,8 +76,8 @@
 									<h:outputLabel for="rg" value="RG:" />
 									<h:inputText id="rg" value="#{usuarioAction.usuarioDto.rg}"
 										required="true" class="input_grande"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
+										requiredMessage="#{messages['positivo.novoUsuario.rgEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.rgTamanho']}:">
 										<f:validateLength maximum="15" />
 										<f:validateLength minimum="15" />
 									</h:inputText>
@@ -87,7 +87,7 @@
 										value="#{messages['positivo.novoUsuario.sexo']}:" />
 									<h:selectOneRadio id="sexo"
 										value="#{usuarioAction.usuarioDto.sexo}" required="true"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:">
+										requiredMessage="#{messages['positivo.novoUsuario.sexoEmBranco']}:">
 										<f:selectItems value="#{usuarioAction.opcoesSexo()}" />
 									</h:selectOneRadio>
 
@@ -95,15 +95,15 @@
 										value="#{messages['positivo.novoUsuario.nascimento']}:" />
 									<rich:calendar id="nascimento" datePattern="dd/MM/yyyy"
 										value="#{usuarioAction.usuarioDto.nascimento}" required="true"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:">>
+										requiredMessage="#{messages['positivo.novoUsuario.nascimentoEmBranco']}:">>
 										<s:validate />
 									</rich:calendar>
 
 									<h:outputLabel for="cep" value="CEP:" />
 									<h:inputText id="cep" value="#{usuarioAction.usuarioDto.cep}"
 										required="true" class="input_grande"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
+										requiredMessage="#{messages['positivo.novoUsuario.cepEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.cepTamanho']}:">
 										<f:validateLength maximum="7" />
 										<f:validateLength minimum="7" />
 									</h:inputText>
@@ -112,8 +112,8 @@
 									<h:inputText id="bairro"
 										value="#{usuarioAction.usuarioDto.bairro}" required="true"
 										class="input_grande"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
+										requiredMessage="#{messages['positivo.novoUsuario.bairroEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.bairroTamanho']}:">
 										<f:validateLength maximum="255" />
 									</h:inputText>
 
@@ -121,8 +121,8 @@
 									<h:inputText id="endereco"
 										value="#{usuarioAction.usuarioDto.endereco}" required="true"
 										class="input_grande"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
+										requiredMessage="#{messages['positivo.novoUsuario.enderecoEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.enderecoTamanho']}:">
 										<f:validateLength maximum="255" />
 									</h:inputText>
 
@@ -131,7 +131,7 @@
 									<h:selectOneMenu id="estado" defaultLabel="UF"
 										value="#{usuarioAction.usuarioDto.estado}" class="select"
 										required="true"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:">
+										requiredMessage="#{messages['positivo.novoUsuario.estadoEmBranco']}:">
 										<f:selectItems value="#{usuarioAction.opcoesEstado()}" />
 									</h:selectOneMenu>
 
@@ -140,8 +140,8 @@
 									<h:inputText id="email"
 										value="#{usuarioAction.usuarioDto.email}" required="true"
 										class="input_grande"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
+										requiredMessage="#{messages['positivo.novoUsuario.emailEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.emailTamanho']}:">
 										<f:validateLength maximum="255" />
 									</h:inputText>
 
@@ -150,8 +150,8 @@
 									<h:inputText id="confirmacaoEmail"
 										value="#{usuarioAction.usuarioDto.confirmacaoEmail}"
 										required="true" class="input_grande"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
+										requiredMessage="#{messages['positivo.novoUsuario.confirmacaoEmailEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.confirmacaoEmailTamanho']}:">
 										<f:validateLength maximum="255" />
 									</h:inputText>
 								</h:panelGrid>
