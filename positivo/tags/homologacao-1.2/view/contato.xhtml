@@ -1,0 +1,60 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+		<div class="corpo" style="background: url(../img/positivo/bg.png) no-repeat; min-height: 600px; padding: 15px 0 0 0">
+			<h:panelGrid columns="2">
+				<s:div styleClass="info2">
+					<h:messages />
+					<h:form id="contatoForm">
+						<fieldset>
+							<legend>Contato</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+									<h:outputLabel for="nome">Nome:</h:outputLabel>
+									<h:inputText id="nome" value="#{contatoAction.nome}" class="input_grande" >
+									</h:inputText>
+									
+									<h:outputLabel for="email">E-mail:</h:outputLabel>
+									<h:inputText id="email" value="#{contatoAction.email}" class="input_grande" >
+									</h:inputText>
+																
+									<h:outputLabel for="assunto">Assunto:</h:outputLabel>
+									<h:inputText id="assunto" value="#{contatoAction.assunto}" 	class="input_grande">
+									</h:inputText>
+									
+									<h:outputLabel for="mensagem">Mensagem:</h:outputLabel>
+									<h:inputTextarea id="mensagem" value="#{contatoAction.mensagem}" styleClass="mensagem_textarea" >
+										<f:validateLength minimum="10" maximum="300" />
+									</h:inputTextarea>
+								
+								</h:panelGrid>
+							</div>
+						</fieldset>
+						<div class="actionButtons">
+							<ui:insert name="actionButtons" />
+							<h:commandButton class="commandButton" id="submit"
+								value="Enviar"
+								action="#{contatoAction.enviarContato()}" />
+							<h:commandButton class="commandButton" id="recuperarSenha"
+								value="Limpar"
+								action="home" />
+						</div>
+					</h:form>
+				</s:div>
+				
+				<s:div styleClass="conteudo_img_direita">
+					<img src="img/positivo/contato_bonecos.png" />
+				</s:div>
+				
+			</h:panelGrid>
+		</div>
+	</ui:define>
+</ui:composition>
