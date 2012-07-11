@@ -21,24 +21,14 @@ div.menu_logado {width:70%; margin-left: 175px; margin-right: auto; padding-top:
 
 ul.menu_logado_li { margin:0; padding:0; }
 ul.menu_logado_li li { list-style:none; display:inline; }
-ul.menu_logado_li li a{ 
+ul.menu_logado_li li a, ul.menu_logado_li li input{ 
 	font: bold 12px/24px arial, helvetica, sans-aerif;	padding-top:10px; float:left;
 	text-decoration: none; text-align:center;
 	background: url(../img/positivo/menu/logado/01.gif) repeat-x; 
 	width:150px;  height:40px;	
-	display:block;	color:#fff
+	display:block;	color:#fff; border-width: 0px;
 }
-
-ul.menu_logado_li li input{ 
-	font: bold 12px/24px arial, helvetica, sans-aerif;	padding-top:10px; float:left;
-	text-decoration: none; text-align:center;
-	background: url(../img/positivo/menu/logado/01.gif) repeat-x; 
-	width:150px;  height:40px;	
-	display:block;	color:#fff
-}
-
-
-ul.menu_logado_li a:hover{ 
+ul.menu_logado_li a:hover, ul.menu_logado_li li input:hover{ 
 	background: url(../img/positivo/menu/logado/02.gif) repeat-x;  color:#fff;
 	border-color:#000 #fafafa #fafafa #000; 
 }
