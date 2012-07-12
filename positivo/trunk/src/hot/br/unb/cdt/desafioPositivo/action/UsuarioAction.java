@@ -292,7 +292,7 @@ public class UsuarioAction {
 		
 		for(int i=0; i<usuarioDto.getCep().length(); i++) {
 			if(!Character.isDigit(usuarioDto.getCep().charAt(i))) {
-				erros.add("CEP invÃ¡lido");
+				erros.add("CEP inválido");
 				break;
 			}
 		}

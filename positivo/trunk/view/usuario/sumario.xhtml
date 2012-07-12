@@ -89,11 +89,26 @@
 									<h:inputText id="nascimento" disabled="true"
 										value="#{usuarioLogado.nascimentoFormatado}"
 										class="input_grande" />
+										
+									<h:outputLabel for="cep" value="Cep:" />
+									<h:inputText id="cep"
+										value="#{usuarioLogado.cep}" disabled="true"
+										class="input_grande" />	
+										
+									<h:outputLabel for="bairro" value="Bairro:" />
+									<h:inputText id="bairro"
+										value="#{usuarioLogado.bairro}" disabled="true"
+										class="input_grande" />
 
-									<h:outputLabel for="email"
-										value="#{messages['positivo.sumario.email']}:" />
-									<h:inputText disabled="true" id="email"
-										value="#{usuarioLogado.email}" class="input_grande" />
+									<h:outputLabel for="endereco" value="Endereco:" />
+									<h:inputText id="endereco"
+										value="#{usuarioLogado.cep}" disabled="true"
+										class="input_grande" />
+
+									<h:outputLabel for="estado"	value="Estado:" />
+									<h:inputText id="estado" disabled="true"
+										value="#{usuarioLogado.estado}"
+										class="input_grande" />
 
 								</h:panelGrid>
 							</div>

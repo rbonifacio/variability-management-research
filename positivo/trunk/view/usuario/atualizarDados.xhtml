@@ -61,12 +61,25 @@
 										<s:validate />
 									</rich:calendar>
 
+									<h:outputLabel for="cep" value="CEP:" />
+									<h:inputText id="cep" value="#{usuarioLogado.cep}"
+										class="input_grande" />
+										
+									<h:outputLabel for="bairro" value="Bairro:" />
+									<h:inputText id="bairro" value="#{usuarioLogado.bairro}"
+										class="input_grande" />
+									
+									<h:outputLabel for="endereco" value="Endereco:" />
+									<h:inputText id="endereco" value="#{usuarioLogado.endereco}"
+										class="input_grande" />
+
 									<h:outputLabel for="estado"
 										value="#{messages['positivo.novoUsuario.estado']}:" />
 									<h:selectOneMenu id="estado" defaultLabel="UF"
 										value="#{usuarioLogado.estado}" required="true">
 										<f:selectItems value="#{usuarioAction.opcoesEstado()}" />
 									</h:selectOneMenu>
+									
 								</h:panelGrid>
 							</div>
 						</fieldset>
