@@ -28,7 +28,7 @@
 				<redirect view-id="/usuario/recuperarSenha.xhtml" />
 			</rule>
 		</navigation>
-		
+
 	</page>
 
 

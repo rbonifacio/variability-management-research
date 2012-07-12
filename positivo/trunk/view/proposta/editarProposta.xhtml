@@ -12,26 +12,27 @@
 
 
 	<ui:define name="body">
-		<div class="corpo" style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 690px; padding: 15px 0 0 0">
-			
+		<div class="corpo"
+			style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 690px; padding: 15px 0 0 0">
+
 			<h:form>
-			<s:div styleClass="menu_logado">
-				<ul class="menu_logado_li"> 
-					<li><a href="novaProposta.seam">Nova Proposta</a></li>
-					<li><a href="minhaProposta.seam">Minhas Propostas</a></li>
-					<li><a href="../usuario/sumario.seam">Sumario</a></li>
-					<li><a href="../usuario/alterarSenha.seam">Alterar Senha</a></li>
-					<li><h:commandButton value="#{messages['positivo.logout']}"
-							action="#{authenticator.logout()}" /></li>
-				</ul>
-			</s:div>
+				<s:div styleClass="menu_logado">
+					<ul class="menu_logado_li">
+						<li><a href="novaProposta.seam">Nova Proposta</a></li>
+						<li><a href="minhaProposta.seam">Minhas Propostas</a></li>
+						<li><a href="../usuario/sumario.seam">Sumario</a></li>
+						<li><a href="../usuario/alterarSenha.seam">Alterar Senha</a></li>
+						<li><h:commandButton value="#{messages['positivo.logout']}"
+								action="#{authenticator.logout()}" /></li>
+					</ul>
+				</s:div>
 			</h:form>
-			
+
 			<h:panelGrid columns="2">
 				<s:div styleClass="info">
 					<h:messages />
 					<h:form id="alterarDadosForm" enctype="multipart/form-data">
-						<fieldset> 
+						<fieldset>
 							<legend>#{messages['positivo.sumario.alterarSenha']}</legend>
 							<div class="dialog">
 								<h:panelGrid columns="2" rowClasses="prop"
@@ -40,19 +41,19 @@
 										value="#{messages['positivo.editarProposta.nome']}" />
 									<h:inputText id="nome"
 										value="#{propostaAction.propostaSelecionada.nome}"
-										 class="input_grande" />
+										class="input_grande" />
 
 									<h:outputLabel for="descricao"
 										value="#{messages['positivo.editarProposta.descricao']}" />
 									<h:inputTextarea id="descricao"
 										value="#{propostaAction.propostaSelecionada.descricao}"
-										 class="textarea_perso" />
+										class="textarea_perso" />
 
 									<h:outputLabel for="objetivos"
 										value="#{messages['positivo.editarProposta.objetivos']}" />
 									<h:inputTextarea id="objetivos"
 										value="#{propostaAction.propostaSelecionada.objetivos}"
-										 class="textarea_perso" />
+										class="textarea_perso" />
 
 									<h:outputLabel for="publicoAlvo"
 										value="#{messages['positivo.editarProposta.publicoAlvo']}" />
@@ -64,7 +65,7 @@
 										value="#{messages['positivo.editarProposta.descricaoFuncional']}" />
 									<h:inputTextarea id="descricaoFuncional"
 										value="#{propostaAction.propostaSelecionada.descricaoFuncional}"
-										 class="textarea_perso" />
+										class="textarea_perso" />
 
 									<h:outputLabel for="prototipo"
 										value="#{messages['positivo.editarProposta.prototipo']}" />
@@ -75,14 +76,16 @@
 							</div>
 						</fieldset>
 						<div class="actionButtons">
-								<h:commandButton id="submit"
-									value="#{messages['positivo.editarProposta.editar']}"
-									action="#{propostaAction.editar}" />
-									
-								<h:commandButton id="cancel"
-									value="#{messages['positivo.cancelar']}"
-									action="cancelar" immediate="true" />	
-							</div>
+							<h:commandLink action="#{propostaAction.editar}">
+								<h:graphicImage url="../img/positivo/botoes/salvar.png"
+									alt="Salvar" title="Salvar" />
+							</h:commandLink>
+
+							<h:commandLink action="cancelar" immediate="true">
+								<h:graphicImage url="../img/positivo/botoes/cancelar.png"
+									alt="Cancelar" title="Cancelar" />
+							</h:commandLink>
+						</div>
 					</h:form>
 
 				</s:div>

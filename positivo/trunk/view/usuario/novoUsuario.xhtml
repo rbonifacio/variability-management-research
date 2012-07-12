@@ -35,21 +35,27 @@
 									columnClasses="name,value">
 									<h:outputLabel for="username">#{messages['positivo.login.usuario']}:</h:outputLabel>
 									<h:inputText id="username" value="#{credentials.username}"
-										class="input_grande" />
+										class="input_grande" required="true" />
 									<h:outputLabel for="password">#{messages['positivo.login.senha']}:</h:outputLabel>
 									<h:inputSecret id="password" value="#{credentials.password}"
-										class="input_grande" />
+										class="input_grande" required="true" />
 								</h:panelGrid>
 							</div>
 						</fieldset>
 						<div class="actionButtons">
 							<ui:insert name="actionButtons" />
-							<h:commandButton class="commandButton" id="submit"
-								value="#{messages['positivo.login.login']}"
-								action="#{usuarioAction.autenticar}" />
-							<h:commandButton class="commandButton" id="recuperarSenha"
-								value="#{messages['positivo.home.recuperarSenha']}"
-								action="recuperarSenha" />
+	
+
+							<h:commandLink action="#{usuarioAction.autenticar}">
+								<h:graphicImage url="../img/positivo/botoes/login.gif"
+									alt="Login" title="Login" />
+							</h:commandLink>
+							
+							<h:commandLink action="recuperarSenha">
+								<h:graphicImage url="../img/positivo/botoes/esqueciMinhaSenha.gif"
+									alt="Recuperar senha" title="Recuperar senha" />
+							</h:commandLink>
+
 						</div>
 					</h:form>
 					<rich:spacer height="45" />
@@ -172,7 +178,7 @@
 							</div>
 						</fieldset>
 						<div class="actionButtons">
-						
+
 							<h:commandLink action="#{usuarioAction.cadastro}">
 								<h:graphicImage url="../img/positivo/botoes/cadastrar.png"
 									alt="Cadastrar" title="Cadastrar" />
