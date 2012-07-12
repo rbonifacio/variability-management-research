@@ -122,7 +122,8 @@
 									<h:inputText id="cep" value="#{usuarioAction.usuarioDto.cep}"
 										required="true" class="input_grande"
 										requiredMessage="#{messages['positivo.novoUsuario.cepEmBranco']}:"
-										validatorMessage="#{messages['positivo.novoUsuario.cepTamanho']}:">
+										validatorMessage="#{messages['positivo.novoUsuario.cepTamanho']}:"
+										maxlength="8">
 										<f:validateLength maximum="8" />
 										<f:validateLength minimum="8" />
 									</h:inputText>
