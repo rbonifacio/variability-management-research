@@ -59,7 +59,7 @@ public class Proposta implements Serializable {
 	@Column(name="DESCRICAO_FUNCIONAL")
 	private String descricaoFuncional;
 	
-	@Column(name="ARQUIVO")
+	@Column(name="ARQUIVO", length=2147483647)
 	@Basic(fetch=FetchType.LAZY)
 	@Lob
 	private byte[] arquivoGUI;

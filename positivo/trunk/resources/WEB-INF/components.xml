@@ -66,7 +66,7 @@
    <!-- mail:mail-session session-jndi-name="java:/Mail"/ -->
    
    
-   <web:multipart-filter create-temp-files="true" max-request-size="1000000" url-pattern="/*"/>
+   <web:multipart-filter create-temp-files="true" max-request-size="2147483647" url-pattern="/*"/>
 
    <!-- For use with jBPM pageflow or process management -->
    <!--
