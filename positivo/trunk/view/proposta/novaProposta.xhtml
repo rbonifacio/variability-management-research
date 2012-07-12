@@ -30,7 +30,7 @@
 			<h:panelGrid columns="2">
 				<s:div styleClass="info2">
 					<h:messages />
-					<h:form id="novaPropostaForm">
+					<h:form id="novaPropostaForm"  enctype="multipart/form-data">
 						<fieldset>
 							<legend>#{messages['positivo.novaProposta.heading']}</legend>
 							<div class="dialog">
@@ -87,7 +87,7 @@
 
 									<h:outputLabel for="prototipo"
 										value="#{messages['positivo.novaProposta.prototipo']}:" />
-									<s:fileUpload data="#{propostaAction.proposta.arquivoGUI}" />
+									<s:fileUpload id="arquivo" data="#{propostaAction.proposta.arquivoGUI}" />
 								</h:panelGrid>
 							</div>
 						</fieldset>
