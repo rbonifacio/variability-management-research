@@ -1,0 +1,402 @@
+@charset "iso-8859-2";
+/* CSS Document */
+
+body{ margin:0; padding:0; font:13px tahoma; color:#555; background: #eaeaea }
+h2{ font-size:16px; }
+
+/*********************************************CSS para letras, alteracoes rapidas. Refatorar isso******************************************************/
+#loginForm label, #novoForm label, #contatoForm label, #sumarioForm label, #alterarDadosForm label,
+#novaPropostaForm label{
+	font-size: 14px; 	font-weight: bold;	font: Arial;	color: #275975 ;
+}
+
+#contatoForm textarea{ max-width:300px; width:300px; height:230px; max-height:230px; }
+#novaPropostaForm textarea{ max-width:300px; width:300px; height:100px; max-height:100px; }
+
+div.info { 	float:right; font-size: 1.2em; 	padding-left:640px; padding-top: 30px; } /*Conteudo texto a Direita*/
+div.info2{  float:left; font-size: 1.2em; 	padding-left: 150px; padding-top: 30px;} /*Conteudo texto a Esquerda*/
+div.info_especial { float:right; font-size: 1.6em; 	padding-left:40px; padding-top: 30px; } /*Conteudo texto a Direita*/
+
+div.conteudo_img_direita  {	float:right; padding-top: 150px; padding-left: 50px; }  	/*Conteudo imagem a direita*/
+div.conteudo_img_esquerda { float:left; padding-top: 150px; padding-left: 140px; } 		/*Conteudo imagem a esquerda*/
+div.conteudo_img_esquerda_video { 
+	float:left; padding-top: 550px; padding-left: 150px; 
+	font-size:  1.4em; 	
+}/*Conteudo imagem a esquerda*/
+
+div.menu_logado {width:70%; margin-left: 175px; margin-right: auto; padding-top:15px;}
+
+ul.menu_logado_li { margin:0; padding:0; }
+ul.menu_logado_li li { list-style:none; display:inline; }
+ul.menu_logado_li li a, ul.menu_logado_li li input{ 
+	font: bold 12px/24px arial, helvetica, sans-aerif;	padding-top:10px; float:left;
+	text-decoration: none; text-align:center;
+	background: url(../img/positivo/menu/logado/01.gif) repeat-x; 
+	width:150px;  height:40px;	
+	display:block;	color:#fff; border-width: 0px;
+}
+ul.menu_logado_li a:hover, ul.menu_logado_li li input:hover{ 
+	background: url(../img/positivo/menu/logado/02.gif) repeat-x;  color:#fff;
+	border-color:#000 #fafafa #fafafa #000; 
+}
+
+.botao_cancelar {
+	background: url(../img/positivo/botoes/cancelar.png) repeat-x;  color:#fff;
+	width: 100px;
+}
+
+/********************************************************** TOPO ****************************************************************/
+#topoFixo{  margin:auto; width:100%; background: url(../img/positivo/bg_topo.png) repeat-x; }
+#topoFixo .central { width:1282px; height:113px; margin:auto; background: url(../img/positivo/topo.png) repeat-x; }
+
+#menu{ position:relative; width:587px; height:36px; margin:69px 280px 0 0; float:right;}
+#menu ul{ list-style:none; }
+#menu li{ position:absolute; top:0; height:35px; }
+#menu li a{ position:absolute; display:block; width:100%; height:100%; top:0; cursor:pointer; }
+#menu li a span{
+  position:absolute;
+  display:block;
+  width:100%;
+  height:100%;
+  top:0;
+}
+
+#sobre{
+  width:153px;
+  left:0;
+}
+#regulamento{
+  width:153px;
+  left:153px;
+}
+#inscricao{
+  width:153px;
+  left:306px;
+}
+#contato{
+  width:127px;
+  left:459px;
+}
+
+#sobre a span{
+  background:url(../img/positivo/menu/sobre_inativo.png) no-repeat;
+}
+#regulamento a span{
+  background:url(../img/positivo/menu/regulamento_inativo.png) no-repeat;
+}
+#inscricao a span{
+  background:url(../img/positivo/menu/inscricao_inativo.png) no-repeat;
+}
+#contato a span{
+  background:url(../img/positivo/menu/contato_inativo.png) no-repeat;
+}
+
+#menu ul li a:hover{
+  z-index:1000;
+}
+#sobre a:hover span{
+  background:url(../img/positivo/menu/sobre_ativo.png) no-repeat;
+}
+#regulamento a:hover span{
+  background:url(../img/positivo/menu/regulamento_ativo.png) no-repeat;
+}
+#inscricao a:hover span{
+  background:url(../img/positivo/menu/inscricao_ativo.png) no-repeat;
+}
+#contato a:hover span{
+  background:url(../img/positivo/menu/contato_ativo.png) no-repeat;
+}
+
+/****************************************************** Menu Cadastro ***************************************************************/
+
+#menuTop{ position:relative; width:680px; height:36px; margin:69px 280px 0 0; float:left;}
+#menuTop ul{ list-style:none; }
+#menuTop li{ position:absolute; top:0; height:35px; }
+#menuTop li a{ position:absolute; display:block; width:100%; height:100%; top:0; cursor:pointer; }
+#menuTop li a span{
+  position:absolute;
+  display:block;
+  width:100%;
+  height:100%;
+  top:0;
+}
+
+#novoProjeto{
+  width:151px;
+  left:0;
+}
+#meusProjetos{
+  width:163px;
+  left:151px;
+}
+#meuCadastro{
+  width:165px;
+  left:314px;
+}
+#alterarSenha{
+  width:167px;
+  left:479px;
+}
+#sair{
+  width:81px;
+  left:646px;
+}
+
+#menuTop{
+	margin: 25px 0 0 0;
+}
+
+#novoProjeto a {
+  background:url(../img/positivo/menu/novoProjeto.png) no-repeat;
+}
+#meusProjetos a {
+  background:url(../img/positivo/menu/meusProjetos.png) no-repeat;
+}
+#meuCadastro a {
+  background:url(../img/positivo/menu/meuCadastro.png) no-repeat;
+}
+#alterarSenha a {
+  background:url(../img/positivo/menu/alterarSenha.png) no-repeat;
+ }
+ #sair a{
+  background:url(../img/positivo/menu/sair.png) no-repeat;
+ } 
+ 
+#novoProjeto a:hover{
+  background:url(../img/positivo/menu/novoProjetoAtivo.png) no-repeat;
+}
+
+#meusProjetos a:hover {
+  background:url(../img/positivo/menu/meusProjetosAtivo.png) no-repeat;
+}
+#meuCadastro a:hover {
+  background:url(../img/positivo/menu/meuCadastroAtivo.png) no-repeat;
+}
+#alterarSenha a:hover {
+  background:url(../img/positivo/menu/alterarSenhaAtivo.png) no-repeat;
+}
+#sair a:hover {
+  background:url(../img/positivo/menu/5ativo.png) no-repeat;
+}
+
+/***************************************************** GERAL MEIO CONTEUDO **********************************************************/
+#geral{ margin:0px; width:100%; background: url(../img/positivo/bg_conteudo.png); }
+#geral .central { margin:auto; width:1282px; }
+
+.corpo { width:1282px; padding:0px; margin:0px; background: url(../img/positivo/default.png) no-repeat; }
+
+form fieldset {border:2px solid #a3a3a3; border-radius: 7px; padding: 0 30px 0 0}
+/*form dl { width:100%; border:1px solid #000} */
+form dl label { float:left; width:140px; text-align: right; color:#28688c; padding: 0 10px 0 0 }
+form legend { font:16px arial; font-weight: bold; color:#28688c; }
+
+
+table, td, tr{ padding:5px; }
+tr.odd{ border-bottom:1px solid #000!important;}
+#example { font-size:14px; line-height:20px; color:#000; }
+#example b{ font-size:12px; font-weight:normal; color:#666}
+label.error{ font:10px arial; color:#F00; font-weight:bold}
+
+
+/************************************** FORMULARIO FALE CONOSCO *************************************/
+input.input { background-color:white; border-radius: 5px; border:1px solid #BEBEBE; width:270px; height:22px; font-size:12px; color:#6d6f70; font-family:verdana}
+input.input_medio { background-color:white; border-radius: 5px; border:1px solid #BEBEBE; width:185px; height:22px; font-size:12px; color:#6d6f70; font-family:verdana}
+input.input_peq { background-color:white; border-radius: 5px; border:1px solid #BEBEBE; width:50px; height:22px; font-size:12px; color:#6d6f70; font-family:verdana}
+input.input_grande { background-color:white; border-radius: 5px; border:1px solid #BEBEBE; width:300px; height:22px; font-size:12px; color:#6d6f70; font-family:verdana}
+
+
+select.select {background-color:white; border-radius: 5px; border:1px solid #BEBEBE; width:190px; height:22px; font-size:12; color:#6d6f70; font-family:Verdana, Helvetica, sans-serif;}
+
+textarea.textarea {	border-radius: 5px; border:1px solid #BEBEBE; background-color:#ffffff; width:270px; font-family:verdana; font-size:12px; color:#6d6f70; cursor:default; height:100px;}
+textarea.textarea{scrollbar-face-color: #ffffff; scrollbar-shadow-color: #ffffff; scrollbar-highlight-color: #ffffff; scrollbar-3dlight-color: #ffffff; scrollbar-darkshadow-color: #ffffff;scrollbar-track-color: #ffffff; scrollbar-arrow-color: #C1C1C1;}
+
+.text_label {font:normal 13px verdana; color: #034285; text-decoration: none; padding: 3px 0 0 0; border:1px solid #000  }
+
+textarea.textarea_grande {border-radius: 5px; border:1px solid #BEBEBE; background-color:#ffffff; width:400px; font-family:verdana; font-size:12px; color:#6d6f70; cursor:default; height:200px;}
+textarea.textarea_grande {scrollbar-face-color: #ffffff; scrollbar-shadow-color: #ffffff; scrollbar-highlight-color: #ffffff; scrollbar-3dlight-color: #ffffff; scrollbar-darkshadow-color: #ffffff;scrollbar-track-color: #ffffff; scrollbar-arrow-color: #C1C1C1;}
+
+textarea.textarea_medio {border-radius: 5px; border:1px solid #BEBEBE; background-color:#ffffff; width:300px; font-family:verdana; font-size:12px; color:#6d6f70; cursor:default; height:120px;}
+textarea.textarea_medio {scrollbar-face-color: #ffffff; scrollbar-shadow-color: #ffffff; scrollbar-highlight-color: #ffffff; scrollbar-3dlight-color: #ffffff; scrollbar-darkshadow-color: #ffffff;scrollbar-track-color: #ffffff; scrollbar-arrow-color: #C1C1C1;}
+
+textarea.textarea_perso {border-radius: 5px; border:1px solid #BEBEBE; background-color:#ffffff; width:400px; font-family:verdana; font-size:12px; color:#6d6f70; cursor:default; height:100px;}
+textarea.textarea_perso {scrollbar-face-color: #ffffff; scrollbar-shadow-color: #ffffff; scrollbar-highlight-color: #ffffff; scrollbar-3dlight-color: #ffffff; scrollbar-darkshadow-color: #ffffff;scrollbar-track-color: #ffffff; scrollbar-arrow-color: #C1C1C1;}
+
+.text_label {font:normal 13px verdana; color: #034285; text-decoration: none; padding: 3px 0 0 0; border:1px solid #000  }
+
+
+/***************************************** MENU LATERAL PGS INTERNAS ******************************************/
+ul.menuTopo{  font-size:13px; padding:10px; margin:0; width: 180px}
+ul.menuTopo li { margin-bottom:10px; list-style: none; border-bottom:2px dotted #a3a3a3; padding-bottom:3px; }
+ul.menuTopo li.titulo { font: 15px tahoma; font-weight:bold; border-bottom:0!important; }
+ul.menuTopo li a { color:#000; text-decoration:none; }
+ul.menuTopo li a:hover{ text-decoration:underline; }
+
+/***************************************** MENU REGULAMENTO ***************************************************/
+ul.menuRegulamento{ font:bold 14px arial; padding:10px; margin:0; width: 400px }
+ul.menuRegulamento li { margin-bottom:10px; list-style: none; padding-bottom:3px; }
+ul.menuRegulamento li.titulo { font: 15px tahoma; font-weight:bold; border-bottom:0!important; }
+ul.menuRegulamento li a { color:#7b7b7b; text-decoration:none; }
+ul.menuRegulamento li.ativo a{ color:#3c84b5; font:bold 14px arial; }
+ul.menuRegulamento li a:hover{ text-decoration:underline; }
+
+/***************************************************** INFERIOR RODAPE *************************************************************/
+#inferior{ float:left; width:100%; height:183px; margin-top:0px; color:#000; background: url(../img/positivo/bg_footer.png) repeat-x #eaeaea; }
+#inferior .central { margin:auto; width:1282px; padding:32px; background: url(../img/positivo/bg_footer.png) repeat-x #eaeaea; }
+
+
+
+
+.contato_core{
+float:left;
+margin:25px 0 0 -100px;
+}
+
+.contato_mensagem{
+float:right;
+margin:50px 0 0 200px;
+position:absolut;
+}
+
+
+
+
+.message {
+	padding: 5px;"C:/Users/bruno.gilmar/Desktop/desafioPositivo.war/email/cadastroUsuario.xhtml"
+	list-style: none;
+	border: 0;
+	background: none;
+	padding: 0;
+	color: #000000;
+	margin: 5px 0 8px 0;
+	font-size: 12px;
+}
+
+.message li {
+	background: no-repeat left center;
+	padding-top: 1px;
+	padding-left: 20px;
+	margin-left: 3px;
+}
+
+.message li.infomsg {
+	background-image: url(../img/msginfo.png);
+}
+
+.message li.errormsg {
+	background-image: url(../img/msgerror.png);
+}
+
+.message li.warnmsg {
+	background-image: url(../img/msgwarn.png);
+}
+
+.error {
+	float: left;
+	padding: 5px;
+}
+
+.errors {
+	color: #FF0000;
+	vertical-align: middle;
+}
+
+img.errors {
+	padding-right: 5px;
+}
+
+.errors input, .errors textarea, .errors select {
+	border: 1px solid red !important;
+}
+
+.required {
+	color: #FF0000;
+	padding-left: 2px;	
+}
+
+.rich-stglpanel-body {
+	overflow: auto;
+} 
+
+/* the specificity here is necessary to override the defaults */
+/*
+.rich-panel .rich-panel-header,
+.rich-stglpanel .rich-stglpanel-header {
+	padding: 2px 3px;
+}*/
+
+.rich-panel input[type=submit], .rich-panel input[type=button],
+.rich-tabpanel input[type=submit], .rich-tabpanel input[type=button] {
+	margin-bottom: 0;
+	
+}
+
+.tableControl input[type=submit], .tableControl input[type=button], .tableControl select {
+	margin: 5px 0 5px 5px;
+}
+
+/* I don't know why this is necessary, but the select is off by a pixel on the top and is padding too much on the left */
+.tableControl select {
+	margin-left: 2px;
+	position: relative;
+	top: 1px;
+}
+
+.actionButtons {
+	padding: 0 0 0 13px;
+}
+
+.actionButtons select {
+	margin: 5px 5px 5px 0;
+	vertical-align: bottom;
+}
+
+.actionButtons input {
+	
+}
+
+.rich-toolbar-item a {
+	text-decoration: none;
+}
+
+.rich-toolbar-item a:hover, .rich-ddmenu-label-select {
+	text-decoration: underline;
+}
+
+.rich-toolbar-item .rich-menu-item a:hover {
+	text-decoration: none;
+}
+
+.rich-datalist {
+	list-style: square;
+	margin: 6px 0 1px 0;
+	padding-left: 18px;
+}
+
+.rich-list-item {
+	padding-bottom: 4px;
+}
+
+.rich-fileupload-list-overflow {
+	height:0px!important;
+}
+
+.rich-fileupload-toolbar-decor {
+	height:40px
+}
+
+div.novoUsuario {
+	font-size: 1.2em;
+	padding-left:100px;
+	padding-top:30px;
+}
+
+div.login {
+	font-size: 1.2em;
+	padding-left:100px;
+	padding-top: 550px;
+}
+
+
+
+
+
