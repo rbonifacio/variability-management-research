@@ -1,6 +1,9 @@
 package br.unb.cdt.desafioPositivo.action;
 
+import java.io.IOException;
+
 import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.Seam;
@@ -14,6 +17,7 @@ import org.jboss.seam.international.StatusMessages;
 import org.jboss.seam.log.Log;
 import org.jboss.seam.security.Credentials;
 import org.jboss.seam.security.Identity;
+import org.jboss.seam.web.Session;
 
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
 import br.unb.cdt.desafioPositivo.model.Usuario;
@@ -62,4 +66,5 @@ public class Authenticator
     	Seam.invalidateSession();
     	return "home"; 
     }
+    
 }

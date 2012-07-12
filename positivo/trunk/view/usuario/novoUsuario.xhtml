@@ -14,15 +14,15 @@
 			<h:panelGrid columns="2">
 
 				<s:div styleClass="conteudo_img_esquerda_video">
-					Video Tutorial Pencial
+					<div style="font-size: 1.8em; " > Video Tutorial Pencial </div> 
 					<br></br>
 					<a href="http://youtu.be/HmmIJsXeCE4" target='_blank'> <img
 						src="../img/positivo/video.png" />
 					</a>
 					<br></br>
-					Evolus Pencial eh uma ferramenta livre, cuja finalidade eh a 
+					Evolus Pencial #{messages['eh']} uma ferramenta livre, cuja finalidade #{messages['eh']} a 
 					<br></br>
-					criacao de prototipos de telas.
+					#{messages['criacao']} de "#{messages['prototipo']}" de telas.
 				</s:div>
 
 				<s:div styleClass="info_especial">
@@ -123,8 +123,8 @@
 										required="true" class="input_grande"
 										requiredMessage="#{messages['positivo.novoUsuario.cepEmBranco']}:"
 										validatorMessage="#{messages['positivo.novoUsuario.cepTamanho']}:">
-										<f:validateLength maximum="7" />
-										<f:validateLength minimum="7" />
+										<f:validateLength maximum="8" />
+										<f:validateLength minimum="8" />
 									</h:inputText>
 
 									<h:outputLabel for="bairro" value="Bairro:" />
@@ -190,5 +190,12 @@
 				</s:div>
 			</h:panelGrid>
 		</div>
+		
+		<script type="text/javascript" charset="utf-8">
+		  $(document).ready(function(){
+		    $("a[rel^='prettyPhoto']").prettyPhoto();
+		  });
+		</script>
+		
 	</ui:define>
 </ui:composition>

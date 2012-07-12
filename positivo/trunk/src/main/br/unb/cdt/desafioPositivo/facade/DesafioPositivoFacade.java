@@ -224,7 +224,7 @@ public class DesafioPositivoFacade {
 		acesso.setUsuario(usuario);
 		acesso.setCodigoEfetivacao(geraCodigoConfirmacaoCadastro(usuario));
 		
-		emailUtil.enviarEmail(new String[] {usuario.getEmail()} , Mensagens.FACADE_NOVO_USUARIO, mensagemCadastro(usuario, acesso.getCodigoEfetivacao()));
+		emailUtil.enviarEmail(new String[] {usuario.getEmail()} , messages.get(Mensagens.FACADE_NOVO_USUARIO), mensagemCadastro(usuario, acesso.getCodigoEfetivacao()));
 	
 		usuario.getHistoricoSituacaoAcesso().add(acesso);
 
@@ -419,7 +419,7 @@ public class DesafioPositivoFacade {
 
 			switch (CodigoRespostaNovaSenha.fromCodigo(resp.getCodigo())) {
 			case SUCESSO:
-				emailUtil.enviarEmail(new String[] {usuario.getEmail()}, Mensagens.FACADE_ALTERA_SENHA, mensagemAlteracaoSenha(usuario, novaSenha));
+				emailUtil.enviarEmail(new String[] {usuario.getEmail()}, messages.get(Mensagens.FACADE_ALTERA_SENHA), mensagemAlteracaoSenha(usuario, novaSenha));
 				usuario.setToken(resp.getToken());
 				entityManager.merge(usuario);
 				entityManager.flush();
