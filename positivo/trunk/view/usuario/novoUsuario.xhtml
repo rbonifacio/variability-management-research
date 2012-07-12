@@ -8,20 +8,23 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a="http://richfaces.org/a4j" template="../layout/template.xhtml">
 	<ui:define name="body">
-		<div class="corpo" 	style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 850px; padding: 15px 0 0 0">
-			
+		<div class="corpo"
+			style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 850px; padding: 15px 0 0 0">
+
 			<h:panelGrid columns="2">
-			
+
 				<s:div styleClass="conteudo_img_esquerda_video">
 					Video Tutorial Pencial
-					<br></br><a href="http://youtu.be/HmmIJsXeCE4" target='_blank'>
-					<img src="../img/positivo/video.png" />
-					</a><br></br>
+					<br></br>
+					<a href="http://youtu.be/HmmIJsXeCE4" target='_blank'> <img
+						src="../img/positivo/video.png" />
+					</a>
+					<br></br>
 					Evolus Pencial eh uma ferramenta livre, cuja finalidade eh a 
 					<br></br>
 					criacao de prototipos de telas.
 				</s:div>
-			
+
 				<s:div styleClass="info_especial">
 					<h:messages />
 					<h:form id="loginForm">
@@ -169,9 +172,12 @@
 							</div>
 						</fieldset>
 						<div class="actionButtons">
-							<h:commandButton id="submit"
-								value="#{messages['positivo.novoUsuario.cadastrar']}"
-								action="#{usuarioAction.cadastro}" />
+						
+							<h:commandLink action="#{usuarioAction.cadastro}">
+								<h:graphicImage url="../img/positivo/botoes/cadastrar.png"
+									alt="Cadastrar" title="Cadastrar" />
+							</h:commandLink>
+
 						</div>
 
 					</h:form>

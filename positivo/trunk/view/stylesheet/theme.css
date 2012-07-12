@@ -40,6 +40,10 @@ ul.menu_logado_li a:hover, ul.menu_logado_li li input:hover{
 	border-color:#000 #fafafa #fafafa #000; 
 }
 
+.botao_cancelar {
+	background: url(../img/positivo/botoes/cancelar.png) repeat-x;  color:#fff;
+	width: 100px;
+}
 
 /********************************************************** TOPO ****************************************************************/
 #topoFixo{  margin:auto; width:100%; background: url(../img/positivo/bg_topo.png) repeat-x; }
@@ -344,6 +348,10 @@ img.errors {
 .actionButtons select {
 	margin: 5px 5px 5px 0;
 	vertical-align: bottom;
+}
+
+.actionButtons input {
+	
 }
 
 .rich-toolbar-item a {
