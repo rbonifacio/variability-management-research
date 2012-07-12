@@ -177,8 +177,5 @@ public class PropostaAction {
 	public String editarProposta() {
 		return "editarProposta";
 	}
-
-	
-
 	
 }

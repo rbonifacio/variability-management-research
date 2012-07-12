@@ -494,5 +494,21 @@ public class DesafioPositivoFacade {
 		entityManager.merge(proposta);
 		entityManager.flush();
 	}
+	
+	public Usuario recuperaUsuarioCPF(String cpf) throws Exception {
+		try {
+			@SuppressWarnings("unchecked")
+			List<Usuario> usuarios = entityManager
+					.createQuery("FROM Usuario u where u.cpf = :pCpf")
+					.setParameter("pCpf", cpf).getResultList();
+
+			if (usuarios == null || usuarios.size() == 0) {
+				return null;
+			} else
+				return usuarios.get(0);
+		} catch (Exception e) {
+			throw new Exception(Mensagens.EXP_CONSULTA_USUARIO);
+		}
+	}
 
 }

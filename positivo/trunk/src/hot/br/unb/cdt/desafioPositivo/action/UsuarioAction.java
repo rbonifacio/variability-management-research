@@ -131,6 +131,7 @@ public class UsuarioAction {
 		}
 	}
 
+	/*
 	private boolean validaCPF(String stringCPF) {
 		int i, soma1, soma2, digito1, digito2;
 
@@ -178,6 +179,62 @@ public class UsuarioAction {
 		return false;
 
 	}
+	*/
+	private String validaCPF(String stringCPF) {
+		int i, soma1, soma2, digito1, digito2;
+
+		if (stringCPF.length() != 11)
+			return "Verifique se você não esqueceu nenhum número no CPF.";
+
+		if ((stringCPF.equals("00000000000"))
+				|| (stringCPF.equals("11111111111"))
+				|| (stringCPF.equals("22222222222"))
+				|| (stringCPF.equals("33333333333"))
+				|| (stringCPF.equals("44444444444"))
+				|| (stringCPF.equals("55555555555"))
+				|| (stringCPF.equals("66666666666"))
+				|| (stringCPF.equals("77777777777"))
+				|| (stringCPF.equals("88888888888"))
+				|| (stringCPF.equals("99999999999")))
+			return "CPF inválido";
+
+		// Calcula o primeiro dígito
+		soma1 = 0;
+		for (i = 0; i <= 8; i++)
+			soma1 = soma1 + Integer.parseInt(stringCPF.substring(i, i + 1))
+					* (10 - i);
+
+		if (soma1 % 11 < 2)
+			digito1 = 0;
+		else
+			digito1 = 11 - (soma1 % 11);
+
+		// Calcula o segundo dígito
+		soma2 = 0;
+		for (i = 0; i <= 9; i++)
+			soma2 = soma2 + Integer.parseInt(stringCPF.substring(i, i + 1))
+					* (11 - i);
+
+		if (soma2 % 11 < 2)
+			digito2 = 0;
+		else
+			digito2 = 11 - (soma2 % 11);
+
+		if ((digito1 == Integer.parseInt(stringCPF.substring(9, 10)))
+				&& (digito2 == Integer.parseInt(stringCPF.substring(10)))) {
+			try {
+				Usuario u = facade.recuperaUsuarioCPF(stringCPF);
+				if(u != null) {
+					return "CPF já cadastrado";
+				}
+				return null;
+			} catch(Exception e) {
+				return "Ocorreu um erro ao validar o CPF";
+			}
+		}
+
+		return "CPF inválido";
+	}
 
 	/*
 	 * Metodo que verifica se a confirmacao de email eh valida.
@@ -196,8 +253,11 @@ public class UsuarioAction {
 		if(usuarioDto.getCpf() == null
 				|| usuarioDto.getCpf().equals("")) {
 			erros.add("Necessário informar o CPF");
-		} else if(!validaCPF(usuarioDto.getCpf())) {
-			erros.add("O CPF é inválido");
+		} else {
+			String status = validaCPF(usuarioDto.getCpf());
+			if(status != null) {
+				erros.add(status);
+			}
 		}
 		
 		if(usuarioDto.getRg() == null
