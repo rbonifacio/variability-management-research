@@ -5,13 +5,44 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:a="http://richfaces.org/a4j"
+	xmlns:lightbox="http://richfaces.org/sandbox/lightbox"
 	xmlns:s="http://jboss.com/products/seam/taglib" contentType="text/html">
 	<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>desafioPositivo</title>
 <link rel="shortcut icon" href="#{request.contextPath}/favicon.ico" />
+
+<script src="#{request.contextPath}/js/jquery.colorbox.js"></script>
+
 <a:loadStyle src="/stylesheet/theme.css" />
+
+<style type="text/css">
+        #gallery ul {
+            list-style: none outside none;
+        }
+
+        #gallery ul li {
+            display: inline;
+        }
+
+        #gallery ul img {
+            border: 5px solid #3E3E3E;
+            border-bottom-width: 20px;
+        }
+
+        #gallery ul a:hover img {
+            border: 5px solid #000;
+            border-bottom-width: 20px;
+            color: #FFFFFF;
+        }
+
+        #gallery ul a:hover {
+            color: #FFFFFF;
+        }
+
+    </style>
+
 
 <ui:insert name="head" />
 </head>
