@@ -37,7 +37,8 @@ public class Mensagens {
 	
 	public static final String FACADE_NOVO_USUARIO = "positivo.facade.msg.cadastraNovoUsuario";
 	public static final String FACADE_ALTERA_SENHA = "positivo.facade.msg.alteraSenha";
-	
+
+	public static final String NOVA_PROPOSTA_ERROR = "positivo.novaProposta.anexoEmBranco";
 	public static final String MSG_WELCOME = "positivo.facade.msg.welcome";
 	public static final String MSG_BODY = "positivo.facade.msg.body";
 	public static final String MSG_BODY_SENHA = "positivo.facade.msg.bodySenha";

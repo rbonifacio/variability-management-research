@@ -89,7 +89,9 @@
 									<h:outputLabel for="prototipo"
 										value="#{messages['positivo.novaProposta.prototipo']}:" />
 									<s:fileUpload id="arquivo"
-										data="#{propostaAction.proposta.arquivoGUI}" />								</h:panelGrid>
+										data="#{propostaAction.proposta.arquivoGUI}" required="true"
+										requiredMessage="#{messages['positivo.novaProposta.anexoEmBranco']}:" />
+								</h:panelGrid>
 							</div>
 						</fieldset>
 						<div class="actionButtons">

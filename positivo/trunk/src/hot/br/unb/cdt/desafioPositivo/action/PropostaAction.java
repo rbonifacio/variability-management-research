@@ -65,6 +65,10 @@ public class PropostaAction {
 			populaMensagensErro(erros);
 			return null;
 		}
+		if(proposta.getArquivoGUI().length == 0) {
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.NOVA_PROPOSTA_ERROR);
+			return null;
+		}
 		
 		try {
 			facade.adicionarProposta(usuarioLogado, proposta);
