@@ -33,12 +33,15 @@ public class ContatoAction {
 		
 		try{
 			emailUtil.enviarEmailContato(new String[] {email}, pre_ass + assunto, cabeca+ mensagem);
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, 
+					"O seu e-mail de contato foi enviado com sucesso!\n Aguarde a resposta.");
+			return "home";
 		} catch (Exception e) {
-			
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, 
+					"Ocorreu um erro ao enviar a mensagem.\nTente novamente mais tarde.");
+			return null;
 		}
-		StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, 
-				"O seu e-mail de contato foi enviado com sucesso!\n Aguarde a resposta");
-		return "";
+
 	}
 	
 	
