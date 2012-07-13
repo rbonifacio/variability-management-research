@@ -14,13 +14,12 @@
 			<h:panelGrid columns="2">
 
 				<s:div styleClass="conteudo_img_esquerda_video">
-					<div style="font-size: 1.8em; color: #275975">Video Tutorial
-						Pencial</div>
+					<div style="font-size: 1.8em; color: #275975  " > VIDEO TUTORIAL PENCIL </div> 
 					<br></br>
-					<a href="http://youtu.be/HmmIJsXeCE4" target='_blank'> <img
-						src="../img/positivo/video.png" /> </a>
+					<a href="http://youtu.be/XCF9PhpesD0" target='_blank'> <img src="../img/positivo/video.png" />
+					</a>
 					<br></br>
-					Evolus Pencial #{messages['eh']} uma ferramenta livre, cuja finalidade #{messages['eh']} a 
+					Evolus Pencil #{messages['eh']} uma ferramenta livre, cuja finalidade #{messages['eh']} a 
 					<br></br>
 					#{messages['criacao']} de "#{messages['prototipo']}" de telas.
 				</s:div>
@@ -116,8 +115,7 @@
 									<h:outputLabel for="nascimento"
 										value="#{messages['positivo.novoUsuario.nascimento']}:" />
 									<rich:calendar id="nascimento" datePattern="dd/MM/yyyy"
-										value="#{usuarioAction.usuarioDto.nascimento}" required="true"
-										requiredMessage="#{messages['positivo.novoUsuario.nascimentoEmBranco']}:">>
+										value="#{usuarioAction.usuarioDto.nascimento}">
 										<s:validate />
 									</rich:calendar>
 

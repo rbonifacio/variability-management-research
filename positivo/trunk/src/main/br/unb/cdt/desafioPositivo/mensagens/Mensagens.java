@@ -38,12 +38,17 @@ public class Mensagens {
 	public static final String FACADE_NOVO_USUARIO = "positivo.facade.msg.cadastraNovoUsuario";
 	public static final String FACADE_ALTERA_SENHA = "positivo.facade.msg.alteraSenha";
 
-	public static final String NOVA_PROPOSTA_ERROR = "positivo.novaProposta.anexoEmBranco";
 	public static final String MSG_WELCOME = "positivo.facade.msg.welcome";
 	public static final String MSG_BODY = "positivo.facade.msg.body";
 	public static final String MSG_BODY_SENHA = "positivo.facade.msg.bodySenha";
 	public static final String MSG_END = "positivo.facade.msg.end";
 	public static final String MSG_ATT = "positivo.facade.msg.att";
 	public static final Object MSG_ACCESS_CODE = "positivo.facade.msg.access.code";
+	
+	public static final String NOVA_PROPOSTA_ERROR = "positivo.novaProposta.anexoEmBranco";
+	
+	public static final String NOME_INVALIDO = "positivo.novoUsuario.nomeInvalido";
+	public static final String SOBRENOME_INVALIDO = "positivo.novoUsuario.sobrenomeInvalido";
+	public static final String IDADE_INVALIDA = "positivo.novoUsuario.idadeInvalida";
 	
 }

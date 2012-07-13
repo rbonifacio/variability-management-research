@@ -16,6 +16,8 @@ import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.core.ResourceBundle;
 import org.jboss.seam.ui.util.cdk.Messages;
 
+import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
+
 import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
 import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
@@ -49,13 +51,13 @@ public class DesafioPositivoFacade {
 
 	@In(create=true)
 	private EmailUtil emailUtil;
-	
+
 	@In(create=true)
 	private String urlConfirmacaoCadastro;
-	
+
 	@In
 	private Map<String, String> messages;
-	
+
 	/**
 	 * Adiciona um usuario no meio de persistencia e realiza uma requisicao ao
 	 * servico correspondente da positivo.
@@ -66,9 +68,9 @@ public class DesafioPositivoFacade {
 	 *             Caso algum problema tenha ocorrido.
 	 */
 	public void adicionarUsuario(Usuario dto) throws ExcecaoUsuarioCadastrado,
-			ExcecaoEnvioEmail, Exception {
+	ExcecaoEnvioEmail, Exception {
 		AutenticacaoSRV autentica = new AutenticacaoSRV(dto.getEmail(),
-				"123456");
+		"123456");
 
 		autentica.preparaRequisicao();
 		int resp = autentica.requisitaServico().getCodigo();
@@ -135,7 +137,7 @@ public class DesafioPositivoFacade {
 	}
 
 	public void alterarSenha(Usuario usuarioLogado, AlteraSenhaDTO senha)
-			throws Exception {
+	throws Exception {
 		// verifica se a senha atual informada eh a correta, procedendo
 		// com uma autenticacao.
 		AutenticacaoSRV autenticacaoSrv = new AutenticacaoSRV(
@@ -224,25 +226,124 @@ public class DesafioPositivoFacade {
 	private void cadastraNovoUsuario(Usuario usuario) throws ExcecaoEnvioEmail, Exception {
 		AcessoSolicitado acesso = new AcessoSolicitado();
 
+		validaDados(usuario);
 		acesso.setUsuario(usuario);
 		acesso.setCodigoEfetivacao(geraCodigoConfirmacaoCadastro(usuario));
-		
+
 		emailUtil.enviarEmail(new String[] {usuario.getEmail()} , messages.get(Mensagens.FACADE_NOVO_USUARIO), mensagemCadastro(usuario, acesso.getCodigoEfetivacao()));
-	
+
 		usuario.getHistoricoSituacaoAcesso().add(acesso);
 
 		entityManager.merge(usuario);
 		entityManager.flush();
 	}
 
+	private void validaDados(Usuario usuario) throws ExcecaoNomeInvalido, ExcecaoIdadeInvalida, ExcecaoSobrenomeInvalido {
+
+		// Verifica nome
+		if (usuario.getNome().contains("!") || 
+				usuario.getNome().contains("@") || 
+				usuario.getNome().contains("#") ||
+				usuario.getNome().contains("$") || 
+				usuario.getNome().contains("%") || 
+				usuario.getNome().contains("¨") || 
+				usuario.getNome().contains("&") || 
+				usuario.getNome().contains("*") || 
+				usuario.getNome().contains("(") || 
+				usuario.getNome().contains(")") || 
+				usuario.getNome().contains("-") || 
+				usuario.getNome().contains("_") || 
+				usuario.getNome().contains("+") || 
+				usuario.getNome().contains("=") || 
+				usuario.getNome().contains("§") || 
+				usuario.getNome().contains("[") || 
+				usuario.getNome().contains("{") || 
+				usuario.getNome().contains("]") || 
+				usuario.getNome().contains("}") || 
+				usuario.getNome().contains(";") || 
+				usuario.getNome().contains(":") || 
+				usuario.getNome().contains(".") || 
+				usuario.getNome().contains(",") || 
+				usuario.getNome().contains(">") || 
+				usuario.getNome().contains("<") || 
+				usuario.getNome().contains("0") ||
+				usuario.getNome().contains("1") ||
+				usuario.getNome().contains("2") ||
+				usuario.getNome().contains("3") ||
+				usuario.getNome().contains("4") ||
+				usuario.getNome().contains("5") ||
+				usuario.getNome().contains("6") ||
+				usuario.getNome().contains("7") ||
+				usuario.getNome().contains("8") ||
+				usuario.getNome().contains("9")) {
+			throw new ExcecaoNomeInvalido();
+		}
+		
+		// Verifica sobrenome
+		if (usuario.getSobrenome().contains("!") || 
+				usuario.getSobrenome().contains("@") || 
+				usuario.getSobrenome().contains("#") ||
+				usuario.getSobrenome().contains("$") || 
+				usuario.getSobrenome().contains("%") || 
+				usuario.getSobrenome().contains("¨") || 
+				usuario.getSobrenome().contains("&") || 
+				usuario.getSobrenome().contains("*") || 
+				usuario.getSobrenome().contains("(") || 
+				usuario.getSobrenome().contains(")") || 
+				usuario.getSobrenome().contains("-") || 
+				usuario.getSobrenome().contains("_") || 
+				usuario.getSobrenome().contains("+") || 
+				usuario.getSobrenome().contains("=") || 
+				usuario.getSobrenome().contains("§") || 
+				usuario.getSobrenome().contains("[") || 
+				usuario.getSobrenome().contains("{") || 
+				usuario.getSobrenome().contains("]") || 
+				usuario.getSobrenome().contains("}") || 
+				usuario.getSobrenome().contains(";") || 
+				usuario.getSobrenome().contains(":") || 
+				usuario.getSobrenome().contains(".") || 
+				usuario.getSobrenome().contains(",") || 
+				usuario.getSobrenome().contains(">") || 
+				usuario.getSobrenome().contains("<") || 
+				usuario.getSobrenome().contains("0") ||
+				usuario.getSobrenome().contains("1") ||
+				usuario.getSobrenome().contains("2") ||
+				usuario.getSobrenome().contains("3") ||
+				usuario.getSobrenome().contains("4") ||
+				usuario.getSobrenome().contains("5") ||
+				usuario.getSobrenome().contains("6") ||
+				usuario.getSobrenome().contains("7") ||
+				usuario.getSobrenome().contains("8") ||
+				usuario.getSobrenome().contains("9")) {
+			throw new ExcecaoSobrenomeInvalido();
+		}
+		
+		// Calcula a idade
+		Calendar now = Calendar.getInstance();
+		Calendar data = Calendar.getInstance();
+		data.setTime(usuario.getNascimento());
+		int idade = now.get(Calendar.YEAR) - data.get(Calendar.YEAR);  
+		if (now.get(Calendar.MONTH) < data.get(Calendar.MONTH)) {
+		  idade--;  
+		} else if (now.get(Calendar.MONTH) == data.get(Calendar.MONTH)
+		    && now.get(Calendar.DAY_OF_MONTH) < data.get(Calendar.DAY_OF_MONTH)) {
+		  idade--;  
+		}
+		
+		// Verifica idade
+		if(idade < 12) {
+			throw new ExcecaoIdadeInvalida();
+		}
+	}
+
 	private String mensagemCadastro(Usuario usuario, String codigoAtivacao) {
 		return  messages.get(Mensagens.MSG_WELCOME) + ", " + usuario.getNome() + 
-				", \n \n \n" + 
-				messages.get(Mensagens.MSG_BODY) + "\n\n\n" + urlConfirmacaoCadastro + " \n \n \n" + 
-				messages.get(Mensagens.MSG_ACCESS_CODE) + "\n\n\n" + codigoAtivacao +
-				"\n \n \n" +
-				messages.get(Mensagens.MSG_END) + ", \n" +
-				messages.get(Mensagens.MSG_ATT) + ".";
+		", \n \n \n" + 
+		messages.get(Mensagens.MSG_BODY) + "\n\n\n" + urlConfirmacaoCadastro + " \n \n \n" + 
+		messages.get(Mensagens.MSG_ACCESS_CODE) + "\n\n\n" + codigoAtivacao +
+		"\n \n \n" +
+		messages.get(Mensagens.MSG_END) + ", \n" +
+		messages.get(Mensagens.MSG_ATT) + ".";
 		/*		
 		return "Prezado " + usuario.getNome() + 
 				", \n \n \n" + 
@@ -251,9 +352,9 @@ public class DesafioPositivoFacade {
 			   "\n \n \n" +
 			   "Atenciosamente, \n" +
 			   "Coordenacao do desafio positivo. ";
-		*/
+		 */
 	}
-	
+
 	/**
 	 * Autentica um usuario requisitando um servico da Positivo.
 	 * 
@@ -266,7 +367,7 @@ public class DesafioPositivoFacade {
 	 *             caso ocorra algum problema na excecao
 	 */
 	public Usuario autenticarUsuario(String email, String senha)
-			throws ExcecaoFalhaAutenticacao, ExcecaoAcessoUsuario, Exception {
+	throws ExcecaoFalhaAutenticacao, ExcecaoAcessoUsuario, Exception {
 		RespostaPositivo resp = autenticarNaRedePositivo(email, senha);
 
 		Usuario usuario = recuperaUsuario(email);
@@ -311,11 +412,11 @@ public class DesafioPositivoFacade {
 
 		Usuario u = entityManager.merge(usuarioLogado);
 		entityManager.flush();
-		
+
 		int index = usuarioLogado.getPropostas().indexOf(proposta);
 		Proposta antiga = usuarioLogado.getPropostas().get(index);
 		Proposta atualizada = u.getPropostas().get(index);
-		
+
 		antiga.setId(atualizada.getId());
 	}
 
@@ -331,7 +432,7 @@ public class DesafioPositivoFacade {
 	public List<Proposta> recuperaPropostas(Usuario usuarioLogado) {
 		return usuarioLogado.getPropostas();
 	}
-	
+
 
 	/*
 	 * Confirma o cadastro do usuario na base de dados local.
@@ -349,7 +450,7 @@ public class DesafioPositivoFacade {
 	 * Realiza a autenticacao na rede Positivo.
 	 */
 	private RespostaPositivo autenticarNaRedePositivo(String email, String senha)
-			throws Exception {
+	throws Exception {
 		AutenticacaoSRV req = new AutenticacaoSRV(email, senha);
 		req.preparaRequisicao();
 		RespostaPositivo resp = req.requisitaServico();
@@ -360,7 +461,7 @@ public class DesafioPositivoFacade {
 	 * Gera um codigo para ser usado na confirmacao do cadastro.
 	 */
 	private String geraCodigoConfirmacaoCadastro(Usuario usuario)
-			throws Exception {
+	throws Exception {
 		Date dataAtual = Calendar.getInstance().getTime();
 		String codigo = CriptografiaUtil.criptografarMD5(usuario.getEmail()
 				+ dataAtual.toString());
@@ -375,7 +476,7 @@ public class DesafioPositivoFacade {
 		String date = Calendar.getInstance().getTime().toString();
 
 		String senha = CriptografiaUtil.criptografarMD5(email + date)
-				.substring(0, 6);
+		.substring(0, 6);
 
 		return senha.toUpperCase();
 	}
@@ -389,8 +490,8 @@ public class DesafioPositivoFacade {
 		try {
 			@SuppressWarnings("unchecked")
 			List<Usuario> usuarios = entityManager
-					.createQuery("FROM Usuario u where u.email = :pEmail")
-					.setParameter("pEmail", email).getResultList();
+			.createQuery("FROM Usuario u where u.email = :pEmail")
+			.setParameter("pEmail", email).getResultList();
 
 			if (usuarios == null || usuarios.size() == 0) {
 				return null;
@@ -406,16 +507,16 @@ public class DesafioPositivoFacade {
 	 * Positivo para atualizacao de senha.
 	 */
 	public void recuperarSenha(Usuario dto) throws ExcecaoAcessoUsuario,
-			ExcecaoUsuarioNaoEncontrado, Exception {
+	ExcecaoUsuarioNaoEncontrado, Exception {
 		Usuario usuario = recuperaUsuario(dto.getEmail());
 
 		if (usuario != null) {
 			usuario.getSituacaoAcessoAtual().alterarSenha();
 			String novaSenha = geraSenha(dto);
-			
+
 			NovaSenhaSRV servico = new NovaSenhaSRV(usuario.getToken(),
 					novaSenha);
-			
+
 			servico.preparaRequisicao();
 
 			RespostaPositivo resp = servico.requisitaServico();
@@ -450,27 +551,27 @@ public class DesafioPositivoFacade {
 				"\n \n \n" +
 				Mensagens.MSG_END + ", \n" +
 				Mensagens.MSG_ATT + ".";
-				*/
-		
+		 */
+
 		return  messages.get(Mensagens.MSG_WELCOME) + ", " + usuario.getNome() + 
-				", \n \n \n" + 
-				messages.get(Mensagens.MSG_BODY_SENHA) + "\n\n\n" + novaSenha + 
-				"\n \n \n" +
-				messages.get(Mensagens.MSG_END) + ", \n" +
-				messages.get(Mensagens.MSG_ATT) + ".";
+		", \n \n \n" + 
+		messages.get(Mensagens.MSG_BODY_SENHA) + "\n\n\n" + novaSenha + 
+		"\n \n \n" +
+		messages.get(Mensagens.MSG_END) + ", \n" +
+		messages.get(Mensagens.MSG_ATT) + ".";
 	}
 
 	public void excluirProposta(Proposta propostaSelecionada) throws Exception {
 		Proposta proposta = recuperaProposta(propostaSelecionada.getId());
 		entityManager.remove(proposta);
 	}
-	
+
 	private Proposta recuperaProposta(Long id) throws Exception {
 		try {
 			@SuppressWarnings("unchecked")
 			List<Proposta> propostas = entityManager
-					.createQuery("FROM Proposta p where p.id = :pId")
-					.setParameter("pId", id).getResultList();
+			.createQuery("FROM Proposta p where p.id = :pId")
+			.setParameter("pId", id).getResultList();
 
 			if (propostas == null || propostas.size() == 0) {
 				return null;
@@ -480,8 +581,8 @@ public class DesafioPositivoFacade {
 			throw new Exception(Mensagens.EXP_RECUPERA_PROPOSTA);
 		}
 	}
-	
-	
+
+
 	public void editarProposta(Proposta propostaSelecionada) throws Exception {
 		Proposta proposta = recuperaProposta(propostaSelecionada.getId());
 		if(proposta == null) {
@@ -493,17 +594,17 @@ public class DesafioPositivoFacade {
 		proposta.setObjetivos(propostaSelecionada.getObjetivos());
 		proposta.setPublicoAlvo(propostaSelecionada.getPublicoAlvo());
 		proposta.setDescricaoFuncional(propostaSelecionada.getDescricaoFuncional());
-		
+
 		entityManager.merge(proposta);
 		entityManager.flush();
 	}
-	
+
 	public Usuario recuperaUsuarioCPF(String cpf) throws Exception {
 		try {
 			@SuppressWarnings("unchecked")
 			List<Usuario> usuarios = entityManager
-					.createQuery("FROM Usuario u where u.cpf = :pCpf")
-					.setParameter("pCpf", cpf).getResultList();
+			.createQuery("FROM Usuario u where u.cpf = :pCpf")
+			.setParameter("pCpf", cpf).getResultList();
 
 			if (usuarios == null || usuarios.size() == 0) {
 				return null;
