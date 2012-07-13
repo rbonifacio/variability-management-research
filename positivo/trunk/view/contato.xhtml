@@ -44,8 +44,7 @@
 									<h:outputLabel for="mensagem">#{messages['positivo.contato.menssagem']}:</h:outputLabel>
 									<h:inputTextarea id="mensagem"
 										value="#{contatoAction.mensagem}"
-										styleClass="mensagem_textarea"
-										required="true"
+										styleClass="mensagem_textarea" required="true"
 										requiredMessage="#{messages['positivo.contato.menssagemEmBranco']}:"
 										validatorMessage="#{messages['positivo.contato.menssagemTamanho']}:">
 										<f:validateLength minimum="10" maximum="300" />
@@ -54,11 +53,24 @@
 							</div>
 						</fieldset>
 						<div class="actionButtons">
+							<h:commandLink action="#{contatoAction.enviarContato()}">
+								<h:graphicImage url="img/positivo/botoes/enviar.png"
+									alt="Enviar" title="Enviar" />
+							</h:commandLink>
+
+							<h:commandLink action="home" immediate="true">
+								<h:graphicImage
+									url="img/positivo/botoes/cancelar.png"
+									alt="Cancelar" title="Cancelar" />
+							</h:commandLink>
+
+<!--
 							<ui:insert name="actionButtons" />
 							<h:commandButton class="commandButton" id="submit" value="Enviar"
 								action="#{contatoAction.enviarContato()}" />
 							<h:commandButton class="commandButton" id="recuperarSenha"
 								value="Limpar" action="home" />
+								-->
 						</div>
 					</h:form>
 				</s:div>
