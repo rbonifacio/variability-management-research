@@ -478,7 +478,7 @@ public class DesafioPositivoFacade {
 		String date = Calendar.getInstance().getTime().toString();
 
 		String senha = CriptografiaUtil.criptografarMD5(email + date)
-		.substring(0, 6);
+		.substring(0, 10);
 
 		return senha.toUpperCase();
 	}
@@ -532,7 +532,8 @@ public class DesafioPositivoFacade {
 				break;
 
 			case SENHA_INVALIDA:
-				throw new Exception(Mensagens.EXP_SENHA_GERADA_INVALIDA);
+				recuperarSenha(dto); /* chamada recursiva, até uma senha válida ser gerada */
+				//throw new Exception(Mensagens.EXP_SENHA_GERADA_INVALIDA);
 
 			case CLIENTE_NAO_EXISTE:
 				throw new ExcecaoUsuarioNaoEncontrado();

@@ -401,7 +401,7 @@ public class UsuarioAction {
 					StatusMessage.Severity.ERROR,
 					Mensagens.RECUPERAR_SENHA_INEXISTENTE,
 					usuarioDto.getEmail());
-			return null;
+			return null;			
 		} catch (Exception e) {
 			StatusMessages.instance().add(StatusMessage.Severity.ERROR,
 					e.getLocalizedMessage());
