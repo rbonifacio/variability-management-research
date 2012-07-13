@@ -19,8 +19,11 @@ import sun.usagetracker.UsageTrackerClient;
 import com.sun.mail.imap.protocol.Status;
 
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
+import br.unb.cdt.desafioPositivo.facade.ExcecaoIdadeInvalida;
+import br.unb.cdt.desafioPositivo.facade.ExcecaoNomeInvalido;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoSenhaDiferente;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoSenhaInvalida;
+import br.unb.cdt.desafioPositivo.facade.ExcecaoSobrenomeInvalido;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioCadastrado;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioNaoEncontrado;
 import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
@@ -116,7 +119,23 @@ public class UsuarioAction {
 					StatusMessage.Severity.ERROR, Mensagens.EMAIL_EXISTENTE,
 					usuarioDto.getEmail());
 			return null;
-		} catch (Exception e) {
+		} catch (ExcecaoNomeInvalido e) {
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.ERROR, Mensagens.NOME_INVALIDO,
+					usuarioDto.getEmail());	
+			return null;
+		} catch (ExcecaoSobrenomeInvalido e) {
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.ERROR, Mensagens.SOBRENOME_INVALIDO,
+					usuarioDto.getEmail());
+			return null;
+		} catch (ExcecaoIdadeInvalida e) {
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.ERROR, Mensagens.IDADE_INVALIDA,
+					usuarioDto.getEmail());
+			return null;
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			StatusMessages.instance().addFromResourceBundle(
 					StatusMessage.Severity.ERROR, Mensagens.ERRO_GENERICO);
