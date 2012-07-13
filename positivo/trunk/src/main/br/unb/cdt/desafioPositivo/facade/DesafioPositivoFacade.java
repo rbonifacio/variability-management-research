@@ -134,7 +134,7 @@ public class DesafioPositivoFacade {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception(Mensagens.EXP_REQUISICAO);
+			throw e;
 		}
 	}
 
