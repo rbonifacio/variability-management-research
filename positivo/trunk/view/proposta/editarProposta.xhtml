@@ -30,7 +30,13 @@
 
 			<h:panelGrid columns="2">
 				<s:div styleClass="info">
-					<h:messages />
+					<s:div style="font-size: 1.0em; padding-left: 15px;" >
+						#{messages['campos_obrigatorios']}
+					</s:div>
+					<rich:spacer height="25" />
+					<s:div>
+						<rich:messages />
+					</s:div>
 					<h:form id="novaPropostaForm" enctype="multipart/form-data">
 						<fieldset>
 							<legend>Alterar Proposta</legend>

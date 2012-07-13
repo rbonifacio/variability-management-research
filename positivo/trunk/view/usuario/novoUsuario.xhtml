@@ -24,8 +24,15 @@
 					#{messages['criacao']} de "#{messages['prototipo']}" de telas.
 				</s:div>
 
-				<s:div styleClass="info_especial">
-					<h:messages />
+				<s:div >
+					<s:div style="font-size: 1.0em; padding-left: 15px;" >
+						#{messages['campos_obrigatorios']}
+					</s:div>
+					<rich:spacer height="25" />
+					<s:div>
+						<rich:messages />
+					</s:div>
+					
 					<h:form id="loginForm">
 						<fieldset>
 							<legend>#{messages['positivo.login.usuario.cadastrado']}</legend>
@@ -70,7 +77,7 @@
 									<h:outputLabel for="nome"
 										value="#{messages['positivo.novoUsuario.nome']}:" />
 									<h:inputText id="nome" value="#{usuarioAction.usuarioDto.nome}"
-										required="true" class="input_grande"
+										required="true" class="input_grande" 
 										requiredMessage="#{messages['positivo.novoUsuario.nomeEmBranco']}:"
 										validatorMessage="#{messages['positivo.novoUsuario.nomeTamanho']}:">
 										<f:validateLength maximum="50" />
