@@ -31,19 +31,14 @@
 </style>
 
 	<ui:define name="body">
-		<rich:modalPanel id="msgs" autosized="true"
-			showWhenRendered="#{facesContext.maximumSeverity !=null}" width="350">
-			<f:facet name="header">
-				<h:outputText value="Desafio Positivo" />
-			</f:facet>
-			<h:messages />
 
-			<a:commandButton onclick="Richfaces.hideModalPanel('msgs');"
-				value="Ocultar" />
-		</rich:modalPanel>
 		<!-- _conteudo_default -->
 		<div class="corpo"
 			style="background: url(../img/positivo/bg.png) no-repeat; height: 690px; padding: 15px 0 0 0">
+
+			<s:div>
+				<rich:messages />
+			</s:div>
 
 			<h:form>
 				<s:div styleClass="menu_logado">
