@@ -105,6 +105,8 @@ public class DesafioPositivoFacade {
 			if (usuario == null) {
 				throw new Exception(Mensagens.EXP_REQUISICAO);
 			}
+			
+			validaDados(usuarioLogado);
 
 			usuario.setNome(usuarioLogado.getNome());
 			usuario.setSobrenome(usuarioLogado.getSobrenome());
@@ -246,7 +248,7 @@ public class DesafioPositivoFacade {
 				usuario.getNome().contains("#") ||
 				usuario.getNome().contains("$") || 
 				usuario.getNome().contains("%") || 
-				usuario.getNome().contains("¨") || 
+				usuario.getNome().contains("ï¿½") || 
 				usuario.getNome().contains("&") || 
 				usuario.getNome().contains("*") || 
 				usuario.getNome().contains("(") || 
@@ -255,7 +257,7 @@ public class DesafioPositivoFacade {
 				usuario.getNome().contains("_") || 
 				usuario.getNome().contains("+") || 
 				usuario.getNome().contains("=") || 
-				usuario.getNome().contains("§") || 
+				usuario.getNome().contains("ï¿½") || 
 				usuario.getNome().contains("[") || 
 				usuario.getNome().contains("{") || 
 				usuario.getNome().contains("]") || 
@@ -285,7 +287,7 @@ public class DesafioPositivoFacade {
 				usuario.getSobrenome().contains("#") ||
 				usuario.getSobrenome().contains("$") || 
 				usuario.getSobrenome().contains("%") || 
-				usuario.getSobrenome().contains("¨") || 
+				usuario.getSobrenome().contains("ï¿½") || 
 				usuario.getSobrenome().contains("&") || 
 				usuario.getSobrenome().contains("*") || 
 				usuario.getSobrenome().contains("(") || 
@@ -294,7 +296,7 @@ public class DesafioPositivoFacade {
 				usuario.getSobrenome().contains("_") || 
 				usuario.getSobrenome().contains("+") || 
 				usuario.getSobrenome().contains("=") || 
-				usuario.getSobrenome().contains("§") || 
+				usuario.getSobrenome().contains("ï¿½") || 
 				usuario.getSobrenome().contains("[") || 
 				usuario.getSobrenome().contains("{") || 
 				usuario.getSobrenome().contains("]") || 

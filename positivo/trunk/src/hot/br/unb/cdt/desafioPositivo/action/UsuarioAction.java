@@ -116,26 +116,21 @@ public class UsuarioAction {
 			return "home";
 		} catch (ExcecaoUsuarioCadastrado e) {
 			StatusMessages.instance().addFromResourceBundle(
-					StatusMessage.Severity.ERROR, Mensagens.EMAIL_EXISTENTE,
-					usuarioDto.getEmail());
+					StatusMessage.Severity.ERROR, Mensagens.EMAIL_EXISTENTE);
 			return null;
 		} catch (ExcecaoNomeInvalido e) {
 			StatusMessages.instance().addFromResourceBundle(
-					StatusMessage.Severity.ERROR, Mensagens.NOME_INVALIDO,
-					usuarioDto.getEmail());	
+					StatusMessage.Severity.ERROR, Mensagens.NOME_INVALIDO);
 			return null;
 		} catch (ExcecaoSobrenomeInvalido e) {
 			StatusMessages.instance().addFromResourceBundle(
-					StatusMessage.Severity.ERROR, Mensagens.SOBRENOME_INVALIDO,
-					usuarioDto.getEmail());
+					StatusMessage.Severity.ERROR, Mensagens.SOBRENOME_INVALIDO);
 			return null;
 		} catch (ExcecaoIdadeInvalida e) {
 			StatusMessages.instance().addFromResourceBundle(
-					StatusMessage.Severity.ERROR, Mensagens.IDADE_INVALIDA,
-					usuarioDto.getEmail());
+					StatusMessage.Severity.ERROR, Mensagens.IDADE_INVALIDA);
 			return null;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			StatusMessages.instance().addFromResourceBundle(
 					StatusMessage.Severity.ERROR, Mensagens.ERRO_GENERICO);
@@ -151,54 +146,35 @@ public class UsuarioAction {
 	}
 
 	/*
-	private boolean validaCPF(String stringCPF) {
-		int i, soma1, soma2, digito1, digito2;
-
-		if (stringCPF.length() != 11)
-			return false;
-
-		if ((stringCPF.equals("00000000000"))
-				|| (stringCPF.equals("11111111111"))
-				|| (stringCPF.equals("22222222222"))
-				|| (stringCPF.equals("33333333333"))
-				|| (stringCPF.equals("44444444444"))
-				|| (stringCPF.equals("55555555555"))
-				|| (stringCPF.equals("66666666666"))
-				|| (stringCPF.equals("77777777777"))
-				|| (stringCPF.equals("88888888888"))
-				|| (stringCPF.equals("99999999999")))
-			return false;
-
-		// Calcula o primeiro dígito
-		soma1 = 0;
-		for (i = 0; i <= 8; i++)
-			soma1 = soma1 + Integer.parseInt(stringCPF.substring(i, i + 1))
-					* (10 - i);
-
-		if (soma1 % 11 < 2)
-			digito1 = 0;
-		else
-			digito1 = 11 - (soma1 % 11);
-
-		// Calcula o segundo dígito
-		soma2 = 0;
-		for (i = 0; i <= 9; i++)
-			soma2 = soma2 + Integer.parseInt(stringCPF.substring(i, i + 1))
-					* (11 - i);
-
-		if (soma2 % 11 < 2)
-			digito2 = 0;
-		else
-			digito2 = 11 - (soma2 % 11);
-
-		if ((digito1 == Integer.parseInt(stringCPF.substring(9, 10)))
-				&& (digito2 == Integer.parseInt(stringCPF.substring(10))))
-			return true;
-
-		return false;
-
-	}
-	*/
+	 * private boolean validaCPF(String stringCPF) { int i, soma1, soma2,
+	 * digito1, digito2;
+	 * 
+	 * if (stringCPF.length() != 11) return false;
+	 * 
+	 * if ((stringCPF.equals("00000000000")) ||
+	 * (stringCPF.equals("11111111111")) || (stringCPF.equals("22222222222")) ||
+	 * (stringCPF.equals("33333333333")) || (stringCPF.equals("44444444444")) ||
+	 * (stringCPF.equals("55555555555")) || (stringCPF.equals("66666666666")) ||
+	 * (stringCPF.equals("77777777777")) || (stringCPF.equals("88888888888")) ||
+	 * (stringCPF.equals("99999999999"))) return false;
+	 * 
+	 * // Calcula o primeiro dígito soma1 = 0; for (i = 0; i <= 8; i++) soma1 =
+	 * soma1 + Integer.parseInt(stringCPF.substring(i, i + 1)) (10 - i);
+	 * 
+	 * if (soma1 % 11 < 2) digito1 = 0; else digito1 = 11 - (soma1 % 11);
+	 * 
+	 * // Calcula o segundo dígito soma2 = 0; for (i = 0; i <= 9; i++) soma2 =
+	 * soma2 + Integer.parseInt(stringCPF.substring(i, i + 1)) (11 - i);
+	 * 
+	 * if (soma2 % 11 < 2) digito2 = 0; else digito2 = 11 - (soma2 % 11);
+	 * 
+	 * if ((digito1 == Integer.parseInt(stringCPF.substring(9, 10))) && (digito2
+	 * == Integer.parseInt(stringCPF.substring(10)))) return true;
+	 * 
+	 * return false;
+	 * 
+	 * }
+	 */
 	private String validaCPF(String stringCPF) {
 		int i, soma1, soma2, digito1, digito2;
 
@@ -243,11 +219,11 @@ public class UsuarioAction {
 				&& (digito2 == Integer.parseInt(stringCPF.substring(10)))) {
 			try {
 				Usuario u = facade.recuperaUsuarioCPF(stringCPF);
-				if(u != null) {
+				if (u != null) {
 					return "CPF já cadastrado";
 				}
 				return null;
-			} catch(Exception e) {
+			} catch (Exception e) {
 				return "Ocorreu um erro ao validar o CPF";
 			}
 		}
@@ -268,54 +244,52 @@ public class UsuarioAction {
 				|| usuarioDto.getSobrenome().equals("")) {
 			erros.add("positivo.novoUsuario.sobrenome.obrigatorio");
 		}
-		
-		if(usuarioDto.getCpf() == null
-				|| usuarioDto.getCpf().equals("")) {
+
+		if (usuarioDto.getCpf() == null || usuarioDto.getCpf().equals("")) {
 			erros.add("Necessário informar o CPF");
 		} else {
 			String status = validaCPF(usuarioDto.getCpf());
-			if(status != null) {
+			if (status != null) {
 				erros.add(status);
 			}
 		}
-		
-		if(usuarioDto.getRg() == null
-				|| usuarioDto.getRg().equals("")) {
+
+		if (usuarioDto.getRg() == null || usuarioDto.getRg().equals("")) {
 			erros.add("Necessário informar o RG");
 		}
-		
-		if(usuarioDto.getBairro() == null
-				|| usuarioDto.getBairro().equals("")) {
+
+		if (usuarioDto.getBairro() == null || usuarioDto.getBairro().equals("")) {
 			erros.add("Necessário informar o bairro");
 		}
-		
-		if(usuarioDto.getEndereco() == null
+
+		if (usuarioDto.getEndereco() == null
 				|| usuarioDto.getEndereco().equals("")) {
 			erros.add("Necessário informar o endereço");
 		}
-		
+
 		if (usuarioDto.getEmail() == null
 				|| usuarioDto.getConfirmacaoEmail() == null
 				|| usuarioDto.getEmail() == ""
 				|| usuarioDto.getConfirmacaoEmail() == "") {
 			erros.add("positivo.novoUsuario.confirmacao.email.obrigatorio");
-		} else if(!usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
+		} else if (!usuarioDto.getEmail().equals(
+				usuarioDto.getConfirmacaoEmail())) {
 			erros.add("O e-mail e a confirmação de e-mail devem ser iguais");
 		} else if (!emailUtil.verificaEmailValido(usuarioDto.getEmail())) {
 			erros.add("positivo.novoUsuario.email.confirmacao.invalida");
 		}
-		
-		if(!usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
+
+		if (!usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
 			erros.add("O e-mail e a confirmação de e-mail devem ser iguais");
 		}
-		
-		for(int i=0; i<usuarioDto.getCep().length(); i++) {
-			if(!Character.isDigit(usuarioDto.getCep().charAt(i))) {
-				erros.add("CEP inv�lido");
+
+		for (int i = 0; i < usuarioDto.getCep().length(); i++) {
+			if (!Character.isDigit(usuarioDto.getCep().charAt(i))) {
+				erros.add("CEP inv�lido");
 				break;
 			}
 		}
-		
+
 		return erros;
 	}
 
@@ -457,6 +431,18 @@ public class UsuarioAction {
 					StatusMessage.Severity.INFO,
 					Mensagens.ATUALIZAR_DADOS_SUCESSO);
 			return "sumario";
+		} catch (ExcecaoNomeInvalido e) {
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.ERROR, Mensagens.NOME_INVALIDO);
+			return null;
+		} catch (ExcecaoSobrenomeInvalido e) {
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.ERROR, Mensagens.SOBRENOME_INVALIDO);
+			return null;
+		} catch (ExcecaoIdadeInvalida e) {
+			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.ERROR, Mensagens.IDADE_INVALIDA);
+			return null;
 		} catch (Exception e) {
 			StatusMessages.instance().add(StatusMessage.Severity.ERROR,
 					e.getLocalizedMessage());
@@ -522,5 +508,5 @@ public class UsuarioAction {
 	public void setUsuarioDto(Usuario usuarioDto) {
 		this.usuarioDto = usuarioDto;
 	}
-	
+
 }
