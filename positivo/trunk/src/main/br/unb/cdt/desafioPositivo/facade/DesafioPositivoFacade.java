@@ -106,9 +106,12 @@ public class DesafioPositivoFacade {
 
 			usuario.setNome(usuarioLogado.getNome());
 			usuario.setSobrenome(usuarioLogado.getSobrenome());
-			usuario.setEstado(usuarioLogado.getEstado());
 			usuario.setSexo(usuarioLogado.getSexo());
 			usuario.setNascimento(usuarioLogado.getNascimento());
+			usuario.setCep(usuarioLogado.getCep());
+			usuario.setBairro(usuarioLogado.getBairro());
+			usuario.setEndereco(usuarioLogado.getEndereco());
+			usuario.setEstado(usuarioLogado.getEstado());
 
 			AtualizacaoSRV srv = new AtualizacaoSRV(usuario);
 

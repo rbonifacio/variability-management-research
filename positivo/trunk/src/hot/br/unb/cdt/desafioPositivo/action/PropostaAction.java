@@ -73,7 +73,8 @@ public class PropostaAction {
 		try {
 			facade.adicionarProposta(usuarioLogado, proposta);
 			proposta = null;
-			return "sumario";
+			StatusMessages.instance().add(StatusMessage.Severity.INFO, "Proposta adicionada com sucesso!");
+			return "minhaProposta";
 		}
 		catch(Exception e) {
 			StatusMessages.instance().add(StatusMessage.Severity.ERROR, e.getMessage());
@@ -129,6 +130,7 @@ public class PropostaAction {
 		
 		try {
 			facade.editarProposta(propostaSelecionada);
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.INFO, "Proposta alterada com sucesso!");
 			return "sumario";
 		} catch(Exception e) {
 			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.EDITAR_PROPOSTA_ERRO);

@@ -50,7 +50,7 @@
 			</rule>
 		</navigation>
 	</page>
-
+	
 	<page view-id="/proposta/minhaProposta.xhtml" action="#{propostaAction.recuperaPropostasUsuario()}"
 		login-required="true">
 		<end-conversation before-redirect="true" />
@@ -63,10 +63,20 @@
 
 	<page view-id="/proposta/novaProposta.xhtml" login-required="true">
 		<begin-conversation join="true" flush-mode="manual" />
+		<navigation>
+			<rule if-outcome="minhaProposta">
+				<redirect view-id="/proposta/minhaProposta.xhtml" />
+			</rule>
+		</navigation>
 	</page>
-
+	
 	<page view-id="/proposta/editarProposta.xhtml" login-required="true">
 		<begin-conversation join="true" flush-mode="manual" />
+		<navigation>
+			<rule if-outcome="minhaProposta">
+				<redirect view-id="/proposta/minhaProposta.xhtml" />
+			</rule>
+		</navigation>
 	</page>
 
 	<page view-id="/usuario/atualizarDados.xhtml" login-required="true">
