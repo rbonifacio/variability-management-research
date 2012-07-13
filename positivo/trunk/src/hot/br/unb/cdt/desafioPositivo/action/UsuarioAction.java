@@ -410,7 +410,20 @@ public class UsuarioAction {
 		}
 
 	}
-
+	
+	private void restaurarDados(Usuario antigo, Usuario atual) {
+		atual.setNome(antigo.getNome());
+		atual.setSobrenome(antigo.getSobrenome());
+		atual.setCpf(antigo.getCpf());
+		atual.setRg(antigo.getRg());
+		atual.setSexo(antigo.getSexo());
+		atual.setNascimento(antigo.getNascimento());
+		atual.setCep(antigo.getCep());
+		atual.setBairro(antigo.getBairro());
+		atual.setEndereco(antigo.getEndereco());
+		atual.setEstado(antigo.getEstado());
+	}
+	
 	/**
 	 * Metodo que permite a atualizacao dos dados do usuario. As informacoes
 	 * submetidas na atualizacao ficam encapsulada no bean usuarioLogado.
@@ -421,6 +434,10 @@ public class UsuarioAction {
 			populaMensagensErro(erros);
 			return null;
 		}
+		Usuario antigo = null;
+		try {
+			antigo = facade.recuperaUsuario(usuarioLogado.getEmail());
+		} catch(Exception e) {}
 		try {
 			facade.atualizarUsuario(usuarioLogado);
 			StatusMessages.instance().addFromResourceBundle(
@@ -428,18 +445,22 @@ public class UsuarioAction {
 					Mensagens.ATUALIZAR_DADOS_SUCESSO);
 			return "sumario";
 		} catch (ExcecaoNomeInvalido e) {
+			restaurarDados(antigo, usuarioLogado);
 			StatusMessages.instance().addFromResourceBundle(
 					StatusMessage.Severity.ERROR, Mensagens.NOME_INVALIDO);
 			return null;
 		} catch (ExcecaoSobrenomeInvalido e) {
+			restaurarDados(antigo, usuarioLogado);
 			StatusMessages.instance().addFromResourceBundle(
 					StatusMessage.Severity.ERROR, Mensagens.SOBRENOME_INVALIDO);
 			return null;
 		} catch (ExcecaoIdadeInvalida e) {
+			restaurarDados(antigo, usuarioLogado);
 			StatusMessages.instance().addFromResourceBundle(
 					StatusMessage.Severity.ERROR, Mensagens.IDADE_INVALIDA);
 			return null;
 		} catch (Exception e) {
+			restaurarDados(antigo, usuarioLogado);
 			StatusMessages.instance().add(StatusMessage.Severity.ERROR,
 					e.getLocalizedMessage());
 			return null;

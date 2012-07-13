@@ -488,7 +488,7 @@ public class DesafioPositivoFacade {
 	 * optamos por nao fazer uso do padrao Data Access Objects, dada a
 	 * simplicidade do projeto.
 	 */
-	private Usuario recuperaUsuario(String email) throws Exception {
+	public Usuario recuperaUsuario(String email) throws Exception {
 		try {
 			@SuppressWarnings("unchecked")
 			List<Usuario> usuarios = entityManager
