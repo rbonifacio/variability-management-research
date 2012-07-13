@@ -32,6 +32,7 @@
 										required="true" class="input_grande"
 										requiredMessage="#{messages['positivo.contato.emailEmBranco']}:"
 										validatorMessage="#{messages['positivo.contato.emailTamanho']}:">
+										<s:validate />
 										<f:validateLength maximum="255" />
 									</h:inputText>
 									<h:outputLabel for="assunto">#{messages['positivo.contato.assunto']}:</h:outputLabel>
