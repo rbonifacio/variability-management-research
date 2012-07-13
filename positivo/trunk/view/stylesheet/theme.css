@@ -70,6 +70,10 @@ ul.menu_logado_li a:hover, ul.menu_logado_li li input:hover{
   width:153px;
   left:306px;
 }
+#sumario{
+  width:153px;
+  left:306px;
+}
 #contato{
   width:127px;
   left:459px;
@@ -83,6 +87,9 @@ ul.menu_logado_li a:hover, ul.menu_logado_li li input:hover{
 }
 #inscricao a span{
   background:url(../img/positivo/menu/inscricao_inativo.png) no-repeat;
+}
+#sumario a span{
+  background:url(../img/positivo/menu/sumario_inativo.png) no-repeat;
 }
 #contato a span{
   background:url(../img/positivo/menu/contato_inativo.png) no-repeat;
@@ -99,6 +106,9 @@ ul.menu_logado_li a:hover, ul.menu_logado_li li input:hover{
 }
 #inscricao a:hover span{
   background:url(../img/positivo/menu/inscricao_ativo.png) no-repeat;
+}
+#sumario a:hover span{
+  background:url(../img/positivo/menu/sumario_ativo.png) no-repeat;
 }
 #contato a:hover span{
   background:url(../img/positivo/menu/contato_ativo.png) no-repeat;
