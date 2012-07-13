@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-2" ?> 
+
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+     
+	<ui:define name="body" >	
+
+		<div class="corpo" style="background: url(img/positivo/regulamento.png) no-repeat; min-height:792px">
+		
+			<div style="padding:70px 0 0 170px; float: left ">
+				<ui:include src="menu.xhtml">
+					<ui:param name="projectName" value="desafioPositivo"/>
+				</ui:include>				
+			</div>
+			
+			<div style="width:600px; padding:70px 0 0 0; float: left; color:#7b7b7b; font:bold 14px arial;"> 
+				<font color="#3c84b5">I - OBJETIVO</font>
+				<br />
+				<br />
+				O Desafio Positivo de Inovaçăo visa a identificar e premiar propostas de desenvolvimento de 
+				aplicativos inovadores para o Tablet Positivo YPY, com utilizaçăo da plataforma Android.
+			</div>
+		
+		</div>
+		
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,229 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" 
+	xmlns:lightbox="http://richfaces.org/sandbox/lightbox"
+	template="../layout/template.xhtml">
+	<ui:define name="body">
+		<div class="corpo"
+			style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 850px; padding: 15px 0 0 0">
+
+			<rich:modalPanel id="panel" width="670" height="440">
+				<f:facet name="header">
+		            <h:panelGroup>
+		            </h:panelGroup>
+		        </f:facet>
+		        <f:facet name="controls">
+		            <h:panelGroup>
+		                <h:graphicImage value="../img/close.png" styleClass="hidelink" id="hidelink"/>
+		                <rich:componentControl for="panel" attachTo="hidelink" operation="hide" event="onclick"/>
+		            </h:panelGroup>
+		        </f:facet>
+		        <iframe width="640" height="390" src="http://www.youtube.com/embed/XCF9PhpesD0" frameborder="0" >
+		        </iframe>
+		    </rich:modalPanel>
+
+			<h:panelGrid columns="2">
+        
+				<s:div styleClass="conteudo_img_esquerda_video">
+					<div style="font-size: 1.8em; color: #275975  " > VIDEO TUTORIAL PENCIL </div> 
+					<br></br>
+					<h:outputLink value="#" id="link">
+						<img src="../img/positivo/video.png" />
+						<rich:componentControl for="panel" attachTo="link" operation="show" event="onclick"/>
+   					</h:outputLink>
+					<br></br>
+					Evolus Pencil #{messages['eh']} uma ferramenta livre, cuja finalidade #{messages['eh']} a 
+					<br></br>
+					#{messages['criacao']} de "#{messages['prototipo']}" de telas.
+				</s:div>
+
+				<s:div >
+					<s:div style="font-size: 1.0em; padding-left: 15px;" >
+						#{messages['campos_obrigatorios']}
+					</s:div>
+					<rich:spacer height="25" />
+					<s:div>
+						<rich:messages />
+					</s:div>
+					
+					<h:form id="loginForm">
+						<fieldset>
+							<legend>#{messages['positivo.login.usuario.cadastrado']}</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+									<h:outputLabel for="username">#{messages['positivo.login.usuario']}:</h:outputLabel>
+									<h:inputText id="username" value="#{credentials.username}"
+										class="input_grande" required="true"
+										requiredMessage="#{messages['positivo.login.usuario.emailEmBranco']}:" />
+									<h:outputLabel for="password">#{messages['positivo.login.senha']}:</h:outputLabel>
+									<h:inputSecret id="password" value="#{credentials.password}"
+										class="input_grande" required="true" 
+										requiredMessage="#{messages['positivo.login.usuario.senhaEmBranco']}:" />
+								</h:panelGrid>
+							</div>
+						</fieldset>
+						<div class="actionButtons">
+							<ui:insert name="actionButtons" />
+
+
+							<h:commandLink action="#{usuarioAction.autenticar}">
+								<h:graphicImage url="../img/positivo/botoes/login.gif"
+									alt="Login" title="Login" />
+							</h:commandLink>
+
+							<h:commandLink action="recuperarSenha" immediate="true">
+								<h:graphicImage
+									url="../img/positivo/botoes/esqueciMinhaSenha.gif"
+									alt="Recuperar senha" title="Recuperar senha" />
+							</h:commandLink>
+
+						</div>
+					</h:form>
+					<rich:spacer height="45" />
+					<h:form id="novoForm">
+						<fieldset>
+							<legend>#{messages['positivo.novoUsuario.quero.cadastrar']}</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+									<h:outputLabel for="nome"
+										value="#{messages['positivo.novoUsuario.nome']}:" />
+									<h:inputText id="nome" value="#{usuarioAction.usuarioDto.nome}"
+										required="true" class="input_grande" 
+										requiredMessage="#{messages['positivo.novoUsuario.nomeEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.nomeTamanho']}:">
+										<f:validateLength maximum="50" />
+									</h:inputText>
+
+									<h:outputLabel for="sobrenome"
+										value="#{messages['positivo.novoUsuario.sobrenome']}:" />
+									<h:inputText id="sobrenome"
+										value="#{usuarioAction.usuarioDto.sobrenome}" required="true"
+										class="input_grande"
+										requiredMessage="#{messages['positivo.novoUsuario.sobrenomeEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.sobrenomeTamanho']}:">
+										<f:validateLength maximum="50" />
+									</h:inputText>
+
+									<h:outputLabel for="cpf" value="CPF:" />
+									<h:inputText id="cpf" value="#{usuarioAction.usuarioDto.cpf}"
+										required="true" class="input_grande"
+										requiredMessage="#{messages['positivo.novoUsuario.cpfEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.cpfTamanho']}:">
+										<f:validateLength maximum="11" />
+										<f:validateLength minimum="11" />
+									</h:inputText>
+
+									<h:outputLabel for="rg" value="RG:" />
+									<h:inputText id="rg" value="#{usuarioAction.usuarioDto.rg}"
+										required="true" class="input_grande"
+										requiredMessage="#{messages['positivo.novoUsuario.rgEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.rgTamanho']}:">
+										<f:validateLength maximum="15" />
+									</h:inputText>
+
+
+									<h:outputLabel for="sexo"
+										value="#{messages['positivo.novoUsuario.sexo']}:" />
+									<h:selectOneRadio id="sexo"
+										value="#{usuarioAction.usuarioDto.sexo}" required="true"
+										requiredMessage="#{messages['positivo.novoUsuario.sexoEmBranco']}:">
+										<f:selectItems value="#{usuarioAction.opcoesSexo()}" />
+									</h:selectOneRadio>
+
+									<h:outputLabel for="nascimento"
+										value="#{messages['positivo.novoUsuario.nascimento']}:" />
+									<rich:calendar id="nascimento" datePattern="dd/MM/yyyy"
+										value="#{usuarioAction.usuarioDto.nascimento}">
+										<s:validate />
+									</rich:calendar>
+
+									<h:outputLabel for="cep" value="CEP:" />
+									<h:inputText id="cep" value="#{usuarioAction.usuarioDto.cep}"
+										required="true" class="input_grande"
+										requiredMessage="#{messages['positivo.novoUsuario.cepEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.cepTamanho']}:"
+										maxlength="8">
+										<f:validateLength maximum="8" />
+										<f:validateLength minimum="8" />
+									</h:inputText>
+
+									<h:outputLabel for="bairro" value="Bairro:" />
+									<h:inputText id="bairro"
+										value="#{usuarioAction.usuarioDto.bairro}" required="true"
+										class="input_grande"
+										requiredMessage="#{messages['positivo.novoUsuario.bairroEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.bairroTamanho']}:">
+										<f:validateLength maximum="255" />
+									</h:inputText>
+
+									<h:outputLabel for="endereco" value="Endereco:" />
+									<h:inputText id="endereco"
+										value="#{usuarioAction.usuarioDto.endereco}" required="true"
+										class="input_grande"
+										requiredMessage="#{messages['positivo.novoUsuario.enderecoEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.enderecoTamanho']}:">
+										<f:validateLength maximum="255" />
+									</h:inputText>
+
+									<h:outputLabel for="estado"
+										value="#{messages['positivo.novoUsuario.estado']}:" />
+									<h:selectOneMenu id="estado" defaultLabel="UF"
+										value="#{usuarioAction.usuarioDto.estado}" class="select"
+										required="true"
+										requiredMessage="#{messages['positivo.novoUsuario.estadoEmBranco']}:">
+										<f:selectItems value="#{usuarioAction.opcoesEstado()}" />
+									</h:selectOneMenu>
+
+									<h:outputLabel for="email"
+										value="#{messages['positivo.novoUsuario.email']}:" />
+									<h:inputText id="email"
+										value="#{usuarioAction.usuarioDto.email}" required="true"
+										class="input_grande"
+										requiredMessage="#{messages['positivo.novoUsuario.emailEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.emailTamanho']}:">
+										<f:validateLength maximum="255" />
+									</h:inputText>
+
+									<h:outputLabel for="confirmacaoEmail"
+										value="#{messages['positivo.novoUsuario.confirmacaoEmail']}:" />
+									<h:inputText id="confirmacaoEmail"
+										value="#{usuarioAction.usuarioDto.confirmacaoEmail}"
+										required="true" class="input_grande"
+										requiredMessage="#{messages['positivo.novoUsuario.confirmacaoEmailEmBranco']}:"
+										validatorMessage="#{messages['positivo.novoUsuario.confirmacaoEmailTamanho']}:">
+										<f:validateLength maximum="255" />
+									</h:inputText>
+								</h:panelGrid>
+
+							</div>
+						</fieldset>
+						<div class="actionButtons">
+
+							<h:commandLink action="#{usuarioAction.cadastro}">
+								<h:graphicImage url="../img/positivo/botoes/cadastrar.png"
+									alt="Cadastrar" title="Cadastrar" />
+							</h:commandLink>
+
+						</div>
+
+					</h:form>
+				</s:div>
+			</h:panelGrid>
+		</div>
+
+		<script type="text/javascript" charset="utf-8">
+		$(document).ready(function(){
+			$(".pencil_youtube").colorbox({iframe:true, innerWidth:425, innerHeight:344});
+		});
+		</script>
+
+	</ui:define>
+</ui:composition>
