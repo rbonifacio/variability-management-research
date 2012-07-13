@@ -279,10 +279,6 @@ public class UsuarioAction {
 			erros.add("positivo.novoUsuario.email.confirmacao.invalida");
 		}
 
-		if (!usuarioDto.getEmail().equals(usuarioDto.getConfirmacaoEmail())) {
-			erros.add("O e-mail e a confirmação de e-mail devem ser iguais");
-		}
-
 		for (int i = 0; i < usuarioDto.getCep().length(); i++) {
 			if (!Character.isDigit(usuarioDto.getCep().charAt(i))) {
 				erros.add("CEP inv�lido");
