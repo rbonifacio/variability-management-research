@@ -18,24 +18,39 @@
 			<h:form>
 				<s:div styleClass="menu_logado">
 					<ul class="menu_logado_li">
-						<li><a href="novaProposta.seam">Nova Proposta</a></li>
-						<li><a href="minhaProposta.seam">Minhas Propostas</a></li>
-						<li><a href="../usuario/sumario.seam">Sumario</a></li>
-						<li><a href="../usuario/alterarSenha.seam">Alterar Senha</a></li>
+						<li><a href="novaProposta.seam">Nova Proposta</a>
+						</li>
+						<li><a href="minhaProposta.seam">Minhas Propostas</a>
+						</li>
+						<li><a href="../usuario/sumario.seam">Sumario</a>
+						</li>
+						<li><a href="../usuario/alterarSenha.seam">Alterar Senha</a>
+						</li>
 						<li><h:commandButton value="#{messages['positivo.logout']}"
-								action="#{authenticator.logout()}" /></li>
+								action="#{authenticator.logout()}" />
+						</li>
 					</ul>
 				</s:div>
 			</h:form>
 
 			<h:panelGrid columns="2">
 				<s:div styleClass="info">
-					<s:div style="font-size: 1.0em; padding-left: 15px;" >
+					<s:div style="font-size: 1.0em; padding-left: 15px;">
 						#{messages['campos_obrigatorios']}
 					</s:div>
 					<rich:spacer height="25" />
 					<s:div>
-						<rich:messages />
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="../img/icon/Aviso.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="../img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="../img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
 					</s:div>
 					<h:form id="novaPropostaForm" enctype="multipart/form-data">
 						<fieldset>
@@ -56,8 +71,8 @@
 									<h:outputLabel for="descricao"
 										value="#{messages['positivo.novaProposta.descricao']}:" />
 									<h:inputTextarea id="descricao"
-										value="#{propostaAction.propostaSelecionada.descricao}" required="true"
-										class="textarea_perso"
+										value="#{propostaAction.propostaSelecionada.descricao}"
+										required="true" class="textarea_perso"
 										requiredMessage="#{messages['positivo.novaProposta.descricaoEmBranco']}:"
 										validatorMessage="#{messages['positivo.novaProposta.descricaoTamanho']}:">
 										<f:validateLength maximum="255" />
@@ -66,8 +81,8 @@
 									<h:outputLabel for="objetivos"
 										value="#{messages['positivo.novaProposta.objetivos']}:" />
 									<h:inputTextarea id="objetivos"
-										value="#{propostaAction.propostaSelecionada.objetivos}" required="true"
-										class="textarea_perso"
+										value="#{propostaAction.propostaSelecionada.objetivos}"
+										required="true" class="textarea_perso"
 										requiredMessage="#{messages['positivo.novaProposta.objetivosEmBranco']}:"
 										validatorMessage="#{messages['positivo.novaProposta.objetivosTamanho']}:">
 										<f:validateLength maximum="255" />
@@ -76,8 +91,8 @@
 									<h:outputLabel for="publicoAlvo"
 										value="#{messages['positivo.novaProposta.publicoAlvo']}:" />
 									<h:inputTextarea id="publicoAlvo"
-										value="#{propostaAction.propostaSelecionada.publicoAlvo}" required="true"
-										class="textarea_perso"
+										value="#{propostaAction.propostaSelecionada.publicoAlvo}"
+										required="true" class="textarea_perso"
 										requiredMessage="#{messages['positivo.novaProposta.publicoAlvoEmBranco']}:"
 										validatorMessage="#{messages['positivo.novaProposta.publicoAlvoTamanho']}:">
 										<f:validateLength maximum="255" />
@@ -96,7 +111,8 @@
 									<h:outputLabel for="prototipo"
 										value="#{messages['positivo.novaProposta.prototipo']}:" />
 									<s:fileUpload id="arquivo"
-										data="#{propostaAction.proposta.arquivoGUI}" />								</h:panelGrid>
+										data="#{propostaAction.proposta.arquivoGUI}" />
+								</h:panelGrid>
 							</div>
 						</fieldset>
 						<div class="actionButtons">

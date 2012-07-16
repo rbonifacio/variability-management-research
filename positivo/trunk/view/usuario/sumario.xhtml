@@ -53,7 +53,17 @@
 				<s:div styleClass="info2">
 					<!-- Sumario forma, nomes -->
 					<s:div>
-						<rich:messages />
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="../img/icon/Aviso.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="../img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="../img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
 					</s:div>
 					<h:form id="sumarioForm">
 						<fieldset>

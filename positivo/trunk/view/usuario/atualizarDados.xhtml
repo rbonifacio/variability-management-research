@@ -14,7 +14,19 @@
 
 			<h:panelGrid columns="2">
 				<s:div styleClass="info2">
-					<h:messages />
+					<s:div>
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="../img/icon/Aviso.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="../img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="../img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
+					</s:div>
 					<h:form id="alterarDadosForm">
 						<fieldset>
 							<legend>#{messages['positivo.atualizarDados.heading']}</legend>
@@ -33,9 +45,8 @@
 
 									<h:outputLabel for="sobrenome"
 										value="#{messages['positivo.novoUsuario.sobrenome']}:" />
-									<h:inputText id="sobrenome"
-										value="#{usuarioLogado.sobrenome}" required="true"
-										class="input_grande"
+									<h:inputText id="sobrenome" value="#{usuarioLogado.sobrenome}"
+										required="true" class="input_grande"
 										requiredMessage="#{messages['positivo.novoUsuario.sobrenomeEmBranco']}:"
 										validatorMessage="#{messages['positivo.novoUsuario.sobrenomeTamanho']}:">
 										<f:validateLength maximum="50" />
@@ -63,8 +74,8 @@
 
 									<h:outputLabel for="sexo"
 										value="#{messages['positivo.novoUsuario.sexo']}:" />
-									<h:selectOneRadio id="sexo"
-										value="#{usuarioLogado.sexo}" required="true"
+									<h:selectOneRadio id="sexo" value="#{usuarioLogado.sexo}"
+										required="true"
 										requiredMessage="#{messages['positivo.novoUsuario.sexoEmBranco']}:">
 										<f:selectItems value="#{usuarioAction.opcoesSexo()}" />
 									</h:selectOneRadio>
@@ -87,18 +98,16 @@
 									</h:inputText>
 
 									<h:outputLabel for="bairro" value="Bairro:" />
-									<h:inputText id="bairro"
-										value="#{usuarioLogado.bairro}" required="true"
-										class="input_grande"
+									<h:inputText id="bairro" value="#{usuarioLogado.bairro}"
+										required="true" class="input_grande"
 										requiredMessage="#{messages['positivo.novoUsuario.bairroEmBranco']}:"
 										validatorMessage="#{messages['positivo.novoUsuario.bairroTamanho']}:">
 										<f:validateLength maximum="255" />
 									</h:inputText>
 
 									<h:outputLabel for="endereco" value="Endereco:" />
-									<h:inputText id="endereco"
-										value="#{usuarioLogado.endereco}" required="true"
-										class="input_grande"
+									<h:inputText id="endereco" value="#{usuarioLogado.endereco}"
+										required="true" class="input_grande"
 										requiredMessage="#{messages['positivo.novoUsuario.enderecoEmBranco']}:"
 										validatorMessage="#{messages['positivo.novoUsuario.enderecoTamanho']}:">
 										<f:validateLength maximum="255" />
@@ -107,8 +116,7 @@
 									<h:outputLabel for="estado"
 										value="#{messages['positivo.novoUsuario.estado']}:" />
 									<h:selectOneMenu id="estado" defaultLabel="UF"
-										value="#{usuarioLogado.estado}" class="select"
-										required="true"
+										value="#{usuarioLogado.estado}" class="select" required="true"
 										requiredMessage="#{messages['positivo.novoUsuario.estadoEmBranco']}:">
 										<f:selectItems value="#{usuarioAction.opcoesEstado()}" />
 									</h:selectOneMenu>
@@ -122,7 +130,7 @@
 								<h:graphicImage url="../img/positivo/botoes/salvar.png"
 									alt="Salvar" title="Salvar" />
 							</h:commandLink>
-							
+
 							<h:commandLink action="cancelar">
 								<h:graphicImage url="../img/positivo/botoes/cancelar.png"
 									alt="Cancelar" title="Cancelar" />

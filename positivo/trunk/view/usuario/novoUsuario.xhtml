@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:a="http://richfaces.org/a4j" 
+	xmlns:a="http://richfaces.org/a4j"
 	xmlns:lightbox="http://richfaces.org/sandbox/lightbox"
 	template="../layout/template.xhtml">
 	<ui:define name="body">
@@ -15,43 +15,58 @@
 
 			<rich:modalPanel id="panel" width="670" height="440">
 				<f:facet name="header">
-		            <h:panelGroup>
-		            </h:panelGroup>
-		        </f:facet>
-		        <f:facet name="controls">
-		            <h:panelGroup>
-		                <h:graphicImage value="../img/close.png" styleClass="hidelink" id="hidelink"/>
-		                <rich:componentControl for="panel" attachTo="hidelink" operation="hide" event="onclick"/>
-		            </h:panelGroup>
-		        </f:facet>
-		        <iframe width="640" height="390" src="http://www.youtube.com/embed/XCF9PhpesD0" frameborder="0" >
-		        </iframe>
-		    </rich:modalPanel>
+					<h:panelGroup>
+					</h:panelGroup>
+				</f:facet>
+				<f:facet name="controls">
+					<h:panelGroup>
+						<h:graphicImage value="../img/close.png" styleClass="hidelink"
+							id="hidelink" />
+						<rich:componentControl for="panel" attachTo="hidelink"
+							operation="hide" event="onclick" />
+					</h:panelGroup>
+				</f:facet>
+				<iframe width="640" height="390"
+					src="http://www.youtube.com/embed/XCF9PhpesD0" frameborder="0">
+				</iframe>
+			</rich:modalPanel>
 
 			<h:panelGrid columns="2">
-        
+
 				<s:div styleClass="conteudo_img_esquerda_video">
-					<div style="font-size: 1.8em; color: #275975  " > VIDEO TUTORIAL PENCIL </div> 
+					<div style="font-size: 1.8em; color: #275975">VIDEO TUTORIAL
+						PENCIL</div>
 					<br></br>
 					<h:outputLink value="#" id="link">
 						<img src="../img/positivo/video.png" />
-						<rich:componentControl for="panel" attachTo="link" operation="show" event="onclick"/>
-   					</h:outputLink>
+						<rich:componentControl for="panel" attachTo="link"
+							operation="show" event="onclick" />
+					</h:outputLink>
 					<br></br>
 					Evolus Pencil #{messages['eh']} uma ferramenta livre, cuja finalidade #{messages['eh']} a 
 					<br></br>
 					#{messages['criacao']} de "#{messages['prototipo']}" de telas.
 				</s:div>
 
-				<s:div >
-					<s:div style="font-size: 1.0em; padding-left: 15px;" >
+				<s:div>
+					<s:div style="font-size: 1.0em; padding-left: 15px;">
 						#{messages['campos_obrigatorios']}
 					</s:div>
 					<rich:spacer height="25" />
 					<s:div>
-						<rich:messages />
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="../img/icon/Aviso.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="../img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="../img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
 					</s:div>
-					
+
 					<h:form id="loginForm">
 						<fieldset>
 							<legend>#{messages['positivo.login.usuario.cadastrado']}</legend>
@@ -60,12 +75,10 @@
 									columnClasses="name,value">
 									<h:outputLabel for="username">E-mail:</h:outputLabel>
 									<h:inputText id="username" value="#{credentials.username}"
-										class="input_grande" required="true"
-										requiredMessage="#{messages['positivo.login.usuario.emailEmBranco']}:" />
+										class="input_grande"/>
 									<h:outputLabel for="password">#{messages['positivo.login.senha']}:</h:outputLabel>
 									<h:inputSecret id="password" value="#{credentials.password}"
-										class="input_grande" required="true" 
-										requiredMessage="#{messages['positivo.login.usuario.senhaEmBranco']}:" />
+										class="input_grande"/>
 								</h:panelGrid>
 							</div>
 						</fieldset>
@@ -96,7 +109,7 @@
 									<h:outputLabel for="nome"
 										value="#{messages['positivo.novoUsuario.nome']}:" />
 									<h:inputText id="nome" value="#{usuarioAction.usuarioDto.nome}"
-										required="true" class="input_grande" 
+										required="true" class="input_grande"
 										requiredMessage="#{messages['positivo.novoUsuario.nomeEmBranco']}:"
 										validatorMessage="#{messages['positivo.novoUsuario.nomeTamanho']}:">
 										<f:validateLength maximum="50" />
@@ -108,7 +121,7 @@
 										value="#{usuarioAction.usuarioDto.sobrenome}" required="true"
 										class="input_grande"
 										requiredMessage="#{messages['positivo.novoUsuario.sobrenomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novoUsuario.sobrenomeTamanho']}:">
+										validatorMessage="#{messages['positivo.novoUsuario.sobrenomeTamanho']}:" >
 										<f:validateLength maximum="50" />
 									</h:inputText>
 

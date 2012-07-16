@@ -13,7 +13,19 @@
 
 			<h:panelGrid columns="2">
 				<s:div styleClass="info2">
-					<h:messages />
+					<s:div>
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="../img/icon/Aviso.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="../img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="../img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
+					</s:div>
 					<h:form id="contatoForm">
 						<fieldset>
 							<legend>#{messages['positivo.contato.contato']}</legend>
@@ -60,12 +72,11 @@
 							</h:commandLink>
 
 							<h:commandLink action="home" immediate="true">
-								<h:graphicImage
-									url="img/positivo/botoes/cancelar.png"
+								<h:graphicImage url="img/positivo/botoes/cancelar.png"
 									alt="Cancelar" title="Cancelar" />
 							</h:commandLink>
 
-<!--
+							<!--
 							<ui:insert name="actionButtons" />
 							<h:commandButton class="commandButton" id="submit" value="Enviar"
 								action="#{contatoAction.enviarContato()}" />

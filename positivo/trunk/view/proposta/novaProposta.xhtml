@@ -18,27 +18,42 @@
 			<h:form>
 				<s:div styleClass="menu_logado">
 					<ul class="menu_logado_li">
-						<li><a href="novaProposta.seam">Nova Proposta</a></li>
-						<li><a href="minhaProposta.seam">Minhas Propostas</a></li>
-						<li><a href="../usuario/sumario.seam">Sumario</a></li>
-						<li><a href="../usuario/alterarSenha.seam">Alterar Senha</a></li>
+						<li><a href="novaProposta.seam">Nova Proposta</a>
+						</li>
+						<li><a href="minhaProposta.seam">Minhas Propostas</a>
+						</li>
+						<li><a href="../usuario/sumario.seam">Sumario</a>
+						</li>
+						<li><a href="../usuario/alterarSenha.seam">Alterar Senha</a>
+						</li>
 						<li><h:commandButton value="#{messages['positivo.logout']}"
-								action="#{authenticator.logout()}" /></li>
+								action="#{authenticator.logout()}" />
+						</li>
 					</ul>
 				</s:div>
 			</h:form>
 
 			<h:panelGrid columns="2">
 				<s:div styleClass="info2">
-				
-					<s:div style="font-size: 1.0em; padding-left: 15px;" >
+
+					<s:div style="font-size: 1.0em; padding-left: 15px;">
 						#{messages['campos_obrigatorios']}
 					</s:div>
 					<rich:spacer height="25" />
 					<s:div>
-						<rich:messages />
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="../img/icon/Aviso.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="../img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="../img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
 					</s:div>
-				
+
 					<h:form id="novaPropostaForm" enctype="multipart/form-data">
 						<fieldset>
 							<legend>#{messages['positivo.novaProposta.heading']}</legend>
