@@ -13,7 +13,7 @@
 
 	<ui:define name="body">
 		<div class="corpo"
-			style="background: url(../img/positivo/bg.png) no-repeat; min-height: 690px; padding: 15px 0 0 0">
+			style="background: url(../img/positivo/bg.jpg) no-repeat; min-height: 690px; padding: 15px 0 0 0">
 
 			<h:form>
 				<s:div styleClass="menu_logado">
@@ -37,7 +37,7 @@
 				<s:div styleClass="info2">
 
 					<s:div style="font-size: 1.0em; padding-left: 15px;">
-						#{messages['campos_obrigatorios']}
+						<font style="color: red"> * </font>#{messages['campos_obrigatorios']}
 					</s:div>
 					<rich:spacer height="25" />
 					<s:div>

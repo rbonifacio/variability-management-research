@@ -7,17 +7,20 @@ h2{ font-size:16px; }
 /*********************************************CSS para letras, alteracoes rapidas. Refatorar isso******************************************************/
 #loginForm label, #novoForm label, #contatoForm label, #sumarioForm label, #alterarDadosForm label,
 #novaPropostaForm label{
-	font-size: 14px; 	font-weight: bold;	font: Arial;	color: #275975 ;
+	font-size: 14px; 	font-weight: normal;	font: Arial;	color: #275975 ;
 }
+
+#loginForm fieldset, #novoForm fieldset, #contatoForm fieldset, #sumarioForm fieldset, #alterarDadosForm fieldset,
+#novaPropostaForm fieldset{ max-width: 430px;  }
 
 #contatoForm textarea{ max-width:300px; width:300px; height:230px; max-height:230px; }
 #novaPropostaForm textarea{ max-width:300px; width:300px; height:100px; max-height:100px; }
 
 div.info { 	float:right; font-size: 1.2em; 	padding-left:640px; padding-top: 30px; } /*Conteudo texto a Direita*/
-div.info2{  float:left; font-size: 1.2em; 	padding-left: 150px; padding-top: 30px;} /*Conteudo texto a Esquerda*/
+div.info2{  float:left; font-size: 1.2em; 	padding-left: 150px; padding-top: 30px; min-width: 530px;} /*Conteudo texto a Esquerda*/
 div.info_especial { float:right; font-size: 1.6em; 	padding-left:40px; padding-top: 30px; } /*Conteudo texto a Direita*/
 
-div.conteudo_img_direita  {	float:right; padding-top: 150px; padding-left: 50px; }  	/*Conteudo imagem a direita*/
+div.conteudo_img_direita  {	float:right; padding-top: 150px; padding-left: 50px;  }  	/*Conteudo imagem a direita*/
 div.conteudo_img_esquerda { float:left; padding-top: 150px; padding-left: 140px; } 		/*Conteudo imagem a esquerda*/
 div.conteudo_img_esquerda_video { 
 	float:left; padding-top: 550px; padding-left: 150px; 
@@ -41,6 +44,11 @@ ul.menu_logado_li a:hover, ul.menu_logado_li li input:hover{
 }
 
 #texto_pequeno { font-size: 1.0em; padding-left: 15px;}
+
+div.ajuda_div {
+	background: url(../img/positivo/box_ajuda.png) repeat-x;
+}
+
 
 /********************************************************** TOPO ****************************************************************/
 #topoFixo{  margin:auto; width:100%; background: url(../img/positivo/bg_topo.png) repeat-x; }

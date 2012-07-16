@@ -22,8 +22,10 @@ import javax.persistence.Transient;
 import org.hibernate.validator.Digits;
 import org.hibernate.validator.Email;
 import org.hibernate.validator.Length;
+import org.hibernate.validator.NotEmpty;
 import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Past;
+import org.hibernate.validator.Pattern;
 
 import br.unb.cdt.desafioPositivo.model.acesso.AcessoUsuario;
 
@@ -43,21 +45,26 @@ public class Usuario implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="ID")
+	@Column(name="ID") 
 	private Long id;
 	
+	@Pattern(regex="[\\p{L}\\p{Space}]+", message="O nome deve conter apenas letras e espaços em branco")
 	@Column(name="NOME")
 	private String nome;
 	
+	@Pattern(regex="[\\p{L}\\p{Space}]+", message="O sobrenome deve conter apenas letras e espaços em branco")
 	@Column(name="SOBRENOME")
 	private String sobrenome;
 	
+    @Pattern(regex="(^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2})|(^\\d{3}\\d{3}\\d{3}\\d{2})$", message="O Cpf deve serguir o formato xxx.xxx.xxx-xx ou xxxxxxxxxxx")
 	@Column(name="CPF")
 	private String cpf;
 	
+    @Length(min=3,max=12)
 	@Column(name="RG")
 	private String rg;
 	
+    
 	@Column(name="CEP")
 	private String cep;
 	
