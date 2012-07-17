@@ -1,0 +1,141 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../layout/template.xhtml">
+
+<style type="text/css">
+	.rich-message-label { color: red; }
+	.col1 { width: 80px; }
+	.col2 { width: 400px; }
+	.col3 { width: 40px; }
+</style>
+
+	<ui:define name="body">
+		<div class="corpo"
+			style="background: url(../img/positivo/bg.jpg) no-repeat; min-height: 690px; padding: 15px 0 0 0">
+
+			<h:form>
+				<s:div styleClass="menu_logado">
+					<ul class="menu_logado_li">
+						<li><a href="novaProposta.seam">Nova Proposta</a></li>
+						<li><a href="minhaProposta.seam">Minhas Propostas</a></li>
+						<li><a href="../usuario/sumario.seam">Sumário</a></li>
+						<li><a href="../usuario/alterarSenha.seam">Alterar Senha</a></li>
+						<li><h:commandButton value="#{messages['positivo.logout']}"
+								action="#{authenticator.logout()}" /></li>
+					</ul>
+				</s:div>
+			</h:form>
+
+			<h:panelGrid columns="2">
+				<s:div styleClass="info2">
+					<s:div>
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="../img/icon/Aviso.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="../img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="../img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
+					</s:div>
+					<s:div id="table_div">
+					<fieldset>
+						<legend style="font-size: 14px; 	font-weight: bold;	font: Arial;	color: #275975 ;">
+							#{messages['positivo.sumario.heading2']}
+						</legend>
+						<h:form>
+							<!-- <rich:panel rendered="#{not empty propostasSubmetidas}"> -->
+								<rich:dataTable value="#{propostasSubmetidas}" var="prop"
+									onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+									onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+									cellpadding="0" cellspacing="0" width="480" border="0"
+									rendered="#{not empty propostasSubmetidas}">
+
+									<rich:column  width="30%">
+										<f:facet name="header">
+											<h:outputText
+												value="#{messages['positivo.sumario.nomeProposta']}" />
+										</f:facet>
+										<h:outputText value="#{prop.nome}" />
+									</rich:column>
+
+									<rich:column width="50%">
+										<f:facet name="header">
+											<h:outputText
+												value="#{messages['positivo.sumario.descricao']}" />
+										</f:facet>
+										<h:outputText value="#{prop.descricao}" />
+									</rich:column>
+
+									<rich:column width="20%">
+										<f:facet name="header">
+											<h:outputText
+												value="#{messages['positivo.sumario.opcoes.proposta']}" />
+										</f:facet>
+										<h:commandLink action="#{propostaAction.editarProposta}">
+											<h:graphicImage url="/img/edit_icon.png"
+												alt="#{messages['positivo.sumario.editar']}"
+												title="#{messages['positivo.sumario.editar']}" />
+										</h:commandLink>
+										<h:outputText value="   " />
+										<h:commandLink onclick="#{rich:component('confirmation')}.show();return false">
+											<h:graphicImage url="/img/delete_icon.png"
+												alt="#{messages['positivo.sumario.excluir']}"
+												title="#{messages['positivo.sumario.excluir']}" />
+										</h:commandLink>
+										
+										<a4j:jsFunction name="enviarr" action="#{propostaAction.excluir()}" render="table_div" />
+
+										<rich:modalPanel id="confirmation" width="640" height="150">
+											<f:facet name="header">Confirmation</f:facet>
+											<h:panelGrid>
+												<h:panelGrid columns="2">
+													<h:outputText value="Tem certeza que deseja apagar essa proposta?"
+														style="FONT-SIZE: large;" />
+												</h:panelGrid>
+												<h:panelGroup>
+													<h:commandLink action="#{propostaAction.excluir()}">
+														<h:graphicImage value="../img/icon/OkV.png" /> Sim
+													</h:commandLink>
+													<h:commandLink  onclick="#{rich:component('confirmation')}.hide();return false" >
+														<h:graphicImage value="../img/icon/ErroX.png" /> Não
+													</h:commandLink>
+												</h:panelGroup>
+											</h:panelGrid>
+										</rich:modalPanel>
+
+
+									</rich:column>
+								</rich:dataTable>
+						<!-- </rich:panel> -->
+						</h:form>
+
+						<!-- painel de propostas -->
+						<rich:panel rendered="#{empty propostasSubmetidas}">
+							<h2>#{messages['positivo.sumario.submetaPropostas']}</h2>
+						</rich:panel>
+					</fieldset>
+					</s:div>
+
+				</s:div>
+
+				<s:div styleClass="conteudo_img_direita">
+					<img src="../img/positivo/tablets_direita.png" />
+				</s:div>
+
+			</h:panelGrid>
+
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-2" ?> 
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">	
+
+		<div class="corpo" style="background: url(img/positivo/bg_regulamento.png) repeat-y; min-height:792px">
+		
+			<div style="padding:70px 0 0 170px; float: left ">
+				<ui:include src="menu.xhtml">
+					<ui:param name="projectName" value="desafioPositivo"/>
+				</ui:include>				
+			</div>
+			
+			<div style="width:600px; padding:70px 0 0 0; float: left; color:#7b7b7b; font:bold 14px arial;"> 
+				<font color="#3c84b5">V - DA SELEÇĂO</font>
+				<br />
+				<br />
+				a)	A seleçăo das 20 (vinte) melhores propostas de aplicativos será feita por uma Comissăo Julgadora nomeada pelos organizadores. 
+				Cada projeto será avaliado individualmente por 2 (dois) julgadores. Em casos discrepantes  será incorporado um terceiro julgador 
+				com a finalidade de aferir a aprovaçăo ou reprovaçăo da proposta. 
+				<br />
+				<br />
+				b)	A Comissăo Julgadora realizará análise das propostas, ocasiăo em que deverá apresentar parecer com as razőes de atribuiçăo da nota com base nos seguintes critérios:
+				<br />
+				<br />
+				i.	Mérito da inovaçăo
+				<br />
+				<br />
+				<dd>
+					Descriçăo clara e coerente da inovaçăo ;<br /><br />
+					Originalidade da inovaçăo (características da proposta que a tornam original, inusitada ou criativa).<br /><br />
+					Diferencial, atratividade e usabilidade do produto em relaçăo aos existentes no mercado;<br /><br />
+					Potencial de geraçăo de receita recorrente;
+				</dd>
+				<br />
+				<br />
+				ii.	Viabilidade técnica e econômica da inovaçăo
+				<br />
+				<br />
+				<dd>
+					Aplicaçăo prática da inovaçăo proposta<br /><br />
+					Consistęncia e coeręncia da especificaçăo técnica<br /><br />
+					Consistęncia e coeręncia do planejamento apresentado<br /><br />
+					Viabilidade técnica e aplicabilidade para o Tablet Positivo YPY.<br /><br />
+				</dd>
+				<br />
+				<br />
+				c)	Para cada critério listado na letra "a)" acima, poderá será atribuída ŕ nota máxima abaixo indicada:
+				<br />
+				<br />
+				<dd>
+				i.	- Mérito da inovaçăo: 50 pontos<br /><br />
+				ii.	- Viabilidade técnica e econômica da inovaçăo 50 pontos 
+				</dd>
+				<br />
+				<br />
+				d)	Serăo consideradas aprovadas as propostas que obtiverem no mínimo 70 pontos 
+				<br />
+				<br />
+				e)	Havendo empate entre uma ou mais propostas, a Comissăo Julgadora decidirá, por consenso ou maioria, o resultado final.
+			</div>
+		
+		</div>
+		
+	</ui:define>
+</ui:composition>
