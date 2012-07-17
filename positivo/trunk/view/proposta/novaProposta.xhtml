@@ -18,17 +18,13 @@
 			<h:form>
 				<s:div styleClass="menu_logado">
 					<ul class="menu_logado_li">
-						<li><a href="novaProposta.seam">Nova Proposta</a>
-						</li>
-						<li><a href="minhaProposta.seam">Minhas Propostas</a>
-						</li>
-						<li><a href="../usuario/sumario.seam">Sumário</a>
-						</li>
+						<li><a href="novaProposta.seam">Nova Proposta</a></li>
+						<li><a href="minhaProposta.seam">Minhas Propostas</a></li>
+						<li><a href="../usuario/sumario.seam">Sumário</a></li>
 						<li><a href="../usuario/alterarSenha.seam">Alterar Senha</a>
 						</li>
 						<li><h:commandButton value="#{messages['positivo.logout']}"
-								action="#{authenticator.logout()}" />
-						</li>
+								action="#{authenticator.logout()}" /></li>
 					</ul>
 				</s:div>
 			</h:form>
@@ -117,6 +113,9 @@
 								</h:panelGrid>
 							</div>
 						</fieldset>
+
+						<rich:spacer height="10" />
+
 						<div class="actionButtons">
 
 							<h:commandLink action="#{propostaAction.cadastro}">

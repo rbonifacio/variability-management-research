@@ -65,7 +65,11 @@
 								</h:panelGrid>
 							</div>
 						</fieldset>
+						
+						<rich:spacer height="10" />
+						
 						<div class="actionButtons">
+						
 							<h:commandLink action="#{contatoAction.enviarContato()}">
 								<h:graphicImage url="img/positivo/botoes/enviar.png"
 									alt="Enviar" title="Enviar" />
@@ -75,14 +79,7 @@
 								<h:graphicImage url="img/positivo/botoes/cancelar.png"
 									alt="Cancelar" title="Cancelar" />
 							</h:commandLink>
-
-							<!--
-							<ui:insert name="actionButtons" />
-							<h:commandButton class="commandButton" id="submit" value="Enviar"
-								action="#{contatoAction.enviarContato()}" />
-							<h:commandButton class="commandButton" id="recuperarSenha"
-								value="Limpar" action="home" />
-								-->
+							
 						</div>
 					</h:form>
 				</s:div>
