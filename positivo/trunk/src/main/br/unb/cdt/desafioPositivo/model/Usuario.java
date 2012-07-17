@@ -19,10 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.validator.Digits;
 import org.hibernate.validator.Email;
 import org.hibernate.validator.Length;
-import org.hibernate.validator.NotEmpty;
 import org.hibernate.validator.NotNull;
 import org.hibernate.validator.Past;
 import org.hibernate.validator.Pattern;
@@ -56,7 +54,6 @@ public class Usuario implements Serializable {
 	@Column(name="SOBRENOME")
 	private String sobrenome;
 	
-    @Pattern(regex="(^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2})|(^\\d{3}\\d{3}\\d{3}\\d{2})$", message="O Cpf deve serguir o formato xxx.xxx.xxx-xx ou xxxxxxxxxxx")
 	@Column(name="CPF")
 	private String cpf;
 	
@@ -149,7 +146,6 @@ public class Usuario implements Serializable {
 	}
 
 	@NotNull
-	@Length(min=11, max=11)
 	public String getCpf() {
 		return cpf;
 	}

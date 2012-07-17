@@ -178,9 +178,6 @@ public class UsuarioAction {
 	private String validaCPF(String stringCPF) {
 		int i, soma1, soma2, digito1, digito2;
 
-		if (stringCPF.length() != 11)
-			return "Verifique se você não esqueceu nenhum número no CPF.";
-
 		if ((stringCPF.equals("00000000000"))
 				|| (stringCPF.equals("11111111111"))
 				|| (stringCPF.equals("22222222222"))
