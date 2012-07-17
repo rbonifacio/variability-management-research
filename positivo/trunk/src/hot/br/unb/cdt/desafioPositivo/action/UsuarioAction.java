@@ -177,7 +177,9 @@ public class UsuarioAction {
 	 */
 	private String validaCPF(String stringCPF) {
 		int i, soma1, soma2, digito1, digito2;
-
+		
+		stringCPF = stringCPF.substring(0, 3) + stringCPF.substring(4, 7) + stringCPF.substring(8, 11) + stringCPF.substring(12, 14);
+		
 		if ((stringCPF.equals("00000000000"))
 				|| (stringCPF.equals("11111111111"))
 				|| (stringCPF.equals("22222222222"))
