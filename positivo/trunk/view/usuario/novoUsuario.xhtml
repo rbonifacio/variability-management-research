@@ -9,10 +9,9 @@
 	xmlns:a="http://richfaces.org/a4j"
 	xmlns:lightbox="http://richfaces.org/sandbox/lightbox"
 	template="../layout/template.xhtml">
-	
 	<ui:define name="body">
 		<div class="corpo"
-			style="background: url(../img/positivo/bg.jpg) no-repeat; min-height: 850px; padding: 15px 0 0 0">
+			style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 850px; padding: 15px 0 0 0">
 
 			<rich:modalPanel id="panel" width="670" height="440">
 				<f:facet name="header">
@@ -46,6 +45,7 @@
 				</s:div>
 			</rich:modalPanel>
 
+<!--  Área para ajuda.
 			<s:div style="padding-left: 910px ;">
 				<h:outputLink value="#" id="link_ajuda">
 					<img src="../img/positivo/ajuda.png" />
@@ -53,13 +53,9 @@
 						operation="show" event="onclick" />
 				</h:outputLink>
 			</s:div>
+-->
 
 			<h:panelGrid columns="2">
-			
-				<s:div styleClass="conteudo_img_esquerda">
-					<img src="../img/positivo/tablets_direita.png" />
-				</s:div>
-			
 				<s:div styleClass="conteudo_img_esquerda_video">
 					<div style="font-size: 1.8em; color: #275975">VIDEO TUTORIAL
 						PENCIL</div>
@@ -93,7 +89,7 @@
 
 					<h:form id="loginForm">
 						
-						
+						<rich:jQuery selector="#cpf" timing="onload" query="mask('999.999.999-99')" />
 						
 						<fieldset>
 							<legend>#{messages['positivo.login.usuario.cadastrado']}</legend>
@@ -114,6 +110,7 @@
 						</fieldset>
 						<div class="actionButtons">
 							<ui:insert name="actionButtons" />
+
 
 							<h:commandLink action="#{usuarioAction.autenticar}">
 								<h:graphicImage url="../img/positivo/botoes/login.gif"
@@ -291,5 +288,7 @@
     		$("#cep").mask("99999-999",{placeholder:" "});  
 			});  
 		</script> 
+				
+
 	</ui:define>
 </ui:composition>
