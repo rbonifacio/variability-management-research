@@ -11,7 +11,7 @@
 	template="../layout/template.xhtml">
 	<ui:define name="body">
 		<div class="corpo"
-			style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 850px; padding: 15px 0 0 0">
+			style="background: url(../img/positivo/bg.jpg) no-repeat; min-height: 850px; padding: 15px 0 0 0">
 
 			<rich:modalPanel id="panel" width="670" height="440">
 				<f:facet name="header">
@@ -45,7 +45,6 @@
 				</s:div>
 			</rich:modalPanel>
 
-<!--  Área para ajuda.
 			<s:div style="padding-left: 910px ;">
 				<h:outputLink value="#" id="link_ajuda">
 					<img src="../img/positivo/ajuda.png" />
@@ -53,10 +52,19 @@
 						operation="show" event="onclick" />
 				</h:outputLink>
 			</s:div>
--->
 
 			<h:panelGrid columns="2">
-				<s:div styleClass="conteudo_img_esquerda_video">
+				<s:div styleClass="conteudo_img_esquerda_inscricao">
+				
+					<img src="../img/positivo/tablet_inscricao.png" />
+				<div style="padding: 5px 0;font-size: 1.8em;text-align: center;">
+					TRANSFORME A SUA IDEIA <br></br> EM UMA ÓTIMA OPORTUNIDADE 
+					<br> </br>
+					<font style="color: #275975; font-weight: bold;">PARTICIPE!</font>	
+				</div>
+				
+				
+			<!-- 
 					<div style="font-size: 1.8em; color: #275975">VIDEO TUTORIAL
 						PENCIL</div>
 					<br></br>
@@ -69,6 +77,9 @@
 					Evolus Pencil #{messages['eh']} uma ferramenta livre, cuja finalidade #{messages['eh']} a 
 					<br></br>
 					#{messages['criacao']} de "#{messages['prototipo']}" de telas.
+			
+			-->
+					
 				</s:div>
 
 				<s:div style="padding-left: 45px;">

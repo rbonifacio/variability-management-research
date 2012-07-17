@@ -8,10 +8,68 @@
 	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
 
 	<ui:define name="body">
-	
-		<div class="corpo" style="background: url(img/positivo/sobre.png) no-repeat; min-height:1380px">
-		
+
+		<div class="corpo"
+			style="background: url(img/positivo/bg.jpg) no-repeat; min-height: 1380px; padding-left: 140px; padding-top: 30px;">
+
+			<rich:modalPanel id="pesando_video_panel" width="670" height="440">
+				<f:facet name="header">
+					<h:panelGroup>
+					</h:panelGroup>
+				</f:facet>
+				<f:facet name="controls">
+					<h:panelGroup>
+						<h:graphicImage value="./img/close.png" styleClass="hidelink"
+							id="hidelink" />
+						<rich:componentControl for="pesando_video_panel" attachTo="hidelink"
+							operation="hide" event="onclick" />
+					</h:panelGroup>
+				</f:facet>
+				<iframe width="640" height="390"
+					src="http://www.youtube.com/embed/sgZ_-02bq00" frameborder="0">
+				</iframe>
+			</rich:modalPanel>
+
+			<rich:modalPanel id="organizando_video_panel" width="670" height="440">
+				<f:facet name="header">
+					<h:panelGroup>
+					</h:panelGroup>
+				</f:facet>
+				<f:facet name="controls">
+					<h:panelGroup>
+						<h:graphicImage value="./img/close.png" styleClass="hidelink"
+							id="hidelink2" />
+						<rich:componentControl for="organizando_video_panel" attachTo="hidelink2"
+							operation="hide" event="onclick" />
+					</h:panelGroup>
+				</f:facet>
+				<iframe width="640" height="390"
+					src="http://www.youtube.com/embed/o0dzFRY3ghQ"  frameborder="0">
+				</iframe>
+			</rich:modalPanel>
+
+			<div>
+				<img src="./img/positivo/top_sobre.gif" />
+			</div>
+			<div style="float: left;">
+				<h:outputLink value="#" id="pesando_video">
+					<img src="./img/positivo/esquerda_sobre.gif" />
+					<rich:componentControl for="pesando_video_panel" attachTo="pesando_video" operation="show"
+						event="onclick" />
+				</h:outputLink>
+			</div>
+			<div style="float: right; padding-right: 300px;">
+				<h:outputLink value="#" id="organizando_video">
+				<img src="./img/positivo/direita_sobre.gif" />
+				<rich:componentControl for="organizando_video_panel" attachTo="organizando_video" operation="show"
+						event="onclick" />
+				</h:outputLink>
+			</div>
+			<div>
+				<img src="./img/positivo/botton_sobre.gif" />
+			</div>
 		</div>
-		
+
+
 	</ui:define>
 </ui:composition>

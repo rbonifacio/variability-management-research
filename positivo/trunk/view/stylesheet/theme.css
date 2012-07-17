@@ -22,6 +22,9 @@ div.info_especial { float:right; font-size: 1.6em; 	padding-left:40px; padding-t
 
 div.conteudo_img_direita  {	float:right; padding-top: 150px; padding-left: 50px;  }  	/*Conteudo imagem a direita*/
 div.conteudo_img_esquerda { float:left; padding-top: 150px; padding-left: 140px; } 		/*Conteudo imagem a esquerda*/
+div.conteudo_img_esquerda_inscricao{
+	float:left; padding-top: 0px; padding-left: 140px;
+}
 div.conteudo_img_esquerda_video { 
 	float:left; padding-top: 550px; padding-left: 150px; 
 	font-size:  1.4em; 	
