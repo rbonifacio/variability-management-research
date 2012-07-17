@@ -11,8 +11,18 @@
 	<ui:define name="body">
 		<div class="corpo"
 			style="background: url(img/positivo/inicio.png) no-repeat; min-height: 673px; margin: 0 0 -20px 0; z-index: 2;">
-			<div style="padding-top: 25px;padding-left: 150px">
-				<h:messages />
+			<div style="padding-top: 25px; padding-left: 150px">
+				<rich:messages>
+					<f:facet name="infoMarker">
+						<h:graphicImage url="../img/icon/Aviso.png" />
+					</f:facet>
+					<f:facet name="errorMarker">
+						<h:graphicImage value="../img/icon/ErroX.png" />
+					</f:facet>
+					<f:facet name="passedMarker">
+						<h:graphicImage value="../img/icon/OkV.png" />
+					</f:facet>
+				</rich:messages>
 			</div>
 		</div>
 
