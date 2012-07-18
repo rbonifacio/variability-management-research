@@ -30,7 +30,7 @@
 					src="http://www.youtube.com/embed/XCF9PhpesD0" frameborder="0">
 				</iframe>
 			</rich:modalPanel>
-			
+
 			<rich:modalPanel id="ajuda_panel" width="700" height="800">
 				<f:facet name="controls">
 					<h:panelGroup>
@@ -40,7 +40,7 @@
 							operation="hide" event="onclick" />
 					</h:panelGroup>
 				</f:facet>
-				<s:div >
+				<s:div>
 					<img src="../img/positivo/box_ajuda.png" />
 				</s:div>
 			</rich:modalPanel>
@@ -55,16 +55,15 @@
 
 			<h:panelGrid columns="2">
 				<s:div styleClass="conteudo_img_esquerda_inscricao">
-				
+
 					<img src="../img/positivo/tablet_inscricao.png" />
-				<div style="padding: 5px 0;font-size: 1.8em;text-align: center;">
-					TRANSFORME A SUA IDEIA <br></br> EM UMA ÓTIMA OPORTUNIDADE 
-					<br> </br>
-					<font style="color: #275975; font-weight: bold;">PARTICIPE!</font>	
-				</div>
-				
-				
-			<!-- 
+					<div style="padding: 5px 0; font-size: 1.8em; text-align: center;">
+						TRANSFORME A SUA IDEIA <br></br> EM UMA ÓTIMA OPORTUNIDADE <br>
+						</br> <font style="color: #275975; font-weight: bold;">PARTICIPE!</font>
+					</div>
+
+
+					<!-- 
 					<div style="font-size: 1.8em; color: #275975">VIDEO TUTORIAL
 						PENCIL</div>
 					<br></br>
@@ -79,7 +78,7 @@
 					#{messages['criacao']} de "#{messages['prototipo']}" de telas.
 			
 			-->
-					
+
 				</s:div>
 
 				<s:div style="padding-left: 45px;">
@@ -87,7 +86,7 @@
 					<s:div>
 						<rich:messages>
 							<f:facet name="infoMarker">
-								<h:graphicImage url="../img/icon/Aviso.png" />
+								<h:graphicImage url="../img/icon/OkV.png" />
 							</f:facet>
 							<f:facet name="errorMarker">
 								<h:graphicImage value="../img/icon/ErroX.png" />
@@ -99,9 +98,10 @@
 					</s:div>
 
 					<h:form id="loginForm">
-						
-						<rich:jQuery selector="#cpf" timing="onload" query="mask('999.999.999-99')" />
-						
+
+						<rich:jQuery selector="#cpf" timing="onload"
+							query="mask('999.999.999-99')" />
+
 						<fieldset>
 							<legend>#{messages['positivo.login.usuario.cadastrado']}</legend>
 							<div class="dialog">
@@ -111,7 +111,7 @@
 									<h:inputText id="username" value="#{credentials.username}"
 										class="input_grande">
 									</h:inputText>
-									
+
 									<h:outputLabel for="password">#{messages['positivo.login.senha']}:</h:outputLabel>
 									<h:inputSecret id="password" value="#{credentials.password}"
 										class="input_grande">
@@ -163,7 +163,7 @@
 										value="#{usuarioAction.usuarioDto.sobrenome}" required="true"
 										class="input_grande"
 										requiredMessage="#{messages['positivo.novoUsuario.sobrenomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novoUsuario.sobrenomeTamanho']}:" >
+										validatorMessage="#{messages['positivo.novoUsuario.sobrenomeTamanho']}:">
 										<f:validateLength maximum="50" />
 										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
@@ -282,14 +282,14 @@
 			</h:panelGrid>
 		</div>
 
-		<script src="../jquery-1.7.2.js" type="text/javascript"></script>  
-		<script src="../jquery.maskedinput.js" type="text/javascript"></script>    
+		<script src="../jquery-1.7.2.js" type="text/javascript"></script>
+		<script src="../jquery.maskedinput.js" type="text/javascript"></script>
 		<script type="text/javascript">  
 			jQuery(function($){  
     		$("#cpf").mask("999.999.999-99",{placeholder:" "});
     		$("#cep").mask("99999-999",{placeholder:" "});    
 			});  
-		</script> 
+		</script>
 
 	</ui:define>
 </ui:composition>
