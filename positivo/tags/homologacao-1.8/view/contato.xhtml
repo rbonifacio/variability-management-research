@@ -1,0 +1,93 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+		<div class="corpo"
+			style="background: url(img/positivo/bg.jpg) no-repeat; min-height: 600px; padding: 15px 0 0 0">
+ 
+			<h:panelGrid columns="2">
+				<s:div styleClass="info2">
+					<s:div>
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="./img/icon/OkV.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="./img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="./img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
+					</s:div>
+					<h:form id="contatoForm">
+						<fieldset>
+							<legend>#{messages['positivo.contato.contato']}</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+									<h:outputLabel for="nome">#{messages['positivo.contato.nome']}:</h:outputLabel>
+									<h:inputText id="nome" value="#{contatoAction.nome}"
+										required="true" class="input_grande"
+										requiredMessage="#{messages['positivo.contato.nomeEmBranco']}:"
+										validatorMessage="#{messages['positivo.contato.nomeTamanho']}:">
+										<f:validateLength maximum="255" />
+										<rich:ajaxValidator event="onblur" />
+									</h:inputText>
+									<h:outputLabel for="email">#{messages['positivo.contato.email']}:</h:outputLabel>
+									<h:inputText id="email" value="#{contatoAction.email}" class="input_grande">
+										<rich:ajaxValidator event="onblur" />
+									</h:inputText>
+									<h:outputLabel for="assunto">#{messages['positivo.contato.assunto']}:</h:outputLabel>
+									<h:inputText id="assunto" value="#{contatoAction.assunto}"
+										required="true" class="input_grande"
+										requiredMessage="#{messages['positivo.contato.assuntoEmBranco']}:"
+										validatorMessage="#{messages['positivo.contato.assuntoTamanho']}:">
+										<f:validateLength maximum="100" />
+										<rich:ajaxValidator event="onblur" />
+									</h:inputText>
+									<h:outputLabel for="mensagem">Mensagem:</h:outputLabel>
+									<h:inputTextarea id="mensagem"
+										value="#{contatoAction.mensagem}"
+										styleClass="mensagem_textarea" required="true"
+										requiredMessage="#{messages['positivo.contato.menssagemEmBranco']}:"
+										validatorMessage="#{messages['positivo.contato.menssagemTamanho']}:">
+										<f:validateLength minimum="10" maximum="300" />
+										<rich:ajaxValidator event="onblur" />
+									</h:inputTextarea>
+								</h:panelGrid>
+							</div>
+						</fieldset>
+						
+						<rich:spacer height="10" />
+						
+						<div class="actionButtons">
+						
+							<h:commandLink action="#{contatoAction.enviarContato()}">
+								<h:graphicImage url="img/positivo/botoes/enviar.png"
+									alt="Enviar" title="Enviar" />
+							</h:commandLink>
+
+							<h:commandLink action="home" immediate="true">
+								<h:graphicImage url="img/positivo/botoes/cancelar.png"
+									alt="Cancelar" title="Cancelar" />
+							</h:commandLink>
+							
+						</div>
+					</h:form>
+				</s:div>
+	
+				<s:div styleClass="conteudo_img_direita">
+					<img src="img/positivo/contato_bonecos.png" />
+				</s:div>
+
+			</h:panelGrid>
+		</div>
+	</ui:define>
+</ui:composition>

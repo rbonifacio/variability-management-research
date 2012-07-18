@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-2" ?> 
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">	
+
+		<div class="corpo" style="background: url(img/positivo/bg_regulamento.png) no-repeat; min-height:792px">
+		
+			<div style="padding:70px 0 0 170px; float: left ">
+				<ui:include src="menu.xhtml">
+					<ui:param name="projectName" value="desafioPositivo"/>
+				</ui:include>				
+			</div>
+			
+			<div style="width:600px; padding:70px 0 0 0; float: left; color:#7b7b7b; font:bold 14px arial;"> 
+				<font color="#3c84b5">III - DAS INSCRIÇŐES</font>
+				<br />
+				<br />
+				a)	As inscriçőes deverăo ser realizadas até [data], exclusivamente pela Internet, no hotsite do Desafio 
+				Positivo de Inovaçăo: www.desafiopositivodeinovacao.com.br.
+				<br />
+				<br />
+				b)	O participante deverá cadastrar um login e senha no hotsite do Desafio para os próximos acessos, 
+				preencher a ficha de inscriçăo e submeter o projeto que descreva o objetivo, funcionalidade e demais 
+				características do aplicativo proposto, conforme especificaçőes técnicas descritas no Item II, letra d).
+				<br />
+				<br />
+				c)	Após o preenchimento da ficha, a inscriçăo será confirmada através do e-mail indicado na ficha de inscriçăo.
+				<br />
+				<br />
+				d)	Caso se constate, em qualquer etapa do Desafio, que quaisquer das informaçőes prestadas na ficha de inscriçăo 
+				săo inverídicas o participante será desclassificado. 
+			</div>
+		
+		</div>
+		
+	</ui:define>
+</ui:composition>
