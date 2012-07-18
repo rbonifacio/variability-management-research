@@ -7,6 +7,7 @@ public class Mensagens {
 	public static final String USUARIO_CONFIRMA_SOLICITACAO_CADASTRO = "positivo.usuarioAction.confirmacaoCadastroRealizada";
 	public static final String SENHA_INVALIDA = "positivo.usuarioAction.senhaInvalida";
 	public static final String SENHA_DIFERENTE = "positivo.usuarioAction.senhaDiferente";
+	public static final String SENHA_INCORRETA = "positivo.usuarioAction.senhaIncorreta";
 	public static final String NOVA_SENHA_INVALIDA = "positivo.usuarioAction.novaSenhaInvalida";
 	public static final String NOVA_SENHA_DIFERENTE = "positivo.usuarioAction.novaSenhaDiferente";
 	public static final String SOLICITACAO_CADASTRO = "positivo.usuarioAction.solicitacaoCadastro";

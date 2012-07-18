@@ -154,7 +154,7 @@ public class DesafioPositivoFacade {
 			realizaAlteracaoSenha(usuarioLogado, senha);
 			break;
 		case SENHA_INVALIDA:
-			throw new Exception(Mensagens.EXP_SENHA);
+			throw new ExcecaoSenhaIncorreta();
 
 		default:
 			throw new Exception(Mensagens.EXP_REQUISICAO);

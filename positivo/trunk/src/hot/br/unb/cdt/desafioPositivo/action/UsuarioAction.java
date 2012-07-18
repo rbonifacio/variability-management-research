@@ -22,6 +22,7 @@ import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoIdadeInvalida;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoNomeInvalido;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoSenhaDiferente;
+import br.unb.cdt.desafioPositivo.facade.ExcecaoSenhaIncorreta;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoSenhaInvalida;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoSobrenomeInvalido;
 import br.unb.cdt.desafioPositivo.facade.ExcecaoUsuarioCadastrado;
@@ -512,6 +513,11 @@ public class UsuarioAction {
 			e.printStackTrace();
 			StatusMessages.instance().addFromResourceBundle(
 					Mensagens.SENHA_DIFERENTE);
+			return null;
+		} catch (ExcecaoSenhaIncorreta e) {
+			e.printStackTrace();
+			StatusMessages.instance().addFromResourceBundle(
+					Mensagens.SENHA_INCORRETA);
 			return null;
 		} catch (Exception e) {
 			StatusMessages.instance().add(StatusMessage.Severity.ERROR,

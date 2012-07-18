@@ -152,8 +152,7 @@
 					<rich:spacer height="15" />
 					
 					<h:form id="novoForm">
-					
-						<a4j:jsFunction name="change" render="div_submit"> </a4j:jsFunction>
+
 					
 						<fieldset>
 							<legend>#{messages['positivo.novoUsuario.quero.cadastrar']}</legend>
@@ -279,7 +278,7 @@
 								<h:outputLabel for="confirma_termos"
 										value="#{messages['positivo.novoUsuario.confirmacaoEmail']}:" />
 								<h:selectBooleanCheckbox id="confirma_termos" value="#{userAction.enabled}"  > 
-									<a4j:ajax event="change" oncomplete="change('')"/>
+									<a4j:support id="rupali" event="onclick" ajaxSingle="true" reRender="div_submit" >
 								</h:selectBooleanCheckbox>
 
 							</div>
@@ -289,7 +288,7 @@
 						
 						<div class="actionButtons" id="div_submit">
 
-							<h:commandLink action="#{usuarioAction.cadastro}">
+							<h:commandLink action="#{usuarioAction.cadastro}" disabled="#{userAction.enabled}">
 								<h:graphicImage url="../img/positivo/botoes/cadastrar.png"
 									alt="Cadastrar" title="Cadastrar" />
 							</h:commandLink>
