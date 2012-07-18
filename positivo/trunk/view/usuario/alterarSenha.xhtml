@@ -54,17 +54,26 @@
 									<h:outputLabel for="senhaAtual"
 										value="#{messages['positivo.alterarSenha.senhaAtual']}" />
 									<h:inputSecret id="senhaAtual" class="input_grande"
-										value="#{alteraSenhaDTO.senhaAtual}" />
+										value="#{alteraSenhaDTO.senhaAtual}" 
+										requiredMessage="Campo senha atual está vazio">										
+										<rich:ajaxValidator event="onblur" />
+									</h:inputSecret>
 
 									<h:outputLabel for="novaSenha"
 										value="#{messages['positivo.alterarSenha.novaSenha']}" />
 									<h:inputSecret id="novaSenha" class="input_grande"
-										value="#{alteraSenhaDTO.novaSenha}" required="true" />
+										value="#{alteraSenhaDTO.novaSenha}" required="true" 
+										requiredMessage="Campo nova senha está vazio">										
+										<rich:ajaxValidator event="onblur" />
+									</h:inputSecret>
 
 									<h:outputLabel for="confirmacaoSenha"
 										value="#{messages['positivo.alterarSenha.confirmacaoSenha']}" />
 									<h:inputSecret id="confirmacaoSenha" class="input_grande"
-										value="#{alteraSenhaDTO.confirmacaoNovaSenha}" required="true" />
+										value="#{alteraSenhaDTO.confirmacaoNovaSenha}" required="true" 
+										requiredMessage="Campo confirmar senha está vazio">										
+										<rich:ajaxValidator event="onblur" />
+									</h:inputSecret>
 								</h:panelGrid>
 							</div>
 						</fieldset>

@@ -57,6 +57,16 @@ public class UsuarioAction {
 
 	@In
 	private Credentials credentials;
+	
+	private boolean enable;
+
+	public boolean isEnable() {
+		return enable;
+	}
+
+	public void setEnable(boolean enable) {
+		this.enable = enable;
+	}
 
 	public UsuarioAction() {
 		usuarioDto = new Usuario();

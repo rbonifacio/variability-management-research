@@ -45,6 +45,7 @@
 				</s:div>
 			</rich:modalPanel>
 
+<!-- 
 			<s:div style="padding-left: 910px ;">
 				<h:outputLink value="#" id="link_ajuda">
 					<img src="../img/positivo/ajuda.png" />
@@ -52,6 +53,8 @@
 						operation="show" event="onclick" />
 				</h:outputLink>
 			</s:div>
+
+ -->
 
 			<h:panelGrid columns="2">
 				<s:div styleClass="conteudo_img_esquerda_inscricao">
@@ -121,6 +124,9 @@
 								</h:panelGrid>
 							</div>
 						</fieldset>
+						
+						<rich:spacer height="10" />
+						
 						<div class="actionButtons">
 							<ui:insert name="actionButtons" />
 
@@ -142,8 +148,13 @@
 					<s:div style="font-size: 1.0em; padding-left: 15px;">
 						<font style="color: red"> * </font>#{messages['campos_obrigatorios']}
 					</s:div>
+					
 					<rich:spacer height="15" />
+					
 					<h:form id="novoForm">
+					
+						<a4j:jsFunction name="change" render="div_submit"> </a4j:jsFunction>
+					
 						<fieldset>
 							<legend>#{messages['positivo.novoUsuario.quero.cadastrar']}</legend>
 							<div class="dialog">
@@ -264,10 +275,19 @@
 										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
 								</h:panelGrid>
+								
+								<h:outputLabel for="confirma_termos"
+										value="#{messages['positivo.novoUsuario.confirmacaoEmail']}:" />
+								<h:selectBooleanCheckbox id="confirma_termos" value="#{userAction.enabled}"  > 
+									<a4j:ajax event="change" oncomplete="change('')"/>
+								</h:selectBooleanCheckbox>
 
 							</div>
 						</fieldset>
-						<div class="actionButtons">
+						
+						<rich:spacer height="10" />
+						
+						<div class="actionButtons" id="div_submit">
 
 							<h:commandLink action="#{usuarioAction.cadastro}">
 								<h:graphicImage url="../img/positivo/botoes/cadastrar.png"
