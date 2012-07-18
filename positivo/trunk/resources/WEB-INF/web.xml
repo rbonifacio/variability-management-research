@@ -1,103 +1,135 @@
 <?xml version="1.0" ?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-   version="2.5">
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
 
-   <!-- RichFaces -->
+	<!-- RichFaces -->
 
-   <context-param>
-      <param-name>org.richfaces.SKIN</param-name>
-      <param-value>glassX</param-value>
-   </context-param>
+	<context-param>
+		<param-name>org.richfaces.SKIN</param-name>
+		<param-value>glassX</param-value>
+	</context-param>
 
-   <!-- Suppress spurious stylesheets -->
+	<!-- Suppress spurious stylesheets -->
 
-   <context-param>
-      <param-name>org.richfaces.CONTROL_SKINNING</param-name>
-      <param-value>disable</param-value>
-   </context-param>
+	<context-param>
+		<param-name>org.richfaces.CONTROL_SKINNING</param-name>
+		<param-value>disable</param-value>
+	</context-param>
 
-   <context-param>
-      <param-name>org.richfaces.CONTROL_SKINNING_CLASSES</param-name>
-      <param-value>disable</param-value>
-   </context-param>
+	<context-param>
+		<param-name>org.richfaces.CONTROL_SKINNING_CLASSES</param-name>
+		<param-value>disable</param-value>
+	</context-param>
 
-   <!-- Change load strategy to DEFAULT to disable sending scripts/styles as packs -->
+	<!-- Mudando o script de compressão na esperança de aumentar a velocidade 
+		de entrega de pacotes. -->
+	<context-param>
+		<param-name>org.ajax4jsf.COMPRESS_SCRIPT</param-name>
+		<param-value>true</param-value>
+	</context-param>
 
-   <context-param>
-      <param-name>org.richfaces.LoadStyleStrategy</param-name>
-      <param-value>ALL</param-value>
-   </context-param>
+	<!-- Tentativa desesperada de mudar o filtro da aplicação para requisições 
+		ajax
+	<filter>
+		<filter-name>richfaces</filter-name>
+		<display-name>RichFaces Filter</display-name>
+		<filter-class>org.ajax4jsf.Filter</filter-class>
+		<init-param>
+			<param-name>forceparser</param-name>
+			<param-value>false</param-value>
+		</init-param>
+	</filter>
+ -->
+	<!-- Parece promissor, aqui a ideia é forcar a entrada dos componentes rich 
+		para o cache, parece bacana não??? 
+	<filter>
+		<display-name>RichFaces Filter</display-name>
+		<filter-name>richfaces</filter-name>
+		<filter-class>org.ajax4jsf.Filter</filter-class>
+		<init-param>
+			<param-name>enable-cache</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+-->
 
-   <context-param>
-      <param-name>org.richfaces.LoadScriptStrategy</param-name>
-      <param-value>ALL</param-value>
-   </context-param>
+	<!-- Change load strategy to DEFAULT to disable sending scripts/styles as 
+		packs -->
 
-   <!-- Seam -->
+	<context-param>
+		<param-name>org.richfaces.LoadStyleStrategy</param-name>
+		<param-value>ALL</param-value>
+	</context-param>
 
-   <listener>
-      <listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
-   </listener>
+	<context-param>
+		<param-name>org.richfaces.LoadScriptStrategy</param-name>
+		<param-value>ALL</param-value>
+	</context-param>
 
-   <filter>
-      <filter-name>Seam Filter</filter-name>
-      <filter-class>org.jboss.seam.servlet.SeamFilter</filter-class>
-   </filter>
+	<!-- Seam -->
 
-   <filter-mapping>
-      <filter-name>Seam Filter</filter-name>
-      <url-pattern>/*</url-pattern>
-   </filter-mapping>
+	<listener>
+		<listener-class>org.jboss.seam.servlet.SeamListener</listener-class>
+	</listener>
 
-   <servlet>
-      <servlet-name>Seam Resource Servlet</servlet-name>
-      <servlet-class>org.jboss.seam.servlet.SeamResourceServlet</servlet-class>
-   </servlet>
+	<filter>
+		<filter-name>Seam Filter</filter-name>
+		<filter-class>org.jboss.seam.servlet.SeamFilter</filter-class>
+	</filter>
 
-   <servlet-mapping>
-      <servlet-name>Seam Resource Servlet</servlet-name>
-      <url-pattern>/seam/resource/*</url-pattern>
-   </servlet-mapping>
+	<filter-mapping>
+		<filter-name>Seam Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
-   <!-- Facelets development mode (disable in production) -->
+	<servlet>
+		<servlet-name>Seam Resource Servlet</servlet-name>
+		<servlet-class>org.jboss.seam.servlet.SeamResourceServlet</servlet-class>
+	</servlet>
 
-   <context-param>
-      <param-name>facelets.DEVELOPMENT</param-name>
-      <param-value>@debug@</param-value>
-   </context-param>
+	<servlet-mapping>
+		<servlet-name>Seam Resource Servlet</servlet-name>
+		<url-pattern>/seam/resource/*</url-pattern>
+	</servlet-mapping>
 
-   <!-- JSF -->
+	<!-- Facelets development mode (disable in production) -->
 
-   <context-param>
-      <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
-      <param-value>.xhtml</param-value>
-   </context-param>
+	<context-param>
+		<param-name>facelets.DEVELOPMENT</param-name>
+		<param-value>@debug@</param-value>
+	</context-param>
 
-   <servlet>
-      <servlet-name>Faces Servlet</servlet-name>
-      <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-      <load-on-startup>1</load-on-startup>
-   </servlet>
+	<!-- JSF -->
 
-   <servlet-mapping>
-      <servlet-name>Faces Servlet</servlet-name>
-      <url-pattern>*.seam</url-pattern>
-   </servlet-mapping>
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.xhtml</param-value>
+	</context-param>
 
-   <security-constraint>
-      <display-name>Restrict raw XHTML Documents</display-name>
-      <web-resource-collection>
-         <web-resource-name>XHTML</web-resource-name>
-         <url-pattern>*.xhtml</url-pattern>
-      </web-resource-collection>
-      <auth-constraint/>
-   </security-constraint>
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
-   <persistence-unit-ref>
-      <persistence-unit-ref-name>desafioPositivo/pu</persistence-unit-ref-name>
-      <persistence-unit-name>desafioPositivo</persistence-unit-name>
-   </persistence-unit-ref>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.seam</url-pattern>
+	</servlet-mapping>
+
+	<security-constraint>
+		<display-name>Restrict raw XHTML Documents</display-name>
+		<web-resource-collection>
+			<web-resource-name>XHTML</web-resource-name>
+			<url-pattern>*.xhtml</url-pattern>
+		</web-resource-collection>
+		<auth-constraint />
+	</security-constraint>
+
+	<persistence-unit-ref>
+		<persistence-unit-ref-name>desafioPositivo/pu</persistence-unit-ref-name>
+		<persistence-unit-name>desafioPositivo</persistence-unit-name>
+	</persistence-unit-ref>
 
 </web-app>

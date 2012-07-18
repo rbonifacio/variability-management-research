@@ -132,13 +132,13 @@
 
 
 							<h:commandLink action="#{usuarioAction.autenticar}">
-								<h:graphicImage url="../img/positivo/botoes/login.gif"
+								<h:graphicImage url="../img/positivo/botoes/login.png"
 									alt="Login" title="Login" />
 							</h:commandLink>
 
 							<h:commandLink action="recuperarSenha" immediate="true">
 								<h:graphicImage
-									url="../img/positivo/botoes/esqueciMinhaSenha.gif"
+									url="../img/positivo/botoes/esqueci.png"
 									alt="Recuperar senha" title="Recuperar senha" />
 							</h:commandLink>
 
@@ -276,12 +276,12 @@
 								</h:panelGrid>
 								
 								<h:outputLabel for="confirma_termos"
-										value="#{messages['positivo.novoUsuario.confirmacaoEmail']}:" />
+										value="Li e concordo com os termos do regulamento" />
 								<h:selectBooleanCheckbox id="confirma_termos" value="#{userAction.enabled}"  > 
-									<a4j:support id="rupali" event="onclick" ajaxSingle="true" reRender="div_submit" >
+									<a:support id="rupali" event="onclick" ajaxSingle="true" reRender="div_submit" />
 								</h:selectBooleanCheckbox>
-
 							</div>
+							
 						</fieldset>
 						
 						<rich:spacer height="10" />
@@ -300,14 +300,7 @@
 			</h:panelGrid>
 		</div>
 
-		<!-- <script src="../jquery-1.7.2.js" type="text/javascript"></script>-->
 		<script src="../jquery.maskedinput.js" type="text/javascript"></script>
-		<!-- <script type="text/javascript">  
-			jQuery(function($){  
-    		$("#cpf").mask("999.999.999-99",{placeholder:" "});
-    		$("#cep").mask("99999-999",{placeholder:" "});    
-			});  
-		</script> -->
- 		
+	
 	</ui:define>
 </ui:composition>

@@ -97,19 +97,19 @@
 										
 										<a4j:jsFunction name="enviarr" action="#{propostaAction.excluir()}" render="table_div" />
 
-										<rich:modalPanel id="confirmation" width="640" height="150">
+										<rich:modalPanel id="confirmation" width="480" height="150">
 											<f:facet name="header">Confirmation</f:facet>
 											<h:panelGrid>
 												<h:panelGrid columns="2">
 													<h:outputText value="Tem certeza que deseja apagar essa proposta?"
 														style="FONT-SIZE: large;" />
 												</h:panelGrid>
-												<h:panelGroup>
+												<h:panelGroup style="margin-left: 30%; font-size: 1.4em;">
 													<h:commandLink action="#{propostaAction.excluir()}" >
-														<h:graphicImage value="../img/icon/OkV.png" />
+														<h:graphicImage value="../img/icon/OkV.png" /> SIM
 													</h:commandLink>
 													<h:commandLink  onclick="#{rich:component('confirmation')}.hide();return false" >
-														<h:graphicImage value="../img/icon/ErroX.png" />
+														<h:graphicImage value="../img/icon/ErroX.png" /> NÃO
 													</h:commandLink>
 												</h:panelGroup>
 											</h:panelGrid>

@@ -7,7 +7,7 @@ h2{ font-size:16px; }
 /*********************************************CSS para letras, alteracoes rapidas. Refatorar isso******************************************************/
 #loginForm label, #novoForm label, #contatoForm label, #sumarioForm label, #alterarDadosForm label,
 #novaPropostaForm label{
-	font-size: 14px; 	font-weight: normal;	font: Arial;	color: #275975 ;
+	font-size: 14px; 	font-weight: normal;	font: Arial;	color: #275975 ; 
 }
 
 #loginForm fieldset, #novoForm fieldset, #contatoForm fieldset, #sumarioForm fieldset, #alterarDadosForm fieldset,
