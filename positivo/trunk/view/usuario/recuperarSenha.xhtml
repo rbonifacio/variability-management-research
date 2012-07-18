@@ -14,7 +14,6 @@
 		<div class="corpo"
 			style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 690px; padding: 15px 0 0 0">
 
-			<h1>#{messages['positivo.recuperarSenha.heading']}</h1>
 			<h:panelGrid columns="2">
 				<s:div styleClass="info">
 					<s:div>
@@ -46,22 +45,23 @@
 								</h:panelGrid>
 							</div>
 
-							<rich:spacer height="10" />
-
-							<div class="actionButtons">
-
-								<h:commandLink action="#{usuarioAction.recuperarSenha}">
-									<h:graphicImage
-										url="../img/positivo/botoes/esqueciMinhaSenha.gif"
-										alt="Recuperar senha" title="Recuperar senha" />
-								</h:commandLink>
-								<h:commandLink action="home" immediate="true">
-									<h:graphicImage url="../img/positivo/botoes/cancelar.png"
-										alt="Cancelar" title="Cancelar" />
-								</h:commandLink>
-
-							</div>
 						</fieldset>
+
+						<rich:spacer height="10" />
+
+						<div class="actionButtons">
+
+							<h:commandLink action="#{usuarioAction.recuperarSenha}">
+								<h:graphicImage url="../img/positivo/botoes/esqueci.png"
+									alt="Recuperar senha" title="Recuperar senha" />
+							</h:commandLink>
+							<h:commandLink action="home" immediate="true">
+								<h:graphicImage url="../img/positivo/botoes/cancelar.png"
+									alt="Cancelar" title="Cancelar" />
+							</h:commandLink>
+
+						</div>
+
 					</h:form>
 				</s:div>
 			</h:panelGrid>

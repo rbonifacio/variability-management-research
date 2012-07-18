@@ -15,6 +15,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.Pattern;
 import org.jboss.seam.annotations.Name;
 
 /**
@@ -58,6 +59,9 @@ public class Proposta implements Serializable {
 	
 	@Column(name="DESCRICAO_FUNCIONAL")
 	private String descricaoFuncional;
+	
+	@Column (name="NOME_ARQUIVO")
+	private String nomeArquivo;
 	
 	@Column(name="ARQUIVO", length=2147483647)
 	@Basic(fetch=FetchType.LAZY)
@@ -139,5 +143,13 @@ public class Proposta implements Serializable {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public void setNomeArquivo(String nomeArquivo) {
+		this.nomeArquivo = nomeArquivo;
+	}
+
+	public String getNomeArquivo() {
+		return nomeArquivo;
 	} 
 }

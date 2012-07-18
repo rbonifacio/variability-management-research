@@ -109,6 +109,7 @@
 										value="#{messages['positivo.novaProposta.prototipo']}:" />
 									<s:fileUpload id="arquivo"
 										data="#{propostaAction.proposta.arquivoGUI}" required="true"
+										fileName="#{propostaAction.proposta.nomeArquivo}"
 										requiredMessage="#{messages['positivo.novaProposta.anexoEmBranco']}:" />
 								</h:panelGrid>
 							</div>
