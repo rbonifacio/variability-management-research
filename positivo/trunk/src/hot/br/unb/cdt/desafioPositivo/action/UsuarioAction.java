@@ -362,7 +362,7 @@ public class UsuarioAction {
 			if (credentials.getUsername() == null
 					|| credentials.getPassword() == null) {
 				StatusMessages.instance().addFromResourceBundle(
-						StatusMessage.Severity.INFO,
+						StatusMessage.Severity.ERROR,
 						Mensagens.AUTENTICACAO_CAMPOS_OBRIGATORIOS);
 				return null;
 			}
@@ -371,14 +371,14 @@ public class UsuarioAction {
 				return "sumario";
 			} else {
 				StatusMessages.instance().addFromResourceBundle(
-						StatusMessage.Severity.INFO,
+						StatusMessage.Severity.ERROR,
 						Mensagens.FALHA_AUTENTICACAO);
 				return null;
 			}
 		} catch (Exception e) {
 			StatusMessages.instance().clear();
 			StatusMessages.instance().addFromResourceBundle(
-					StatusMessage.Severity.INFO, Mensagens.FALHA_AUTENTICACAO);
+					StatusMessage.Severity.ERROR, Mensagens.FALHA_AUTENTICACAO);
 			e.printStackTrace();
 			return null;
 		}
@@ -392,7 +392,7 @@ public class UsuarioAction {
 		try {
 			facade.recuperarSenha(usuarioDto);
 			StatusMessages.instance().addFromResourceBundle(
-					StatusMessage.Severity.INFO,
+					StatusMessage.Severity.ERROR,
 					Mensagens.RECUPERAR_SENHA_SUCESSO, usuarioDto.getEmail());
 			return "home";
 		} catch (ExcecaoUsuarioNaoEncontrado e) {
