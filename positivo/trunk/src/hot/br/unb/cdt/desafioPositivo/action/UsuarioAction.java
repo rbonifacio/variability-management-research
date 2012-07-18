@@ -102,6 +102,7 @@ public class UsuarioAction {
 	 * dados submetidos em usuarioDto.
 	 */
 	public String cadastro() {
+		preparaDadosComMascara();
 		List<String> erros = validarDadosCadastrais();
 		if (!erros.isEmpty()) {
 			populaMensagensErro(erros);
@@ -141,7 +142,7 @@ public class UsuarioAction {
 
 	private void populaMensagensErro(List<String> erros) {
 		for (String e : erros) {
-			StatusMessages.instance().addFromResourceBundle(e);
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, e, usuarioDto.getEmail());
 		}
 	}
 
@@ -177,8 +178,6 @@ public class UsuarioAction {
 	 */
 	private String validaCPF(String stringCPF) {
 		int i, soma1, soma2, digito1, digito2;
-		
-		stringCPF = stringCPF.substring(0, 3) + stringCPF.substring(4, 7) + stringCPF.substring(8, 11) + stringCPF.substring(12, 14);
 		
 		if ((stringCPF.equals("00000000000"))
 				|| (stringCPF.equals("11111111111"))
@@ -276,13 +275,6 @@ public class UsuarioAction {
 			erros.add("O e-mail e a confirmação de e-mail devem ser iguais");
 		} else if (!emailUtil.verificaEmailValido(usuarioDto.getEmail())) {
 			erros.add("positivo.novoUsuario.email.confirmacao.invalida");
-		}
-
-		for (int i = 0; i < usuarioDto.getCep().length(); i++) {
-			if (!Character.isDigit(usuarioDto.getCep().charAt(i))) {
-				erros.add("CEP inválido");
-				break;
-			}
 		}
 
 		return erros;
@@ -428,6 +420,7 @@ public class UsuarioAction {
 	 * submetidas na atualizacao ficam encapsulada no bean usuarioLogado.
 	 */
 	public String atualizarDadosUsuario() {
+		preparaDadosComMascara();
 		List<String> erros = validarDadosAtualizacao();
 		if (!erros.isEmpty()) {
 			populaMensagensErro(erros);
@@ -517,6 +510,31 @@ public class UsuarioAction {
 		}
 	}
 
+	public String preparaDadosComMascara(){
+		
+		System.out.println("mascaras...");
+		if(  (usuarioDto.getCpf() == null ||  usuarioDto.getCpf().equals("") ) ||
+			 (usuarioDto.getCep() == null ||  usuarioDto.getCep().equals("") )	){
+			System.out.println("Não há mascara a ser aplicada");
+			return "NAO HÁ MASCARA A SER REMOVIDA";
+		}
+		
+		if(  ( usuarioDto.getCpf() != null ||  !usuarioDto.getCpf().equals("") ) ) {
+			String stringCPF = usuarioDto.getCpf();
+			stringCPF = stringCPF.substring(0, 3) + stringCPF.substring(4, 7) + 
+					stringCPF.substring(8, 11) + stringCPF.substring(12, 14);
+			usuarioDto.setCpf(stringCPF);
+		}
+		
+		if(  (usuarioDto.getCep() != null ||  !usuarioDto.getCep().equals("") ) ) {
+			String stringCEP = usuarioDto.getCep();
+			stringCEP = stringCEP.substring(0, 5) + stringCEP.substring(6 , 9 );
+			usuarioDto.setCep(stringCEP);
+		}
+		System.out.println("mascaras aplicadas com sucesso");
+		return "OK";
+	}
+		
 	public Usuario getUsuarioDto() {
 		return usuarioDto;
 	}

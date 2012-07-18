@@ -16,8 +16,9 @@
 
 			<h1>#{messages['positivo.recuperarSenha.heading']}</h1>
 			<h:panelGrid columns="2">
-				<s:div>
-					<rich:messages>
+				<s:div styleClass="info">
+					<s:div>
+						<rich:messages>
 							<f:facet name="infoMarker">
 								<h:graphicImage url="../img/icon/OkV.png" />
 							</f:facet>
@@ -28,8 +29,7 @@
 								<h:graphicImage value="../img/icon/OkV.png" />
 							</f:facet>
 						</rich:messages>
-				</s:div>
-				<s:div styleClass="info">
+					</s:div>
 					<h:form id="novoForm">
 						<fieldset>
 							<legend>#{messages['positivo.recuperarSenha.heading']}</legend>
@@ -49,7 +49,7 @@
 							<rich:spacer height="10" />
 
 							<div class="actionButtons">
-							
+
 								<h:commandLink action="#{usuarioAction.recuperarSenha}">
 									<h:graphicImage
 										url="../img/positivo/botoes/esqueciMinhaSenha.gif"
@@ -63,7 +63,6 @@
 							</div>
 						</fieldset>
 					</h:form>
-					<h:messages />
 				</s:div>
 			</h:panelGrid>
 		</div>

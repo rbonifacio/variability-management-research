@@ -16,13 +16,13 @@
 					<s:div>
 						<rich:messages>
 							<f:facet name="infoMarker">
-								<h:graphicImage url="../img/icon/OkV.png" />
+								<h:graphicImage url="./img/icon/OkV.png" />
 							</f:facet>
 							<f:facet name="errorMarker">
-								<h:graphicImage value="../img/icon/ErroX.png" />
+								<h:graphicImage value="./img/icon/ErroX.png" />
 							</f:facet>
 							<f:facet name="passedMarker">
-								<h:graphicImage value="../img/icon/OkV.png" />
+								<h:graphicImage value="./img/icon/OkV.png" />
 							</f:facet>
 						</rich:messages>
 					</s:div>
@@ -38,14 +38,11 @@
 										requiredMessage="#{messages['positivo.contato.nomeEmBranco']}:"
 										validatorMessage="#{messages['positivo.contato.nomeTamanho']}:">
 										<f:validateLength maximum="255" />
+										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
 									<h:outputLabel for="email">#{messages['positivo.contato.email']}:</h:outputLabel>
-									<h:inputText id="email" value="#{contatoAction.email}"
-										required="true" class="input_grande"
-										requiredMessage="#{messages['positivo.contato.emailEmBranco']}:"
-										validatorMessage="#{messages['positivo.contato.emailTamanho']}:">
-										<s:validate />
-										<f:validateLength maximum="255" />
+									<h:inputText id="email" value="#{contatoAction.email}" class="input_grande">
+										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
 									<h:outputLabel for="assunto">#{messages['positivo.contato.assunto']}:</h:outputLabel>
 									<h:inputText id="assunto" value="#{contatoAction.assunto}"
@@ -53,6 +50,7 @@
 										requiredMessage="#{messages['positivo.contato.assuntoEmBranco']}:"
 										validatorMessage="#{messages['positivo.contato.assuntoTamanho']}:">
 										<f:validateLength maximum="100" />
+										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
 									<h:outputLabel for="mensagem">Mensagem:</h:outputLabel>
 									<h:inputTextarea id="mensagem"
@@ -61,6 +59,7 @@
 										requiredMessage="#{messages['positivo.contato.menssagemEmBranco']}:"
 										validatorMessage="#{messages['positivo.contato.menssagemTamanho']}:">
 										<f:validateLength minimum="10" maximum="300" />
+										<rich:ajaxValidator event="onblur" />
 									</h:inputTextarea>
 								</h:panelGrid>
 							</div>

@@ -1,6 +1,8 @@
 package br.unb.cdt.desafioPositivo.action;
 
 import org.hibernate.validator.Email;
+import org.hibernate.validator.NotNull;
+import org.hibernate.validator.Pattern;
 import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
@@ -18,9 +20,13 @@ import br.unb.cdt.desafioPositivo.util.email.EmailUtil;
 @AutoCreate
 public class ContatoAction {
 
+	@Pattern(regex="[\\p{L}\\p{Space}]+", message="O nome deve conter apenas letras e espaços em branco")
+	@NotNull(message="A mensagem não pode ser anónima")
 	private String nome;
-	@Email
+	
+	@Pattern(regex="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message="O e-mail inserido não é válido")
 	private String email;
+
 	private String assunto;
 	private String mensagem;
 	

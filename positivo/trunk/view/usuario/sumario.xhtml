@@ -16,7 +16,8 @@
 			<h:form>
 				<s:div styleClass="menu_logado">
 					<ul class="menu_logado_li">
-						<li><a href="../proposta/novaProposta.seam">Nova Proposta</a></li>
+						<li><a href="../proposta/novaProposta.seam">Nova Proposta</a>
+						</li>
 						<li><a href="../proposta/minhaProposta.seam">Minhas
 								Propostas</a></li>
 						<li><a href="sumario.seam">Sumário</a></li>
@@ -60,6 +61,15 @@
 										value="#{usuarioLogado.sobrenome}" required="true"
 										class="input_grande" />
 
+									<h:outputLabel for="cpf" value="CPF:" />
+									<h:inputText id="cpf" value="#{usuarioLogado.cpf}"
+										class="input_grande" disabled="true" />
+
+									<h:outputLabel for="rg" value="RG:" />
+									<h:inputText id="rg" value="#{usuarioLogado.rg}"
+										class="input_grande" disabled="true" />
+
+
 									<h:outputLabel for="sexo"
 										value="#{messages['positivo.sumario.sexo']}:" />
 									<h:inputText disabled="true" id="sexo"
@@ -70,35 +80,32 @@
 									<h:inputText id="nascimento" disabled="true"
 										value="#{usuarioLogado.nascimentoFormatado}"
 										class="input_grande" />
-										
+
 									<h:outputLabel for="cep" value="CEP:" />
-									<h:inputText id="cep"
-										value="#{usuarioLogado.cep}" disabled="true"
-										class="input_grande" />	
-										
+									<h:inputText id="cep" value="#{usuarioLogado.cep}"
+										disabled="true" class="input_grande" />
+
 									<h:outputLabel for="bairro" value="Bairro:" />
-									<h:inputText id="bairro"
-										value="#{usuarioLogado.bairro}" disabled="true"
-										class="input_grande" />
+									<h:inputText id="bairro" value="#{usuarioLogado.bairro}"
+										disabled="true" class="input_grande" />
 
-									<h:outputLabel for="endereco" value="#{messages['positivo.sumario.endereco']}:" />
-									<h:inputText id="endereco"
-										value="#{usuarioLogado.endereco}" disabled="true"
-										class="input_grande" />
+									<h:outputLabel for="endereco"
+										value="#{messages['positivo.sumario.endereco']}:" />
+									<h:inputText id="endereco" value="#{usuarioLogado.endereco}"
+										disabled="true" class="input_grande" />
 
-									<h:outputLabel for="estado"	value="Estado:" />
+									<h:outputLabel for="estado" value="Estado:" />
 									<h:inputText id="estado" disabled="true"
-										value="#{usuarioLogado.estado}"
-										class="input_grande" />
+										value="#{usuarioLogado.estado}" class="input_grande" />
 
 								</h:panelGrid>
 							</div>
 						</fieldset>
-						
+
 						<rich:spacer height="10" />
-						
+
 						<div class="actionButtons">
-						
+
 							<h:commandLink action="atualizarDados">
 								<h:graphicImage url="../img/positivo/botoes/atualizarDados.png"
 									alt="Atualizar Dados" title="Atualizar Dados" />
