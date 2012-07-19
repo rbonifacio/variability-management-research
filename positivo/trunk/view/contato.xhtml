@@ -33,25 +33,31 @@
 								<h:panelGrid columns="2" rowClasses="prop"
 									columnClasses="name,value">
 									<h:outputLabel for="nome">#{messages['positivo.contato.nome']}:</h:outputLabel>
+									<s:decorate>
 									<h:inputText id="nome" value="#{contatoAction.nome}"
-										required="true" class="input_grande"
+										required="true" styleClass="#{invalid?'input_grande_error':'input_grande'}"
 										requiredMessage="#{messages['positivo.contato.nomeEmBranco']}:"
 										validatorMessage="#{messages['positivo.contato.nomeTamanho']}:">
 										<f:validateLength maximum="255" />
 										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
+									</s:decorate>
 									<h:outputLabel for="email">#{messages['positivo.contato.email']}:</h:outputLabel>
-									<h:inputText id="email" value="#{contatoAction.email}" class="input_grande">
+									<s:decorate>
+									<h:inputText id="email" value="#{contatoAction.email}" styleClass="#{invalid?'input_grande_error':'input_grande'}">
 										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
+									</s:decorate>
 									<h:outputLabel for="assunto">#{messages['positivo.contato.assunto']}:</h:outputLabel>
+									<s:decorate>
 									<h:inputText id="assunto" value="#{contatoAction.assunto}"
-										required="true" class="input_grande"
+										required="true" styleClass="#{invalid?'input_grande_error':'input_grande'}"
 										requiredMessage="#{messages['positivo.contato.assuntoEmBranco']}:"
 										validatorMessage="#{messages['positivo.contato.assuntoTamanho']}:">
 										<f:validateLength maximum="100" />
 										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
+									</s:decorate>
 									<h:outputLabel for="mensagem">Mensagem:</h:outputLabel>
 									<h:inputTextarea id="mensagem"
 										value="#{contatoAction.mensagem}"
