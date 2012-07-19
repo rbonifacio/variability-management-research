@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.AutoCreate;
@@ -18,6 +22,8 @@ import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.international.StatusMessage;
 import org.jboss.seam.international.StatusMessages;
 
+import com.sun.xml.internal.ws.api.message.Attachment;
+
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
 import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
 import br.unb.cdt.desafioPositivo.model.Proposta;
@@ -29,6 +35,12 @@ import br.unb.cdt.desafioPositivo.model.Usuario;
 public class PropostaAction {
 
 	private Proposta proposta;
+	
+	@In(value="#{facesContext.externalContext}")
+	private ExternalContext extCtx;
+	
+	@In(value="#{facesContext}")
+	FacesContext facesContext;
 	
 	@In private Usuario usuarioLogado;
 	
@@ -186,5 +198,38 @@ public class PropostaAction {
 	public String editarProposta() {
 		return "editarProposta";
 	}
+	
+	public String download() {
+		String extensao = "", nome = "";
+
+		if(propostaSelecionada.getNomeArquivo().endsWith(".ep"))
+			extensao = "ep";
+		else if(propostaSelecionada.getNomeArquivo().endsWith(".epz") )
+			extensao = "epz";
+		else
+			return "GRAVE ERRO";
+		
+		nome = propostaSelecionada.getNomeArquivo().
+				substring(0, propostaSelecionada.getNomeArquivo().length() - ( extensao.length() ) );
+		
+		HttpServletResponse response = (HttpServletResponse)extCtx.getResponse();
+		response.setContentType(extensao);
+		System.out.println("ESTAMOS AQUI" + extensao);
+		response.addHeader(	"Content-disposition", "attachment; filename=\"" + nome +"\"");
+		
+		try {
+			ServletOutputStream os = response.getOutputStream();
+			os.write(propostaSelecionada.getArquivoGUI() );
+			os.flush();
+			os.close();
+			facesContext.responseComplete();
+		} catch(Exception e) {
+			StatusMessages.instance().
+			addFromResourceBundle(StatusMessage.Severity.INFO, "Não foi possível carregar a proposta antiga.");
+		}
+
+		return null;
+	}
+	
 	
 }

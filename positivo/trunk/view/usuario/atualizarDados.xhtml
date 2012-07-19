@@ -60,6 +60,7 @@
 										requiredMessage="#{messages['positivo.novoUsuario.nomeEmBranco']}:"
 										validatorMessage="#{messages['positivo.novoUsuario.nomeTamanho']}:">
 										<f:validateLength maximum="50" />
+										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
 
 									<h:outputLabel for="sobrenome"
@@ -69,6 +70,7 @@
 										requiredMessage="#{messages['positivo.novoUsuario.sobrenomeEmBranco']}:"
 										validatorMessage="#{messages['positivo.novoUsuario.sobrenomeTamanho']}:">
 										<f:validateLength maximum="50" />
+										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
 
 									<h:outputLabel for="cpf" value="CPF:" />
@@ -114,6 +116,7 @@
 										maxlength="8">
 										<f:validateLength maximum="8" />
 										<f:validateLength minimum="8" />
+										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
 
 									<h:outputLabel for="bairro" value="Bairro:" />
@@ -122,6 +125,7 @@
 										requiredMessage="#{messages['positivo.novoUsuario.bairroEmBranco']}:"
 										validatorMessage="#{messages['positivo.novoUsuario.bairroTamanho']}:">
 										<f:validateLength maximum="255" />
+										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
 
 									<h:outputLabel for="endereco" value="Endereco:" />
@@ -130,6 +134,7 @@
 										requiredMessage="#{messages['positivo.novoUsuario.enderecoEmBranco']}:"
 										validatorMessage="#{messages['positivo.novoUsuario.enderecoTamanho']}:">
 										<f:validateLength maximum="255" />
+										<rich:ajaxValidator event="onblur" />
 									</h:inputText>
 
 									<h:outputLabel for="estado"

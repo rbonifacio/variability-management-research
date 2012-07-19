@@ -126,7 +126,6 @@ public class Usuario implements Serializable {
 	}
 
 	@NotNull
-	@Length(max=50)
 	public String getNome() {
 		return nome;
 	}
@@ -136,7 +135,6 @@ public class Usuario implements Serializable {
 	}
 
 	@NotNull
-	@Length(max=50)
 	public String getSobrenome() {
 		return sobrenome;
 	}
@@ -182,7 +180,6 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	@Length(min=5, max=15)
 	public String getSenha() {
 		return senha;
 	}
@@ -191,7 +188,6 @@ public class Usuario implements Serializable {
 		this.senha = senha;
 	}
 
-	@Length(min=5, max=15)
 	public String getConfirmacaoSenha() {
 		return confirmacaoSenha;
 	}

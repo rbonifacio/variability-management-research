@@ -104,6 +104,13 @@
 										<f:validateLength maximum="255" />
 									</h:inputTextarea>
 
+									<h:outputLabel for="prototipoAntigo"
+										value="Protótipo Antigo:" />
+									<h:commandButton action="#{propostaAction.download}" 
+										id="prototipoAntigo" value="#{propostaAction.propostaSelecionada.nome}" >
+									
+									</h:commandButton>
+
 									<h:outputLabel for="prototipo"
 										value="#{messages['positivo.novaProposta.prototipo']}:" />
 									<s:fileUpload id="arquivo"
