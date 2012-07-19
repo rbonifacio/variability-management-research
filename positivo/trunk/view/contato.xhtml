@@ -59,14 +59,16 @@
 									</h:inputText>
 									</s:decorate>
 									<h:outputLabel for="mensagem">Mensagem:</h:outputLabel>
+									<s:decorate>
 									<h:inputTextarea id="mensagem"
 										value="#{contatoAction.mensagem}"
-										styleClass="mensagem_textarea" required="true"
+										styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}" required="true"
 										requiredMessage="#{messages['positivo.contato.menssagemEmBranco']}:"
 										validatorMessage="#{messages['positivo.contato.menssagemTamanho']}:">
 										<f:validateLength minimum="10" maximum="300" />
 										<rich:ajaxValidator event="onblur" />
 									</h:inputTextarea>
+									</s:decorate>
 								</h:panelGrid>
 							</div>
 						</fieldset>
