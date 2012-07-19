@@ -122,7 +122,6 @@ public class ContatoAction {
 		this.nome = nome;
 	}
 
-	@Email
 	public String getEmail() {
 		return email;
 	}

@@ -171,7 +171,6 @@ public class Usuario implements Serializable {
 	}
 
 	@NotNull
-	@Email
 	public String getEmail() {
 		return email;
 	}

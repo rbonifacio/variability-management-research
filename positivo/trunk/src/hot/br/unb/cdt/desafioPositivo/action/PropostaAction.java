@@ -214,7 +214,7 @@ public class PropostaAction {
 		
 		HttpServletResponse response = (HttpServletResponse)extCtx.getResponse();
 		response.setContentType(extensao);
-		System.out.println("ESTAMOS AQUI" + extensao);
+		System.out.println("ESTAMOS AQUI" + response.getContentType() );
 		response.addHeader(	"Content-disposition", "attachment; filename=\"" + nome +"\"");
 		
 		try {
