@@ -1,0 +1,159 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:p="http://primefaces.prime.com.tr/ui"
+	template="../layout/template.xhtml">
+
+
+	<ui:define name="body">
+		<div class="corpo"
+			style="background: url(../img/positivo/bg.jpg) no-repeat; min-height: 690px; padding: 15px 0 0 0">
+
+			<h:form>
+				<s:div styleClass="menu_logado">
+					<ul class="menu_logado_li">
+						<li><a href="novaProposta.seam">Nova Proposta</a></li>
+						<li><a href="minhaProposta.seam">Minhas Propostas</a></li>
+						<li><a href="../usuario/sumario.seam">Sumário</a></li>
+						<li><a href="../usuario/alterarSenha.seam">Alterar Senha</a>
+						</li>
+						<li><h:commandButton value="#{messages['positivo.logout']}"
+								action="#{authenticator.logout()}" /></li>
+					</ul>
+				</s:div>
+			</h:form>
+
+			<h:panelGrid columns="2">
+				<s:div styleClass="info2">
+
+					<s:div style="font-size: 1.0em; padding-left: 15px;">
+						<font style="color: red"> * </font>#{messages['campos_obrigatorios']}
+					</s:div>
+					<rich:spacer height="25" />
+					<s:div>
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="../img/icon/OkV.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="../img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="../img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
+					</s:div>
+
+					<h:form id="novaPropostaForm" enctype="multipart/form-data">
+						<fieldset>
+							<legend>#{messages['positivo.novaProposta.heading']}</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+									<h:outputLabel for="nome"
+										value="#{messages['positivo.novaProposta.nome']}:" />
+									<s:decorate>
+										<h:inputText id="nome" value="#{propostaAction.proposta.nome}"
+											required="true"
+											styleClass="#{invalid?'input_grande_error':'input_grande'}"
+											requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
+											validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
+											<f:validateLength maximum="255" />
+										</h:inputText>
+									</s:decorate>
+
+									<h:outputLabel for="descricao"
+										value="#{messages['positivo.novaProposta.descricao']}:" />
+									<s:decorate>
+										<h:inputTextarea id="descricao"
+											value="#{propostaAction.proposta.descricao}" required="true"
+											styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}"
+											requiredMessage="#{messages['positivo.novaProposta.descricaoEmBranco']}:"
+											validatorMessage="#{messages['positivo.novaProposta.descricaoTamanho']}:">
+											<f:validateLength maximum="255" />
+										</h:inputTextarea>
+									</s:decorate>
+
+									<h:outputLabel for="objetivos"
+										value="#{messages['positivo.novaProposta.objetivos']}:" />
+									<s:decorate>
+										<h:inputTextarea id="objetivos"
+											value="#{propostaAction.proposta.objetivos}" required="true"
+											styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}"
+											requiredMessage="#{messages['positivo.novaProposta.objetivosEmBranco']}:"
+											validatorMessage="#{messages['positivo.novaProposta.objetivosTamanho']}:">
+											<f:validateLength maximum="255" />
+										</h:inputTextarea>
+									</s:decorate>
+
+									<h:outputLabel for="publicoAlvo"
+										value="#{messages['positivo.novaProposta.publicoAlvo']}:" />
+									<s:decorate>
+										<h:inputTextarea id="publicoAlvo"
+											value="#{propostaAction.proposta.publicoAlvo}"
+											required="true"
+											styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}"
+											requiredMessage="#{messages['positivo.novaProposta.publicoAlvoEmBranco']}:"
+											validatorMessage="#{messages['positivo.novaProposta.publicoAlvoTamanho']}:">
+											<f:validateLength maximum="255" />
+										</h:inputTextarea>
+									</s:decorate>
+
+									<h:outputLabel for="descricaoFuncional"
+										value="#{messages['positivo.novaProposta.descricaoFuncional']}:" />
+									<s:decorate>
+										<h:inputTextarea id="descricaoFuncional"
+											value="#{propostaAction.proposta.descricaoFuncional}"
+											required="true"
+											styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}"
+											requiredMessage="#{messages['positivo.novaProposta.descricaoFuncionalEmBranco']}:"
+											validatorMessage="#{messages['positivo.novaProposta.descricaoFuncionalTamanho']}:">
+											<f:validateLength maximum="255" />
+										</h:inputTextarea>
+									</s:decorate>
+
+									<h:outputLabel for="prototipo"
+										value="#{messages['positivo.novaProposta.prototipo']}:" />
+									<s:fileUpload id="arquivo"
+										data="#{propostaAction.proposta.arquivoGUI}" required="true"
+										fileName="#{propostaAction.proposta.nomeArquivo}"
+										requiredMessage="#{messages['positivo.novaProposta.anexoEmBranco']}:" />
+								</h:panelGrid>
+							</div>
+						</fieldset>
+
+						<rich:spacer height="10" />
+
+						<div class="actionButtons">
+
+							<h:commandLink action="#{propostaAction.cadastro}">
+								<h:graphicImage url="../img/positivo/botoes/cadastrar.png"
+									alt="Cadastrar" title="Cadastrar" />
+							</h:commandLink>
+
+							<h:commandLink action="cancelar" immediate="true">
+								<h:graphicImage url="../img/positivo/botoes/cancelar.png"
+									alt="Cancelar" title="Cancelar" />
+							</h:commandLink>
+
+						</div>
+
+					</h:form>
+
+				</s:div>
+
+				<s:div styleClass="conteudo_img_direita">
+					<img src="../img/positivo/tablets_direita.png" />
+				</s:div>
+
+			</h:panelGrid>
+
+		</div>
+	</ui:define>
+</ui:composition>
