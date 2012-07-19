@@ -15,7 +15,6 @@
          <property name="hibernate.format_sql" value="true"/>
          <property name="jboss.entity.manager.factory.jndi.name" value="java:/desafioPositivoEntityManagerFactory"/>
          <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
-         
       </properties>
    </persistence-unit>
     

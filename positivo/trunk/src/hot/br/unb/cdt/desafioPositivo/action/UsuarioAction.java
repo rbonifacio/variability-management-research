@@ -128,7 +128,7 @@ public class UsuarioAction {
 			return "home";
 		} catch (ExcecaoUsuarioCadastrado e) {
 			StatusMessages.instance().addFromResourceBundle(
-					StatusMessage.Severity.ERROR, Mensagens.EMAIL_EXISTENTE);
+					StatusMessage.Severity.ERROR, Mensagens.EMAIL_EXISTENTE, usuarioDto.getEmail());
 			return null;
 		} catch (ExcecaoNomeInvalido e) {
 			StatusMessages.instance().addFromResourceBundle(
@@ -507,16 +507,19 @@ public class UsuarioAction {
 		} catch (ExcecaoSenhaInvalida e) {
 			e.printStackTrace();
 			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.ERROR,
 					Mensagens.SENHA_INVALIDA);
 			return null;
 		} catch (ExcecaoSenhaDiferente e) {
 			e.printStackTrace();
 			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.ERROR,
 					Mensagens.SENHA_DIFERENTE);
 			return null;
 		} catch (ExcecaoSenhaIncorreta e) {
 			e.printStackTrace();
 			StatusMessages.instance().addFromResourceBundle(
+					StatusMessage.Severity.ERROR,
 					Mensagens.SENHA_INCORRETA);
 			return null;
 		} catch (Exception e) {
