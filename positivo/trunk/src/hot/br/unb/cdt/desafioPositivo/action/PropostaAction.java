@@ -213,13 +213,12 @@ public class PropostaAction {
 				substring(0, propostaSelecionada.getNomeArquivo().length() - ( extensao.length() ) );
 		
 		HttpServletResponse response = (HttpServletResponse)extCtx.getResponse();
-		response.setContentType(extensao);
-		System.out.println("ESTAMOS AQUI" + response.getContentType() );
-		response.addHeader(	"Content-disposition", "attachment; filename=\"" + nome +"\"");
+		response.setContentType("application/" + extensao);
+		response.addHeader(	"Content-disposition", "attachment; filename=\"" + propostaSelecionada.getNomeArquivo() +"\"");
 		
 		try {
 			ServletOutputStream os = response.getOutputStream();
-			os.write(propostaSelecionada.getArquivoGUI() );
+			os.write( propostaSelecionada.getArquivoGUI() );
 			os.flush();
 			os.close();
 			facesContext.responseComplete();
