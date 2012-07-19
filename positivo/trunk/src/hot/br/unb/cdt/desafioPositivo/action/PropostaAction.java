@@ -63,6 +63,7 @@ public class PropostaAction {
 		
 		if(! erros.isEmpty()) {
 			populaMensagensErro(erros);
+			//StatusMessages.instance().add(StatusMessage.Severity.ERROR);
 			return null;
 		}
 		if(proposta.getArquivoGUI().length == 0) {
@@ -101,7 +102,7 @@ public class PropostaAction {
 		}
 		
 		if(proposta.getDescricaoFuncional() == null || proposta.getDescricaoFuncional().equals("")) {
-			erros.add("positivo.novaProposta.descricaoFuncionalEmBrancopositivo.novaProposta.descricaoFuncionalEmBranco");
+			erros.add("positivo.novaProposta.descricaoFuncionalEmBranco");
 		} 
 		if(proposta.getPublicoAlvo() == null || proposta.getPublicoAlvo().equals("")) {
 			erros.add("positivo.novaProposta.publicoAlvoEmBranco");
@@ -115,7 +116,7 @@ public class PropostaAction {
 
 	public void populaMensagensErro(List<String> erros) {
 		for(String e: erros) {
-			StatusMessages.instance().addFromResourceBundle(e);
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, e);
 		}
 	}
 	
