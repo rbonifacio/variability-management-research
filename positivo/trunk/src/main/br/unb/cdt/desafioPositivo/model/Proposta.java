@@ -38,7 +38,7 @@ public class Proposta implements Serializable {
 	@Column(name="ID")
 	private Long id;
 
-	@Column(name="NOME", unique=true)
+	@Column(name="NOME")
 	private String nome;
 	
 	@Column(name="DESCRICAO")

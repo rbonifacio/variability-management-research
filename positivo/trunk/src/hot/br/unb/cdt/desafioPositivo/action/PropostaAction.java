@@ -102,11 +102,13 @@ public class PropostaAction {
 		
 		if(proposta.getDescricaoFuncional() == null || proposta.getDescricaoFuncional().equals("")) {
 			erros.add("positivo.novaProposta.descricaoFuncionalEmBrancopositivo.novaProposta.descricaoFuncionalEmBranco");
-		}
+		} 
 		if(proposta.getPublicoAlvo() == null || proposta.getPublicoAlvo().equals("")) {
 			erros.add("positivo.novaProposta.publicoAlvoEmBranco");
 		}
-		
+		if( !proposta.getNomeArquivo().endsWith(".ep") && !proposta.getNomeArquivo().endsWith(".epz") ){
+			erros.add("positivo.novaProposta.formatoErrado");
+		}
 		
 		return erros;
 	}
