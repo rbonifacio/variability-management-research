@@ -75,7 +75,7 @@ public class Usuario implements Serializable {
 	@Column(name="SEXO")
 	private Sexo sexo;
 	
-	@Email(message="positivo.validacao.email")
+	@Email(message="Formato do e-mail inválido")
 	@Column(unique=true, name="EMAIL")
 	private String email;
 	
@@ -83,7 +83,7 @@ public class Usuario implements Serializable {
 	@Column(name="ESTADO")
 	private Estado estado; 
 	
-	@Past
+	@Past(message="O campo nascimento deve ser uma data no passado")
 	@Column(name="NASCIMENTO")
 	private Date nascimento;
 	
@@ -190,7 +190,7 @@ public class Usuario implements Serializable {
 	public String getConfirmacaoSenha() {
 		return confirmacaoSenha;
 	}
-
+	
 	public void setConfirmacaoSenha(String confirmacaoSenha) {
 		this.confirmacaoSenha = confirmacaoSenha;
 	}

@@ -124,7 +124,9 @@
 									<h:outputLabel for="prototipo"
 										value="#{messages['positivo.novaProposta.prototipo']}:" />
 									<s:fileUpload id="arquivo"
-										data="#{propostaAction.proposta.arquivoGUI}" />
+										data="#{propostaAction.proposta.arquivoGUI}" 
+										fileSize="#{propostaAction.tamanhoArquivo}"
+										fileName="#{propostaAction.proposta.nomeArquivo}"/>
 								</h:panelGrid>
 							</div>
 						</fieldset>
