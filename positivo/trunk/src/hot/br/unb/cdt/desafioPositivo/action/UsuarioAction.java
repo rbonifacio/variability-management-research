@@ -62,6 +62,7 @@ public class UsuarioAction {
 	private boolean enable;
 
 	public boolean isEnable() {
+		System.out.println("GEtting ");
 		return enable;
 	}
 
@@ -113,6 +114,10 @@ public class UsuarioAction {
 	 * dados submetidos em usuarioDto.
 	 */
 	public String cadastro() {
+		if(!enable) {
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR,
+					"É necessário aceitar os termos de regulamento para concluir o cadastro");
+		}
 		preparaDadosComMascara();
 		List<String> erros = validarDadosCadastrais();
 		if (!erros.isEmpty()) {

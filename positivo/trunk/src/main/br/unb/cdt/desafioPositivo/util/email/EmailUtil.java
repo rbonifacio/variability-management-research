@@ -108,7 +108,7 @@ public class EmailUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ExcecaoEnvioEmail(
-					"Nao foi possivel enviar o email com a solicitacao de cadastro. Tente novamente.");
+					"Nao foi possivel enviar o email com o contato. Tente novamente.");
 		}
 	}
 	
