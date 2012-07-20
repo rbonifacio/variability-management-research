@@ -28,7 +28,7 @@ public class EmailUtil {
 	
 	/* configuracao padrao do componente */
 	
-	private boolean desenvolvimento = true;
+	private boolean desenvolvimento = false;
 	private String autorizacao = "true";
 	private String tls = "true";
 	private String host = "smtp.gmail.com";

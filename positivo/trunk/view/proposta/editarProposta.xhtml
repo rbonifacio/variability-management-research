@@ -23,8 +23,8 @@
 						<li><a href="../usuario/sumario.seam">Sumário</a></li>
 						<li><a href="../usuario/alterarSenha.seam">Alterar Senha</a>
 						</li>
-						<li><h:commandButton value="#{messages['positivo.logout']}"
-								action="#{authenticator.logout()}" /></li>
+						<li><h:commandLink value="#{messages['positivo.logout']}"
+								immediate="true" action="#{authenticator.logout()}" /></li>
 					</ul>
 				</s:div>
 			</h:form>
@@ -56,77 +56,82 @@
 									columnClasses="name,value">
 									<h:outputLabel for="nome"
 										value="#{messages['positivo.novaProposta.nome']}:" />
-										<s:decorate>
-									<h:inputText id="nome"
-										value="#{propostaAction.propostaSelecionada.nome}"
-										required="true" styleClass="#{invalid?'input_grande_error':'input_grande'}"
-										requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
-										<f:validateLength maximum="255" />
-									</h:inputText>
+									<s:decorate>
+										<h:inputText id="nome"
+											value="#{propostaAction.propostaSelecionada.nome}"
+											required="true"
+											styleClass="#{invalid?'input_grande_error':'input_grande'}"
+											requiredMessage="#{messages['positivo.novaProposta.nomeEmBranco']}:"
+											validatorMessage="#{messages['positivo.novaProposta.nomeTamanho']}:">
+											<f:validateLength maximum="255" />
+										</h:inputText>
 									</s:decorate>
 
 									<h:outputLabel for="descricao"
 										value="#{messages['positivo.novaProposta.descricao']}:" />
-										<s:decorate>
-									<h:inputTextarea id="descricao"
-										value="#{propostaAction.propostaSelecionada.descricao}"
-										required="true" styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}"
-										requiredMessage="#{messages['positivo.novaProposta.descricaoEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.descricaoTamanho']}:">
-										<f:validateLength maximum="255" />
-									</h:inputTextarea>
+									<s:decorate>
+										<h:inputTextarea id="descricao"
+											value="#{propostaAction.propostaSelecionada.descricao}"
+											required="true"
+											styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}"
+											requiredMessage="#{messages['positivo.novaProposta.descricaoEmBranco']}:"
+											validatorMessage="#{messages['positivo.novaProposta.descricaoTamanho']}:">
+											<f:validateLength maximum="255" />
+										</h:inputTextarea>
 									</s:decorate>
 
 									<h:outputLabel for="objetivos"
 										value="#{messages['positivo.novaProposta.objetivos']}:" />
-										<s:decorate>
-									<h:inputTextarea id="objetivos"
-										value="#{propostaAction.propostaSelecionada.objetivos}"
-										required="true" styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}"
-										requiredMessage="#{messages['positivo.novaProposta.objetivosEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.objetivosTamanho']}:">
-										<f:validateLength maximum="255" />
-									</h:inputTextarea>
+									<s:decorate>
+										<h:inputTextarea id="objetivos"
+											value="#{propostaAction.propostaSelecionada.objetivos}"
+											required="true"
+											styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}"
+											requiredMessage="#{messages['positivo.novaProposta.objetivosEmBranco']}:"
+											validatorMessage="#{messages['positivo.novaProposta.objetivosTamanho']}:">
+											<f:validateLength maximum="255" />
+										</h:inputTextarea>
 									</s:decorate>
 
 									<h:outputLabel for="publicoAlvo"
 										value="#{messages['positivo.novaProposta.publicoAlvo']}:" />
-										<s:decorate>
-									<h:inputTextarea id="publicoAlvo"
-										value="#{propostaAction.propostaSelecionada.publicoAlvo}"
-										required="true" styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}"
-										requiredMessage="#{messages['positivo.novaProposta.publicoAlvoEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.publicoAlvoTamanho']}:">
-										<f:validateLength maximum="255" />
-									</h:inputTextarea>
+									<s:decorate>
+										<h:inputTextarea id="publicoAlvo"
+											value="#{propostaAction.propostaSelecionada.publicoAlvo}"
+											required="true"
+											styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}"
+											requiredMessage="#{messages['positivo.novaProposta.publicoAlvoEmBranco']}:"
+											validatorMessage="#{messages['positivo.novaProposta.publicoAlvoTamanho']}:">
+											<f:validateLength maximum="255" />
+										</h:inputTextarea>
 									</s:decorate>
 
 									<h:outputLabel for="descricaoFuncional"
 										value="#{messages['positivo.novaProposta.descricaoFuncional']}:" />
-										<s:decorate>
-									<h:inputTextarea id="descricaoFuncional"
-										value="#{propostaAction.propostaSelecionada.descricaoFuncional}"
-										required="true" styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}"
-										requiredMessage="#{messages['positivo.novaProposta.descricaoFuncionalEmBranco']}:"
-										validatorMessage="#{messages['positivo.novaProposta.descricaoFuncionalTamanho']}:">
-										<f:validateLength maximum="255" />
-									</h:inputTextarea>
+									<s:decorate>
+										<h:inputTextarea id="descricaoFuncional"
+											value="#{propostaAction.propostaSelecionada.descricaoFuncional}"
+											required="true"
+											styleClass="#{invalid?'textarea_perso_error':'textarea_perso'}"
+											requiredMessage="#{messages['positivo.novaProposta.descricaoFuncionalEmBranco']}:"
+											validatorMessage="#{messages['positivo.novaProposta.descricaoFuncionalTamanho']}:">
+											<f:validateLength maximum="255" />
+										</h:inputTextarea>
 									</s:decorate>
 
-									<h:outputLabel for="prototipoAntigo"
-										value="Protótipo Atual" />
-									<h:commandButton action="#{propostaAction.download}" 
-										id="prototipoAntigo" value="#{propostaAction.propostaSelecionada.nome}" >
-									
+									<h:outputLabel for="prototipoAntigo" value="Protótipo Atual" />
+									<h:commandButton action="#{propostaAction.download}"
+										style="width: 115px; heigh: 30px;" id="prototipoAntigo"
+										value="#{propostaAction.propostaSelecionada.nomeArquivo}">
+
 									</h:commandButton>
 
 									<h:outputLabel for="prototipo"
 										value="#{messages['positivo.novaProposta.prototipo']}:" />
 									<s:fileUpload id="arquivo"
-										data="#{propostaAction.proposta.arquivoGUI}" 
-										fileSize="#{propostaAction.tamanhoArquivo}"
-										fileName="#{propostaAction.proposta.nomeArquivo}"/>
+										data="#{propostaAction.proposta.arquivoGUI}"
+										fileName="#{propostaAction.proposta.nomeArquivo}"
+										fileSize="#{propostaAction.tamanhoArquivo}" />
 								</h:panelGrid>
 							</div>
 						</fieldset>

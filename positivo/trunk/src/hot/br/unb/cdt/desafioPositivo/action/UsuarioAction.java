@@ -114,10 +114,8 @@ public class UsuarioAction {
 	 * dados submetidos em usuarioDto.
 	 */
 	public String cadastro() {
-		if(!enable) {
-			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR,
-					"É necessário aceitar os termos de regulamento para concluir o cadastro");
-		}
+		
+		enable = false;
 		preparaDadosComMascara();
 		List<String> erros = validarDadosCadastrais();
 		if (!erros.isEmpty()) {
