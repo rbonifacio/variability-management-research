@@ -44,7 +44,7 @@
 					<img src="../img/positivo/box_ajuda.png" />
 				</s:div>
 			</rich:modalPanel>
-
+			
 			<!-- 
 			<s:div style="padding-left: 910px ;">
 				<h:outputLink value="#" id="link_ajuda">
@@ -154,7 +154,7 @@
 
 						<fieldset>
 							<legend>#{messages['positivo.novoUsuario.quero.cadastrar']}</legend>
-							<div class="dialog">
+							<s:div styleClass="dialog" id="form_">
 								<h:panelGrid columns="2" rowClasses="prop"
 									columnClasses="name,value">
 
@@ -307,25 +307,24 @@
 								<h:outputLabel for="confirma_termos"
 									value="Li e concordo com os termos do regulamento" />
 								<h:selectBooleanCheckbox id="confirma_termos"
-									value="#{userAction.enabled}">
-									<a:support id="rupali" event="onclick" ajaxSingle="true"
-										reRender="div_submit" />
+									value="#{ userAction.enabled }">
+									<a:support id="rupali" event="onchange" ajaxSingle="true"
+										reRender="div_submit"  />
 								</h:selectBooleanCheckbox>
-							</div>
-
+							</s:div>
 						</fieldset>
 
 						<rich:spacer height="10" />
 
-						<div class="actionButtons" id="div_submit">
+						<s:div styleClass="actionButtons" id="div_submit">
 
 							<h:commandLink action="#{usuarioAction.cadastro}"
-								disabled="#{userAction.enabled}">
+								disabled="#{not userAction.enabled}">
 								<h:graphicImage url="../img/positivo/botoes/cadastrar.png"
-									alt="Cadastrar" title="Cadastrar" />
+									alt="Cadastrar" title="Cadastrar"  />
 							</h:commandLink>
 
-						</div>
+						</s:div>
 
 					</h:form>
 				</s:div>
