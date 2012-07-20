@@ -47,6 +47,7 @@ public class Mensagens {
 	public static final Object MSG_ACCESS_CODE = "positivo.facade.msg.access.code";
 	
 	public static final String NOVA_PROPOSTA_ERROR = "positivo.novaProposta.anexoEmBranco";
+	public static final String NOVA_PROPOSTA_TAMANHO = "positivo.novaProposta.tamanhoAnexo";
 	
 	public static final String NOME_INVALIDO = "positivo.novoUsuario.nomeInvalido";
 	public static final String SOBRENOME_INVALIDO = "positivo.novoUsuario.sobrenomeInvalido";

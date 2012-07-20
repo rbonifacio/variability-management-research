@@ -123,6 +123,7 @@
 									<s:fileUpload id="arquivo"
 										data="#{propostaAction.proposta.arquivoGUI}" required="true"
 										fileName="#{propostaAction.proposta.nomeArquivo}"
+										fileSize="#{propostaAction.tamanhoArquivo}"
 										requiredMessage="#{messages['positivo.novaProposta.anexoEmBranco']}:" />
 								</h:panelGrid>
 							</div>

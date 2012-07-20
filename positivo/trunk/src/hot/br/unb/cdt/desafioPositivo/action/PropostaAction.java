@@ -50,7 +50,9 @@ public class PropostaAction {
 	private List<Proposta> propostasSubmetidas;
 	
 	@DataModelSelection
-	private Proposta propostaSelecionada; 
+	private Proposta propostaSelecionada;
+	
+	private long tamanhoArquivo;
 	
 	
 	public PropostaAction() {
@@ -75,11 +77,14 @@ public class PropostaAction {
 		
 		if(! erros.isEmpty()) {
 			populaMensagensErro(erros);
-			//StatusMessages.instance().add(StatusMessage.Severity.ERROR);
 			return null;
 		}
 		if(proposta.getArquivoGUI().length == 0) {
 			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.NOVA_PROPOSTA_ERROR);
+			return null;
+		}
+		if(tamanhoArquivo > 10485760) {
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.NOVA_PROPOSTA_TAMANHO);
 			return null;
 		}
 		
@@ -140,6 +145,14 @@ public class PropostaAction {
 		
 		if(! erros.isEmpty()) {
 			populaMensagensErro(erros);
+			return null;
+		}
+		if(propostaSelecionada.getArquivoGUI().length == 0) {
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.NOVA_PROPOSTA_ERROR);
+			return null;
+		}
+		if(tamanhoArquivo > 10485760) {
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.NOVA_PROPOSTA_TAMANHO);
 			return null;
 		}
 		
@@ -228,6 +241,14 @@ public class PropostaAction {
 		}
 
 		return null;
+	}
+
+	public void setTamanhoArquivo(long tamanhoArquivo) {
+		this.tamanhoArquivo = tamanhoArquivo;
+	}
+
+	public long getTamanhoArquivo() {
+		return tamanhoArquivo;
 	}
 	
 	
