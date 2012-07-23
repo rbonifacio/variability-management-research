@@ -320,22 +320,6 @@ public class DesafioPositivoFacade {
 			throw new ExcecaoSobrenomeInvalido();
 		}
 		
-		// Calcula a idade
-		Calendar now = Calendar.getInstance();
-		Calendar data = Calendar.getInstance();
-		data.setTime(usuario.getNascimento());
-		int idade = now.get(Calendar.YEAR) - data.get(Calendar.YEAR);  
-		if (now.get(Calendar.MONTH) < data.get(Calendar.MONTH)) {
-		  idade--;  
-		} else if (now.get(Calendar.MONTH) == data.get(Calendar.MONTH)
-		    && now.get(Calendar.DAY_OF_MONTH) < data.get(Calendar.DAY_OF_MONTH)) {
-		  idade--;  
-		}
-		
-		// Verifica idade
-		if(idade < 12) {
-			throw new ExcecaoIdadeInvalida();
-		}
 	}
 
 	private String mensagemCadastro(Usuario usuario, String codigoAtivacao) {

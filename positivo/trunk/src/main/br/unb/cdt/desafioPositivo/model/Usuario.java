@@ -7,14 +7,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -89,6 +92,11 @@ public class Usuario implements Serializable {
 	
 	@Column(name="TOKEN")
 	private String token;
+	
+	@Column(name="DOCUMENTO_PERMISSAO", length=2147483647)
+	@Basic(fetch=FetchType.LAZY)
+	@Lob
+	private byte[] documento_permissao;
 	
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL)
 	private List<Proposta> propostas;
@@ -250,6 +258,14 @@ public class Usuario implements Serializable {
 		return false;
 	}
 	
+	public byte[] getDocumento_permissao() {
+		return documento_permissao;
+	}
+
+	public void setDocumento_permissao(byte[] documento_permissao) {
+		this.documento_permissao = documento_permissao;
+	}
+
 	/**
 	 * Converte um usuario para o formato JSON. Ok, eu poderia 
 	 * usar uma API para isso. Mas estou aos 50 minutos do segundo 

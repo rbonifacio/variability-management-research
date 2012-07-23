@@ -52,7 +52,10 @@
 						<rich:jQuery selector="#cpf" timing="onload"
 							query="mask('999.999.999-99')" />
 						<rich:jQuery selector="#cep" timing="onload"
-							query="mask('99999-999')" />	
+							query="mask('99999-999')" />
+						<rich:jQuery selector="#confirma_termos" timing="onload"
+							query="attr('checked', false);" />
+						
 
 						<fieldset>
 							<legend>#{messages['positivo.login.usuario.cadastrado']}</legend>
@@ -97,12 +100,12 @@
 
 					<rich:spacer height="15" />
 
-					<h:form id="novoForm">
+					<h:form id="novoForm" enctype="multipart/form-data">
 
 						<fieldset>
 							<legend>#{messages['positivo.novoUsuario.quero.cadastrar']}</legend>
 							<s:div styleClass="dialog" id="form_">
-								<h:panelGrid columns="2" rowClasses="prop"
+								<h:panelGrid columns="2" rowClasses="prop" 
 									columnClasses="name,value">
 
 									<h:outputLabel for="nome"
@@ -249,15 +252,22 @@
 											<rich:ajaxValidator event="onblur" />
 										</h:inputText>
 									</s:decorate>
+									
+									<h:outputLabel value="Liberação para menores:" />
+									<s:fileUpload id="documento_permissao"
+										data="#{usuarioAction.usuarioDto.documento_permissao}" 
+										fileSize="#{usuarioAction.tamanhoArquivo}"
+										fileName="#{usuarioAction.nomeArquivo}" />
+									
 								</h:panelGrid>
-
+								
 								<h:outputLabel for="confirma_termos"
 									value="Li e concordo com os termos do regulamento" />
-								<h:selectBooleanCheckbox id="confirma_termos"
-									value="#{ userAction.enabled }">
-									<a:support id="rupali" event="onchange" ajaxSingle="true"
-										reRender="div_submit"  />
+								<h:selectBooleanCheckbox id="confirma_termos" value="#{usuarioAction.enable}" checked="false" >
+									<a:support event="onclick" ajaxSingle="true" reRender="novoForm:div_submit" />  
 								</h:selectBooleanCheckbox>
+								
+
 							</s:div>
 						</fieldset>
 
@@ -265,8 +275,8 @@
 
 						<s:div styleClass="actionButtons" id="div_submit">
 
-							<h:commandLink action="#{usuarioAction.cadastro}"
-								disabled="#{not userAction.enabled}">
+							<h:commandLink action="#{usuarioAction.cadastro}" id="submeter" immediate="true"
+								disabled="#{not usuarioAction.enable}">  
 								<h:graphicImage url="../img/positivo/botoes/cadastrar.png"
 									alt="Cadastrar" title="Cadastrar"  />
 							</h:commandLink>
@@ -279,6 +289,17 @@
 		</div>
 
 		<script src="../jquery.maskedinput.js" type="text/javascript"></script>
-
+		<script type="text/javascript">
+		    function ultimaChance(aparece) {
+		        // Get the panel using its ID
+		        var obj = document.getElementById("novoForm:submeter");
+		        if (aparece) {
+		            obj.disabled = "false";
+		        } else {
+		        	obj.disabled = "true";
+		        }
+		    }
+		</script>
+		 
 	</ui:define>
 </ui:composition>

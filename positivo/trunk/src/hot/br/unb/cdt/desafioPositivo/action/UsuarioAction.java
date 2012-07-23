@@ -1,6 +1,7 @@
 package br.unb.cdt.desafioPositivo.action;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -58,17 +59,11 @@ public class UsuarioAction {
 
 	@In
 	private Credentials credentials;
-	
+
 	private boolean enable;
 
-	public boolean isEnable() {
-		System.out.println("GEtting ");
-		return enable;
-	}
-
-	public void setEnable(boolean enable) {
-		this.enable = enable;
-	}
+	private long tamanhoArquivo;
+	private String nomeArquivo;
 
 	public UsuarioAction() {
 		usuarioDto = new Usuario();
@@ -114,12 +109,13 @@ public class UsuarioAction {
 	 * dados submetidos em usuarioDto.
 	 */
 	public String cadastro() {
-		
-		enable = false;
+
 		preparaDadosComMascara();
+
 		List<String> erros = validarDadosCadastrais();
 		if (!erros.isEmpty()) {
 			populaMensagensErro(erros);
+			enable = false;
 			return null;
 		}
 
@@ -192,7 +188,7 @@ public class UsuarioAction {
 	 */
 	private String validaCPF(String stringCPF) {
 		int i, soma1, soma2, digito1, digito2;
-		
+
 		if ((stringCPF.equals("00000000000"))
 				|| (stringCPF.equals("11111111111"))
 				|| (stringCPF.equals("22222222222"))
@@ -209,7 +205,7 @@ public class UsuarioAction {
 		soma1 = 0;
 		for (i = 0; i <= 8; i++)
 			soma1 = soma1 + Integer.parseInt(stringCPF.substring(i, i + 1))
-					* (10 - i);
+			* (10 - i);
 
 		if (soma1 % 11 < 2)
 			digito1 = 0;
@@ -220,7 +216,7 @@ public class UsuarioAction {
 		soma2 = 0;
 		for (i = 0; i <= 9; i++)
 			soma2 = soma2 + Integer.parseInt(stringCPF.substring(i, i + 1))
-					* (11 - i);
+			* (11 - i);
 
 		if (soma2 % 11 < 2)
 			digito2 = 0;
@@ -290,6 +286,38 @@ public class UsuarioAction {
 		} else if (!emailUtil.verificaEmailValido(usuarioDto.getEmail())) {
 			erros.add("positivo.novoUsuario.email.confirmacao.invalida");
 		}
+
+		System.out.println(" OGK " + getNomeArquivo() + "  " + getTamanhoArquivo() + "   " + usuarioDto.getDocumento_permissao() );
+		
+		/* Verificando a idade e o comportamento com o uplaod correto
+		if( usuarioDto.getDocumento_permissao() == null && ( nomeArquivo == null ||  nomeArquivo.equals("")  ) ) {
+
+			// Calcula a idade
+			Calendar now = Calendar.getInstance();
+			Calendar data = Calendar.getInstance();
+			data.setTime(usuarioDto.getNascimento());
+			int idade = now.get(Calendar.YEAR) - data.get(Calendar.YEAR);  
+			if (now.get(Calendar.MONTH) < data.get(Calendar.MONTH)) {
+				idade--;  
+			} else if (now.get(Calendar.MONTH) == data.get(Calendar.MONTH)
+					&& now.get(Calendar.DAY_OF_MONTH) < data.get(Calendar.DAY_OF_MONTH)) {
+				idade--;  
+			}
+
+			// Verifica idade
+			if(idade < 18) {
+				erros.add("É necessário permissão dos responsáveis para participantes menores de 18 anos.");
+			}
+
+		} else {
+			if( !getNomeArquivo().endsWith(".pdf") ){
+				erros.add("O documento de permissão dos responsáveis deve estar no formato 'pdf'.");
+			}
+			
+			if( getTamanhoArquivo() > 10485760){
+				erros.add("O documento de permissão dos responsáveis não pode ter mais que 10mb.");
+			}
+		}*/
 
 		return erros;
 	}
@@ -415,7 +443,7 @@ public class UsuarioAction {
 		}
 
 	}
-	
+
 	private void restaurarDados(Usuario antigo, Usuario atual) {
 		atual.setNome(antigo.getNome());
 		atual.setSobrenome(antigo.getSobrenome());
@@ -428,7 +456,7 @@ public class UsuarioAction {
 		atual.setEndereco(antigo.getEndereco());
 		atual.setEstado(antigo.getEstado());
 	}
-	
+
 	/**
 	 * Metodo que permite a atualizacao dos dados do usuario. As informacoes
 	 * submetidas na atualizacao ficam encapsulada no bean usuarioLogado.
@@ -533,36 +561,64 @@ public class UsuarioAction {
 	}
 
 	public String preparaDadosComMascara(){
-		
+
 		System.out.println("mascaras...");
 		if(  (usuarioDto.getCpf() == null ||  usuarioDto.getCpf().equals("") ) ||
-			 (usuarioDto.getCep() == null ||  usuarioDto.getCep().equals("") )	){
+				(usuarioDto.getCep() == null ||  usuarioDto.getCep().equals("") )	){
 			System.out.println("Não há mascara a ser aplicada");
 			return "NAO HÁ MASCARA A SER REMOVIDA";
 		}
-		
+
 		if(  ( usuarioDto.getCpf() != null ||  !usuarioDto.getCpf().equals("") ) ) {
 			String stringCPF = usuarioDto.getCpf();
 			stringCPF = stringCPF.substring(0, 3) + stringCPF.substring(4, 7) + 
 					stringCPF.substring(8, 11) + stringCPF.substring(12, 14);
 			usuarioDto.setCpf(stringCPF);
 		}
-		
+		System.out.println("Mascara cpf correta...");
+
 		if(  (usuarioDto.getCep() != null ||  !usuarioDto.getCep().equals("") ) ) {
 			String stringCEP = usuarioDto.getCep();
 			stringCEP = stringCEP.substring(0, 5) + stringCEP.substring(6 , 9 );
 			usuarioDto.setCep(stringCEP);
 		}
+		System.out.println("Mascara cep correta...");
+
 		System.out.println("mascaras aplicadas com sucesso");
 		return "OK";
 	}
-		
+
 	public Usuario getUsuarioDto() {
 		return usuarioDto;
 	}
 
 	public void setUsuarioDto(Usuario usuarioDto) {
 		this.usuarioDto = usuarioDto;
+	}
+
+	public String getNomeArquivo() {
+		return nomeArquivo;
+	}
+
+	public void setNomeArquivo(String nomeArquivo) {
+		this.nomeArquivo = nomeArquivo;
+	}
+
+	public long getTamanhoArquivo() {
+		return tamanhoArquivo;
+	}
+
+	public void setTamanhoArquivo(long tamanhoArquivo) {
+		this.tamanhoArquivo = tamanhoArquivo;
+	}
+
+	public boolean isEnable() {
+		System.out.println("GEtting ");
+		return enable;
+	}
+
+	public void setEnable(boolean enable) {
+		this.enable = enable;
 	}
 
 }
