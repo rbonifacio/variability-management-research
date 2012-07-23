@@ -12,49 +12,13 @@
 	<ui:define name="body">
 		<div class="corpo"
 			style="background: url(../img/positivo/bg.jpg) no-repeat; min-height: 850px; padding: 15px 0 0 0">
-
-			<rich:modalPanel id="panel" width="670" height="440">
-				<f:facet name="header">
-					<h:panelGroup>
-					</h:panelGroup>
-				</f:facet>
-				<f:facet name="controls">
-					<h:panelGroup>
-						<h:graphicImage value="../img/close.png" styleClass="hidelink"
-							id="hidelink" />
-						<rich:componentControl for="panel" attachTo="hidelink"
-							operation="hide" event="onclick" />
-					</h:panelGroup>
-				</f:facet>
-				<iframe width="640" height="390"
-					src="http://www.youtube.com/embed/XCF9PhpesD0" frameborder="0">
-				</iframe>
-			</rich:modalPanel>
-
-			<rich:modalPanel id="ajuda_panel" width="700" height="800">
-				<f:facet name="controls">
-					<h:panelGroup>
-						<h:graphicImage value="../img/close.png" styleClass="hidelink"
-							id="hidelink_ajuda" />
-						<rich:componentControl for="ajuda_panel" attachTo="hidelink_ajuda"
-							operation="hide" event="onclick" />
-					</h:panelGroup>
-				</f:facet>
-				<s:div>
-					<img src="../img/positivo/box_ajuda.png" />
-				</s:div>
-			</rich:modalPanel>
 			
-			<!-- 
-			<s:div style="padding-left: 910px ;">
-				<h:outputLink value="#" id="link_ajuda">
-					<img src="../img/positivo/ajuda.png" />
-					<rich:componentControl for="ajuda_panel" attachTo="link_ajuda"
-						operation="show" event="onclick" />
+			<s:div style="padding-left: 830px ; vertical-align: middle; display: table-cell;">
+				<h:outputLink value="../ajuda.seam" id="link_ajuda"> 
+					<div style="float:left; line-height:50px; height: 30px;">INSTRUÇÕES</div> 
+					<div style="float:right;"><img src="../img/positivo/ajuda.png" /></div>
 				</h:outputLink>
 			</s:div>
-
- -->
 
 			<h:panelGrid columns="2">
 				<s:div styleClass="conteudo_img_esquerda_inscricao">
@@ -64,23 +28,6 @@
 						TRANSFORME A SUA IDEIA <br></br> EM UMA ÓTIMA OPORTUNIDADE <br>
 						</br> <font style="color: #275975; font-weight: bold;">PARTICIPE!</font>
 					</div>
-
-
-					<!-- 
-					<div style="font-size: 1.8em; color: #275975">VIDEO TUTORIAL
-						PENCIL</div>
-					<br></br>
-					<h:outputLink value="#" id="link">
-						<img src="../img/positivo/video.png" />
-						<rich:componentControl for="panel" attachTo="link"
-							operation="show" event="onclick" />
-					</h:outputLink>
-					<br></br>
-					Evolus Pencil #{messages['eh']} uma ferramenta livre, cuja finalidade #{messages['eh']} a 
-					<br></br>
-					#{messages['criacao']} de "#{messages['prototipo']}" de telas.
-			
-			-->
 
 				</s:div>
 
