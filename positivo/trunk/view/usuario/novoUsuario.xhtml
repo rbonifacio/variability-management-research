@@ -12,11 +12,14 @@
 	<ui:define name="body">
 		<div class="corpo"
 			style="background: url(../img/positivo/bg.jpg) no-repeat; min-height: 850px; padding: 15px 0 0 0">
-			
-			<s:div style="padding-left: 830px ; vertical-align: middle; display: table-cell;">
-				<h:outputLink value="../ajuda.seam" id="link_ajuda"> 
-					<div style="float:left; line-height:50px; height: 30px;">INSTRUÇÕES</div> 
-					<div style="float:right;"><img src="../img/positivo/ajuda.png" /></div>
+
+			<s:div
+				style="padding-left: 830px ; vertical-align: middle; display: table-cell;">
+				<h:outputLink value="../ajuda.seam" id="link_ajuda">
+					<div style="float: left; line-height: 50px; height: 30px;">INSTRUÇÕES</div>
+					<div style="float: right;">
+						<img src="../img/positivo/ajuda.png" />
+					</div>
 				</h:outputLink>
 			</s:div>
 
@@ -55,7 +58,10 @@
 							query="mask('99999-999')" />
 						<rich:jQuery selector="#confirma_termos" timing="onload"
 							query="attr('checked', false);" />
-						
+						<rich:jQuery selector="#submeter" timing="onload"
+							query="attr({disabled:true});" />
+						<rich:jQuery selector="#submeter" timing="onload"
+							query="css('opacity', '0.3');" />
 
 						<fieldset>
 							<legend>#{messages['positivo.login.usuario.cadastrado']}</legend>
@@ -105,7 +111,7 @@
 						<fieldset>
 							<legend>#{messages['positivo.novoUsuario.quero.cadastrar']}</legend>
 							<s:div styleClass="dialog" id="form_">
-								<h:panelGrid columns="2" rowClasses="prop" 
+								<h:panelGrid columns="2" rowClasses="prop"
 									columnClasses="name,value">
 
 									<h:outputLabel for="nome"
@@ -252,21 +258,23 @@
 											<rich:ajaxValidator event="onblur" />
 										</h:inputText>
 									</s:decorate>
-									
+
 									<h:outputLabel value="Liberação para menores:" />
 									<s:fileUpload id="documento_permissao"
-										data="#{usuarioAction.usuarioDto.documento_permissao}" 
+										data="#{usuarioAction.usuarioDto.documento_permissao}"
 										fileSize="#{usuarioAction.tamanhoArquivo}"
 										fileName="#{usuarioAction.nomeArquivo}" />
-									
+
 								</h:panelGrid>
-								
+
 								<h:outputLabel for="confirma_termos"
 									value="Li e concordo com os termos do regulamento" />
-								<h:selectBooleanCheckbox id="confirma_termos" value="#{usuarioAction.enable}" checked="false" >
-									<a:support event="onclick" ajaxSingle="true" reRender="novoForm:div_submit" />  
+								<h:selectBooleanCheckbox id="confirma_termos"
+									checked="false" onclick="handleSomeChange();">
+									<a:support event="onclick" ajaxSingle="true"
+										reRender="div_submit" />
 								</h:selectBooleanCheckbox>
-								
+
 
 							</s:div>
 						</fieldset>
@@ -274,13 +282,8 @@
 						<rich:spacer height="10" />
 
 						<s:div styleClass="actionButtons" id="div_submit">
-
-							<h:commandLink action="#{usuarioAction.cadastro}" id="submeter" immediate="true"
-								disabled="#{not usuarioAction.enable}">  
-								<h:graphicImage url="../img/positivo/botoes/cadastrar.png"
-									alt="Cadastrar" title="Cadastrar"  />
-							</h:commandLink>
-
+							<h:commandButton action="#{usuarioAction.cadastro}" id="submeter" style="width:68px; height:18px; background:url('../img/positivo/botoes/cadastrar.png') no-repeat; border:none;">
+							</h:commandButton>
 						</s:div>
 
 					</h:form>
@@ -299,7 +302,20 @@
 		        	obj.disabled = "true";
 		        }
 		    }
+		    
+		    handleSomeChange = function() {
+		        var submeter = document.getElementById("novoForm:submeter");
+		        submeter.disabled = !submeter.disabled;
+		        if(submeter.disabled) {
+		        	submeter.style.cursor='default';
+		        	submeter.style.opacity='0.3';
+		        } else {
+		        	submeter.style.cursor='pointer';
+		        	submeter.style.opacity='1';
+		        }
+
+		    }
 		</script>
-		 
+
 	</ui:define>
 </ui:composition>
