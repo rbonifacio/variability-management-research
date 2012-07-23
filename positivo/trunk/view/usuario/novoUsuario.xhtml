@@ -267,13 +267,17 @@
 
 								</h:panelGrid>
 
-								<h:outputLabel for="confirma_termos"
-									value="Li e concordo com os termos do regulamento" />
-								<h:selectBooleanCheckbox id="confirma_termos"
-									checked="false" onclick="handleSomeChange();">
-									<a:support event="onclick" ajaxSingle="true"
-										reRender="div_submit" />
-								</h:selectBooleanCheckbox>
+								<div style="text-indent:11px;">
+									<h:outputLabel for="confirma_termos"
+										value="Li e concordo com os termos do regulamento" />
+									<h:selectBooleanCheckbox id="confirma_termos"
+										checked="false" onclick="handleSomeChange();">
+										<a:support event="onclick" ajaxSingle="true"
+											reRender="div_submit" />
+									</h:selectBooleanCheckbox>
+								</div>
+								
+								<br /><br />
 
 
 							</s:div>
@@ -307,7 +311,7 @@
 		        var submeter = document.getElementById("novoForm:submeter");
 		        submeter.disabled = !submeter.disabled;
 		        if(submeter.disabled) {
-		        	submeter.style.cursor='default';
+		        	submeter.style.cursor='default'; 
 		        	submeter.style.opacity='0.3';
 		        } else {
 		        	submeter.style.cursor='pointer';
