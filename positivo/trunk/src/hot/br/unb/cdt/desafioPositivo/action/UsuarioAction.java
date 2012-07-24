@@ -63,7 +63,6 @@ public class UsuarioAction {
 	private boolean enable;
 
 	private long tamanhoArquivo;
-	private String nomeArquivo;
 
 	public UsuarioAction() {
 		usuarioDto = new Usuario();
@@ -286,11 +285,8 @@ public class UsuarioAction {
 		} else if (!emailUtil.verificaEmailValido(usuarioDto.getEmail())) {
 			erros.add("positivo.novoUsuario.email.confirmacao.invalida");
 		}
-
-		System.out.println(" OGK " + getNomeArquivo() + "  " + getTamanhoArquivo() + "   " + usuarioDto.getDocumento_permissao() );
 		
-		/* Verificando a idade e o comportamento com o uplaod correto
-		if( usuarioDto.getDocumento_permissao() == null && ( nomeArquivo == null ||  nomeArquivo.equals("")  ) ) {
+		if( usuarioDto.getDocumento_permissao().length == 0) {
 
 			// Calcula a idade
 			Calendar now = Calendar.getInstance();
@@ -306,18 +302,21 @@ public class UsuarioAction {
 
 			// Verifica idade
 			if(idade < 18) {
-				erros.add("É necessário permissão dos responsáveis para participantes menores de 18 anos.");
+				erros.add("É necessário a submissão do termo de autorização de participação para participantes menores de idade.");
 			}
-
-		} else {
-			if( !getNomeArquivo().endsWith(".pdf") ){
-				erros.add("O documento de permissão dos responsáveis deve estar no formato 'pdf'.");
+		}
+		else {
+			if( getTamanhoArquivo() > 2097152){
+				erros.add("O documento de permissão dos responsáveis não pode ter mais que 2 MB.");
 			}
-			
-			if( getTamanhoArquivo() > 10485760){
-				erros.add("O documento de permissão dos responsáveis não pode ter mais que 10mb.");
+			if(!(usuarioDto.getNomeDocumento().endsWith(".pdf") || 
+					usuarioDto.getNomeDocumento().endsWith(".png") || 
+					usuarioDto.getNomeDocumento().endsWith(".jpg") || 
+					usuarioDto.getNomeDocumento().endsWith(".bmp") || 
+					usuarioDto.getNomeDocumento().endsWith(".gif"))) {
+				erros.add("Os formatos aceitos para o termo de autorização de participação de menores são pdf, png, jpg, bmp e gif");
 			}
-		}*/
+		}
 
 		return erros;
 	}
@@ -594,14 +593,6 @@ public class UsuarioAction {
 
 	public void setUsuarioDto(Usuario usuarioDto) {
 		this.usuarioDto = usuarioDto;
-	}
-
-	public String getNomeArquivo() {
-		return nomeArquivo;
-	}
-
-	public void setNomeArquivo(String nomeArquivo) {
-		this.nomeArquivo = nomeArquivo;
 	}
 
 	public long getTamanhoArquivo() {

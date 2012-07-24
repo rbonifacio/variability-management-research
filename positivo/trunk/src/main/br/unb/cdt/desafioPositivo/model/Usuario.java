@@ -98,6 +98,9 @@ public class Usuario implements Serializable {
 	@Lob
 	private byte[] documento_permissao;
 	
+	@Column(name="NOME_DOCUMENTO_PERMISSAO")
+	private String nomeDocumento;
+	
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL)
 	private List<Proposta> propostas;
 	
@@ -360,5 +363,13 @@ public class Usuario implements Serializable {
 
 	public void setEndereco(String endereco) {
 		this.endereco = endereco;
+	}
+
+	public void setNomeDocumento(String nomeDocumento) {
+		this.nomeDocumento = nomeDocumento;
+	}
+
+	public String getNomeDocumento() {
+		return nomeDocumento;
 	}
 }
