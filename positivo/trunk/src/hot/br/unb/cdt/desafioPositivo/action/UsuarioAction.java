@@ -56,7 +56,7 @@ public class UsuarioAction {
 
 	@In
 	private Identity identity;
- 
+
 	@In
 	private Credentials credentials;
 
@@ -303,6 +303,9 @@ public class UsuarioAction {
 			// Verifica idade
 			if(idade < 18) {
 				erros.add("É necessário a submissão do termo de autorização de participação para participantes menores de idade.");
+			}
+			else {
+				usuarioDto.setDocumento_permissao(null);
 			}
 		}
 		else {
