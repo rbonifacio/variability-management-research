@@ -582,6 +582,11 @@ public class DesafioPositivoFacade {
 		proposta.setPublicoAlvo(propostaSelecionada.getPublicoAlvo());
 		proposta.setDescricaoFuncional(propostaSelecionada.getDescricaoFuncional());
 
+		if(propostaSelecionada.getArquivoGUI().length != 0){
+			proposta.setArquivoGUI(propostaSelecionada.getArquivoGUI());
+			proposta.setNomeArquivo(propostaSelecionada.getNomeArquivo());
+		}
+		
 		entityManager.merge(proposta);
 		entityManager.flush();
 	}

@@ -32,7 +32,7 @@
 			<h:panelGrid columns="2">
 				<s:div styleClass="info2">
 					<s:div style="font-size: 1.0em; padding-left: 15px;">
-						#{messages['campos_obrigatorios']}
+						<font style="color: red"> * </font>#{messages['campos_obrigatorios']}
 					</s:div>
 					<rich:spacer height="25" />
 					<s:div>
@@ -123,7 +123,6 @@
 									<h:commandButton action="#{propostaAction.download}"
 										style="width: 115px; heigh: 30px;" id="prototipoAntigo"
 										value="#{propostaAction.propostaSelecionada.nomeArquivo}">
-
 									</h:commandButton>
 
 									<h:outputLabel for="prototipo"

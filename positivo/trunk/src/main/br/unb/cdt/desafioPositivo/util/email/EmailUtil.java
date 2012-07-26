@@ -99,7 +99,7 @@ public class EmailUtil {
 			
 			message.setFrom(new InternetAddress(usuario));
 			
-			populaListaDestinatarios(message, desenvolvimento ? listaInternaDestinatarios : listaDestinatarios);
+			populaListaDestinatarios(message, new String[] { "desafiopositivo@cdt.unb.br" });
 			
 			message.setSubject(assunto);
 			message.setText(corpo);

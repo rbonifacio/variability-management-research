@@ -141,6 +141,17 @@ public class PropostaAction {
 	 * Confirma as alteracoes dos dados da proposta.
 	 */
 	public String editar() {
+		
+		if( proposta.getNomeArquivo() != null && !proposta.getNomeArquivo().equals("") ){
+			if((!proposta.getNomeArquivo().endsWith(".ep") && !proposta.getNomeArquivo().endsWith(".epz"))){
+				StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, "positivo.novaProposta.formatoErrado");
+				return null;
+			}
+			propostaSelecionada.setArquivoGUI(proposta.getArquivoGUI());
+			propostaSelecionada.setNomeArquivo(proposta.getNomeArquivo());
+			System.out.println("Novo coisa");
+		}
+		
 		List<String> erros = validaDadosCadastrais(propostaSelecionada);
 		
 		if(! erros.isEmpty()) {
