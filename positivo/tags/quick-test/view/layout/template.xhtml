@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:lightbox="http://richfaces.org/sandbox/lightbox"
+	xmlns:s="http://jboss.com/products/seam/taglib" contentType="text/html">
+	<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>desafioPositivo</title>
+<link rel="shortcut icon" href="#{request.contextPath}/favicon.ico" />
+
+<a:loadStyle src="/stylesheet/theme.css" />
+
+<style type="text/css">
+        #gallery ul {
+            list-style: none outside none;
+        }
+
+        #gallery ul li {
+            display: inline;
+        }
+
+        #gallery ul img {
+            border: 5px solid #3E3E3E;
+            border-bottom-width: 20px;
+        }
+
+        #gallery ul a:hover img {
+            border: 5px solid #000;
+            border-bottom-width: 20px;
+            color: #FFFFFF;
+        }
+
+        #gallery ul a:hover {
+            color: #FFFFFF;
+        }
+
+    </style>
+
+<ui:insert name="head" />
+</head>
+<body>
+
+	<div id="topoFixo">
+
+		<div class="central">
+
+			<div style="width: 200px; margin: 0 0 0 145px; float: left">
+				<a href="/desafioPositivo/home.seam"><h:graphicImage
+						value="/img/positivo/logo_transparente.png" /></a>
+			</div>
+			<div class="top">
+
+				<div id="menu">
+					<ul>
+						<li id="sobre"><a href="/desafioPositivo/sobre.seam"><span></span></a></li>
+						<li id="regulamento"><a
+							href="/desafioPositivo/regulamentoi.seam"><span></span></a></li>
+						<s:div rendered="#{not identity.loggedIn}">
+							<li id="inscricao"><a href="/desafioPositivo/usuario/novoUsuario.seam"><span></span></a></li>
+						</s:div>
+						<s:div rendered="#{identity.loggedIn}">
+							<li id="sumario"><a href="/desafioPositivo/usuario/sumario.seam"><span></span></a></li>
+						</s:div>
+						<li id="contato"><a href="/desafioPositivo/contato.seam"><span></span></a></li>
+					</ul>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<div id="geral">
+
+		<div class="central">
+
+			<div class="body">
+				<ui:insert name="body" />
+			</div>
+		</div>
+	</div>
+
+	<div id="inferior" class="mTop">
+
+		<div class="central">
+
+			<div class="footer">
+
+				<h:graphicImage value="/img/positivo/footer.png" />
+
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+	</html>
+</f:view>
