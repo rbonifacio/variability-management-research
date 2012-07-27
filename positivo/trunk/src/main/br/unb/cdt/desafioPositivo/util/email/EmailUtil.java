@@ -28,13 +28,13 @@ public class EmailUtil {
 	
 	/* configuracao padrao do componente */
 	
-	private boolean desenvolvimento = true;
-	private String autorizacao = "true";
-	private String tls = "true";
-	private String host = "smtp.gmail.com";
-	private String porta = "587";
-	private String usuario = "desafiopositivoandroid@gmail.com";
-	private String senha = "android@0!2";
+	private boolean desenvolvimento = false;
+	private String autorizacao = "false";
+	private String tls = "false";
+	private String host = "localhost";
+	private String porta = "25";
+	private String usuario = "desafiopositivo@concursoideiapp.com.br";
+	private String senha = "";
 	private String[] listaInternaDestinatarios = new String[] { "desafiopositivoandroid@gmail.com" };
 	
 	/**
@@ -108,7 +108,7 @@ public class EmailUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ExcecaoEnvioEmail(
-					"Nao foi possivel enviar o email com o contato. Tente novamente.");
+					"Nao foi possivel enviar o email comR o contato. Tente novamente.");
 		}
 	}
 	

@@ -115,7 +115,7 @@
 
 									<h:outputLabel for="nascimento"
 										value="#{messages['positivo.novoUsuario.nascimento']}:" />
-									<rich:calendar id="nascimento" datePattern="dd/MM/yyyy"
+									<rich:calendar id="nascimento" datePattern="dd/MM/yyyy" disabled="true"
 										value="#{usuarioLogado.nascimento}">
 										<s:validate />
 									</rich:calendar>
@@ -161,6 +161,8 @@
 										requiredMessage="#{messages['positivo.novoUsuario.estadoEmBranco']}:">
 										<f:selectItems value="#{usuarioAction.opcoesEstado()}" />
 									</h:selectOneMenu>
+
+									
 
 								</h:panelGrid>
 

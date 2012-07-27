@@ -46,7 +46,7 @@ public class ContatoAction {
 		}
 			
 		String pre_ass = "Contato, de " + nome + " : ";
-		String cabeca = "Autor: " + nome + "\n\n";
+		String cabeca = "Autor: " + nome + "\nE-mail: "+ email +" \n";
 		
 		try{
 			emailUtil.enviarEmailContato(new String[] {email}, pre_ass + assunto, cabeca+ mensagem);

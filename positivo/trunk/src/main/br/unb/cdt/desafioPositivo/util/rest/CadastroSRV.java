@@ -18,7 +18,7 @@ public class CadastroSRV extends PositivoAPI {
 	 * TODO: recuperar de um arquivo de configuracao. 
 	 */
 	protected String url() {
-		return "https://homolog.api.mundopositivo.com.br/integracao/rest/sso/cadastraCliente";
+		return "https://api.mundopositivo.com.br/integracao/rest/sso/cadastraCliente";
 	}
 
 	@Override
