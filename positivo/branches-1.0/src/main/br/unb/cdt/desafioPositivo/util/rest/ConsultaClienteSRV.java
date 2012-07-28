@@ -1,16 +1,21 @@
 package br.unb.cdt.desafioPositivo.util.rest;
 
 public class ConsultaClienteSRV extends PositivoAPI {
+	
+	private String token;
 
 	@Override
 	protected void atualizaParametros() {
-		// TODO Auto-generated method stub
-
+		req.queryParameter("token", token);
+	}
+	
+	public ConsultaClienteSRV(String token) {
+		this.token = token;
 	}
 
 	@Override
 	protected String url() {
-		return "https://api.mundopositivo.com.br/integracao/rest/sso/consultaCliente";
+		return "https://homolog.api.mundopositivo.com.br/integracao/rest/sso/consultaCliente";
 	}
 
 }

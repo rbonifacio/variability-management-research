@@ -19,8 +19,11 @@ import org.jboss.seam.ui.util.cdk.Messages;
 import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
 
 import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
+import br.unb.cdt.desafioPositivo.model.Estado;
 import br.unb.cdt.desafioPositivo.model.Proposta;
+import br.unb.cdt.desafioPositivo.model.Sexo;
 import br.unb.cdt.desafioPositivo.model.Usuario;
+import br.unb.cdt.desafioPositivo.model.acesso.AcessoAtivo;
 import br.unb.cdt.desafioPositivo.model.acesso.AcessoSolicitado;
 import br.unb.cdt.desafioPositivo.model.acesso.ExcecaoAcessoUsuario;
 import br.unb.cdt.desafioPositivo.model.dto.AlteraSenhaDTO;
@@ -32,8 +35,10 @@ import br.unb.cdt.desafioPositivo.util.rest.CadastroSRV;
 import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaAutenticacao;
 import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaCadastro;
 import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaNovaSenha;
+import br.unb.cdt.desafioPositivo.util.rest.ConsultaClienteSRV;
 import br.unb.cdt.desafioPositivo.util.rest.NovaSenhaSRV;
 import br.unb.cdt.desafioPositivo.util.rest.RespostaPositivo;
+import br.unb.cdt.desafioPositivo.util.rest.RespostaPositivoUsuario;
 
 @Name("facade")
 @Scope(ScopeType.CONVERSATION)
@@ -70,7 +75,7 @@ public class DesafioPositivoFacade {
 	public void adicionarUsuario(Usuario dto) throws ExcecaoUsuarioCadastrado,
 	ExcecaoEnvioEmail, Exception {
 		AutenticacaoSRV autentica = new AutenticacaoSRV(dto.getEmail(),
-		"123456");
+				"123456");
 
 		autentica.preparaRequisicao();
 		int resp = autentica.requisitaServico().getCodigo();
@@ -105,7 +110,7 @@ public class DesafioPositivoFacade {
 			if (usuario == null) {
 				throw new Exception(Mensagens.EXP_REQUISICAO);
 			}
-			
+
 			validaDados(usuarioLogado);
 
 			usuario.setNome(usuarioLogado.getNome());
@@ -139,7 +144,7 @@ public class DesafioPositivoFacade {
 	}
 
 	public void alterarSenha(Usuario usuarioLogado, AlteraSenhaDTO senha)
-	throws Exception {
+			throws Exception {
 		// verifica se a senha atual informada eh a correta, procedendo
 		// com uma autenticacao.
 		AutenticacaoSRV autenticacaoSrv = new AutenticacaoSRV(
@@ -280,7 +285,7 @@ public class DesafioPositivoFacade {
 				usuario.getNome().contains("9")) {
 			throw new ExcecaoNomeInvalido();
 		}
-		
+
 		// Verifica sobrenome
 		if (usuario.getSobrenome().contains("!") || 
 				usuario.getSobrenome().contains("@") || 
@@ -319,17 +324,17 @@ public class DesafioPositivoFacade {
 				usuario.getSobrenome().contains("9")) {
 			throw new ExcecaoSobrenomeInvalido();
 		}
-		
+
 	}
 
 	private String mensagemCadastro(Usuario usuario, String codigoAtivacao) {
 		return  messages.get(Mensagens.MSG_WELCOME) + ", " + usuario.getNome() + 
-		", \n \n \n" + 
-		messages.get(Mensagens.MSG_BODY) + "\n\n\n" + urlConfirmacaoCadastro + " \n \n \n" + 
-		messages.get(Mensagens.MSG_ACCESS_CODE) + "\n\n\n" + codigoAtivacao +
-		"\n \n \n" +
-		messages.get(Mensagens.MSG_END) + ", \n" +
-		messages.get(Mensagens.MSG_ATT) + ".";
+				", \n \n \n" + 
+				messages.get(Mensagens.MSG_BODY) + "\n\n\n" + urlConfirmacaoCadastro + " \n \n \n" + 
+				messages.get(Mensagens.MSG_ACCESS_CODE) + "\n\n\n" + codigoAtivacao +
+				"\n \n \n" +
+				messages.get(Mensagens.MSG_END) + ", \n" +
+				messages.get(Mensagens.MSG_ATT) + ".";
 		/*		
 		return "Prezado " + usuario.getNome() + 
 				", \n \n \n" + 
@@ -353,12 +358,48 @@ public class DesafioPositivoFacade {
 	 *             caso ocorra algum problema na excecao
 	 */
 	public Usuario autenticarUsuario(String email, String senha)
-	throws ExcecaoFalhaAutenticacao, ExcecaoAcessoUsuario, Exception {
+			throws ExcecaoFalhaAutenticacao, ExcecaoAcessoUsuario, Exception {
 		RespostaPositivo resp = autenticarNaRedePositivo(email, senha);
 
 		Usuario usuario = recuperaUsuario(email);
 
-		if (usuario == null) {
+		if ((usuario == null) && (CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo()) == CodigoRespostaAutenticacao.SUCESSO)) {
+			//throw new ExcecaoFalhaAutenticacao(Mensagens.EXP_USUARIO_SENHA);
+			try {
+				String token = resp.getToken();
+				ConsultaClienteSRV req = new ConsultaClienteSRV(token);
+				req.preparaRequisicao();
+				RespostaPositivo resp2 = req.requisitaServico();
+				usuario = new Usuario();
+				usuario.setNome(resp2.getNome());
+				usuario.setSobrenome(resp2.getSobrenome());
+				String nascimento = resp2.getDataNascimento();
+				int dia = Integer.parseInt(nascimento.substring(0, 2));
+				int mes = Integer.parseInt(nascimento.substring(3, 5));
+				int ano = Integer.parseInt(nascimento.substring(6, 10));
+				usuario.setNascimento(new Date(ano, mes, dia));
+				usuario.setSexo(resp2.getSexo().equals("M") ? Sexo.MASCULINO : Sexo.FEMININO);
+				usuario.setEstado(Estado.valueOf(resp2.getEstado()));
+				usuario.setEmail(resp2.getEmail());
+				usuario.setToken(resp2.getToken());
+				usuario.setCpf("00000000000");
+				usuario.setRg("0000000000");
+				usuario.setConfirmacaoEmail(resp2.getEmail());
+				usuario.setId(10123123l);
+
+				/* Cadastra o usuário Positivo */
+				AcessoAtivo acesso = new AcessoAtivo();
+				acesso.setUsuario(usuario);
+
+				usuario.getHistoricoSituacaoAcesso().add(acesso);
+				
+				entityManager.flush();
+				entityManager.merge(usuario);
+				entityManager.flush();
+			} catch(Exception e) {
+				throw new ExcecaoAcessoUsuario("Importação de usuário Positivo falhou!");
+			}
+		} else if(usuario == null) {
 			throw new ExcecaoFalhaAutenticacao(Mensagens.EXP_USUARIO_SENHA);
 		} else {
 			usuario.getSituacaoAcessoAtual().autenticar(resp.getCodigo() == 0);
@@ -436,7 +477,7 @@ public class DesafioPositivoFacade {
 	 * Realiza a autenticacao na rede Positivo.
 	 */
 	private RespostaPositivo autenticarNaRedePositivo(String email, String senha)
-	throws Exception {
+			throws Exception {
 		AutenticacaoSRV req = new AutenticacaoSRV(email, senha);
 		req.preparaRequisicao();
 		RespostaPositivo resp = req.requisitaServico();
@@ -447,7 +488,7 @@ public class DesafioPositivoFacade {
 	 * Gera um codigo para ser usado na confirmacao do cadastro.
 	 */
 	private String geraCodigoConfirmacaoCadastro(Usuario usuario)
-	throws Exception {
+			throws Exception {
 		Date dataAtual = Calendar.getInstance().getTime();
 		String codigo = CriptografiaUtil.criptografarMD5(usuario.getEmail()
 				+ dataAtual.toString());
@@ -462,7 +503,7 @@ public class DesafioPositivoFacade {
 		String date = Calendar.getInstance().getTime().toString();
 
 		String senha = CriptografiaUtil.criptografarMD5(email + date)
-		.substring(0, 10);
+				.substring(0, 10);
 
 		return senha.toUpperCase();
 	}
@@ -541,11 +582,11 @@ public class DesafioPositivoFacade {
 		 */
 
 		return  messages.get(Mensagens.MSG_WELCOME) + ", " + usuario.getNome() + 
-		", \n \n \n" + 
-		messages.get(Mensagens.MSG_BODY_SENHA) + "\n\n\n" + novaSenha + 
-		"\n \n \n" +
-		messages.get(Mensagens.MSG_END) + ", \n" +
-		messages.get(Mensagens.MSG_ATT) + ".";
+				", \n \n \n" + 
+				messages.get(Mensagens.MSG_BODY_SENHA) + "\n\n\n" + novaSenha + 
+				"\n \n \n" +
+				messages.get(Mensagens.MSG_END) + ", \n" +
+				messages.get(Mensagens.MSG_ATT) + ".";
 	}
 
 	public void excluirProposta(Proposta propostaSelecionada) throws Exception {
@@ -586,7 +627,7 @@ public class DesafioPositivoFacade {
 			proposta.setArquivoGUI(propostaSelecionada.getArquivoGUI());
 			proposta.setNomeArquivo(propostaSelecionada.getNomeArquivo());
 		}
-		
+
 		entityManager.merge(proposta);
 		entityManager.flush();
 	}

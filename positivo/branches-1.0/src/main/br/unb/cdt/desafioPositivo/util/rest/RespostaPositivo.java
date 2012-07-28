@@ -12,6 +12,13 @@ public class RespostaPositivo {
 	private String token;
 	private String excecao;
 	
+	private String nome; 
+	private String sobrenome; 
+	private String sexo; 
+	private String dataNascimento; 
+	private String estado; 
+	private String email; 
+	
 	public RespostaPositivo() {} 
 	
 	public RespostaPositivo fromJASON(String resp) throws Exception {
@@ -32,6 +39,26 @@ public class RespostaPositivo {
 			excecao = e.getLocalizedMessage();
 		}
 		
+		try {
+			JSONObject json2 = json.getJSONObject("cliente");
+			nome = json2.getString("nome");
+			sobrenome = json2.getString("sobrenome"); 
+			sexo = json2.getString("sexo"); 
+			dataNascimento = json2.getString("dataNascimento"); 
+			estado = json2.getString("estado"); 
+			email = json2.getString("email");
+			if((token == null) || (token.equals(""))) {
+				token = json2.getString("token");
+			}
+		} catch(JSONException e) {
+			nome = "";
+			sobrenome = "";
+			sexo = "";
+			dataNascimento = "";
+			estado = "";
+			email = "";
+		}
+		
 		return this;
 	}
 	
@@ -49,5 +76,30 @@ public class RespostaPositivo {
 	
 	public void setToken(String token) {
 		this.token = token;
-	}	
+	}
+	
+	public String getNome() {
+		return nome;
+	}
+
+	public String getSobrenome() {
+		return sobrenome;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public String getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
 }

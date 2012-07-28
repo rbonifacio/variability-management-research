@@ -24,7 +24,7 @@ public class NovaSenhaSRV extends PositivoAPI {
 
 	@Override
 	protected String url() {
-		return "https://api.mundopositivo.com.br/integracao/rest/sso/alteraSenha";
+		return "https://homolog.api.mundopositivo.com.br/integracao/rest/sso/alteraSenha";
 	}
 
 }

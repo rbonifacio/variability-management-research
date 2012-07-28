@@ -21,7 +21,7 @@ public class AutenticacaoSRV extends PositivoAPI {
 	 * TODO: recuperar de um arquivo de configuracao
 	 */
 	protected String url() {
-		return "https://api.mundopositivo.com.br/integracao/rest/sso/autentica";
+		return "https://homolog.api.mundopositivo.com.br/integracao/rest/sso/autentica";
 	}
 	
 }
