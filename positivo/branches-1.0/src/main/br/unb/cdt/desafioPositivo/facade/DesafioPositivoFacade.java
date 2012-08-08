@@ -372,20 +372,16 @@ public class DesafioPositivoFacade {
 				RespostaPositivo resp2 = req.requisitaServico();
 				usuario = new Usuario();
 				usuario.setNome(resp2.getNome());
-				usuario.setSobrenome(resp2.getSobrenome());
-				String nascimento = resp2.getDataNascimento();
-				int dia = Integer.parseInt(nascimento.substring(0, 2));
-				int mes = Integer.parseInt(nascimento.substring(3, 5));
-				int ano = Integer.parseInt(nascimento.substring(6, 10));
-				usuario.setNascimento(new Date(ano, mes, dia));
+				usuario.setSobrenome(resp2.getSobrenome());				 	
+				usuario.setNascimento(calculaDataNascimento(resp2.getDataNascimento()).getTime());
 				usuario.setSexo(resp2.getSexo().equals("M") ? Sexo.MASCULINO : Sexo.FEMININO);
 				usuario.setEstado(Estado.valueOf(resp2.getEstado()));
 				usuario.setEmail(resp2.getEmail());
 				usuario.setToken(resp2.getToken());
-				usuario.setCpf("00000000000");
-				usuario.setRg("0000000000");
+				//usuario.setCpf("00000000000");
+				//usuario.setRg("0000000000");
 				usuario.setConfirmacaoEmail(resp2.getEmail());
-				usuario.setId(10123123l);
+				//usuario.setId(10123123l);
 
 				/* Cadastra o usuário Positivo */
 				AcessoAtivo acesso = new AcessoAtivo();
@@ -393,10 +389,11 @@ public class DesafioPositivoFacade {
 
 				usuario.getHistoricoSituacaoAcesso().add(acesso);
 				
-				entityManager.flush();
+				//entityManager.flush();
 				entityManager.merge(usuario);
 				entityManager.flush();
 			} catch(Exception e) {
+				e.printStackTrace();
 				throw new ExcecaoAcessoUsuario("Importação de usuário Positivo falhou!");
 			}
 		} else if(usuario == null) {
@@ -418,6 +415,18 @@ public class DesafioPositivoFacade {
 		default:
 			throw new Exception(Mensagens.EXP_AUTENTICACAO);
 		}
+	}
+
+	private Calendar calculaDataNascimento(String nascimento) {
+		Calendar c = Calendar.getInstance();
+		
+		int dia = Integer.parseInt(nascimento.substring(0, 2));
+		int mes = Integer.parseInt(nascimento.substring(3, 5));
+		int ano = Integer.parseInt(nascimento.substring(6, 10));
+		c.set(Calendar.YEAR, ano);
+		c.set(Calendar.MONTH, mes);
+		c.set(Calendar.DAY_OF_MONTH, dia);
+		return c;
 	}
 
 	/**

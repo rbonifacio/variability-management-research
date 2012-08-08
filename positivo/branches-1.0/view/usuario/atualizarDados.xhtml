@@ -42,9 +42,11 @@
 							</f:facet>
 						</rich:messages>
 					</s:div>
-
+					
+					<rich:jQuery selector="#cpf" timing="onload"
+							query="mask('999.999.999-99')" />
 					<rich:jQuery selector="#cep" timing="onload"
-						query="mask('99999-999')" />
+							query="mask('99999-999')" />
 
 					<h:form id="alterarDadosForm">
 						<fieldset>
@@ -86,9 +88,9 @@
 											styleClass="#{invalid?'input_grande_error':'input_grande'}"
 											requiredMessage="#{messages['positivo.novoUsuario.cpfEmBranco']}:"
 											validatorMessage="#{messages['positivo.novoUsuario.cpfTamanho']}:"
-											disabled="true">
-											<f:validateLength maximum="11" />
-											<f:validateLength minimum="11" />
+											disabled="#{not empty usuarioLogado.cpf}">
+											<f:validateLength maximum="14" />
+											<f:validateLength minimum="14" />
 										</h:inputText>
 									</s:decorate>
 

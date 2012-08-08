@@ -154,7 +154,6 @@ public class Usuario implements Serializable {
 		this.sobrenome = sobrenome;
 	}
 
-	@NotNull
 	public String getCpf() {
 		return cpf;
 	}
@@ -163,7 +162,6 @@ public class Usuario implements Serializable {
 		this.cpf = cpf;
 	}
 
-	@NotNull
 	public String getRg() {
 		return rg;
 	}
