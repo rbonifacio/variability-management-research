@@ -109,7 +109,7 @@ public class UsuarioAction {
 	 */
 	public String cadastro() {
 
-		preparaDadosComMascara();
+		preparaDadosComMascara(usuarioDto);
 
 		List<String> erros = validarDadosCadastrais();
 		if (!erros.isEmpty()) {
@@ -464,7 +464,7 @@ public class UsuarioAction {
 	 * submetidas na atualizacao ficam encapsulada no bean usuarioLogado.
 	 */
 	public String atualizarDadosUsuario() {
-		preparaDadosComMascara();
+		preparaDadosComMascara(usuarioLogado);
 		List<String> erros = validarDadosAtualizacao();
 		if (!erros.isEmpty()) {
 			populaMensagensErro(erros);
@@ -562,29 +562,28 @@ public class UsuarioAction {
 		}
 	}
 
-	public String preparaDadosComMascara(){
-
+	public String preparaDadosComMascara(Usuario user){
 		System.out.println("mascaras...");
-		if(  (usuarioDto.getCpf() == null ||  usuarioDto.getCpf().equals("") ) ||
-				(usuarioDto.getCep() == null ||  usuarioDto.getCep().equals("") )	){
+		if(  (user.getCpf() == null ||  user.getCpf().equals("") ) ||
+				(user.getCep() == null ||  user.getCep().equals("") )	){
 			System.out.println("Não há mascara a ser aplicada");
 			return "NAO HÁ MASCARA A SER REMOVIDA";
 		}
 
-		if(  ( usuarioDto.getCpf() != null ||  !usuarioDto.getCpf().equals("") ) ) {
-			String stringCPF = usuarioDto.getCpf();
+		if(  ( user.getCpf() != null &&  !user.getCpf().equals("") ) 
+			 && ( user.getCpf().length() == 14 )	) {
+			String stringCPF = user.getCpf();
 			stringCPF = stringCPF.substring(0, 3) + stringCPF.substring(4, 7) + 
 					stringCPF.substring(8, 11) + stringCPF.substring(12, 14);
-			usuarioDto.setCpf(stringCPF);
+			user.setCpf(stringCPF);
 		}
-		System.out.println("Mascara cpf correta...");
 
-		if(  (usuarioDto.getCep() != null ||  !usuarioDto.getCep().equals("") ) ) {
-			String stringCEP = usuarioDto.getCep();
+		if(  (user.getCep() != null &&  !user.getCep().equals("") ) 
+				&& ( user.getCep().length() == 9 ) 	) {
+			String stringCEP = user.getCep();
 			stringCEP = stringCEP.substring(0, 5) + stringCEP.substring(6 , 9 );
-			usuarioDto.setCep(stringCEP);
+			user.setCep(stringCEP);
 		}
-		System.out.println("Mascara cep correta...");
 
 		System.out.println("mascaras aplicadas com sucesso");
 		return "OK";

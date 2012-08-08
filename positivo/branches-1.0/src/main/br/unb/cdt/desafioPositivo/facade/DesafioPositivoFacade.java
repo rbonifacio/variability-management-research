@@ -118,6 +118,10 @@ public class DesafioPositivoFacade {
 			usuario.setSexo(usuarioLogado.getSexo());
 			usuario.setNascimento(usuarioLogado.getNascimento());
 			usuario.setCep(usuarioLogado.getCep());
+			
+			usuario.setCpf(usuarioLogado.getCpf());
+			usuario.setRg(usuarioLogado.getRg());
+			
 			usuario.setBairro(usuarioLogado.getBairro());
 			usuario.setEndereco(usuarioLogado.getEndereco());
 			usuario.setEstado(usuarioLogado.getEstado());

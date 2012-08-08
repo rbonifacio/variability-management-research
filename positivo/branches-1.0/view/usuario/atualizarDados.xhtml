@@ -101,7 +101,7 @@
 											styleClass="#{invalid?'input_grande_error':'input_grande'}"
 											requiredMessage="#{messages['positivo.novoUsuario.rgEmBranco']}:"
 											validatorMessage="#{messages['positivo.novoUsuario.rgTamanho']}:"
-											disabled="true">
+											disabled="#{not empty usuarioLogado.rg}">
 											<f:validateLength maximum="15" />
 										</h:inputText>
 									</s:decorate>
