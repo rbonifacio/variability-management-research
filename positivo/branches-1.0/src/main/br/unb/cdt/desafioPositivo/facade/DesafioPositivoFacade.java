@@ -63,7 +63,7 @@ public class DesafioPositivoFacade {
 
 	@In
 	private Map<String, String> messages;
-
+	
 	@In(create=true)
 	private String urlRecuperarSenhaPositivo;
 
@@ -593,7 +593,8 @@ public class DesafioPositivoFacade {
 			ExcecaoEnvioEmail, ExcecaoUsuarioNaoEncontrado {
 		RespostaPositivo resp;
 		
-		if((dto.getTicket() != null) || (dto.getTicket().equals(""))) {
+		if( !(dto.getTicket() == null) && 
+				!(dto.getTicket().equals(""))) {
 			EsqueciSenhaSRV esqueciSenha = new EsqueciSenhaSRV(dto.getTicket(), dto.getSenha());
 			esqueciSenha.preparaRequisicao();
 			resp = esqueciSenha.requisitaServico();
@@ -612,17 +613,17 @@ public class DesafioPositivoFacade {
 			AutenticacaoSRV autentica = new AutenticacaoSRV(dto.getEmail(), gerarSenhaAleatoria());
 			autentica.preparaRequisicao();
 			resp = autentica.requisitaServico();
+		} while(CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo()) == CodigoRespostaAutenticacao.SUCESSO);
 
-			if(CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo()) == CodigoRespostaAutenticacao.SENHA_INVALIDA) {
-				EnviaEmailSRV enviaEmail = new EnviaEmailSRV(dto.getEmail(), urlRecuperarSenhaPositivo);
-				enviaEmail.preparaRequisicao();
-				resp = enviaEmail.requisitaServico();
-				if(CodigoRespostaEnviaEmail.fromCodigo(resp.getCodigo()) != CodigoRespostaEnviaEmail.SUCESSO) {
-					throw new ExcecaoEnvioEmail("Ocorreu um erro ao enviar o e-mail. Tente novamente mais tarde.");
-				}
-			}
-		} while(CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo()) != CodigoRespostaAutenticacao.SUCESSO);
-		throw new ExcecaoUsuarioNaoEncontrado();
+		if(CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo()) == CodigoRespostaAutenticacao.SENHA_INVALIDA) {
+			EnviaEmailSRV enviaEmail = new EnviaEmailSRV(dto.getEmail(), urlRecuperarSenhaPositivo);
+			enviaEmail.preparaRequisicao();
+			resp = enviaEmail.requisitaServico();
+		}
+		
+		if(CodigoRespostaEnviaEmail.fromCodigo(resp.getCodigo()) != CodigoRespostaEnviaEmail.SUCESSO) {
+			throw new ExcecaoEnvioEmail("Ocorreu um erro ao enviar o e-mail. Tente novamente mais tarde.");
+		}
 	}
 
 	private void recuperaSenhaFB(Usuario dto, Usuario usuario)

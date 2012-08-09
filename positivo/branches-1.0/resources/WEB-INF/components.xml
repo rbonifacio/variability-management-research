@@ -106,6 +106,6 @@
    </component>
    
    <factory name="urlConfirmacaoCadastro" value="https://www.concursoideiapp.com.br/desafioPositivo/usuario/confirmaSolicitacaoCadastro.seam" />
-   <factory name="urlRecuperaSenhaPositivo" value="https://www.concursoideiapp.com.br/desafioPositivo/usuario/recuperarSenhaPositivo.seam" />
+   <factory name="urlRecuperarSenhaPositivo" value="https://www.concursoideiapp.com.br/desafioPositivo/usuario/recuperarSenhaPositivo.seam" />
 
 </components>
