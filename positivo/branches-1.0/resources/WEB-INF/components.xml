@@ -76,6 +76,7 @@
    </bpm:jbpm>
    -->
    
+   <!--
    <component name="emailUtil" scope="event" class="br.unb.cdt.desafioPositivo.util.email.EmailUtil">
     <property name="desenvolvimento">false</property> 
    	<property name="autorizacao">false</property>
@@ -89,8 +90,22 @@
    	<property name="usuario">desafiopositivo@concursoideiapp.com.br</property>
    	<property name="senha"></property>
    </component>
+   -->
+    <component name="emailUtil" scope="event" class="br.unb.cdt.desafioPositivo.util.email.EmailUtil">
+    <property name="desenvolvimento">true</property> 
+   	<property name="autorizacao">true</property>
+   	<property name="tls">true</property>
+   	<property name="host">smtp.gmail.com</property>
+   	<property name="porta">587</property>
+   	<property name="listaInternaDestinatarios">
+   	 <value>desafiopositivoandroid@gmail.com</value>
+   	 <value>rbonifacio123@gmail.com</value>
+   	</property>
+   	<property name="usuario">desafiopositivoandroid@gmail.com</property>
+   	<property name="senha">android@0!2</property>
+   </component>
    
-   <factory name="urlConfirmacaoCadastro" value="https://www.concursoideiapp.com.br/desafioPositivo/usuario/confirmaSolicitacaoCadastro.seam"/>
-   
+   <factory name="urlConfirmacaoCadastro" value="https://www.concursoideiapp.com.br/desafioPositivo/usuario/confirmaSolicitacaoCadastro.seam" />
+   <factory name="urlRecuperaSenhaPositivo" value="https://www.concursoideiapp.com.br/desafioPositivo/usuario/recuperarSenhaPositivo.seam" />
 
 </components>

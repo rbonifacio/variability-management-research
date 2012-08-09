@@ -119,6 +119,9 @@ public class Usuario implements Serializable {
 	@Transient
 	private String codigoConfirmacaoCadastro;
 	
+	@Transient
+	private String ticket;
+	
 	/**
 	 * Necessario, de acordo com a especificao 
 	 * JPA.
@@ -369,5 +372,13 @@ public class Usuario implements Serializable {
 
 	public String getNomeDocumento() {
 		return nomeDocumento;
+	}
+
+	public String getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(String ticket) {
+		this.ticket = ticket;
 	}
 }

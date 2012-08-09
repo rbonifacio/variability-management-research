@@ -28,6 +28,7 @@ public class EmailUtil {
 	
 	/* configuracao padrao do componente */
 	
+	/*
 	private boolean desenvolvimento = false;
 	private String autorizacao = "false";
 	private String tls = "false";
@@ -36,6 +37,15 @@ public class EmailUtil {
 	private String usuario = "desafiopositivo@concursoideiapp.com.br";
 	private String senha = "";
 	private String[] listaInternaDestinatarios = new String[] { "desafiopositivoandroid@gmail.com" };
+	*/
+	private boolean desenvolvimento = true;
+	private String autorizacao = "true";
+	private String tls = "true";
+	private String host = "smtp.gmail.com";
+	private String porta = "587";
+	private String usuario = "desafiopositivoandroid@gmail.com";
+	private String senha = "android@0!2";
+	private String[] listaInternaDestinatarios = new String[] { "desafiopositivoandroid@gmail.com", "eusyar@gmail.com" };
 	
 	/**
 	 * Realiza o envio do email. 

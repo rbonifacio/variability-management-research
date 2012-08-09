@@ -1,5 +1,7 @@
 package br.unb.cdt.desafioPositivo.facade;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,10 +15,6 @@ import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
-import org.jboss.seam.core.ResourceBundle;
-import org.jboss.seam.ui.util.cdk.Messages;
-
-import com.sun.org.apache.xerces.internal.impl.dv.xs.YearDV;
 
 import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
 import br.unb.cdt.desafioPositivo.model.Estado;
@@ -34,11 +32,14 @@ import br.unb.cdt.desafioPositivo.util.rest.AutenticacaoSRV;
 import br.unb.cdt.desafioPositivo.util.rest.CadastroSRV;
 import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaAutenticacao;
 import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaCadastro;
+import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaEnviaEmail;
+import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaEsqueciSenha;
 import br.unb.cdt.desafioPositivo.util.rest.CodigoRespostaNovaSenha;
 import br.unb.cdt.desafioPositivo.util.rest.ConsultaClienteSRV;
+import br.unb.cdt.desafioPositivo.util.rest.EnviaEmailSRV;
+import br.unb.cdt.desafioPositivo.util.rest.EsqueciSenhaSRV;
 import br.unb.cdt.desafioPositivo.util.rest.NovaSenhaSRV;
 import br.unb.cdt.desafioPositivo.util.rest.RespostaPositivo;
-import br.unb.cdt.desafioPositivo.util.rest.RespostaPositivoUsuario;
 
 @Name("facade")
 @Scope(ScopeType.CONVERSATION)
@@ -62,6 +63,9 @@ public class DesafioPositivoFacade {
 
 	@In
 	private Map<String, String> messages;
+
+	@In(create=true)
+	private String urlRecuperarSenhaPositivo;
 
 	/**
 	 * Adiciona um usuario no meio de persistencia e realiza uma requisicao ao
@@ -118,10 +122,10 @@ public class DesafioPositivoFacade {
 			usuario.setSexo(usuarioLogado.getSexo());
 			usuario.setNascimento(usuarioLogado.getNascimento());
 			usuario.setCep(usuarioLogado.getCep());
-			
+
 			usuario.setCpf(usuarioLogado.getCpf());
 			usuario.setRg(usuarioLogado.getRg());
-			
+
 			usuario.setBairro(usuarioLogado.getBairro());
 			usuario.setEndereco(usuarioLogado.getEndereco());
 			usuario.setEstado(usuarioLogado.getEstado());
@@ -257,7 +261,7 @@ public class DesafioPositivoFacade {
 				usuario.getNome().contains("#") ||
 				usuario.getNome().contains("$") || 
 				usuario.getNome().contains("%") || 
-				usuario.getNome().contains("�") || 
+				usuario.getNome().contains("ï¿½") || 
 				usuario.getNome().contains("&") || 
 				usuario.getNome().contains("*") || 
 				usuario.getNome().contains("(") || 
@@ -266,7 +270,7 @@ public class DesafioPositivoFacade {
 				usuario.getNome().contains("_") || 
 				usuario.getNome().contains("+") || 
 				usuario.getNome().contains("=") || 
-				usuario.getNome().contains("�") || 
+				usuario.getNome().contains("ï¿½") || 
 				usuario.getNome().contains("[") || 
 				usuario.getNome().contains("{") || 
 				usuario.getNome().contains("]") || 
@@ -296,7 +300,7 @@ public class DesafioPositivoFacade {
 				usuario.getSobrenome().contains("#") ||
 				usuario.getSobrenome().contains("$") || 
 				usuario.getSobrenome().contains("%") || 
-				usuario.getSobrenome().contains("�") || 
+				usuario.getSobrenome().contains("ï¿½") || 
 				usuario.getSobrenome().contains("&") || 
 				usuario.getSobrenome().contains("*") || 
 				usuario.getSobrenome().contains("(") || 
@@ -305,7 +309,7 @@ public class DesafioPositivoFacade {
 				usuario.getSobrenome().contains("_") || 
 				usuario.getSobrenome().contains("+") || 
 				usuario.getSobrenome().contains("=") || 
-				usuario.getSobrenome().contains("�") || 
+				usuario.getSobrenome().contains("ï¿½") || 
 				usuario.getSobrenome().contains("[") || 
 				usuario.getSobrenome().contains("{") || 
 				usuario.getSobrenome().contains("]") || 
@@ -387,18 +391,18 @@ public class DesafioPositivoFacade {
 				usuario.setConfirmacaoEmail(resp2.getEmail());
 				//usuario.setId(10123123l);
 
-				/* Cadastra o usuário Positivo */
+				/* Cadastra o usuÃ¡rio Positivo */
 				AcessoAtivo acesso = new AcessoAtivo();
 				acesso.setUsuario(usuario);
 
 				usuario.getHistoricoSituacaoAcesso().add(acesso);
-				
+
 				//entityManager.flush();
 				entityManager.merge(usuario);
 				entityManager.flush();
 			} catch(Exception e) {
 				e.printStackTrace();
-				throw new ExcecaoAcessoUsuario("Importação de usuário Positivo falhou!");
+				throw new ExcecaoAcessoUsuario("ImportaÃ§Ã£o de usuÃ¡rio Positivo falhou!");
 			}
 		} else if(usuario == null) {
 			throw new ExcecaoFalhaAutenticacao(Mensagens.EXP_USUARIO_SENHA);
@@ -423,7 +427,7 @@ public class DesafioPositivoFacade {
 
 	private Calendar calculaDataNascimento(String nascimento) {
 		Calendar c = Calendar.getInstance();
-		
+
 		int dia = Integer.parseInt(nascimento.substring(0, 2));
 		int mes = Integer.parseInt(nascimento.substring(3, 5));
 		int ano = Integer.parseInt(nascimento.substring(6, 10));
@@ -542,6 +546,35 @@ public class DesafioPositivoFacade {
 		}
 	}
 
+
+	private byte[] gerarHash(String string, String algorithm) {
+		try {
+			MessageDigest md = MessageDigest.getInstance(algorithm);
+			md.update(string.getBytes());
+			return md.digest();
+		} catch (NoSuchAlgorithmException e) {
+			return null;
+		}
+	}
+
+	private static String stringHex(byte[] bytes) {
+		StringBuilder s = new StringBuilder();
+		for (int i = 0; i < bytes.length; i++) {
+			int high = ((bytes[i] >> 4) & 0xf) << 4;
+			int low = bytes[i] & 0xf;
+			if (high == 0)
+				s.append('0');
+			s.append(Integer.toHexString(high | low));
+		}
+		return s.toString();
+	}
+
+	private String gerarSenhaAleatoria() {
+		Calendar c = Calendar.getInstance();
+		return stringHex(gerarHash(c.toString(), "MD5")).substring(0, 21);
+	}
+
+
 	/**
 	 * Recupera a senha do usuario, fazendo uma requisicao ao servico da
 	 * Positivo para atualizacao de senha.
@@ -549,38 +582,79 @@ public class DesafioPositivoFacade {
 	public void recuperarSenha(Usuario dto) throws ExcecaoAcessoUsuario,
 	ExcecaoUsuarioNaoEncontrado, Exception {
 		Usuario usuario = recuperaUsuario(dto.getEmail());
-
 		if (usuario != null) {
-			usuario.getSituacaoAcessoAtual().alterarSenha();
-			String novaSenha = geraSenha(dto);
-
-			NovaSenhaSRV servico = new NovaSenhaSRV(usuario.getToken(),
-					novaSenha);
-
-			servico.preparaRequisicao();
-
-			RespostaPositivo resp = servico.requisitaServico();
-
-			switch (CodigoRespostaNovaSenha.fromCodigo(resp.getCodigo())) {
-			case SUCESSO:
-				emailUtil.enviarEmail(new String[] {usuario.getEmail()}, messages.get(Mensagens.FACADE_ALTERA_SENHA), mensagemAlteracaoSenha(usuario, novaSenha));
-				usuario.setToken(resp.getToken());
-				entityManager.merge(usuario);
-				entityManager.flush();
-				break;
-
-			case SENHA_INVALIDA:
-				recuperarSenha(dto); /* chamada recursiva, até uma senha válida ser gerada */
-				//throw new Exception(Mensagens.EXP_SENHA_GERADA_INVALIDA);
-
-			case CLIENTE_NAO_EXISTE:
-				throw new ExcecaoUsuarioNaoEncontrado();
-
-			case OUTROS:
-				throw new Exception(Mensagens.EXP_TRANSACAO);
-			}
+			recuperaSenhaFB(dto, usuario);
 		} else {
+			recuperaSenhaFA(dto);
+		}
+	}
+
+	private void recuperaSenhaFA(Usuario dto) throws Exception,
+			ExcecaoEnvioEmail, ExcecaoUsuarioNaoEncontrado {
+		RespostaPositivo resp;
+		
+		if((dto.getTicket() != null) || (dto.getTicket().equals(""))) {
+			EsqueciSenhaSRV esqueciSenha = new EsqueciSenhaSRV(dto.getTicket(), dto.getSenha());
+			esqueciSenha.preparaRequisicao();
+			resp = esqueciSenha.requisitaServico();
+			switch(CodigoRespostaEsqueciSenha.fromCodigo(resp.getCodigo())) {
+			case SUCESSO:
+				return;
+			case TICKET_INVALIDO:
+				throw new Exception("Ticket incorreto.");
+			default:
+				throw new Exception("Ocorreu um erro inesperado.");
+			}
+
+		}
+		
+		do {
+			AutenticacaoSRV autentica = new AutenticacaoSRV(dto.getEmail(), gerarSenhaAleatoria());
+			autentica.preparaRequisicao();
+			resp = autentica.requisitaServico();
+
+			if(CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo()) == CodigoRespostaAutenticacao.SENHA_INVALIDA) {
+				EnviaEmailSRV enviaEmail = new EnviaEmailSRV(dto.getEmail(), urlRecuperarSenhaPositivo);
+				enviaEmail.preparaRequisicao();
+				resp = enviaEmail.requisitaServico();
+				if(CodigoRespostaEnviaEmail.fromCodigo(resp.getCodigo()) != CodigoRespostaEnviaEmail.SUCESSO) {
+					throw new ExcecaoEnvioEmail("Ocorreu um erro ao enviar o e-mail. Tente novamente mais tarde.");
+				}
+			}
+		} while(CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo()) != CodigoRespostaAutenticacao.SUCESSO);
+		throw new ExcecaoUsuarioNaoEncontrado();
+	}
+
+	private void recuperaSenhaFB(Usuario dto, Usuario usuario)
+			throws ExcecaoAcessoUsuario, Exception, ExcecaoUsuarioNaoEncontrado {
+		RespostaPositivo resp;
+		usuario.getSituacaoAcessoAtual().alterarSenha();
+		String novaSenha = geraSenha(dto);
+
+		NovaSenhaSRV servico = new NovaSenhaSRV(usuario.getToken(),
+				novaSenha);
+
+		servico.preparaRequisicao();
+
+		resp = servico.requisitaServico();
+
+		switch (CodigoRespostaNovaSenha.fromCodigo(resp.getCodigo())) {
+		case SUCESSO:
+			emailUtil.enviarEmail(new String[] {usuario.getEmail()}, messages.get(Mensagens.FACADE_ALTERA_SENHA), mensagemAlteracaoSenha(usuario, novaSenha));
+			usuario.setToken(resp.getToken());
+			entityManager.merge(usuario);
+			entityManager.flush();
+			break;
+
+		case SENHA_INVALIDA:
+			recuperarSenha(dto); /* chamada recursiva, atÃ© uma senha vÃ¡lida ser gerada */
+			//throw new Exception(Mensagens.EXP_SENHA_GERADA_INVALIDA);
+
+		case CLIENTE_NAO_EXISTE:
 			throw new ExcecaoUsuarioNaoEncontrado();
+
+		case OUTROS:
+			throw new Exception(Mensagens.EXP_TRANSACAO);
 		}
 	}
 
