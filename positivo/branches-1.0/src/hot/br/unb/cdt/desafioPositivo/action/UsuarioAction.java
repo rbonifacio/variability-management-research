@@ -426,11 +426,15 @@ public class UsuarioAction {
 	 */
 	public String recuperarSenha() {
 		try {
-			verificaSenhasInformadas(usuarioDto.getSenha(),usuarioDto.getConfirmacaoSenha());
-			facade.recuperarSenha(usuarioDto);
-			StatusMessages.instance().addFromResourceBundle(
-					StatusMessage.Severity.INFO,
-					Mensagens.RECUPERAR_SENHA_SUCESSO, usuarioDto.getEmail());
+			String result = facade.recuperarSenha(usuarioDto);
+			if( result != null && result.equals("SENHA_REDEFINIDA") ){
+				StatusMessages.instance().addFromResourceBundle(
+						StatusMessage.Severity.INFO,"A sua senha foi redefinida com sucesso.");
+			} else {
+				StatusMessages.instance().addFromResourceBundle(
+						StatusMessage.Severity.INFO,
+						Mensagens.RECUPERAR_SENHA_SUCESSO, usuarioDto.getEmail());
+			}
 			return "home";
 		} catch (ExcecaoUsuarioNaoEncontrado e) {
 			StatusMessages.instance().addFromResourceBundle(
@@ -439,11 +443,6 @@ public class UsuarioAction {
 					usuarioDto.getEmail());
 			return null;			
 		} catch (Exception e) {
-			if( e.getMessage().equals("A sua senha foi redefinida com sucesso.") ){
-				StatusMessages.instance().add(StatusMessage.Severity.INFO,
-						"A sua senha foi redefinida com sucesso.");
-				return "home";
-			}
 			StatusMessages.instance().add(StatusMessage.Severity.ERROR,
 					e.getLocalizedMessage());
 			e.printStackTrace();

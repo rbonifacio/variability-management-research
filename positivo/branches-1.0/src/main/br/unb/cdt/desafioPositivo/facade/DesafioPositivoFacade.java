@@ -579,28 +579,32 @@ public class DesafioPositivoFacade {
 	 * Recupera a senha do usuario, fazendo uma requisicao ao servico da
 	 * Positivo para atualizacao de senha.
 	 */
-	public void recuperarSenha(Usuario dto) throws ExcecaoAcessoUsuario,
+	public String recuperarSenha(Usuario dto) throws ExcecaoAcessoUsuario,
 	ExcecaoUsuarioNaoEncontrado, Exception {
 		Usuario usuario = recuperaUsuario(dto.getEmail());
 		if (usuario != null) {
 			recuperaSenhaFB(dto, usuario);
+			return "";
 		} else {
-			recuperaSenhaFA(dto);
+			return recuperaSenhaFA(dto);
 		}
 	}
 
-	private void recuperaSenhaFA(Usuario dto) throws Exception,
+	private String recuperaSenhaFA(Usuario dto) throws Exception,
 			ExcecaoEnvioEmail, ExcecaoUsuarioNaoEncontrado {
 		RespostaPositivo resp;
 		
 		if( !(dto.getTicket() == null) && 
 				!(dto.getTicket().equals(""))) {
+			
+			verificaSenhasInformadas(dto.getSenha(), dto.getConfirmacaoSenha());
+			
 			EsqueciSenhaSRV esqueciSenha = new EsqueciSenhaSRV(dto.getTicket(), dto.getSenha());
 			esqueciSenha.preparaRequisicao();
 			resp = esqueciSenha.requisitaServico();
 			switch(CodigoRespostaEsqueciSenha.fromCodigo(resp.getCodigo())) {
 			case SUCESSO:
-				throw new Exception("A sua senha foi redefinida com sucesso.");
+				return "SENHA_REDEFINIDA";
 			case TICKET_INVALIDO:
 				throw new Exception("Ticket incorreto.");
 			default:
@@ -624,6 +628,9 @@ public class DesafioPositivoFacade {
 		if(CodigoRespostaEnviaEmail.fromCodigo(resp.getCodigo()) != CodigoRespostaEnviaEmail.SUCESSO) {
 			throw new ExcecaoEnvioEmail("Ocorreu um erro ao enviar o e-mail. Tente novamente mais tarde.");
 		}
+		
+		return "EMAIL_ENVIADO";
+		
 	}
 
 	private void recuperaSenhaFB(Usuario dto, Usuario usuario)
@@ -656,6 +663,17 @@ public class DesafioPositivoFacade {
 
 		case OUTROS:
 			throw new Exception(Mensagens.EXP_TRANSACAO);
+		}
+	}
+	
+	private void verificaSenhasInformadas(String senha, String confirmacao)
+			throws ExcecaoSenhaInvalida, ExcecaoSenhaDiferente {
+		if (!CriptografiaUtil.verificaSenha(senha)) {
+			throw new ExcecaoSenhaInvalida();
+		}
+
+		if (!senha.equals(confirmacao)) {
+			throw new ExcecaoSenhaDiferente();
 		}
 	}
 
