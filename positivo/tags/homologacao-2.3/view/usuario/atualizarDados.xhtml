@@ -1,0 +1,201 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" template="../layout/template.xhtml">
+
+	<ui:define name="body">
+		<div class="corpo"
+			style="background: url(../img/positivo/bg.jpg) no-repeat; min-height: 600px; padding: 15px 0 0 0">
+
+			<h:form>
+				<s:div styleClass="menu_logado">
+					<ul class="menu_logado_li">
+						<li><a href="../proposta/novaProposta.seam">Nova Proposta</a>
+						</li>
+						<li><a href="../proposta/minhaProposta.seam">Minhas
+								Propostas</a></li>
+						<li><a href="sumario.seam">Sumário</a></li>
+						<li><a href="alterarSenha.seam">Alterar Senha</a></li>
+						<li><h:commandLink value="#{messages['positivo.logout']}"
+								immediate="true" action="#{authenticator.logout()}" /></li>
+					</ul>
+				</s:div>
+			</h:form>
+
+			<h:panelGrid columns="2">
+				<s:div styleClass="info2">
+					<s:div>
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="../img/icon/OkV.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="../img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="../img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
+					</s:div>
+					
+					<rich:jQuery selector="#cpf" timing="onload"
+							query="mask('999.999.999-99')" />
+					<rich:jQuery selector="#cep" timing="onload"
+							query="mask('99999-999')" />
+
+					<h:form id="alterarDadosForm">
+						<fieldset>
+							<legend>#{messages['positivo.atualizarDados.heading']}</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+
+									<h:outputLabel for="nome"
+										value="#{messages['positivo.novoUsuario.nome']}:" />
+									<s:decorate>
+										<h:inputText id="nome" value="#{usuarioLogado.nome}"
+											required="true"
+											styleClass="#{invalid?'input_grande_error':'input_grande'}"
+											requiredMessage="#{messages['positivo.novoUsuario.nomeEmBranco']}:"
+											validatorMessage="#{messages['positivo.novoUsuario.nomeTamanho']}:">
+											<f:validateLength maximum="50" />
+											<rich:ajaxValidator event="onblur" />
+										</h:inputText>
+									</s:decorate>
+
+									<h:outputLabel for="sobrenome"
+										value="#{messages['positivo.novoUsuario.sobrenome']}:" />
+									<s:decorate>
+										<h:inputText id="sobrenome" value="#{usuarioLogado.sobrenome}"
+											required="true"
+											styleClass="#{invalid?'input_grande_error':'input_grande'}"
+											requiredMessage="#{messages['positivo.novoUsuario.sobrenomeEmBranco']}:"
+											validatorMessage="#{messages['positivo.novoUsuario.sobrenomeTamanho']}:">
+											<f:validateLength maximum="50" />
+											<rich:ajaxValidator event="onblur" />
+										</h:inputText>
+									</s:decorate>
+
+									<h:outputLabel for="cpf" value="CPF:" />
+									<s:decorate>
+										<h:inputText id="cpf" value="#{usuarioLogado.cpf}"
+											required="true"
+											styleClass="#{invalid?'input_grande_error':'input_grande'}"
+											requiredMessage="#{messages['positivo.novoUsuario.cpfEmBranco']}:"
+											validatorMessage="#{messages['positivo.novoUsuario.cpfTamanho']}:"
+											disabled="#{not empty usuarioLogado.cpf}">
+											<f:validateLength maximum="14" />
+											<f:validateLength minimum="14" />
+										</h:inputText>
+									</s:decorate>
+
+									<h:outputLabel for="rg" value="RG:" />
+									<s:decorate>
+										<h:inputText id="rg" value="#{usuarioLogado.rg}"
+											required="true"
+											styleClass="#{invalid?'input_grande_error':'input_grande'}"
+											requiredMessage="#{messages['positivo.novoUsuario.rgEmBranco']}:"
+											validatorMessage="#{messages['positivo.novoUsuario.rgTamanho']}:"
+											disabled="#{not empty usuarioLogado.rg}">
+											<f:validateLength maximum="15" />
+										</h:inputText>
+									</s:decorate>
+
+
+									<h:outputLabel for="sexo"
+										value="#{messages['positivo.novoUsuario.sexo']}:" />
+									<h:selectOneRadio id="sexo" value="#{usuarioLogado.sexo}"
+										required="true"
+										requiredMessage="#{messages['positivo.novoUsuario.sexoEmBranco']}:">
+										<f:selectItems value="#{usuarioAction.opcoesSexo()}" />
+									</h:selectOneRadio>
+
+									<h:outputLabel for="nascimento"
+										value="#{messages['positivo.novoUsuario.nascimento']}:" />
+									<rich:calendar id="nascimento" datePattern="dd/MM/yyyy" disabled="true"
+										value="#{usuarioLogado.nascimento}">
+										<s:validate />
+									</rich:calendar>
+
+									<h:outputLabel for="cep" value="CEP:" />
+									<s:decorate>
+										<h:inputText id="cep" value="#{usuarioLogado.cep}"
+											required="true"
+											styleClass="#{invalid?'input_grande_error':'input_grande'}"
+											requiredMessage="#{messages['positivo.novoUsuario.cepEmBranco']}:"
+											validatorMessage="#{messages['positivo.novoUsuario.cepTamanho']}:">
+										</h:inputText>
+									</s:decorate>
+
+									<h:outputLabel for="bairro" value="Bairro:" />
+									<s:decorate>
+										<h:inputText id="bairro" value="#{usuarioLogado.bairro}"
+											required="true"
+											styleClass="#{invalid?'input_grande_error':'input_grande'}"
+											requiredMessage="#{messages['positivo.novoUsuario.bairroEmBranco']}:"
+											validatorMessage="#{messages['positivo.novoUsuario.bairroTamanho']}:">
+											<f:validateLength maximum="255" />
+											<rich:ajaxValidator event="onblur" />
+										</h:inputText>
+									</s:decorate>
+
+									<h:outputLabel for="endereco" value="Endereco:" />
+									<s:decorate>
+										<h:inputText id="endereco" value="#{usuarioLogado.endereco}"
+											required="true"
+											styleClass="#{invalid?'input_grande_error':'input_grande'}"
+											requiredMessage="#{messages['positivo.novoUsuario.enderecoEmBranco']}:"
+											validatorMessage="#{messages['positivo.novoUsuario.enderecoTamanho']}:">
+											<f:validateLength maximum="255" />
+											<rich:ajaxValidator event="onblur" />
+										</h:inputText>
+									</s:decorate>
+
+									<h:outputLabel for="estado"
+										value="#{messages['positivo.novoUsuario.estado']}:" />
+									<h:selectOneMenu id="estado" defaultLabel="UF"
+										value="#{usuarioLogado.estado}" class="select" required="true"
+										requiredMessage="#{messages['positivo.novoUsuario.estadoEmBranco']}:">
+										<f:selectItems value="#{usuarioAction.opcoesEstado()}" />
+									</h:selectOneMenu>
+
+									
+
+								</h:panelGrid>
+
+							</div>
+						</fieldset>
+
+						<rich:spacer height="10" />
+
+						<div class="actionButtons">
+							<h:commandLink action="#{usuarioAction.atualizarDadosUsuario()}">
+								<h:graphicImage url="../img/positivo/botoes/salvar.png"
+									alt="Salvar" title="Salvar" />
+							</h:commandLink>
+
+							<h:commandLink action="cancelar" immediate="true">
+								<h:graphicImage url="../img/positivo/botoes/cancelar.png"
+									alt="Cancelar" title="Cancelar" />
+							</h:commandLink>
+						</div>
+					</h:form>
+				</s:div>
+
+				<s:div styleClass="conteudo_img_direita">
+					<img src="../img/positivo/tablets_direita.png" />
+				</s:div>
+
+			</h:panelGrid>
+
+		</div>
+
+		<script src="../jquery.maskedinput.js" type="text/javascript"></script>
+
+	</ui:define>
+</ui:composition>
