@@ -44,6 +44,11 @@
 							</f:facet>
 						</rich:messages>
 					</s:div>
+					<s:div style="font-size: 1.0em; padding-left: 15px;" rendered="#{empty usuarioLogado.cpf}">
+						<font style="color: red"> * </font>Caro usuário, por favor atualize os seus dados.
+					</s:div>
+					<rich:spacer height="15" />
+
 					<h:form id="sumarioForm">
 						<fieldset>
 							<legend>Sumário</legend>
