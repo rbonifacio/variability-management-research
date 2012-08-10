@@ -600,7 +600,7 @@ public class DesafioPositivoFacade {
 			resp = esqueciSenha.requisitaServico();
 			switch(CodigoRespostaEsqueciSenha.fromCodigo(resp.getCodigo())) {
 			case SUCESSO:
-				return;
+				throw new Exception("A sua senha foi redefinida com sucesso.");
 			case TICKET_INVALIDO:
 				throw new Exception("Ticket incorreto.");
 			default:
