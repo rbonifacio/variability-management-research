@@ -87,7 +87,6 @@
 		<property name="porta">587</property>
 		<property name="listaInternaDestinatarios">
 			<value>desafiopositivoandroid@gmail.com</value>
-			<value>rbonifacio123@gmail.com</value>
 		</property>
 		<property name="usuario">desafiopositivoandroid@gmail.com</property>
 		<property name="senha">android@0!2</property>
