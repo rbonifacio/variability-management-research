@@ -24,7 +24,8 @@ public class AtualizacaoSRV extends PositivoAPI {
 	 * TODO: recuperar de um arquivo de configuracao. 
 	 */
 	protected String url() {
-		return "https://homolog.api.mundopositivo.com.br/integracao/rest/sso/alteraCliente";
+		System.out.println("URL Webservice -- " + bundle.getString("srv.altera.cliente"));
+		return bundle.getString("srv.altera.cliente");
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
+import org.jboss.seam.core.SeamResourceBundle;
 
 /**
  * Classe abstrata que pode ser reusada para implementar 
@@ -19,6 +20,7 @@ public abstract class PositivoAPI {
 	
 	//TODO: esse identificador deve vir de um arquivo de configuracao!!!!
 	protected static final String ID_APLICACAO = "s5+omQY9f8qcvUy7Rtbh3oY/2sc=";
+	protected java.util.ResourceBundle bundle = SeamResourceBundle.getBundle("webservices");
 	
 	//protected abstract String parametros();
 	protected abstract void atualizaParametros();

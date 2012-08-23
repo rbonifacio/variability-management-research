@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+ 
 import javax.persistence.EntityManager;
 
 import org.jboss.seam.ScopeType;
@@ -372,7 +372,7 @@ public class DesafioPositivoFacade {
 		Usuario usuario = recuperaUsuario(email);
 
 		if ((usuario == null) && (CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo()) == CodigoRespostaAutenticacao.SUCESSO)) {
-			//throw new ExcecaoFalhaAutenticacao(Mensagens.EXP_USUARIO_SENHA);
+			System.out.println("-- Cenário Usuário POSITIVO --");
 			try {
 				String token = resp.getToken();
 				ConsultaClienteSRV req = new ConsultaClienteSRV(token);
@@ -400,9 +400,13 @@ public class DesafioPositivoFacade {
 				//entityManager.flush();
 				entityManager.merge(usuario);
 				entityManager.flush();
+			} catch(NullPointerException e) {
+				e.printStackTrace();
+				System.out.println("-- Cenário Usuário POSITIVO FALHOU | NULL POINTER | --");
+				throw new ExcecaoAcessoUsuario("Importação de usuário Positivo falhou!");
 			} catch(Exception e) {
 				e.printStackTrace();
-				throw new ExcecaoAcessoUsuario("ImportaÃ§Ã£o de usuÃ¡rio Positivo falhou!");
+				throw new ExcecaoAcessoUsuario("Importação de usuário Positivo falhou!");
 			}
 		} else if(usuario == null) {
 			throw new ExcecaoFalhaAutenticacao(Mensagens.EXP_USUARIO_SENHA);

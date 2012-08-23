@@ -15,7 +15,8 @@ public class ConsultaClienteSRV extends PositivoAPI {
 
 	@Override
 	protected String url() {
-		return "https://homolog.api.mundopositivo.com.br/integracao/rest/sso/consultaCliente";
+		System.out.println("URL Webservice -- " + bundle.getString("srv.consulta.cliente"));
+		return bundle.getString("srv.consulta.cliente"); 
 	}
 
 }

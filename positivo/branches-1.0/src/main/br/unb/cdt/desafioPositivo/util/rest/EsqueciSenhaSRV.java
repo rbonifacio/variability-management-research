@@ -18,8 +18,9 @@ public class EsqueciSenhaSRV extends PositivoAPI {
 	}
 
 	@Override
-	protected String url() {
-		return "https://homolog.api.mundopositivo.com.br/integracao/rest/sso/novaSenha";
+	protected String url() {  
+		System.out.println("URL Webservice -- " + bundle.getString("srv.nova.senha"));
+		return bundle.getString("srv.nova.senha"); 
 	}
 
 }

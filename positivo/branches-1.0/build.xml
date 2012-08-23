@@ -242,6 +242,7 @@
             </fileset>
             <fileset dir="${basedir}/resources"> 
                 <include name="messages*.properties"/>
+                <include name="webservices.properties"/>
                 <include name="*_theme.properties"/>
                 <include name="seam.properties" />
                 <include name="*.drl" />

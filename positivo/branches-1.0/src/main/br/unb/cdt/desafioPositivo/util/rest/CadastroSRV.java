@@ -18,7 +18,8 @@ public class CadastroSRV extends PositivoAPI {
 	 * TODO: recuperar de um arquivo de configuracao. 
 	 */
 	protected String url() {
-		return "https://homolog.api.mundopositivo.com.br/integracao/rest/sso/cadastraCliente";
+		System.out.println("URL Webservice -- " + bundle.getString("srv.cadastra.cliente"));
+		return bundle.getString("srv.cadastra.cliente");
 	}
 
 	@Override

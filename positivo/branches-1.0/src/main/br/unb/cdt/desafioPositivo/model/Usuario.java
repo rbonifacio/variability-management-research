@@ -49,11 +49,11 @@ public class Usuario implements Serializable {
 	@Column(name="ID") 
 	private Long id;
 	
-	@Pattern(regex="[\\p{L}\\p{Space}]+", message="O nome deve conter apenas letras e espaços em branco")
-	@Column(name="NOME")
+	//@Pattern(regex="[\\p{L}\\p{Space}]+", message="O nome deve conter apenas letras e espaços em branco")
+	@Column(name="NOME") 
 	private String nome;
 	
-	@Pattern(regex="[\\p{L}\\p{Space}]+", message="O sobrenome deve conter apenas letras e espaços em branco")
+	//@Pattern(regex="[\\p{L}\\p{Space}]+", message="O sobrenome deve conter apenas letras e espaços em branco")
 	@Column(name="SOBRENOME")
 	private String sobrenome;
 	

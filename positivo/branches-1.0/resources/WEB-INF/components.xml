@@ -22,8 +22,17 @@
 	<core:resource-loader>
 		<core:bundle-names>
 			<value>messages</value>
+			<value>webservices</value>
 		</core:bundle-names>
 	</core:resource-loader>
+	
+	<!-- 
+	<core:resource-loader>
+        <core:bundle-names>
+            <value>webservices</value>
+        </core:bundle-names>
+	</core:resource-loader>
+	 -->
 
 	<!-- Make sure this URL pattern is the same as that used by the Faces Servlet -->
 	<web:hot-deploy-filter url-pattern="*.seam" />

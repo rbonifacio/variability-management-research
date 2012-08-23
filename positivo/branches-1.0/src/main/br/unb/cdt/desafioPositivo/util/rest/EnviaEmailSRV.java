@@ -19,8 +19,9 @@ public class EnviaEmailSRV extends PositivoAPI {
 	}
 	
 	@Override
-	protected String url() {
-		return "https://homolog.api.mundopositivo.com.br/integracao/rest/sso/enviaEmail";
+	protected String url() { 
+		System.out.println("URL Webservice -- " + bundle.getString("srv.envia.email"));
+		return bundle.getString("srv.envia.email"); 
 	}
 
 }
