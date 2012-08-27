@@ -445,7 +445,7 @@ public class UsuarioAction {
 		} catch (Exception e) {
 			StatusMessages.instance().add(StatusMessage.Severity.ERROR,
 					e.getLocalizedMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 			return null;
 		}
 
@@ -543,19 +543,19 @@ public class UsuarioAction {
 					Mensagens.ATUALIZAR_SENHA_SUCESSO);
 			return "sumario";
 		} catch (ExcecaoSenhaInvalida e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			StatusMessages.instance().addFromResourceBundle(
 					StatusMessage.Severity.ERROR,
 					Mensagens.SENHA_INVALIDA);
 			return null;
 		} catch (ExcecaoSenhaDiferente e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			StatusMessages.instance().addFromResourceBundle(
 					StatusMessage.Severity.ERROR,
 					Mensagens.SENHA_DIFERENTE);
 			return null;
 		} catch (ExcecaoSenhaIncorreta e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			StatusMessages.instance().addFromResourceBundle(
 					StatusMessage.Severity.ERROR,
 					Mensagens.SENHA_INCORRETA);

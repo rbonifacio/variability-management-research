@@ -381,4 +381,11 @@ public class Usuario implements Serializable {
 	public void setTicket(String ticket) {
 		this.ticket = ticket;
 	}
+	
+	public String toLog(){
+		return "ID: " + id + "\nNome: " + nome + "\nSobrenome: " + sobrenome + "\nCPF: " + cpf +
+				"\nRG: " + rg + "\nCEP: " + cep + "\nBairro" + bairro + "\nEndereco: " + endereco +
+				"\nSexo: " + sexo + "\nEmail" + email + "\nEstado: " + estado + "\nToken: " + token +
+				"\nNascimento: " + nascimento.toString();
+	}
 }

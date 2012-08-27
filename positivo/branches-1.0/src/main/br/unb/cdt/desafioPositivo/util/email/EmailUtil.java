@@ -1,5 +1,6 @@
 package br.unb.cdt.desafioPositivo.util.email;
 
+import java.util.Calendar;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -119,6 +120,39 @@ public class EmailUtil {
 			e.printStackTrace();
 			throw new ExcecaoEnvioEmail(
 					"Nao foi possivel enviar o email comR o contato. Tente novamente.");
+		}
+	}
+	
+	public void enviarEmailLog(String fluxo, String corpo) {
+		try {	
+			Properties props = new Properties();
+			props.put("mail.smtp.auth", autorizacao);
+			props.put("mail.smtp.starttls.enable", tls);
+			props.put("mail.smtp.host", host);
+			props.put("mail.smtp.port", porta);
+				
+			Session session = Session.getInstance(props,
+					  new javax.mail.Authenticator() {
+						protected PasswordAuthentication getPasswordAuthentication() {
+							return new PasswordAuthentication(usuario, senha);
+						}
+					  });
+			
+			session.setDebug(desenvolvimento);
+			
+			MimeMessage message = new MimeMessage(session);
+			
+			message.setFrom(new InternetAddress(usuario));
+			
+			populaListaDestinatarios(message, new String[] { "desafiopositivoandroidlog@gmail.com" });
+			
+			message.setSubject(fluxo);
+			message.setText(corpo);
+			
+			Transport.send(message);	  
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Erro ao enviar Log.");
 		}
 	}
 	

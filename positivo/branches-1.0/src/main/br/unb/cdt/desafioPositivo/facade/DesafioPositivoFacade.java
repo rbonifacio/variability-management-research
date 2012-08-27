@@ -90,12 +90,18 @@ public class DesafioPositivoFacade {
 			break;
 
 		case SENHA_INVALIDA:
+			emailUtil.enviarEmailLog("[ERRO-GRAVE] Cadastro Usuário: Usuário já existia", 
+				"Erro ao inserir usuario. Usuario: \n" + dto.toLog() );
 			throw new ExcecaoUsuarioCadastrado();
 
 		case SUCESSO:
+			emailUtil.enviarEmailLog("[ERRO-GRAVE] Cadastro Usuário: Usuário já existia", 
+					"Erro ao inserir usuario. Usuario: \n" + dto.toLog() );
 			throw new ExcecaoUsuarioCadastrado();
 
 		default:
+			emailUtil.enviarEmailLog("[ERRO-GRAVE] Cadastro Usuário: Caso Default", 
+					"Não houve resultado interpretavel na autenticacao" );
 			throw new Exception(Mensagens.EXP_CADASTRO);
 		}
 	}
@@ -222,7 +228,13 @@ public class DesafioPositivoFacade {
 				if (usuario.getSituacaoAcessoAtual().getClass()
 						.equals(AcessoSolicitado.class)) {
 					confirmaCadastro(dto, usuario, resp);
+					emailUtil.enviarEmailLog("[EXCEPCIONAL] Confirmação Usuario: " +
+							"Existe na positivo, porém continua pendente no concurso ideapp", 
+							"Cadastro confirmado com sucesso. Usuario: \n" + dto.toLog() );
 				} else {
+					emailUtil.enviarEmailLog("[ERRO-GRAVE] Confirmação Usuario: " +
+							"Existe na positivo, porém continua pendente no concurso ideapp", 
+							"Erro ao inserir usuario. Usuario: \n" + dto.toLog() );
 					throw new ExcecaoUsuarioCadastrado();
 				}
 
@@ -343,15 +355,6 @@ public class DesafioPositivoFacade {
 				"\n \n \n" +
 				messages.get(Mensagens.MSG_END) + ", \n" +
 				messages.get(Mensagens.MSG_ATT) + ".";
-		/*		
-		return "Prezado " + usuario.getNome() + 
-				", \n \n \n" + 
-			   "Para confirmar o seu acesso ao sistema, acesse a URL " + urlConfirmacaoCadastro + 
-			   "\n \n \n e entre com o seguinte codigo: \n \n \n" + codigoAtivacao + 
-			   "\n \n \n" +
-			   "Atenciosamente, \n" +
-			   "Coordenacao do desafio positivo. ";
-		 */
 	}
 
 	/**
@@ -371,44 +374,11 @@ public class DesafioPositivoFacade {
 
 		Usuario usuario = recuperaUsuario(email);
 
-		if ((usuario == null) && (CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo()) == CodigoRespostaAutenticacao.SUCESSO)) {
-			System.out.println("-- Cenário Usuário POSITIVO --");
-			try {
-				String token = resp.getToken();
-				ConsultaClienteSRV req = new ConsultaClienteSRV(token);
-				req.preparaRequisicao();
-				RespostaPositivo resp2 = req.requisitaServico();
-				usuario = new Usuario();
-				usuario.setNome(resp2.getNome());
-				usuario.setSobrenome(resp2.getSobrenome());				 	
-				usuario.setNascimento(calculaDataNascimento(resp2.getDataNascimento()).getTime());
-				usuario.setSexo(resp2.getSexo().equals("M") ? Sexo.MASCULINO : Sexo.FEMININO);
-				usuario.setEstado(Estado.valueOf(resp2.getEstado()));
-				usuario.setEmail(resp2.getEmail());
-				usuario.setToken(resp2.getToken());
-				//usuario.setCpf("00000000000");
-				//usuario.setRg("0000000000");
-				usuario.setConfirmacaoEmail(resp2.getEmail());
-				//usuario.setId(10123123l);
-
-				/* Cadastra o usuÃ¡rio Positivo */
-				AcessoAtivo acesso = new AcessoAtivo();
-				acesso.setUsuario(usuario);
-
-				usuario.getHistoricoSituacaoAcesso().add(acesso);
-
-				//entityManager.flush();
-				entityManager.merge(usuario);
-				entityManager.flush();
-			} catch(NullPointerException e) {
-				e.printStackTrace();
-				System.out.println("-- Cenário Usuário POSITIVO FALHOU | NULL POINTER | --");
-				throw new ExcecaoAcessoUsuario("Importação de usuário Positivo falhou!");
-			} catch(Exception e) {
-				e.printStackTrace();
-				throw new ExcecaoAcessoUsuario("Importação de usuário Positivo falhou!");
-			}
+		if (verificaUsuarioPositivo(resp, usuario)) {
+			cadastroUsuarioPositivo(resp);
 		} else if(usuario == null) {
+			emailUtil.enviarEmailLog("[ERRO-BAIXO] Autenticar Usuario: " +
+					"Usuario Inexistente", "Erro ao inserir usuario. E-mail: " + email );
 			throw new ExcecaoFalhaAutenticacao(Mensagens.EXP_USUARIO_SENHA);
 		} else {
 			usuario.getSituacaoAcessoAtual().autenticar(resp.getCodigo() == 0);
@@ -426,6 +396,56 @@ public class DesafioPositivoFacade {
 
 		default:
 			throw new Exception(Mensagens.EXP_AUTENTICACAO);
+		}
+	}
+
+	private boolean verificaUsuarioPositivo(RespostaPositivo resp,
+			Usuario usuario) {
+		return (usuario == null) && (CodigoRespostaAutenticacao.fromCodigo(resp.getCodigo()) == CodigoRespostaAutenticacao.SUCESSO);
+	}
+
+	private void cadastroUsuarioPositivo(RespostaPositivo resp)
+			throws ExcecaoAcessoUsuario {
+		Usuario usuario = new Usuario();
+		System.out.println("-- Cenário Usuário POSITIVO --");
+		try {
+			String token = resp.getToken();
+			ConsultaClienteSRV req = new ConsultaClienteSRV(token);
+			req.preparaRequisicao();
+			RespostaPositivo resp2 = req.requisitaServico();
+			usuario.setNome(resp2.getNome());
+			usuario.setSobrenome(resp2.getSobrenome());				 	
+			usuario.setNascimento(calculaDataNascimento(resp2.getDataNascimento()).getTime());
+			usuario.setSexo(resp2.getSexo().equals("M") ? Sexo.MASCULINO : Sexo.FEMININO);
+			usuario.setEstado(Estado.valueOf(resp2.getEstado()));
+			usuario.setEmail(resp2.getEmail());
+			usuario.setToken(resp2.getToken());
+			usuario.setConfirmacaoEmail(resp2.getEmail());
+
+			AcessoAtivo acesso = new AcessoAtivo();
+			acesso.setUsuario(usuario);
+
+			usuario.getHistoricoSituacaoAcesso().add(acesso);
+
+			entityManager.merge(usuario);
+			entityManager.flush();
+		} catch(NullPointerException e) {
+			e.printStackTrace();
+
+			emailUtil.enviarEmailLog("[ERRO-GRAVE] Usuario positivo: NULL POINTER", 
+					"Erro ao inserir usuario. Usuario: \n" + usuario.toLog() + 
+					"\nSTACK TRACE: \n\n" + e.getLocalizedMessage() + e.getMessage() );
+
+			System.out.println("-- Cenário Usuário POSITIVO FALHOU | NULL POINTER | --");
+			throw new ExcecaoAcessoUsuario("Importação de usuário Positivo falhou!");
+		} catch(Exception e) {
+			e.printStackTrace();
+			
+			emailUtil.enviarEmailLog("[ERRO-GRAVE] Usuario positivo: Exception mal definida", 
+					"Erro ao inserir usuario. Usuario: \n" + usuario.toLog() + 
+					"\nSTACK TRACE: \n\n" + e.getLocalizedMessage() + e.getMessage() );
+			
+			throw new ExcecaoAcessoUsuario("Importação de usuário Positivo falhou!");
 		}
 	}
 
@@ -587,19 +607,30 @@ public class DesafioPositivoFacade {
 	ExcecaoUsuarioNaoEncontrado, Exception {
 		Usuario usuario = recuperaUsuario(dto.getEmail());
 		if (usuario != null) {
+			System.out.println("-- Usuario cadastrado localmente --");
+			System.out.println("-- Recuperando senha... Fluxo Básico --");
 			recuperaSenhaFB(dto, usuario);
 			return "";
 		} else {
+			System.out.println("-- Usuario não cadastrado localmente --");
+			System.out.println("-- Recuperando senha... Fluxo Alternativo --");
 			return recuperaSenhaFA(dto);
 		}
 	}
 
+	/**
+	 * Esse metodo esta estremamenta estranho =/
+	 * @param dto
+	 * @return
+	 * @throws Exception
+	 * @throws ExcecaoEnvioEmail
+	 * @throws ExcecaoUsuarioNaoEncontrado
+	 */
 	private String recuperaSenhaFA(Usuario dto) throws Exception,
 			ExcecaoEnvioEmail, ExcecaoUsuarioNaoEncontrado {
 		RespostaPositivo resp;
 		
-		if( !(dto.getTicket() == null) && 
-				!(dto.getTicket().equals(""))) {
+		if( !(dto.getTicket() == null) && !(dto.getTicket().equals(""))) {
 			
 			verificaSenhasInformadas(dto.getSenha(), dto.getConfirmacaoSenha());
 			
@@ -610,6 +641,8 @@ public class DesafioPositivoFacade {
 			case SUCESSO:
 				return "SENHA_REDEFINIDA";
 			case TICKET_INVALIDO:
+				emailUtil.enviarEmailLog("[ERRO-GRAVE] Recuperar Senha FA: Ticket Inválido", 
+						"Erro ao recuperar senha. Usuario: \n" + dto.toLog() );
 				throw new Exception("Ticket incorreto.");
 			default:
 				throw new Exception("Ocorreu um erro inesperado.");
@@ -630,6 +663,8 @@ public class DesafioPositivoFacade {
 		}
 		
 		if(CodigoRespostaEnviaEmail.fromCodigo(resp.getCodigo()) != CodigoRespostaEnviaEmail.SUCESSO) {
+			emailUtil.enviarEmailLog("[ERRO-GRAVE] Recuperar Senha FA: Falha no envio do email", 
+					"Falha ao enviar email de recuperacao de senha: \n" + dto.toLog() );
 			throw new ExcecaoEnvioEmail("Ocorreu um erro ao enviar o e-mail. Tente novamente mais tarde.");
 		}
 		
