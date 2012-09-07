@@ -23,7 +23,7 @@ public enum Estado {
 	RO(20, "RO", "Rondônia"), // Rond�nia
 	RJ(21, "RJ", "Rio de Janeiro"), // Rio de Janeiro
 	RN(22, "RN", "Rio Grande do Norte"), // Rio Grande do Norte
-	RS(23, "RJ", "Rio de Janeiro"), // Rio Grande do Sul
+	RS(23, "RS", "Rio Grande do Sul"), // Rio Grande do Sul
 	SC(24, "SC", "Santa Catarina"), // Santa Catarina
 	SP(25, "SP", "São Paulo"), // S�o Paulo
 	SE(26, "SE", "Sergipe"), // Sergipe
