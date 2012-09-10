@@ -86,7 +86,6 @@
 						<div class="actionButtons">
 							<ui:insert name="actionButtons" />
 
-
 							<h:commandLink action="#{usuarioAction.autenticar}">
 								<h:graphicImage url="../img/positivo/botoes/login.png"
 									alt="Login" title="Login" />
@@ -162,7 +161,6 @@
 											styleClass="#{invalid?'input_grande_error':'input_grande'}"
 											requiredMessage="#{messages['positivo.novoUsuario.rgEmBranco']}:"
 											validatorMessage="#{messages['positivo.novoUsuario.rgTamanho']}:">
-											<f:validateLength maximum="15" />
 											<rich:ajaxValidator event="onblur" />
 										</h:inputText>
 									</s:decorate>

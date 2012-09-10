@@ -60,11 +60,9 @@ public class Usuario implements Serializable {
 	@Column(name="CPF")
 	private String cpf;
 	
-    @Length(min=3,max=12)
 	@Column(name="RG")
 	private String rg;
 	
-    
 	@Column(name="CEP")
 	private String cep;
 	
