@@ -337,12 +337,12 @@ public class UsuarioAction {
 			return "home";
 		} catch (ExcecaoUsuarioNaoEncontrado e) {
 			e.printStackTrace();
-			StatusMessages.instance().addFromResourceBundle(
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, 
 					Mensagens.USUARIO_NAO_ENCONTRADO);
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
-			StatusMessages.instance().addFromResourceBundle(
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR,
 					Mensagens.ERRO_GENERICO);
 			return null;
 		}
@@ -362,7 +362,7 @@ public class UsuarioAction {
 
 		if (usuarioDto.getCodigoConfirmacaoCadastro() == null
 				|| usuarioDto.getCodigoConfirmacaoCadastro().equals("")) {
-			erros.add("positivo.confirmaSolicitacaoCadastro.codigo.obrigatorio");
+			erros.add("Necessário informar o código de confirmação");
 		}
 
 		if (!(CriptografiaUtil.verificaSenha(usuarioDto.getSenha()) && usuarioDto
