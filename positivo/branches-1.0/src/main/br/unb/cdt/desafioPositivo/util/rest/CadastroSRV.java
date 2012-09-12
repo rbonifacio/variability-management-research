@@ -1,5 +1,7 @@
 package br.unb.cdt.desafioPositivo.util.rest;
 
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.text.SimpleDateFormat;
 
 import br.unb.cdt.desafioPositivo.model.Sexo;
@@ -26,8 +28,8 @@ public class CadastroSRV extends PositivoAPI {
 	protected void atualizaParametros() {
 		req.queryParameter("email", usuario.getEmail());
 		req.queryParameter("senha", usuario.getSenha());
-		req.queryParameter("nome", usuario.getNome());
-		req.queryParameter("sobrenome", usuario.getSobrenome());
+		req.queryParameter("nome", Normalizer.normalize(usuario.getNome(), Form.NFD).replaceAll("[^\\p{ASCII}]", ""));
+		req.queryParameter("sobrenome", Normalizer.normalize(usuario.getSobrenome(), Form.NFD).replace("[^\\p{ASCII}]", ""));
 		req.queryParameter("sexo", (usuario.getSexo().equals(Sexo.MASCULINO) ? "M" : "F"));
 		req.queryParameter("estado", usuario.getEstado().getSigla());
 		req.queryParameter("dataNascimento", (new SimpleDateFormat("dd/MM/yyyy").format(usuario.getNascimento())));	

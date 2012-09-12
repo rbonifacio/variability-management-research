@@ -15,6 +15,7 @@ import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
+import org.jboss.seam.util.RandomStringUtils;
 
 import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
 import br.unb.cdt.desafioPositivo.model.Estado;
@@ -79,7 +80,7 @@ public class DesafioPositivoFacade {
 	public void adicionarUsuario(Usuario dto) throws ExcecaoUsuarioCadastrado,
 	ExcecaoEnvioEmail, Exception {
 		AutenticacaoSRV autentica = new AutenticacaoSRV(dto.getEmail(),
-				"123456");
+				geraSenhaPseudoAleatoria());
 
 		autentica.preparaRequisicao();
 		int resp = autentica.requisitaServico().getCodigo();
@@ -104,6 +105,17 @@ public class DesafioPositivoFacade {
 					"Não houve resultado interpretavel na autenticacao" );
 			throw new Exception(Mensagens.EXP_CADASTRO);
 		}
+	}
+
+	
+	/*
+	 * esse metodo eh usado para gerar uma senha 
+	 * pseudo aleatorio para ser usada na tentativa 
+	 * de autenticacao do usuario durante a operacao 
+	 * de cadastro.
+	 */
+	private String geraSenhaPseudoAleatoria() throws Exception {
+		return RandomStringUtils.randomAlphanumeric(5);  
 	}
 
 	/**
@@ -265,6 +277,9 @@ public class DesafioPositivoFacade {
 		entityManager.flush();
 	}
 
+	//TODO: Ateh agora eu nao entendi o porque disso. 
+	//hilmer tinha me falado que isso era codigo morto. 
+	//tentei remover e nao tem nada de codigo morto!
 	private void validaDados(Usuario usuario) throws ExcecaoNomeInvalido, ExcecaoIdadeInvalida, ExcecaoSobrenomeInvalido {
 
 		// Verifica nome

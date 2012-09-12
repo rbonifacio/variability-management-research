@@ -8,7 +8,7 @@ package br.unb.cdt.desafioPositivo.util.rest;
  */
 public enum CodigoRespostaEsqueciSenha {
 	SUCESSO(0),
-	SERVICO_INDISPONÍVEL(1),
+	SERVICO_INDISPONIVEL(1),
 	CLIENTE_NAO_EXISTE(3),
 	ID_APP_NAO_CONFERE(5),
 	TICKET_INVALIDO(6),
