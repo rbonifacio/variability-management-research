@@ -1,0 +1,70 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" template="../layout/template.xhtml">
+
+
+	<ui:define name="body">
+
+		<div class="corpo"
+			style="background: url(../img/positivo/bg_conteudo_default.png) no-repeat; min-height: 690px; padding: 15px 0 0 0">
+
+			<h:panelGrid columns="2">
+				<s:div styleClass="info">
+					<s:div>
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="../img/icon/OkV.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="../img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="../img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
+					</s:div>
+					<h:form id="novoForm">
+						<fieldset>
+							<legend>#{messages['positivo.recuperarSenha.heading']}</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+
+									<h:outputLabel for="email"
+										value="#{messages['positivo.recuperarSenha.email']}" />
+									<h:inputText id="email"
+										value="#{usuarioAction.usuarioDto.email}" required="true"
+										class="input_grande" />
+
+								</h:panelGrid>
+							</div>
+
+						</fieldset>
+
+						<rich:spacer height="10" />
+
+						<div class="actionButtons">
+
+							<h:commandLink action="#{usuarioAction.recuperarSenha}">
+								<h:graphicImage url="../img/positivo/botoes/esqueci.png"
+									alt="Recuperar senha" title="Recuperar senha" />
+							</h:commandLink>
+							<h:commandLink action="home" immediate="true">
+								<h:graphicImage url="../img/positivo/botoes/cancelar.png"
+									alt="Cancelar" title="Cancelar" />
+							</h:commandLink>
+
+						</div>
+
+					</h:form>
+				</s:div>
+			</h:panelGrid>
+		</div>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<div class="corpo"
+			style="background: url(img/positivo/bg.jpg) no-repeat; min-height: 792px">
+
+			<div style="padding: 70px 0 0 170px; float: left">
+				<ui:include src="menu.xhtml">
+					<ui:param name="projectName" value="desafioPositivo" />
+				</ui:include>
+			</div>
+
+			<div
+				style="width: 600px; padding: 70px 0 0 0; float: left; color: #7b7b7b; font: bold 14px arial;">
+				<font color="#3c84b5">IV - CRONOGRAMA</font> <br /> <br />
+
+				<table border="1">
+					<tr background="#a6a6a6">
+						<td>FASE</td>
+						<td>DATAS</td>
+					</tr>
+					<tr>
+						<td>Divulgação do Desafio</td>
+						<td>01/08/2012</td>
+					</tr>
+					<tr>
+						<td>Data limite para submissão das propostas</td>
+						<td>15/10/2012</td>
+					</tr>
+					<tr>
+						<td>Data limite da Pré-Análise pela área técnica da
+							Habilitação das propostas</td>
+						<td>20/10/2012</td>
+					</tr>
+					<tr>
+						<td>Data limite da Análise e julgamento de mérito das
+							propostas</td>
+						<td>30/10/2012</td>
+					</tr>
+					<tr>
+						<td>Divulgação preliminar das propostas vencedoras</td>
+						<td>05/11/2012</td>
+					</tr>
+					<tr>
+						<td>Limite para apresentação de recurso quanto ao resultado</td>
+						<td>15/11/2012</td>
+					</tr>
+					<tr>
+						<td>Publicação das 20 (vinte) propostas vencedoras na página
+							do hotsite do desafio</td>
+						<td>30/11/2012</td>
+					</tr>
+					<tr>
+						<td>Prazo para formalização dos contratos com a POSITIVO
+							INFORMÁTICA S/A e o CDT/UnB para desenvolvimento das propostas
+							vencedoras e/ou definição dos direitos decorrentes da exploração
+							econômica</td>
+						<td>30/12/2012</td>
+					</tr>
+					<tr>
+						<td>Data Limite para entrega dos prêmios</td>
+						<td>30/12/2012</td>
+					</tr>
+
+				</table>
+
+				<br /> <br />
+
+			</div>
+
+		</div>
+
+	</ui:define>
+</ui:composition>
