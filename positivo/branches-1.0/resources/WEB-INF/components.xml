@@ -101,16 +101,16 @@
 		<property name="senha">android@0!2</property>
 	</component>
 
-<!-- 
 	<factory name="urlConfirmacaoCadastro"
 		value="https://www.concursoideiapp.com.br/desafioPositivo/usuario/confirmaSolicitacaoCadastro.seam" />
 	<factory name="urlRecuperarSenhaPositivo"
 		value="https://www.concursoideiapp.com.br/desafioPositivo/usuario/recuperarSenhaPositivo.seam" />
- -->
 
+<!--
 	<factory name="urlConfirmacaoCadastro"
 		value="http://164.41.57.27:8080/desafioPositivo/usuario/confirmaSolicitacaoCadastro.seam" />
 	<factory name="urlRecuperarSenhaPositivo"
 		value="http://164.41.57.27:8080/desafioPositivo/usuario/recuperarSenhaPositivo.seam" />
-
+-->
+		
 </components>
