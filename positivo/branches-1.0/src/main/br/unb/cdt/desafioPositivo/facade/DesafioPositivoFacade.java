@@ -263,18 +263,26 @@ public class DesafioPositivoFacade {
 	 * Persiste um novo usuario na base de dados.
 	 */
 	private void cadastraNovoUsuario(Usuario usuario) throws ExcecaoEnvioEmail, Exception {
-		AcessoSolicitado acesso = new AcessoSolicitado();
-
-		validaDados(usuario);
-		acesso.setUsuario(usuario);
-		acesso.setCodigoEfetivacao(geraCodigoConfirmacaoCadastro(usuario));
-
-		emailUtil.enviarEmail(new String[] {usuario.getEmail()} , messages.get(Mensagens.FACADE_NOVO_USUARIO), mensagemCadastro(usuario, acesso.getCodigoEfetivacao()));
-
-		usuario.getHistoricoSituacaoAcesso().add(acesso);
-
-		entityManager.merge(usuario);
-		entityManager.flush();
+		Usuario usr = recuperaUsuario(usuario.getEmail());
+		
+		//email do usuario ainda nao existe. 
+		if(usr == null) {
+			AcessoSolicitado acesso = new AcessoSolicitado();
+	
+			validaDados(usuario);
+			acesso.setUsuario(usuario);
+			acesso.setCodigoEfetivacao(geraCodigoConfirmacaoCadastro(usuario));
+	
+			emailUtil.enviarEmail(new String[] {usuario.getEmail()} , messages.get(Mensagens.FACADE_NOVO_USUARIO), mensagemCadastro(usuario, acesso.getCodigoEfetivacao()));
+	
+			usuario.getHistoricoSituacaoAcesso().add(acesso);
+	
+			entityManager.merge(usuario);
+			entityManager.flush();
+		} 
+		else {
+			throw new ExcecaoUsuarioCadastrado(messages.get(Mensagens.EXC_CADASTRADO_USUARIO_CADASTRADO_MAS_NAO_CONFIRMADO));
+		}
 	}
 
 	//TODO: Ateh agora eu nao entendi o porque disso. 

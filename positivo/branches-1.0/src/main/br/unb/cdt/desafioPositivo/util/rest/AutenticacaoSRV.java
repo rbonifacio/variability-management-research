@@ -1,8 +1,5 @@
 package br.unb.cdt.desafioPositivo.util.rest;
 
-import org.jboss.seam.annotations.In;
-import org.jboss.seam.core.ResourceBundle;
-import org.jboss.seam.core.SeamResourceBundle;
 
 public class AutenticacaoSRV extends PositivoAPI {
 

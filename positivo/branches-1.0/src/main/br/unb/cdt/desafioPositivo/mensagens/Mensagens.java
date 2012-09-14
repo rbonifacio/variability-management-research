@@ -25,6 +25,7 @@ public class Mensagens {
 	public static final String EXCLUIR_PROPOSTA_ERRO = "positivo.propostaAction.excluirPropostaErro";
 	
 	// Mensagens de exceções
+	public static final String EXC_CADASTRADO_USUARIO_CADASTRADO_MAS_NAO_CONFIRMADO= "positivo.cadastroUsuario.usuarioCadastradoLocalmente";
 	public static final String EXP_CADASTRO = "positivo.exception.cadastroErro";
 	public static final String EXP_REQUISICAO = "positivo.exception.requisicaoErro";
 	public static final String EXP_SENHA = "positivo.exception.senhaErro";
