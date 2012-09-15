@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:a="http://richfaces.org/a4j"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   xmlns:rich="http://richfaces.org/rich"
+   contentType="text/html">
+   
+<ul class="menuRegulamento">
+	<li class="titulo"> REGULAMENTO </li>
+	<li class="ativo"><a href="/desafioPositivo/regulamentoi.seam">      I. OBJETIVO</a></li>
+	<li class="ativo"><a href="/desafioPositivo/regulamentoii.seam">     II. DAS CONDIÇÕES DE PARTICIPAÇÃO</a></li>
+	<li class="ativo"><a href="/desafioPositivo/regulamentoiii.seam">   III. DAS INSCRIÇŐES</a></li>
+	<li class="ativo"><a href="/desafioPositivo/regulamentoiv.seam">     IV. DO CRONOGRAMA</a></li>
+	<li class="ativo"><a href="/desafioPositivo/regulamentov.seam">       V. DA PREMIAÇÃO</a></li>
+	<li class="ativo"><a href="/desafioPositivo/regulamentovi.seam">     VI. DA SELEÇÃO</a></li>
+	<li class="ativo"><a href="/desafioPositivo/regulamentovii.seam">   VII. DO RESULTADO E DIVULGAÇÃO</a></li>
+	<li class="ativo"><a href="/desafioPositivo/regulamentoviii.seam">  VIII. DOS DIREITOS DE PROPRIEDADE INTELECTUAL</a></li>
+	<li class="ativo"><a href="/desafioPositivo/regulamentoix.seam">     IX. DAS DISPOSIÇŐES FINAIS</a></li>
+	
+		<rich:spacer height="20" />  
+		
+		<a href="#{request.contextPath}/Regulamento_Concurso_ Positivo.pdf" target="_blanck" style="text-decoration: none;">
+			<h:graphicImage value="img/positivo/botao_regulamento.png" /> 
+		</a> 
+		
+		<rich:spacer height="20" /> 
+		
+		<a href="#{request.contextPath}/Regulamento Concurso_ Positivo - RETIFICACAO.pdf" target="_blanck" style="text-decoration: none;">
+			<h:graphicImage value="img/positivo/regulamento_retificado.png" style="margin-left: 5px;" /> 
+		</a>
+		
+		<rich:spacer height="20" /> 
+		
+	<s:div style="padding-left:5px;" >	
+		<a href="#{request.contextPath}/Termo_Autorizacao_Participacao_Menor_Final.pdf" target="_blanck" style="text-decoration: none;">
+			<h:graphicImage value="img/positivo/menor_de_idade.png" /> 
+		</a>
+		
+		<rich:spacer height="20" />
+	</s:div> 
+	
+	<img src="img/positivo/APPS.png" />
+	
+</ul>
+
+
+</f:view>
