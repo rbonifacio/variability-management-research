@@ -3,7 +3,6 @@ package br.unb.cdt.desafioPositivo.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
@@ -14,17 +13,14 @@ import org.jboss.seam.annotations.AutoCreate;
 import org.jboss.seam.annotations.Factory;
 import org.jboss.seam.annotations.In;
 import org.jboss.seam.annotations.Name;
-import org.jboss.seam.annotations.Out;
 import org.jboss.seam.annotations.Scope;
 import org.jboss.seam.annotations.datamodel.DataModel;
 import org.jboss.seam.annotations.datamodel.DataModelSelection;
-import org.jboss.seam.faces.FacesMessages;
 import org.jboss.seam.international.StatusMessage;
 import org.jboss.seam.international.StatusMessages;
 
-import com.sun.xml.internal.ws.api.message.Attachment;
-
 import br.unb.cdt.desafioPositivo.facade.DesafioPositivoFacade;
+import br.unb.cdt.desafioPositivo.facade.SubmissaoInvalidaException;
 import br.unb.cdt.desafioPositivo.mensagens.Mensagens;
 import br.unb.cdt.desafioPositivo.model.Proposta;
 import br.unb.cdt.desafioPositivo.model.Usuario;
@@ -55,8 +51,19 @@ public class PropostaAction {
 	private long tamanhoArquivo;
 	
 	
+	
+	
 	public PropostaAction() {
 		proposta = new Proposta();
+	}
+	
+	public boolean verificaPeriodo() {
+		try {
+			return facade.periodoValidoSubmissoes();
+		}
+		catch(Exception e) {
+			return false;
+		}
 	}
 	
 	/**
@@ -93,6 +100,10 @@ public class PropostaAction {
 			proposta = null;
 			StatusMessages.instance().add(StatusMessage.Severity.INFO, "Proposta adicionada com sucesso!");
 			return "minhaProposta";
+		}
+		catch(SubmissaoInvalidaException e) {
+			StatusMessages.instance().addFromResourceBundle(StatusMessage.Severity.ERROR, Mensagens.NOVA_PROPOSTA_PERIODO_INVALIDO);
+			return null;
 		}
 		catch(Exception e) {
 			StatusMessages.instance().add(StatusMessage.Severity.ERROR, e.getMessage());

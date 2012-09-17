@@ -1,6 +1,7 @@
 package br.unb.cdt.desafioPositivo.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -67,6 +68,8 @@ public class Proposta implements Serializable {
 	@Basic(fetch=FetchType.LAZY)
 	@Lob
 	private byte[] arquivoGUI;
+	
+	private Date dataSubmissao;
 	
 	/**
 	 * Necessario, de acordo com a especificacao JPA.
@@ -151,5 +154,13 @@ public class Proposta implements Serializable {
 
 	public String getNomeArquivo() {
 		return nomeArquivo;
+	}
+
+	public Date getDataSubmissao() {
+		return dataSubmissao;
+	}
+
+	public void setDataSubmissao(Date dataSubmissao) {
+		this.dataSubmissao = dataSubmissao;
 	} 
 }

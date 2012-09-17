@@ -32,10 +32,19 @@
 
 			<div class="conteudo_ajuda">
 
-				HOMOLOG 2.4
+				HOMOLOG 2.8
 		
 				#{messages['positivo.login.usuario.cadastrado']} 
 				#{webservices['srv.autentica']} 
+				
+				<ul>
+					<li>A opcao RS esta disponivel para o cadastro do usuario</li>
+					<li>Tratamento da excecao que ocorre quanto o usuario tem cadastro pendente, e solicita um novo cadastro com CPF diferente e mesmo email</li>
+                    <li>Script DDL nao restringe mais o atributo RG a 12 posicoes</li>
+                    <li>Existe uma data limite para a submissao de propostas</li>
+                    <li>Melhoria na implementacao do metodo DesafioPositivoFacade.validaDados(). ainda nao estah o ideal, pois esse metodo deveria ser movido para UsuarioAction</li>
+               		<li>Proposta passou a ter data. Cuidado, pois o script DDL precisa ser atualizado.</li>
+				</ul>
 
 			</div>
 

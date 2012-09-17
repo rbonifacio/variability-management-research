@@ -2,11 +2,14 @@ package br.unb.cdt.desafioPositivo.facade;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
  
 import javax.persistence.EntityManager;
 
@@ -67,6 +70,9 @@ public class DesafioPositivoFacade {
 	
 	@In(create=true)
 	private String urlRecuperarSenhaPositivo;
+	
+	@In(create=true)
+	private String dataLimiteSubmissoes;
 
 	/**
 	 * Adiciona um usuario no meio de persistencia e realiza uma requisicao ao
@@ -288,83 +294,19 @@ public class DesafioPositivoFacade {
 	//TODO: Ateh agora eu nao entendi o porque disso. 
 	//hilmer tinha me falado que isso era codigo morto. 
 	//tentei remover e nao tem nada de codigo morto!
-	private void validaDados(Usuario usuario) throws ExcecaoNomeInvalido, ExcecaoIdadeInvalida, ExcecaoSobrenomeInvalido {
-
-		// Verifica nome
-		if (usuario.getNome().contains("!") || 
-				usuario.getNome().contains("@") || 
-				usuario.getNome().contains("#") ||
-				usuario.getNome().contains("$") || 
-				usuario.getNome().contains("%") || 
-				usuario.getNome().contains("ï¿½") || 
-				usuario.getNome().contains("&") || 
-				usuario.getNome().contains("*") || 
-				usuario.getNome().contains("(") || 
-				usuario.getNome().contains(")") || 
-				usuario.getNome().contains("-") || 
-				usuario.getNome().contains("_") || 
-				usuario.getNome().contains("+") || 
-				usuario.getNome().contains("=") || 
-				usuario.getNome().contains("ï¿½") || 
-				usuario.getNome().contains("[") || 
-				usuario.getNome().contains("{") || 
-				usuario.getNome().contains("]") || 
-				usuario.getNome().contains("}") || 
-				usuario.getNome().contains(";") || 
-				usuario.getNome().contains(":") || 
-				usuario.getNome().contains(".") || 
-				usuario.getNome().contains(",") || 
-				usuario.getNome().contains(">") || 
-				usuario.getNome().contains("<") || 
-				usuario.getNome().contains("0") ||
-				usuario.getNome().contains("1") ||
-				usuario.getNome().contains("2") ||
-				usuario.getNome().contains("3") ||
-				usuario.getNome().contains("4") ||
-				usuario.getNome().contains("5") ||
-				usuario.getNome().contains("6") ||
-				usuario.getNome().contains("7") ||
-				usuario.getNome().contains("8") ||
-				usuario.getNome().contains("9")) {
+	// 
+	//melherei utilizando expressoes regulares, mesmo assim 
+	//esse metodo deveria estar em uma action. 
+	//essas excecoes tambem nao precisam ser tao especificas. 
+	//nao estou querendo ser chato, mas fica como alerta para 
+	//as proximas atividades de desenvolvimento de voces.
+	private void validaDados(Usuario usuario) throws ExcecaoNomeInvalido, ExcecaoSobrenomeInvalido {
+		Pattern p = Pattern.compile("[\\p{L}]");
+		if(p.matcher(usuario.getNome()).matches()) {
 			throw new ExcecaoNomeInvalido();
 		}
-
-		// Verifica sobrenome
-		if (usuario.getSobrenome().contains("!") || 
-				usuario.getSobrenome().contains("@") || 
-				usuario.getSobrenome().contains("#") ||
-				usuario.getSobrenome().contains("$") || 
-				usuario.getSobrenome().contains("%") || 
-				usuario.getSobrenome().contains("ï¿½") || 
-				usuario.getSobrenome().contains("&") || 
-				usuario.getSobrenome().contains("*") || 
-				usuario.getSobrenome().contains("(") || 
-				usuario.getSobrenome().contains(")") || 
-				usuario.getSobrenome().contains("-") || 
-				usuario.getSobrenome().contains("_") || 
-				usuario.getSobrenome().contains("+") || 
-				usuario.getSobrenome().contains("=") || 
-				usuario.getSobrenome().contains("ï¿½") || 
-				usuario.getSobrenome().contains("[") || 
-				usuario.getSobrenome().contains("{") || 
-				usuario.getSobrenome().contains("]") || 
-				usuario.getSobrenome().contains("}") || 
-				usuario.getSobrenome().contains(";") || 
-				usuario.getSobrenome().contains(":") || 
-				usuario.getSobrenome().contains(".") || 
-				usuario.getSobrenome().contains(",") || 
-				usuario.getSobrenome().contains(">") || 
-				usuario.getSobrenome().contains("<") || 
-				usuario.getSobrenome().contains("0") ||
-				usuario.getSobrenome().contains("1") ||
-				usuario.getSobrenome().contains("2") ||
-				usuario.getSobrenome().contains("3") ||
-				usuario.getSobrenome().contains("4") ||
-				usuario.getSobrenome().contains("5") ||
-				usuario.getSobrenome().contains("6") ||
-				usuario.getSobrenome().contains("7") ||
-				usuario.getSobrenome().contains("8") ||
-				usuario.getSobrenome().contains("9")) {
+		
+		if(p.matcher(usuario.getSobrenome()).matches()) {
 			throw new ExcecaoSobrenomeInvalido();
 		}
 
@@ -492,14 +434,19 @@ public class DesafioPositivoFacade {
 	 * @param proposta
 	 *            proposta submetida
 	 */
-	public void adicionarProposta(Usuario usuarioLogado, Proposta proposta) {
+	public void adicionarProposta(Usuario usuarioLogado, Proposta proposta) throws SubmissaoInvalidaException, Exception {
 		if (usuarioLogado.getPropostas() == null) {
 			usuarioLogado.setPropostas(new ArrayList<Proposta>());
 		}
-
+		
+		if(! periodoValidoSubmissoes()) {
+			throw new SubmissaoInvalidaException();
+		}
+	
 		usuarioLogado.getPropostas().add(proposta);
-		//proposta.setArquivoGUI(fileUploadBean.getFiles().get(0).getData());
+	
 		proposta.setUsuario(usuarioLogado);
+		proposta.setDataSubmissao(Calendar.getInstance().getTime());
 
 		Usuario u = entityManager.merge(usuarioLogado);
 		entityManager.flush();
@@ -510,6 +457,24 @@ public class DesafioPositivoFacade {
 
 		antiga.setId(atualizada.getId());
 	}
+
+	/**
+	 * Retorna verdadeiro caso a data atual seja anterior a data limite 
+	 * para submissoes.
+	 */
+	public boolean periodoValidoSubmissoes() throws Exception {
+		Calendar dataHoraSubmissao = Calendar.getInstance();
+		Calendar dataHoraLimite = Calendar.getInstance();
+	
+		dataHoraLimite.setTime((new SimpleDateFormat("yyyyMMddhhmmss")).parse(getDataLimiteSubmissoes()));
+		
+		
+		// a data nao pode ser posterior a dataHoraLimite, new SimpleDateFormat("yyyyMMddhhmmss")).parse(getDataLimiteSubmissoes()
+		// confirgurada no arquivo components.xml
+		
+		return dataHoraSubmissao.before(dataHoraLimite);
+	}
+
 
 	/**
 	 * Utilizando contexto transacional, recupera as propostas submetidas pelo
@@ -814,6 +779,16 @@ public class DesafioPositivoFacade {
 		} catch (Exception e) {
 			throw new Exception(Mensagens.EXP_CONSULTA_USUARIO);
 		}
+	}
+
+
+	public String getDataLimiteSubmissoes() {
+		return dataLimiteSubmissoes;
+	}
+
+
+	public void setDataLimiteSubmissoes(String dataLimiteSubmissoes) {
+		this.dataLimiteSubmissoes = dataLimiteSubmissoes;
 	}
 
 }

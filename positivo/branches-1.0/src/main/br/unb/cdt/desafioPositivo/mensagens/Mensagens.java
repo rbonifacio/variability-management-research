@@ -49,9 +49,11 @@ public class Mensagens {
 	
 	public static final String NOVA_PROPOSTA_ERROR = "positivo.novaProposta.anexoEmBranco";
 	public static final String NOVA_PROPOSTA_TAMANHO = "positivo.novaProposta.tamanhoAnexo";
+	public static final String NOVA_PROPOSTA_PERIODO_INVALIDO = "positivo.novaProposta.periodo.invalido";
 	
 	public static final String NOME_INVALIDO = "positivo.novoUsuario.nomeInvalido";
 	public static final String SOBRENOME_INVALIDO = "positivo.novoUsuario.sobrenomeInvalido";
 	public static final String IDADE_INVALIDA = "positivo.novoUsuario.idadeInvalida";
+
 	
 }

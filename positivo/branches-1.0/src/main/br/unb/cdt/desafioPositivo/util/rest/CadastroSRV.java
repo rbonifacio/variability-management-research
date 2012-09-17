@@ -29,7 +29,7 @@ public class CadastroSRV extends PositivoAPI {
 		req.queryParameter("email", usuario.getEmail());
 		req.queryParameter("senha", usuario.getSenha());
 		req.queryParameter("nome", Normalizer.normalize(usuario.getNome(), Form.NFD).replaceAll("[^\\p{ASCII}]", ""));
-		req.queryParameter("sobrenome", Normalizer.normalize(usuario.getSobrenome(), Form.NFD).replace("[^\\p{ASCII}]", ""));
+		req.queryParameter("sobrenome", Normalizer.normalize(usuario.getSobrenome(), Form.NFD).replaceAll("[^\\p{ASCII}]", ""));
 		req.queryParameter("sexo", (usuario.getSexo().equals(Sexo.MASCULINO) ? "M" : "F"));
 		req.queryParameter("estado", usuario.getEstado().getSigla());
 		req.queryParameter("dataNascimento", (new SimpleDateFormat("dd/MM/yyyy").format(usuario.getNascimento())));	

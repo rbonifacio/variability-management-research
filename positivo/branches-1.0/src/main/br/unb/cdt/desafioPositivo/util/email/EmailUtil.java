@@ -1,6 +1,5 @@
 package br.unb.cdt.desafioPositivo.util.email;
 
-import java.util.Calendar;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

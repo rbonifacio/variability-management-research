@@ -120,14 +120,9 @@ public class UsuarioAction {
 					Mensagens.SOLICITACAO_CADASTRO, usuarioDto.getEmail());
 			return "home";
 		} catch (ExcecaoUsuarioCadastrado e) {
-			if(e.getLocalizedMessage() == null || e.getLocalizedMessage().equals("")) {
 			StatusMessages.instance().addFromResourceBundle(
 					StatusMessage.Severity.ERROR, Mensagens.EMAIL_EXISTENTE, usuarioDto.getEmail());
-			}
-			else {
-				StatusMessages.instance().addFromResourceBundle(
-						StatusMessage.Severity.ERROR, Mensagens.EXC_CADASTRADO_USUARIO_CADASTRADO_MAS_NAO_CONFIRMADO);
-			}
+			
 			return null;
 		} catch (ExcecaoNomeInvalido e) {
 			StatusMessages.instance().addFromResourceBundle(

@@ -100,11 +100,15 @@
 		<property name="usuario">desafiopositivoandroid@gmail.com</property>
 		<property name="senha">android@0!2</property>
 	</component>
-
+	
 	<factory name="urlConfirmacaoCadastro"
 		value="https://www.concursoideiapp.com.br/desafioPositivo/usuario/confirmaSolicitacaoCadastro.seam" />
+
 	<factory name="urlRecuperarSenhaPositivo"
 		value="https://www.concursoideiapp.com.br/desafioPositivo/usuario/recuperarSenhaPositivo.seam" />
+		
+	<!-- data limite para a sumbmissao das propostas -->	
+	<factory name="dataLimiteSubmissoes" value="20121015115959" />
 
 <!--
 	<factory name="urlConfirmacaoCadastro"
