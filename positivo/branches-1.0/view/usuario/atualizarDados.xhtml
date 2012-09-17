@@ -15,7 +15,10 @@
 			<h:form>
 				<s:div styleClass="menu_logado">
 					<ul class="menu_logado_li">
-						<li><a href="../proposta/novaProposta.seam">Nova Proposta</a>
+						<li>
+							<a:commandLink href="../proposta/novaProposta.seam" rendered="#{propostaAction.verificaPeriodo()}">
+								Nova Proposta
+							</a:commandLink>
 						</li>
 						<li><a href="../proposta/minhaProposta.seam">Minhas
 								Propostas</a></li>

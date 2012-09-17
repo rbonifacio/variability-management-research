@@ -50,9 +50,6 @@ public class PropostaAction {
 	
 	private long tamanhoArquivo;
 	
-	
-	
-	
 	public PropostaAction() {
 		proposta = new Proposta();
 	}

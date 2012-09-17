@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import org.hibernate.validator.Pattern;
 import org.jboss.seam.annotations.Name;
 
+import com.sun.istack.internal.Nullable;
+
 /**
  * Classes que representa uma proposta 
  * submetida ao desafio Positivo para desenvolvimento 
@@ -69,6 +71,7 @@ public class Proposta implements Serializable {
 	@Lob
 	private byte[] arquivoGUI;
 	
+	@Column(name="DATA_SUBMISSAO",nullable=true)
 	private Date dataSubmissao;
 	
 	/**
