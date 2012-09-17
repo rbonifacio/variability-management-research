@@ -1,0 +1,135 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a="http://richfaces.org/a4j" template="../layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<!-- _conteudo_default -->
+		<div class="corpo"
+			style="background: url(../img/positivo/bg.jpg) no-repeat; height: 690px; padding: 15px 0 0 0">
+			<h:form>
+				<s:div styleClass="menu_logado">
+					<ul class="menu_logado_li">
+						<li>
+							<a:commandLink href="../proposta/novaProposta.seam" rendered="#{propostaAction.verificaPeriodo()}">
+								Nova Proposta
+							</a:commandLink>
+						</li>
+						<li><a href="../proposta/minhaProposta.seam">Minhas
+								Propostas</a></li>
+						<li><a href="sumario.seam">Sumário</a></li>
+						<li><a href="alterarSenha.seam">Alterar Senha</a></li>
+						<li><h:commandLink  value="#{messages['positivo.logout']}" immediate="true"
+								action="#{authenticator.logout()}" /></li>
+					</ul>
+				</s:div>
+			</h:form>
+
+			<h:panelGrid columns="2">
+				<s:div styleClass="info2">
+					<!-- Sumario forma, nomes -->
+					<s:div>
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="../img/icon/OkV.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="../img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="../img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
+					</s:div>
+					<s:div style="font-size: 1.0em; padding-left: 15px;" rendered="#{empty usuarioLogado.cpf}">
+						<font style="color: red"> * </font>Caro usuário, por favor atualize os seus dados.
+					</s:div>
+					<rich:spacer height="15" />
+
+					<h:form id="sumarioForm">
+						<fieldset>
+							<legend>Sumário</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+									<h:outputLabel for="nome"
+										value="#{messages['positivo.sumario.nome']}:" />
+									<h:inputText disabled="true" id="nome"
+										value="#{usuarioLogado.nome}" class="input_grande" />
+
+									<h:outputLabel for="sobrenome"
+										value="#{messages['positivo.sumario.sobrenome']}:" />
+									<h:inputText disabled="true" id="sobrenome"
+										value="#{usuarioLogado.sobrenome}" required="true"
+										class="input_grande" />
+
+									<h:outputLabel for="cpf" value="CPF:" />
+									<h:inputText id="cpf" value="#{usuarioLogado.cpf}"
+										class="input_grande" disabled="true" />
+
+									<h:outputLabel for="rg" value="RG:" />
+									<h:inputText id="rg" value="#{usuarioLogado.rg}"
+										class="input_grande" disabled="true" />
+
+
+									<h:outputLabel for="sexo"
+										value="#{messages['positivo.sumario.sexo']}:" />
+									<h:inputText disabled="true" id="sexo"
+										value="#{usuarioLogado.sexo.descricao}" class="input_grande" />
+
+									<h:outputLabel for="nascimento"
+										value="#{messages['positivo.sumario.nascimento']}:" />
+									<h:inputText id="nascimento" disabled="true"
+										value="#{usuarioLogado.nascimentoFormatado}"
+										class="input_grande" />
+
+									<h:outputLabel for="cep" value="CEP:" />
+									<h:inputText id="cep" value="#{usuarioLogado.cep}"
+										disabled="true" class="input_grande" />
+
+									<h:outputLabel for="bairro" value="Bairro:" />
+									<h:inputText id="bairro" value="#{usuarioLogado.bairro}"
+										disabled="true" class="input_grande" />
+
+									<h:outputLabel for="endereco"
+										value="#{messages['positivo.sumario.endereco']}:" />
+									<h:inputText id="endereco" value="#{usuarioLogado.endereco}"
+										disabled="true" class="input_grande" />
+
+									<h:outputLabel for="estado" value="Estado:" />
+									<h:inputText id="estado" disabled="true"
+										value="#{usuarioLogado.estado}" class="input_grande" />
+
+								</h:panelGrid>
+							</div>
+						</fieldset>
+
+						<rich:spacer height="10" />
+
+						<div class="actionButtons">
+
+							<h:commandLink action="atualizarDados">
+								<h:graphicImage url="../img/positivo/botoes/atualizarDados.png"
+									alt="Atualizar Dados" title="Atualizar Dados" />
+							</h:commandLink>
+						</div>
+					</h:form>
+
+				</s:div>
+
+				<s:div styleClass="conteudo_img_direita">
+					<img src="../img/positivo/tablets_direita.png" />
+				</s:div>
+
+			</h:panelGrid>
+
+		</div>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,110 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	template="../layout/template.xhtml">
+
+
+	<ui:define name="body">
+
+		<div class="corpo"
+			style="background: url(../img/positivo/bg.jpg) no-repeat; min-height: 690px; padding: 15px 0 0 0">
+
+			<h:form>
+				<s:div styleClass="menu_logado">
+					<ul class="menu_logado_li">
+						<li>
+							<a:commandLink href="../proposta/novaProposta.seam" rendered="#{propostaAction.verificaPeriodo()}">
+								Nova Proposta
+							</a:commandLink>
+						</li>
+						<li><a href="../proposta/minhaProposta.seam">Minhas
+								Propostas</a></li>
+						<li><a href="sumario.seam">Sumário</a></li>
+						<li><a href="alterarSenha.seam">Alterar Senha</a></li>
+						<li><h:commandLink  value="#{messages['positivo.logout']}" immediate="true"
+								action="#{authenticator.logout()}" /></li>
+					</ul>
+				</s:div>
+			</h:form>
+
+			<h:panelGrid columns="2">
+				<s:div styleClass="info2">
+					<s:div>
+						<rich:messages>
+							<f:facet name="infoMarker">
+								<h:graphicImage url="../img/icon/OkV.png" />
+							</f:facet>
+							<f:facet name="errorMarker">
+								<h:graphicImage value="../img/icon/ErroX.png" />
+							</f:facet>
+							<f:facet name="passedMarker">
+								<h:graphicImage value="../img/icon/OkV.png" />
+							</f:facet>
+						</rich:messages>
+					</s:div>
+					<h:form id="alterarDadosForm">
+						<fieldset>
+							<legend>#{messages['positivo.sumario.alterarSenha']}</legend>
+							<div class="dialog">
+								<h:panelGrid columns="2" rowClasses="prop"
+									columnClasses="name,value">
+
+									<h:outputLabel for="senhaAtual"
+										value="#{messages['positivo.alterarSenha.senhaAtual']}" />
+									<h:inputSecret id="senhaAtual" class="input_grande"
+										value="#{alteraSenhaDTO.senhaAtual}" 
+										requiredMessage="Campo senha atual está vazio">										
+										<rich:ajaxValidator event="onblur" />
+									</h:inputSecret>
+
+									<h:outputLabel for="novaSenha"
+										value="#{messages['positivo.alterarSenha.novaSenha']}" />
+									<h:inputSecret id="novaSenha" class="input_grande"
+										value="#{alteraSenhaDTO.novaSenha}" required="true" 
+										requiredMessage="Campo nova senha está vazio">										
+										<rich:ajaxValidator event="onblur" />
+									</h:inputSecret>
+
+									<h:outputLabel for="confirmacaoSenha"
+										value="#{messages['positivo.alterarSenha.confirmacaoSenha']}" />
+									<h:inputSecret id="confirmacaoSenha" class="input_grande"
+										value="#{alteraSenhaDTO.confirmacaoNovaSenha}" required="true" 
+										requiredMessage="Campo confirmar senha está vazio">										
+										<rich:ajaxValidator event="onblur" />
+									</h:inputSecret>
+								</h:panelGrid>
+							</div>
+						</fieldset>
+
+						<rich:spacer height="10" />
+
+						<div class="actionButtons">
+
+							<h:commandLink action="#{usuarioAction.alterarSenha()}">
+								<h:graphicImage url="../img/positivo/botoes/alterarSenha.png"
+									alt="Alterar senha" title="Alterar senha" />
+							</h:commandLink>
+
+							<h:commandLink action="cancelar" immediate="true">
+								<h:graphicImage url="../img/positivo/botoes/cancelar.png"
+									alt="Cancelar" title="Cancelar" />
+							</h:commandLink>
+
+						</div>
+					</h:form>
+				</s:div>
+
+				<s:div styleClass="conteudo_img_direita">
+					<img src="../img/positivo/tablets_direita.png" />
+				</s:div>
+
+			</h:panelGrid>
+
+		</div>
+	</ui:define>
+</ui:composition>
