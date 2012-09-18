@@ -1,0 +1,107 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+
+		<div class="corpo"
+			style="background: url(img/positivo/bg.jpg) no-repeat; min-height: 1150px; padding-left: 140px; padding-top: 30px;">
+
+			<rich:modalPanel id="panel" width="670" height="440">
+				<f:facet name="header">
+					<h:panelGroup>
+					</h:panelGroup>
+				</f:facet>
+				<f:facet name="controls">
+					<h:panelGroup>
+						<h:graphicImage value="./img/close.png" styleClass="hidelink"
+							id="hidelink" />
+						<rich:componentControl for="panel" attachTo="hidelink"
+							operation="hide" event="onclick" />
+					</h:panelGroup>
+				</f:facet>
+				<iframe width="640" height="390"
+					src="http://www.youtube.com/embed/XCF9PhpesD0" frameborder="0">
+				</iframe>
+			</rich:modalPanel>
+
+			<div class="conteudo_ajuda">
+
+				<s:div styleClass="conteudo_ajuda_esquerda">
+
+					<!-- style=" -->
+
+					<div>
+						<h1>VIDEO TUTORIAL PENCIL</h1>
+					</div>
+
+					<br />
+
+					<h:outputLink value="#" id="link">
+						<img src="./img/positivo/video.png" />
+						<rich:componentControl for="panel" attachTo="link"
+							operation="show" event="onclick" />
+					</h:outputLink>
+					<br></br> Evolus Pencil #{messages['eh']} uma ferramenta livre, cuja
+			finalidade #{messages['eh']} a <br></br> #{messages['criacao']} de
+			"#{messages['prototipo']}" de telas.
+
+				<h1>COMO REALIZAR SUA INSCRIÇÃO</h1>
+				1.	Ao entrar no site você pode observar algumas abas na parte superior da página. Para iniciar o processo de inscrição clique na aba INSCRIÇÃO/LOGIN.<br /><br />
+				2.	Antes de iniciar sua inscrição observe que um vídeo tutorial sobre a ferramenta PENCIL, a qual deverá ser utilizada para construir o seu protótipo, está disponível acima.<br /><br />
+				3.	Se você não possuí uma conta cadastrada no sistema siga os passos abaixo. Se já possuí uma conta cadastrada no sistema, porém não ativa, pule para o passo 6. Se já possuí uma conta cadastrada e ativa pule para o passo 9.<br /><br />
+
+					<h2>CADASTRAR NO SISTEMA</h2>
+
+				4.	Para realizar seu cadastro no sistema, em Quero me cadastrar, insira  nome, sobrenome, CPF, RG, sexo, data de nascimento, CEP, bairro, endereço, estado e e-mail corretamente. <br />
+				ATENÇÃO: Dados como CPF e RG não poderão ser modificados posteriormente, portanto tenha atenção para que a informação digitada esteja correta.<br /><br />
+				5.	Após inserir seus dados, clique no botão Cadastrar.<br /><br />
+				6.	Se todos seus dados forem válidos, seu cadastro será realizado com sucesso e você receberá um e-mail para confirmação de sua conta, o qual será enviado para o e-mail informado.<br /><br />
+				7.	Caso o participante seja menor de idade, ele deverá inserir o documento de liberação do menor participante devidamente escaneado em um dos formatos a seguir com no máximo 2mb: .jpg .png .bmp .gif ou .pdf.
+
+					<h2>CONFIRMAÇÃO DO CADASTRO</h2>
+
+				8.	O próximo passo é realizar a ativação da sua conta. Para isso, abra o e-mail de confirmação que foi enviado para sua conta de e-mail, nele haverá uma URL para ativar sua conta e o código de acesso.<br /><br />
+				9.	Clique na URL contida no e-mail de confirmação. Você será direcionado para a página de confirmação de cadastro. Para ativar seu cadastro, insira sua conta de e-mail cadastrada, o código de acesso e crie sua senha de acesso, a qual deverá ser com pelo menos 8 posições e contendo letras maiúsculas e minúsculas.<br /><br />
+				10.	Após inserir todos os dados de confirmação de cadastro clique em Confirma solicitação. Seu cadastro será confirmado com sucesso.<br /><br />
+
+				</s:div>
+
+				<s:div styleClass="conteudo_ajuda_direita">
+					<h2>AUTENTICAÇÃO</h2>
+
+				11.	O próximo passo será realizar a autenticação no sistema. Para isso, clique na aba INSCRIÇÃO/LOGIN.<br /><br />
+				12.	Em Já possuo uma conta ,insira o e-mail e senha cadastrados no sistema e clique em Login. Você será redirecionado para sua página de inscrição.<br /><br />
+				13.	Estando logado no sistema, a qualquer momento você poderá navegar pelas outras páginas do site e retornar a sua página de inscrição clicando na aba SUMÁRIO.<br /><br />
+
+					<h1>COMO CADASTRAR UMA NOVA PROPOSTA</h1>
+
+				1.	Na sua página de inscrição, você poderá observar alguns itens na parte superior da página. Para cadastrar uma nova proposta clique no ícone Nova Proposta.<br /><br /> 
+				2.	Sua proposta deve possuir nome da aplicação, descrição, objetivos, público alvo, funcionalidades e arquivo do protótipo construído com no máximo 10mb.<br /><br /> 
+				3.	Após preencher todos os campos corretamente, clique no botão Cadastrar.<br /><br />
+				4.	Você poderá observar a sua proposta cadastrada clicando no ícone Minhas Propostas. A qualquer momento você poderá clicar no botão  para editar sua proposta ou no botão     para excluir sua proposta<br /><br />
+				
+				<h2>COMO ATUALIZAR SEUS DADOS</h2>
+				
+				1.	Na sua página de inscrição, você poderá observar alguns itens na parte superior da página. Para atualizar seus dados clique no ícone Sumário. <br /><br /> 
+				2.	Seus dados cadastrados aparecerão na tela, para atualizá-los clique no botão Atualizar dados.<br /><br />
+				3.	Altere a informação desejada e clique no botão Salvar. Lembre-se que CPF e RG não poderão ser alterados.<br /><br /> 
+				
+				<h2>COMO ALTERAR SUA SENHA</h2>
+				
+				1.	Na sua página de inscrição, você poderá observar alguns itens na parte superior da página. Para cadastrar uma nova proposta clique no ícone  Alterar Senha.<br /><br /> 
+				2.	Digite sua senha atual e a nova senha que deseja cadastrar.<br /><br /> 
+				3.	Clique no botão Alterar senha e sua senha será alterada com sucesso.<br /><br />
+			
+			</s:div>
+
+			</div>
+
+		</div>
+	</ui:define>
+</ui:composition>
