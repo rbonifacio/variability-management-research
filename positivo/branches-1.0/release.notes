@@ -1,3 +1,7 @@
+Versao 2.9
+
+* Correcao das navegacoes entre os links do menu exibido no sumario e nas demais paginas quando o usuario esta logado
+
 Versao 2.8
 
 * A opcao RS esta disponivel para o cadastro do usuario
@@ -6,6 +10,7 @@ Versao 2.8
 * Existe uma data limite para a submissao de propostas
 * melhoria na implementacao do metodo DesafioPositivoFacade.validaDados(). ainda nao estah o ideal, pois esse metodo deveria ser movido para UsuarioAction 
 * Proposta passou a ter data. Cuidado, pois o script DDL precisa ser atualizado.</li>
+
 Versao 2.7
 
 * .... 

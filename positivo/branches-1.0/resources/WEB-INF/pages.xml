@@ -26,8 +26,12 @@
 			<rule if-outcome="recuperarSenha">
 				<redirect view-id="/usuario/recuperarSenha.xhtml" />
 			</rule>
+			<rule if-outcome="novaProposta">
+				<redirect view-id="/proposta/novaProposta.xhtml" />
+			</rule>
 		</navigation>
 	</page>
+	
 	<page action="#{propostaAction.recuperaPropostasUsuario()}"
 		login-required="true" view-id="/usuario/sumario.xhtml">
 		<end-conversation before-redirect="true" />
@@ -46,6 +50,7 @@
 			</rule>
 		</navigation>
 	</page>
+	
 	<page action="#{propostaAction.recuperaPropostasUsuario()}"
 		login-required="true" view-id="/proposta/minhaProposta.xhtml">
 		<end-conversation before-redirect="true" />
@@ -53,33 +58,63 @@
 			<rule if-outcome="editarProposta">
 				<redirect view-id="/proposta/editarProposta.xhtml" />
 			</rule>
+			<rule if-outcome="novaProposta">
+				<redirect view-id="/proposta/novaProposta.xhtml" />
+			</rule>
 		</navigation>
 	</page>
+	
 	<page login-required="true" view-id="/proposta/novaProposta.xhtml">
 		<begin-conversation flush-mode="manual" join="true" />
 		<navigation>
 			<rule if-outcome="minhaProposta">
 				<redirect view-id="/proposta/minhaProposta.xhtml" />
 			</rule>
+			<rule if-outcome="novaProposta">
+				<redirect view-id="/proposta/novaProposta.xhtml" />
+			</rule>
 		</navigation>
 	</page>
+	
 	<page login-required="true" view-id="/proposta/editarProposta.xhtml">
 		<begin-conversation flush-mode="manual" join="true" />
 		<navigation>
 			<rule if-outcome="minhaProposta">
 				<redirect view-id="/proposta/minhaProposta.xhtml" />
 			</rule>
+		    <rule if-outcome="novaProposta">
+				<redirect view-id="/proposta/novaProposta.xhtml" />
+			</rule>
 		</navigation>
 	</page>
+	
 	<page login-required="true" view-id="/usuario/atualizarDados.xhtml">
 		<begin-conversation flush-mode="manual" join="true" />
+		<navigation>
+			<rule if-outcome="novaProposta">
+				<redirect view-id="/proposta/novaProposta.xhtml" />
+			</rule>
+		</navigation>
 	</page>
+	
 	<page login-required="true" view-id="/proposta/editarProposta.xhtml">
 		<begin-conversation flush-mode="manual" join="true" />
+		<navigation>
+			<rule if-outcome="novaProposta">
+				<redirect view-id="/proposta/novaProposta.xhtml" />
+			</rule>
+		</navigation>
 	</page>
+	
 	<page login-required="true" view-id="/usuario/alterarSenha.xhtml">
 		<begin-conversation flush-mode="manual" join="true" />
+		<navigation>
+			<rule if-outcome="novaProposta">
+				<redirect view-id="/proposta/novaProposta.xhtml" />
+			</rule>
+		</navigation>
 	</page>
+
 	<page view-id="/usuario/novoUsuario.xhtml">
 		<end-conversation before-redirect="true" />
 		<navigation>
@@ -88,12 +123,15 @@
 			</rule>
 		</navigation>
 	</page>
+
 	<page view-id="/usuario/confirmaSolicitacaoCadastro.xhtml">
 		<end-conversation before-redirect="true" />
 	</page>
+
 	<page view-id="/home.xhtml">
 		<end-conversation before-redirect="true" />
 	</page>
+
 	<exception class="org.jboss.seam.framework.EntityNotFoundException">
 		<redirect view-id="/error.xhtml">
 			<message severity="warn">Record not found</message>
