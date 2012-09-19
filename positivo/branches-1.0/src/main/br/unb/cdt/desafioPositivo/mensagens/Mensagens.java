@@ -54,6 +54,15 @@ public class Mensagens {
 	public static final String NOME_INVALIDO = "positivo.novoUsuario.nomeInvalido";
 	public static final String SOBRENOME_INVALIDO = "positivo.novoUsuario.sobrenomeInvalido";
 	public static final String IDADE_INVALIDA = "positivo.novoUsuario.idadeInvalida";
-
+	public static final String CPF_INVALIDO = "positivo.exception.cpfInvalido";
+	public static final String CPF_JA_CADASTRADO = "positivo.exception.cpfJaCadastrado";
+	public static final String CPF_ERRO_VALIDACAO = "positivo.exception.cpfErroValidacao";
+	public static final String CPF_EM_BRANCO = "positivo.exception.cpfEmBranco";
+	public static final String RG_EM_BRANCO = "positivo.exception.rgEmBranco";
+	public static final String BAIRRO_EM_BRANCO = "positivo.exception.bairroEmBranco";
+	public static final String ENDERECO_EM_BRANCO = "positivo.exception.enderecoEmBranco";
+	public static final String EMAIL_CONFIRMACAO_DIFERENTES = "positivo.exception.emailConfirmacaoDiferentes";
+	public static final String DOCUMENTO_MENOR_PARTICIPANTE_OBRIGATORIO = "positivo.exception.documentoMenorParticipanteObrigatorio";
+	public static final String DOCUMENTO_MENOR_PARTICIPANTE_TAMANHO = "positivo.exception.documentoMenorParticipanteTamanho";
 	
 }

@@ -194,7 +194,7 @@ public class UsuarioAction {
 				|| (stringCPF.equals("77777777777"))
 				|| (stringCPF.equals("88888888888"))
 				|| (stringCPF.equals("99999999999")))
-			return "CPF inválido";
+			return Mensagens.CPF_INVALIDO;
 
 		// Calcula o primeiro dígito
 		soma1 = 0;
@@ -223,15 +223,15 @@ public class UsuarioAction {
 			try {
 				Usuario u = facade.recuperaUsuarioCPF(stringCPF);
 				if (u != null) {
-					return "CPF já cadastrado";
+					return Mensagens.CPF_JA_CADASTRADO;
 				}
 				return null;
 			} catch (Exception e) {
-				return "Ocorreu um erro ao validar o CPF";
+				return Mensagens.CPF_ERRO_VALIDACAO;
 			}
 		}
 
-		return "CPF inválido";
+		return Mensagens.CPF_INVALIDO;
 	}
 
 	/*
@@ -249,7 +249,7 @@ public class UsuarioAction {
 		}
 
 		if (usuarioDto.getCpf() == null || usuarioDto.getCpf().equals("")) {
-			erros.add("Necessário informar o CPF");
+			erros.add(Mensagens.CPF_EM_BRANCO);
 		} else {
 			String status = validaCPF(usuarioDto.getCpf());
 			if (status != null) {
@@ -258,16 +258,16 @@ public class UsuarioAction {
 		}
 
 		if (usuarioDto.getRg() == null || usuarioDto.getRg().equals("")) {
-			erros.add("Necessário informar o RG");
+			erros.add(Mensagens.RG_EM_BRANCO);
 		}
 
 		if (usuarioDto.getBairro() == null || usuarioDto.getBairro().equals("")) {
-			erros.add("Necessário informar o bairro");
+			erros.add(Mensagens.BAIRRO_EM_BRANCO);
 		}
 
 		if (usuarioDto.getEndereco() == null
 				|| usuarioDto.getEndereco().equals("")) {
-			erros.add("Necessário informar o endereço");
+			erros.add(Mensagens.ENDERECO_EM_BRANCO);
 		}
 
 		if (usuarioDto.getEmail() == null
@@ -277,7 +277,7 @@ public class UsuarioAction {
 			erros.add("positivo.novoUsuario.confirmacao.email.obrigatorio");
 		} else if (!usuarioDto.getEmail().equals(
 				usuarioDto.getConfirmacaoEmail())) {
-			erros.add("O e-mail e a confirmação de e-mail devem ser iguais");
+			erros.add(Mensagens.EMAIL_CONFIRMACAO_DIFERENTES);
 		} else if (!emailUtil.verificaEmailValido(usuarioDto.getEmail())) {
 			erros.add("positivo.novoUsuario.email.confirmacao.invalida");
 		}
@@ -298,7 +298,7 @@ public class UsuarioAction {
 
 			// Verifica idade
 			if(idade < 18) {
-				erros.add("É necessário a submissão do termo de autorização de participação para participantes menores de idade.");
+				erros.add(Mensagens.DOCUMENTO_MENOR_PARTICIPANTE_OBRIGATORIO);
 			}
 			else {
 				usuarioDto.setDocumento_permissao(null);
@@ -306,7 +306,7 @@ public class UsuarioAction {
 		}
 		else {
 			if( getTamanhoArquivo() > 2097152){
-				erros.add("O documento de permissão dos responsáveis não pode ter mais que 2 MB.");
+				erros.add(Mensagens.DOCUMENTO_MENOR_PARTICIPANTE_TAMANHO);
 			}
 			if(!(usuarioDto.getNomeDocumento().endsWith(".pdf") || 
 					usuarioDto.getNomeDocumento().endsWith(".png") || 
