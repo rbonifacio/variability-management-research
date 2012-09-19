@@ -3,30 +3,30 @@ package br.unb.cdt.desafioPositivo.model;
 public enum Estado {
 	AC(1, "AC", "Acre"), // Acre
 	AL(2, "AL", "Alagoas"), // Alagoas
-	AP(3, "AP", "Amapá"), // Amap�
-	AM(4, "AM", "Amazonas"), // Amazonas
+	AM(3, "AM", "Amazonas"), // Amazonas
+	AP(4, "AP", "Amapá"), // Amap�
 	BA(5, "BA", "Bahia"), // Bahia
 	CE(6, "CE", "Ceará"), // Cear�
 	DF(7, "DF", "Distrito Federal"), // Distrito Federal
 	ES(8, "ES", "Espírito Santo"), // Esp�rito Santo
 	GO(9, "GO", "Goiás"), // Goi�s
 	MA(10, "MA", "Maranhão"), // Maranh�o
-	MT(11, "MT", "Mato Grosso"), // Mato Grosso
+	MG(11, "MG", "Minas Gerais"), // Minas Gerais
 	MS(12, "MS", "Mato Grosso do Sul"), // Mato Grosso do Sul
-	MG(13, "MG", "Minas Gerais"), // Minas Gerais
+	MT(13, "MT", "Mato Grosso"), // Mato Grosso
 	PA(14, "PA", "Pará"), // Par�
 	PB(15, "PB", "Paraíba"), // Para�ba
-	PR(16, "PR", "Paraná"), // Paran�
-	PE(17, "PE", "Pernambuco"), // Pernambuco
-	PI(18, "PI", "Piauí"), // Piau�
-	RR(19, "RR", "Roraima"), // Roraima
-	RO(20, "RO", "Rondônia"), // Rond�nia
+	PE(16, "PE", "Pernambuco"), // Pernambuco
+	PI(17, "PI", "Piauí"), // Piau�
+	PR(18, "PR", "Paraná"), // Paran�
+	RO(19, "RO", "Rondônia"), // Rond�nia
+	RR(20, "RR", "Roraima"), // Roraima
 	RJ(21, "RJ", "Rio de Janeiro"), // Rio de Janeiro
 	RN(22, "RN", "Rio Grande do Norte"), // Rio Grande do Norte
 	RS(23, "RS", "Rio Grande do Sul"), // Rio Grande do Sul
 	SC(24, "SC", "Santa Catarina"), // Santa Catarina
-	SP(25, "SP", "São Paulo"), // S�o Paulo
-	SE(26, "SE", "Sergipe"), // Sergipe
+	SE(25, "SE", "Sergipe"), // Sergipe
+	SP(26, "SP", "São Paulo"), // S�o Paulo
 	TO(27, "TO", "Tocantins"); // Tocantins
 
 	private Integer codigo;
